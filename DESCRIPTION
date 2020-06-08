@@ -1,0 +1,21 @@
+Package: zellkonverter
+Title: Conversion between scRNA-seq objects
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Luke",
+           family = "Zappia",
+           role = c("aut", "cre"),
+           email = "luke@lazappi.id.au",
+           comment = c(ORCID = "0000-0001-7744-8565"))
+Description: Zellkonverter is a small package for converting between
+    SingleCellExperiment objects and alternative objects for storing single-cell
+    RNA-sequencing data (such as AnnData).
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.0
+Suggests: 
+    spelling,
+    testthat
+Language: en-GB
