@@ -1,5 +1,10 @@
 # zellkonverter (development version)
 
+## zellkonverter 0.0.0.9002 (2020-06-08)
+
+* Add `adata2SCE()` function
+* Add `readH5AD()` function
+
 ## zellkonverter 0.0.0.9001 (2020-06-08)
 
 * Add **{basilisk}** infrastructure

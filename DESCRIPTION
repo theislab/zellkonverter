@@ -1,6 +1,6 @@
 Package: zellkonverter
 Title: Conversion between scRNA-seq objects
-Version: 0.0.0.9001
+Version: 0.0.0.9002
 Date: 2020-06-08
 Authors@R: 
     person(given = "Luke",
@@ -13,7 +13,9 @@ Description: Zellkonverter is a small package for converting between
     RNA-sequencing data (such as AnnData).
 License: MIT + file LICENSE
 Imports: 
-    basilisk
+    basilisk,
+    reticulate,
+    SingleCellExperiment
 Suggests: 
     spelling,
     testthat
