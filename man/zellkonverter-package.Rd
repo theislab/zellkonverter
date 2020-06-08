@@ -6,9 +6,17 @@
 \alias{zellkonverter-package}
 \title{zellkonverter: Conversion between scRNA-seq objects}
 \description{
-Zellkonverter is a small package for converting between
-    SingleCellExperiment objects and alternative objects for storing single-cell
-    RNA-sequencing data (such as AnnData).
+Zellkonverter is a small package for converting between SingleCellExperiment
+    objects and alternative objects for storing single-cell RNA-sequencing data
+    (such as AnnData).
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/lazappi/clustree}
+  \item Report bugs at \url{https://github.com/lazappi/clustree/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Luke Zappia \email{luke@lazappi.id.au} (\href{https://orcid.org/0000-0001-7744-8565}{ORCID})
