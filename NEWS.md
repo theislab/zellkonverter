@@ -1,5 +1,11 @@
 # zellkonverter (development version)
 
+## zellkonverter 0.0.0.9003 (2020-06-08)
+
+* Add test `.h5ad` file
+* Add test for `readH5AD()`
+* Add package man page
+
 ## zellkonverter 0.0.0.9002 (2020-06-08)
 
 * Add `adata2SCE()` function
