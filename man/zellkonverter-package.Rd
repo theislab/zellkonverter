@@ -13,8 +13,8 @@ Zellkonverter is a small package for converting between SingleCellExperiment
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/lazappi/clustree}
-  \item Report bugs at \url{https://github.com/lazappi/clustree/issues}
+  \item \url{https://github.com/theislab/zellkonverter}
+  \item Report bugs at \url{https://github.com/theislab/zellkonverter/issues}
 }
 
 }
