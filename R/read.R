@@ -6,8 +6,6 @@
 #'
 #' @return SingleCellExperiment
 #' @export
-#'
-#' @examples
 readH5AD <- function(file) {
     proc <- basilisk::basiliskStart(anndata_env)
     on.exit(basilisk::basiliskStop(proc))
@@ -17,6 +15,6 @@ readH5AD <- function(file) {
     basilisk::basiliskRun(proc, function(file) {
         anndata <- reticulate::import("anndata")
         adata <- anndata$read_h5ad(file)
-        sce <- adata2SCE(adata)
+        sce <- AnnData2SCE(adata)
     }, file=file)
 }
