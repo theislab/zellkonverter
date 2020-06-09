@@ -1,5 +1,9 @@
 # zellkonverter (development version)
 
+## zellkonverter 0.0.0.9004 (2020-06-09)
+
+* Pin more **AnnData** dependencies (See #1)
+
 ## zellkonverter 0.0.0.9003 (2020-06-08)
 
 * Add test `.h5ad` file
