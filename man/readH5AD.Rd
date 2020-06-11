@@ -7,11 +7,25 @@
 readH5AD(file)
 }
 \arguments{
-\item{file}{Path to a \code{.h5ad} file}
+\item{file}{String containing a path to a \code{.h5ad} file.}
 }
 \value{
-SingleCellExperiment
+A \linkS4class{SingleCellExperiment} object is returned.
 }
 \description{
-Reads a H5AD file and returns a SingleCellExperiment
+Reads a H5AD file and returns a \linkS4class{SingleCellExperiment} object.
+}
+\details{
+When first run, this function will instantiate a conda environment
+containing all of the necessary dependencies.
+This will not be performed on any subsequent run or if any other
+\pkg{zellkonverter} function has been run prior to this one.
+}
+\examples{
+# Re-using the example from writeH5AD.
+example(writeH5AD, echo=FALSE)
+
+# Reading into a SingleCellExperiment.
+sce2 <- readH5AD(temp)
+
 }

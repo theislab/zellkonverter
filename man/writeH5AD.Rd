@@ -7,13 +7,29 @@
 writeH5AD(sce, file)
 }
 \arguments{
-\item{sce}{SingleCellExperiment object}
+\item{sce}{A \linkS4class{SingleCellExperiment} object.}
 
-\item{file}{Path to write new \code{.h5ad}}
+\item{file}{String containing a path to write the new \code{.h5ad} file.}
 }
 \value{
-SingleCellExperiment
+A \code{NULL} is invisibly returned.
 }
 \description{
-Write a H5AD file from a SingleCellExperiment
+Write a H5AD file from a \linkS4class{SingleCellExperiment} object.
+}
+\details{
+When first run, this function will instantiate a conda environment
+containing all of the necessary dependencies.
+This will not be performed on any subsequent run or if any other
+\pkg{zellkonverter} function has been run prior to this one.
+}
+\examples{
+# Using our old friend, the Zeisel brain dataset.
+library(scRNAseq)
+sce <- ZeiselBrainData()
+
+# Writing to a H5AD file.
+temp <- tempfile(fileext='.h5ad')
+writeH5AD(sce, temp)
+
 }
