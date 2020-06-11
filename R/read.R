@@ -12,9 +12,11 @@ readH5AD <- function(file) {
 
     file <- path.expand(file)
 
-    basilisk::basiliskRun(proc, function(file) {
-        anndata <- reticulate::import("anndata")
-        adata <- anndata$read_h5ad(file)
-        sce <- AnnData2SCE(adata)
-    }, file=file)
+    basilisk::basiliskRun(proc, .H5ADreader, file=file)
+}
+
+.H5ADreader <- function(file) {
+    anndata <- reticulate::import("anndata")
+    adata <- anndata$read_h5ad(file)
+    AnnData2SCE(adata)
 }

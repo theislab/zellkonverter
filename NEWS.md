@@ -1,5 +1,9 @@
 # zellkonverter (development version)
 
+## zellkonverter 0.0.0.9006 (2020-06-11)
+
+* Use internal function in `readH5AD()`
+
 ## zellkonverter 0.0.0.9005 (2020-06-09)
 
 * Rename `adata2SCE()` to `AnnData2SCE()`
