@@ -21,7 +21,8 @@ Imports:
 Suggests: 
     covr,
     spelling,
-    testthat
+    testthat,
+    scRNAseq
 URL: https://github.com/theislab/zellkonverter
 BugReports: https://github.com/theislab/zellkonverter/issues
 Encoding: UTF-8
