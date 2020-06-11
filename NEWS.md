@@ -1,5 +1,11 @@
 # zellkonverter (development version)
 
+## zellkonverter 0.0.0.9007 (2020-06-11)
+
+* Add `SCE2AnnData()` function
+* Add `writeH5AD()` function
+
+
 ## zellkonverter 0.0.0.9006 (2020-06-11)
 
 * Use internal function in `readH5AD()`
