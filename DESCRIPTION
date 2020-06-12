@@ -1,7 +1,7 @@
 Package: zellkonverter
 Title: Conversion between scRNA-seq objects
-Version: 0.0.0.9007
-Date: 2020-06-11
+Version: 0.0.0.9008
+Date: 2020-06-12
 Authors@R: 
     person(given = "Luke",
            family = "Zappia",
@@ -21,7 +21,8 @@ Imports:
 Suggests: 
     covr,
     spelling,
-    testthat
+    testthat,
+    scRNAseq
 URL: https://github.com/theislab/zellkonverter
 BugReports: https://github.com/theislab/zellkonverter/issues
 Encoding: UTF-8
