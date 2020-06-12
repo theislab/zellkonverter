@@ -1,0 +1,92 @@
+---
+title: Single-cell data conversion to/from Bioconductor and Python
+author: 
+- name: Luke Zappia
+  email: luke@lazappi.id.au
+- name: Aaron Lun
+  email: infinite.monkeys.with.keyboards@gmail.com
+date: "Revised: 12 June 2020"
+output:
+  BiocStyle::html_document:
+    toc_float: true
+package: scran
+vignette: >
+  %\VignetteIndexEntry{User guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}    
+---
+
+```{r, echo=FALSE, results="hide", message=FALSE}
+require(knitr)
+library(BiocStyle)
+opts_chunk$set(error=FALSE, message=FALSE, warning=FALSE)
+```
+
+# Overview
+
+This package provides a lightweight interface between the Bioconductor `SingleCellExperiment` data structure
+and the Python `AnnData`-based single-cell analysis environment.
+The idea is to enable users and developers to easily move data between these frameworks 
+to construct a multi-language analysis pipeline across R/Bioconductor and Python.
+
+# Writing H5AD files 
+
+Users can use the `readH5AD()` function to read a `SingleCellExperiment` from a H5AD file.
+This can be manipulated in the usual way as described in the `r Biocpkg("SingleCellExperiment")` documentation.
+
+```{r}
+library(zellkonverter)
+
+# Obtaining an example file.
+example.file <- system.file("extdata", "krumsiek11.h5ad", package="zellkonverter")
+readH5AD(example.file)
+```
+
+We can also write a `SingleCellExperiment` to a H5AD file with the `writeH5AD()` function.
+This is demonstrated below on the classic Zeisel mouse brain dataset from the `r Biocpkg("scRNAseq")` package;
+the subsequent file can then be directly used in compatible Python-based analysis frameworks.
+
+```{r}
+library(scRNAseq)
+sce.zeisel <- ZeiselBrainData()
+loc <- tempfile(pattern=".h5ad")
+writeH5AD(sce.zeisel, file=loc)
+```
+
+# Creating `AnnData` objects 
+
+Developers and power users who control their Python environments can 
+directly convert between `SingleCellExperiment` and [`AnnData` objects](https://anndata.readthedocs.io/en/stable/)
+using the `SCE2AnnData()` and `AnnData2SCE()` utilities.
+These functions expect that `r Biocpkg("reticulate")` has already been loaded
+along with an appropriate version of the [_AnnData_](https://pypi.org/project/anndata/) package.
+We suggest using the `r Biocpkg("basilisk")` package to set up the Python environment before using these functions.
+
+```{r}
+library(basilisk)
+library(scRNAseq)
+seger <- SegerstolpePancreasData()
+roundtrip <- basiliskRun(env=zellkonverter:::anndata_env, fun=function(sce) {
+     # Convert SCE to AnnData:
+     ad <- SCE2AnnData(sce)
+
+     # Maybe do some work in Python on 'ad':
+     # BLAH BLAH BLAH
+
+     # Convert back to an SCE:
+     AnnData2SCE(ad)
+}, sce=seger)
+```
+
+Package developers can guarantee that they are using the same versions of Python packages as `r Biocpkg("zellconverter")`
+by using the `.AnnDataDependencies` variable to set up their Python environments.
+
+```{r}
+.AnnDataDependencies
+```
+
+# Session information
+
+```{r}
+sessionInfo()
+```
