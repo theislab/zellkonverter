@@ -3,11 +3,17 @@ Title: Conversion between scRNA-seq objects
 Version: 0.0.0.9008
 Date: 2020-06-12
 Authors@R: 
-    person(given = "Luke",
-           family = "Zappia",
-           role = c("aut", "cre"),
-           email = "luke@lazappi.id.au",
-           comment = c(ORCID = "0000-0001-7744-8565"))
+    c(person(given = "Luke",
+             family = "Zappia",
+             role = c("aut", "cre"),
+             email = "luke@lazappi.id.au",
+             comment = c(ORCID = "0000-0001-7744-8565")),
+      person(given = "Aaron",
+             family = "Lun",
+             role = c("aut"),
+             email = "infinite.monkeys.with.keyboards@gmail.com",
+             comment = c(ORCID = "0000-0002-3564-4813"))
+    )
 Description:
     Zellkonverter is a small package for converting between SingleCellExperiment
     objects and alternative objects for storing single-cell RNA-sequencing data
