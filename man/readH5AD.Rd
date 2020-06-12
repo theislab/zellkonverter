@@ -29,3 +29,11 @@ example(writeH5AD, echo=FALSE)
 sce2 <- readH5AD(temp)
 
 }
+\seealso{
+\code{\link{writeH5AD}}, to write a SingleCellExperiment file to a H5AD file.
+
+\code{\link{AnnData2SCE}}, for developers to convert existing AnnData instances to a SingleCellExperiment.
+}
+\author{
+Luke Zappia
+}

@@ -19,6 +19,12 @@
 #' # Reading into a SingleCellExperiment.
 #' sce2 <- readH5AD(temp)
 #'
+#' @author Luke Zappia
+#' @seealso
+#' \code{\link{writeH5AD}}, to write a SingleCellExperiment file to a H5AD file.
+#'
+#' \code{\link{AnnData2SCE}}, for developers to convert existing AnnData instances to a SingleCellExperiment.
+#'
 #' @export
 readH5AD <- function(file) {
     proc <- basilisk::basiliskStart(anndata_env)

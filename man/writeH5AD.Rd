@@ -33,3 +33,11 @@ temp <- tempfile(fileext='.h5ad')
 writeH5AD(sce, temp)
 
 }
+\seealso{
+\code{\link{readH5AD}}, to read a SingleCellExperiment file from a H5AD file.
+
+\code{\link{SCE2AnnData}}, for developers to create an AnnData object from a SingleCellExperiment.
+}
+\author{
+Luke Zappia
+}

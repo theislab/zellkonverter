@@ -12,6 +12,11 @@
 #' \pkg{zellkonverter} function has been run prior to this one.
 #'
 #' @return A `NULL` is invisibly returned.
+#' @author Luke Zappia
+#' @seealso
+#' \code{\link{readH5AD}}, to read a SingleCellExperiment file from a H5AD file.
+#'
+#' \code{\link{SCE2AnnData}}, for developers to create an AnnData object from a SingleCellExperiment.
 #'
 #' @examples
 #' # Using our old friend, the Zeisel brain dataset.
