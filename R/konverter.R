@@ -11,7 +11,7 @@
 #' These functions assume that an appropriate Python environment has already been loaded.
 #' As such, they are largely intended for developer use, most typically inside a \pkg{basilisk} context.
 #'
-#' The conversion is mostly but not entirely lossless.
+#' The conversion is not entirely lossless.
 #' No attempt is made by \code{AnnData2SCE} to transfer the alternative Experiments from \code{sce} to an AnnData object.
 #' Conversely, values in the \code{obsm} field of \code{adata} are not transferred to a SingleCellExperiment.
 #'
