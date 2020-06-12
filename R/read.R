@@ -1,10 +1,30 @@
 #' Read H5AD
 #'
-#' Reads a H5AD file and returns a SingleCellExperiment
+#' Reads a H5AD file and returns a \linkS4class{SingleCellExperiment} object.
 #'
-#' @param file Path to a `.h5ad` file
+#' @param file String containing a path to a `.h5ad` file.
 #'
-#' @return SingleCellExperiment
+#' @details
+#' When first run, this function will instantiate a conda environment
+#' containing all of the necessary dependencies.
+#' This will not be performed on any subsequent run or if any other
+#' \pkg{zellkonverter} function has been run prior to this one.
+#'
+#' @return A \linkS4class{SingleCellExperiment} object is returned.
+#'
+#' @examples
+#' # Re-using the example from writeH5AD.
+#' example(writeH5AD, echo=FALSE)
+#'
+#' # Reading into a SingleCellExperiment.
+#' sce2 <- readH5AD(temp)
+#'
+#' @author Luke Zappia
+#' @seealso
+#' \code{\link{writeH5AD}}, to write a SingleCellExperiment file to a H5AD file.
+#'
+#' \code{\link{AnnData2SCE}}, for developers to convert existing AnnData instances to a SingleCellExperiment.
+#'
 #' @export
 readH5AD <- function(file) {
     proc <- basilisk::basiliskStart(anndata_env)
