@@ -1,5 +1,10 @@
 # zellkonverter (development version)
 
+## zellkonverter 0.0.0.9008 (2020-06-12)
+
+* Add examples and improve documentation
+* Export `.AnnDataDependencies` for external use
+
 ## zellkonverter 0.0.0.9007 (2020-06-11)
 
 * Add `SCE2AnnData()` function
