@@ -1,10 +1,47 @@
-#' AnnData to SingleCellExperiment
+#' AnnData to/from SingleCellExperiment
 #'
-#' Converts a Python AnnData object to a SingleCellExperiment object.
+#' Converts a Python AnnData object to or from a \linkS4class{SingleCellExperiment} object.
 #'
-#' @param adata Reference to a Python AnnData object
+#' @param adata A \pkg{reticulate} reference to a Python AnnData object.
+#' @param sce A \linkS4class{SingleCellExperiment} object.
+#' @param X_name Name of the assay to use as the primary matrix (\code{X}) of the AnnData object.
+#' If `NULL`, the first assay of \code{sce} will be used by default.
 #'
-#' @return SingleCellExperiment
+#' @details
+#' These functions assume that an appropriate Python environment has already been loaded.
+#' As such, they are largely intended for developer use, most typically inside a \pkg{basilisk} context.
+#'
+#' The conversion is mostly but not entirely lossless.
+#' No attempt is made by \code{AnnData2SCE} to transfer the alternative Experiments from \code{sce} to an AnnData object.
+#' Conversely, values in the \code{obsm} field of \code{adata} are not transferred to a SingleCellExperiment.
+#'
+#' @author Luke Zappia
+#' 
+#' @return \code{AnnData2SCE} will return a SingleCellExperiment containing the equivalent data from \code{adata}.
+#'
+#' \code{SCE2AnnData} will return a \pkg{reticulate} reference to an AnnData object containing the content of \code{sce}.
+#'
+#' @seealso
+#' \code{\link{writeH5AD}} and \code{\link{readH5AD}}, for more user-friendly versions of these functions.
+#' 
+#' @examples
+#' library(basilisk)
+#' library(scRNAseq)
+#' seger <- SegerstolpePancreasData()
+#'
+#' # If you don't know what the code below is doing,
+#' # you probably shouldn't be using these functions.
+#' roundtrip <- basiliskRun(env=zellkonverter:::anndata_env, fun=function(sce) {
+#'      # Convert SCE to AnnData:
+#'      ad <- SCE2AnnData(sce) 
+#'
+#'      # Maybe do some work in Python on 'ad':
+#'      # BLAH BLAH BLAH
+#'
+#'      # Convert back to an SCE:
+#'      AnnData2SCE(ad)
+#' }, sce=seger)
+#' 
 #' @export
 AnnData2SCE <- function(adata) {
 
@@ -31,16 +68,8 @@ AnnData2SCE <- function(adata) {
     )
 }
 
-#' SingleCellExperiment to AnnData
-#'
-#' Converts a SingleCellExperiment object a Python AnnData object.
-#'
-#' @param sce SingleCellExperiment object
-#' @param X_name Name of the assay to use as the X matrix of the AnnData object.
-#' If `NULL` the first assay will be used.
-#'
-#' @return Reference to a Python AnnData object
 #' @export
+#' @rdname AnnData2SCE
 SCE2AnnData <- function(sce, X_name = NULL) {
 
     anndata <- reticulate::import("anndata")

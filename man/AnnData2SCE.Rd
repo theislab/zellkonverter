@@ -2,16 +2,59 @@
 % Please edit documentation in R/konverter.R
 \name{AnnData2SCE}
 \alias{AnnData2SCE}
-\title{AnnData to SingleCellExperiment}
+\alias{SCE2AnnData}
+\title{AnnData to/from SingleCellExperiment}
 \usage{
 AnnData2SCE(adata)
+
+SCE2AnnData(sce, X_name = NULL)
 }
 \arguments{
-\item{adata}{Reference to a Python AnnData object}
+\item{adata}{A \pkg{reticulate} reference to a Python AnnData object.}
+
+\item{sce}{A \linkS4class{SingleCellExperiment} object.}
+
+\item{X_name}{Name of the assay to use as the primary matrix (\code{X}) of the AnnData object.
+If \code{NULL}, the first assay of \code{sce} will be used by default.}
 }
 \value{
-SingleCellExperiment
+\code{AnnData2SCE} will return a SingleCellExperiment containing the equivalent data from \code{adata}.
+
+\code{SCE2AnnData} will return a \pkg{reticulate} reference to an AnnData object containing the content of \code{sce}.
 }
 \description{
-Converts a Python AnnData object to a SingleCellExperiment object.
+Converts a Python AnnData object to or from a \linkS4class{SingleCellExperiment} object.
+}
+\details{
+These functions assume that an appropriate Python environment has already been loaded.
+As such, they are largely intended for developer use, most typically inside a \pkg{basilisk} context.
+
+The conversion is mostly but not entirely lossless.
+No attempt is made by \code{AnnData2SCE} to transfer the alternative Experiments from \code{sce} to an AnnData object.
+Conversely, values in the \code{obsm} field of \code{adata} are not transferred to a SingleCellExperiment.
+}
+\examples{
+library(basilisk)
+library(scRNAseq)
+seger <- SegerstolpePancreasData()
+
+# If you don't know what the code below is doing,
+# you probably shouldn't be using these functions.
+roundtrip <- basiliskRun(env=zellkonverter:::anndata_env, fun=function(sce) {
+     # Convert SCE to AnnData:
+     ad <- SCE2AnnData(sce) 
+
+     # Maybe do some work in Python on 'ad':
+     # BLAH BLAH BLAH
+
+     # Convert back to an SCE:
+     AnnData2SCE(ad)
+}, sce=seger)
+
+}
+\seealso{
+\code{\link{writeH5AD}} and \code{\link{readH5AD}}, for more user-friendly versions of these functions.
+}
+\author{
+Luke Zappia
 }
