@@ -6,7 +6,7 @@
 #' @param sce A \linkS4class{SingleCellExperiment} object.
 #' @param X_name Name of the assay to use as the primary matrix (\code{X}) of the AnnData object.
 #' If `NULL`, the first assay of \code{sce} will be used by default.
-#' @param skip.assays Logical scalar indicating whether to skip loading of any assays,
+#' @param skip.assays Logical scalar indicating whether to skip conversion of any assays,
 #' replacing them with empty sparse matrices instead.
 #'
 #' @details
@@ -16,6 +16,15 @@
 #' The conversion is not entirely lossless.
 #' No attempt is made by \code{AnnData2SCE} to transfer the alternative Experiments from \code{sce} to an AnnData object.
 #' Conversely, values in the \code{obsm} field of \code{adata} are not transferred to a SingleCellExperiment.
+#'
+#' In \code{SCE2AnnData}, matrices are converted to a \pkg{numpy}-friendly format.
+#' Sparse matrices are converted to \linkS4class{dgCMatrix} objects while all other matrices are converted into ordinary matrices
+#' If \code{skip.assays=TRUE}, empty sparse matrices are created instead;
+#' the user is expected to fill in the assays on the Python side.
+#' 
+#' For \code{AnnData2SCE}, an error is raised if there is no corresponding R format for a matrix in the AnnData object.
+#' Ff \code{skip.assays=TRUE}, no error is emittedd and empty sparse matrices are created for each assay.
+#' The user is expected to fill in the assays on the R side, see \code{\link{readH5AD}} for an example.
 #'
 #' @author Luke Zappia
 #' 
