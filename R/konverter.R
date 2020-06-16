@@ -6,6 +6,8 @@
 #' @param sce A \linkS4class{SingleCellExperiment} object.
 #' @param X_name Name of the assay to use as the primary matrix (\code{X}) of the AnnData object.
 #' If `NULL`, the first assay of \code{sce} will be used by default.
+#' @param skip.assays Logical scalar indicating whether to skip loading of any assays,
+#' replacing them with empty sparse matrices instead.
 #'
 #' @details
 #' These functions assume that an appropriate Python environment has already been loaded.
@@ -43,11 +45,22 @@
 #' }, sce=seger)
 #' 
 #' @export
-AnnData2SCE <- function(adata) {
-
+#' @importFrom Matrix t sparseMatrix 
+AnnData2SCE <- function(adata, skip.assays=FALSE) {
     py_builtins <- reticulate::import_builtins()
 
-    x_mat <- t(adata$X)
+    if (!skip.assays) {
+        x_mat <- adata$X
+        if (is.null(FUN <- selectMethod("t", signature=class(x_mat), optional=TRUE))) {
+            stop("assay matrices do not support transposition")
+        }
+        x_mat <- FUN(x_mat)
+    } else {
+        dims <- unlist(adata$X$shape)
+        fake <- sparseMatrix(i=integer(0), j=integer(0), x=numeric(0), dims=rev(dims))
+        x_mat <- fake
+    }
+
     colnames(x_mat) <- adata$obs_names$to_list()
     rownames(x_mat) <- adata$var_names$to_list()
 
@@ -56,7 +69,12 @@ AnnData2SCE <- function(adata) {
 
     if (length(layer_names) > 0) {
         for (layer_name in layer_names) {
-            assays_list[[layer_name]] <- t(adata$layers$get(layer_name))
+            if (!skip.assays) {
+                layer_mat <- t(adata$layers$get(layer_name))
+            } else {
+                layer_mat <- fake
+            }
+            assays_list[[layer_name]] <- layer_mat
         }
     }
 
