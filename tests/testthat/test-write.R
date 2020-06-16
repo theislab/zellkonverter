@@ -1,11 +1,11 @@
+# This tests the writeH5AD function (and by implication, AnnData2SCE).
 # library(testthat); library(zellkonverter); source("test-write.R")
 
-test_that("writeH5AD works as expected", {
-    library(scRNAseq)
-    sce <- ZeiselBrainData()
-    reducedDim(sce, "WHEE") <- matrix(runif(ncol(sce)*10), ncol=10)
+library(scRNAseq)
+sce <- ZeiselBrainData()
+reducedDim(sce, "WHEE") <- matrix(runif(ncol(sce)*10), ncol=10)
 
-    # Writing to a H5AD file.
+test_that("writeH5AD works as expected", {
     temp <- tempfile(fileext='.h5ad')
     writeH5AD(sce, temp)
 
@@ -32,4 +32,18 @@ test_that("writeH5AD works as expected", {
         }
     }
     expect_identical(cd, colData(sce))
+})
+
+test_that("writeH5AD works in a separate process", {
+    oldshare <- basilisk::getBasiliskShared()
+    basilisk::setBasiliskShared(FALSE) 
+    oldfork <- basilisk::getBasiliskFork()
+    basilisk::setBasiliskFork(FALSE)
+
+    temp <- tempfile(fileext='.h5ad')
+    writeH5AD(sce, temp)
+    expect_true(file.exists(temp))
+
+    basilisk::setBasiliskShared(oldshare)
+    basilisk::setBasiliskFork(oldfork)
 })
