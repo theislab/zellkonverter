@@ -20,10 +20,12 @@ Description:
     (such as AnnData).
 License: MIT + file LICENSE
 Imports: 
+    Matrix,
     basilisk,
     reticulate,
     SingleCellExperiment,
-    SummarizedExperiment
+    SummarizedExperiment,
+    DelayedArray
 Suggests: 
     covr,
     spelling,

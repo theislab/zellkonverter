@@ -1,3 +1,5 @@
+#' @import SummarizedExperiment
+#' @import SingleCellExperiment
 #' @keywords internal
 "_PACKAGE"
 
