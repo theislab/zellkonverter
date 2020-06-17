@@ -1,17 +1,17 @@
 ---
-title: Single-cell data conversion to/from Bioconductor and Python
+title: Converting single-cell data structures to/from Bioconductor and Python
 author: 
 - name: Luke Zappia
   email: luke@lazappi.id.au
 - name: Aaron Lun
   email: infinite.monkeys.with.keyboards@gmail.com
-date: "Revised: 12 June 2020"
+date: "Revised: 16 June 2020"
 output:
   BiocStyle::html_document:
     toc_float: true
-package: scran
+package: zellkonverter 
 vignette: >
-  %\VignetteIndexEntry{User guide}
+  %\VignetteIndexEntry{Converting to/from AnnData to SingleCellExperiments}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}    
 ---
