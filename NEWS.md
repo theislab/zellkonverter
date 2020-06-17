@@ -1,5 +1,16 @@
 # zellkonverter (development version)
 
+## zellkonverter 0.0.0.9010 (2020-06-17)
+
+* Avoid checking column names for `colData` and `rowData` in `SCE2AnnData()`
+* Make sure that all matrices passes to **{reticulate}** are **numpy** friendly
+* Add more tests
+* Update vignette front matter
+
+## zellkonverter 0.0.0.9009 (2020-06-15)
+
+* Add vignette
+
 ## zellkonverter 0.0.0.9008 (2020-06-12)
 
 * Add examples and improve documentation
@@ -9,7 +20,6 @@
 
 * Add `SCE2AnnData()` function
 * Add `writeH5AD()` function
-
 
 ## zellkonverter 0.0.0.9006 (2020-06-11)
 
