@@ -76,36 +76,51 @@ SCE2AnnData <- function(sce, X_name = NULL) {
 
     if (is.null(X_name)) {
         X_name <- SummarizedExperiment::assayNames(sce)[1]
-        message("Using the '", X_name, "' assay as the X matrix")
+        message("using the '", X_name, "' assay as the X matrix")
     }
 
-    X <- t(SummarizedExperiment::assay(sce, X_name))
+    X <- t(assay(sce, X_name))
+    adata <- anndata$AnnData(X = .make_np_friendly(X))
 
-    obs <- as.data.frame(SummarizedExperiment::colData(sce))
-    var <- as.data.frame(SummarizedExperiment::rowData(sce))
-
-    adata <- anndata$AnnData(X = X)
-
-    if (ncol(obs) > 0) {
+    cd <- colData(sce)
+    if (ncol(cd) > 0) {
+        obs <- do.call(data.frame, c(as.list(cd), check.names=FALSE, stringsAsFactors=FALSE))
         adata$obs <- obs
     }
 
-    if (ncol(var) > 0) {
+    rd <- rowData(sce)
+    if (ncol(rd) > 0) {
+        var <- do.call(data.frame, c(as.list(rd), check.names=FALSE, stringsAsFactors=FALSE))
         adata$var <- var
     }
 
-    assay_names <- SummarizedExperiment::assayNames(sce)
+    assay_names <- assayNames(sce)
     assay_names <- assay_names[!assay_names == X_name]
-
     if (length(assay_names) > 0) {
-        assays <- SummarizedExperiment::assays(sce, withDimnames = FALSE)
-        adata$layers <- lapply(assays[assay_names], t)
+        assays <- assays(sce, withDimnames = FALSE)
+        assays <- lapply(assays[assay_names], t)
+        assays <- lapply(assays, .make_np_friendly)
+        adata$layers <- assays
     }
 
-    adata$obsm <- as.list(SingleCellExperiment::reducedDims(sce))
+    red_dims <- as.list(reducedDims(sce))
+    red_dims <- lapply(red_dims, .make_np_friendly)
+    adata$obsm <- red_dims
 
     adata$obs_names <- colnames(sce)
     adata$var_names <- rownames(sce)
 
     adata
+}
+
+#' @importFrom DelayedArray is_sparse
+#' @importClassesFrom Matrix dgCMatrix
+.make_np_friendly <- function(x) {
+    # Written originally by Charlotte Soneson
+    # in kevinrue/velociraptor.
+    if (is_sparse(x)) {
+        as(x, "dgCMatrix")
+    } else {
+        as.matrix(x)
+    }
 }
