@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Write H5AD — writeH5AD" />
-<meta property="og:description" content="Write a H5AD file from a SingleCellExperiment" />
+<meta property="og:description" content="Write a H5AD file from a SingleCellExperiment object." />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9010</span>
       </span>
     </div>
 
@@ -83,6 +83,9 @@
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
+</li>
+<li>
+  <a href="../articles/zellkonverter.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -117,28 +120,48 @@
     </div>
 
     <div class="ref-description">
-    <p>Write a H5AD file from a SingleCellExperiment</p>
+    <p>Write a H5AD file from a SingleCellExperiment object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>writeH5AD</span>(<span class='no'>sce</span>, <span class='no'>file</span>)</pre>
+    <pre class="usage"><span class='fu'>writeH5AD</span>(<span class='kw'>sce</span>, <span class='kw'>file</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>sce</th>
-      <td><p>SingleCellExperiment object</p></td>
+      <td><p>A SingleCellExperiment object.</p></td>
     </tr>
     <tr>
       <th>file</th>
-      <td><p>Path to write new <code>.h5ad</code></p></td>
+      <td><p>String containing a path to write the new <code>.h5ad</code> file.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>SingleCellExperiment</p>
+    <p>A <code>NULL</code> is invisibly returned.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>When first run, this function will instantiate a conda environment
+containing all of the necessary dependencies.
+This will not be performed on any subsequent run or if any other
+<span class="pkg">zellkonverter</span> function has been run prior to this one.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code>readH5AD</code>, to read a SingleCellExperiment file from a H5AD file.</p>
+<p><code>SCE2AnnData</code>, for developers to create an AnnData object from a SingleCellExperiment.</p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Luke Zappia</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># Using our old friend, the Zeisel brain dataset.</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>scRNAseq</span>)
+<span class='kw'>sce</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scRNAseq/man/ZeiselBrainData.html'>ZeiselBrainData</a></span>()</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-06-11</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-06-11</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
+<span class='co'># Writing to a H5AD file.</span>
+<span class='kw'>temp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(fileext=<span class='st'>'.h5ad'</span>)
+<span class='fu'>writeH5AD</span>(<span class='kw'>sce</span>, <span class='kw'>temp</span>)</div><div class='output co'>#&gt; <span class='message'>using the 'counts' assay as the X matrix</span></div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -150,7 +173,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Luke Zappia.</p>
+  <p>Developed by Luke Zappia, Aaron Lun.</p>
 </div>
 
 <div class="pkgdown">

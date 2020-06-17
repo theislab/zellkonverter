@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>zellkonverter: Conversion between scRNA-seq objects — zellkonverter-package • zellkonverter</title>
+<title>Define AnnData dependencies — AnnDataDependencies • zellkonverter</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,8 @@
 
 
 
-<meta property="og:title" content="zellkonverter: Conversion between scRNA-seq objects — zellkonverter-package" />
-<meta property="og:description" content="Zellkonverter is a small package for converting between SingleCellExperiment
-    objects and alternative objects for storing single-cell RNA-sequencing data
-    (such as AnnData)." />
+<meta property="og:title" content="Define AnnData dependencies — AnnDataDependencies" />
+<meta property="og:description" content="Define a versioned set of Python dependencies required to operate with AnnData and H5AD files." />
 
 
 
@@ -116,36 +114,38 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>zellkonverter: Conversion between scRNA-seq objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/theislab/zellkonverter/blob/master/R/zellkonverter-package.R'><code>R/zellkonverter-package.R</code></a></small>
-    <div class="hidden name"><code>zellkonverter-package.Rd</code></div>
+    <h1>Define AnnData dependencies</h1>
+    <small class="dont-index">Source: <a href='https://github.com/theislab/zellkonverter/blob/master/R/basilisk.R'><code>R/basilisk.R</code></a></small>
+    <div class="hidden name"><code>AnnDataDependencies.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Zellkonverter is a small package for converting between SingleCellExperiment
-    objects and alternative objects for storing single-cell RNA-sequencing data
-    (such as AnnData).</p>
+    <p>Define a versioned set of Python dependencies required to operate with AnnData and H5AD files.</p>
     </div>
 
+    <pre class="usage"><span class='kw'>.AnnDataDependencies</span></pre>
 
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <div class='dont-index'><p>Useful links:</p><ul>
-<li><p><a href='https://github.com/theislab/zellkonverter'>https://github.com/theislab/zellkonverter</a></p></li>
-<li><p>Report bugs at <a href='https://github.com/theislab/zellkonverter/issues'>https://github.com/theislab/zellkonverter/issues</a></p></li>
-</ul>
+    <p>A character vector containing the pinned versions of all Python packages on which AnnData depends.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-</div>
+    <p>This variable is exposed for use by other package developers
+who want an easy way to define the dependencies required for
+creating a Python environment to work with AnnData objects,
+most typically within a <span class="pkg">basilisk</span> context.
+For example, we can simply combine this vector with additional
+dependencies to create a <span class="pkg">basilisk</span> environment with Python
+package versions that are consistent with those in <span class="pkg">zellkonverter</span>.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <p><strong>Maintainer</strong>: Luke Zappia <a href='mailto:luke@lazappi.id.au'>luke@lazappi.id.au</a> (<a href='https://orcid.org/0000-0001-7744-8565'>ORCID</a>)</p>
-<p>Authors:</p><ul>
-<li><p>Aaron Lun <a href='mailto:infinite.monkeys.with.keyboards@gmail.com'>infinite.monkeys.with.keyboards@gmail.com</a> (<a href='https://orcid.org/0000-0002-3564-4813'>ORCID</a>)</p></li>
-</ul>
+    <p>Luke Zappia</p>
 
-
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>.AnnDataDependencies</span></div><div class='output co'>#&gt; [1] "anndata==0.7.3"  "h5py==2.10.0"    "hdf5==1.10.5"    "natsort==7.0.1" 
+#&gt; [5] "numpy==1.18.5"   "packaging==20.4" "pandas==1.0.4"   "scipy==1.4.1"   
+#&gt; [9] "sqlite==3.30.1" </div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
