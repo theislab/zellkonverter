@@ -12,6 +12,12 @@ test_that("Reading H5AD works", {
     expect_identical(colnames(colData(sce)), "cell_type")
 })
 
+test_that("Reading H5AD works with HDF5Arrays", {
+    sce <- readH5AD(file, use.hdf5=TRUE)
+    expect_s4_class(sce, "SingleCellExperiment")
+    expect_s4_class(DelayedArray::seed(assay(sce)), "HDF5ArraySeed")
+})
+
 test_that("readH5AD works in a separate process", {
     oldshare <- basilisk::getBasiliskShared()
     basilisk::setBasiliskShared(FALSE)

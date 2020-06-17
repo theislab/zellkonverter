@@ -33,7 +33,8 @@ Suggests:
     knitr,
     rmarkdown,
     BiocStyle,
-    scRNAseq
+    scRNAseq,
+    HDF5Array
 URL: https://github.com/theislab/zellkonverter
 BugReports: https://github.com/theislab/zellkonverter/issues
 Encoding: UTF-8
