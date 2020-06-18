@@ -6,6 +6,8 @@
 #' @param sce A \linkS4class{SingleCellExperiment} object.
 #' @param X_name Name of the assay to use as the primary matrix (\code{X}) of the AnnData object.
 #' If `NULL`, the first assay of \code{sce} will be used by default.
+#' @param skip.assays Logical scalar indicating whether to skip conversion of any assays,
+#' replacing them with empty sparse matrices instead.
 #'
 #' @details
 #' These functions assume that an appropriate Python environment has already been loaded.
@@ -14,6 +16,15 @@
 #' The conversion is not entirely lossless.
 #' No attempt is made by \code{AnnData2SCE} to transfer the alternative Experiments from \code{sce} to an AnnData object.
 #' Conversely, values in the \code{obsm} field of \code{adata} are not transferred to a SingleCellExperiment.
+#'
+#' In \code{SCE2AnnData}, matrices are converted to a \pkg{numpy}-friendly format.
+#' Sparse matrices are converted to \linkS4class{dgCMatrix} objects while all other matrices are converted into ordinary matrices
+#' If \code{skip.assays=TRUE}, empty sparse matrices are created instead;
+#' the user is expected to fill in the assays on the Python side.
+#' 
+#' For \code{AnnData2SCE}, an error is raised if there is no corresponding R format for a matrix in the AnnData object.
+#' Ff \code{skip.assays=TRUE}, no error is emittedd and empty sparse matrices are created for each assay.
+#' The user is expected to fill in the assays on the R side, see \code{\link{readH5AD}} for an example.
 #'
 #' @author Luke Zappia
 #' 
@@ -43,11 +54,22 @@
 #' }, sce=seger)
 #' 
 #' @export
-AnnData2SCE <- function(adata) {
-
+#' @importFrom Matrix t sparseMatrix 
+AnnData2SCE <- function(adata, skip.assays=FALSE) {
     py_builtins <- reticulate::import_builtins()
 
-    x_mat <- t(adata$X)
+    if (!skip.assays) {
+        x_mat <- adata$X
+        if (is.null(FUN <- selectMethod("t", signature=class(x_mat), optional=TRUE))) {
+            stop("assay matrices do not support transposition")
+        }
+        x_mat <- FUN(x_mat)
+    } else {
+        dims <- unlist(adata$X$shape)
+        fake <- sparseMatrix(i=integer(0), j=integer(0), x=numeric(0), dims=rev(dims))
+        x_mat <- fake
+    }
+
     colnames(x_mat) <- adata$obs_names$to_list()
     rownames(x_mat) <- adata$var_names$to_list()
 
@@ -56,7 +78,12 @@ AnnData2SCE <- function(adata) {
 
     if (length(layer_names) > 0) {
         for (layer_name in layer_names) {
-            assays_list[[layer_name]] <- t(adata$layers$get(layer_name))
+            if (!skip.assays) {
+                layer_mat <- t(adata$layers$get(layer_name))
+            } else {
+                layer_mat <- fake
+            }
+            assays_list[[layer_name]] <- layer_mat
         }
     }
 
