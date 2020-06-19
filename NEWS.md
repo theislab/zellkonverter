@@ -1,5 +1,9 @@
 # zellkonverter (development version)
 
+## zellkonverter 0.0.0.9011 (2020-06-18)
+
+* Support for HDF5Array outputs in `readH5AD()` (Fixes #4)
+
 ## zellkonverter 0.0.0.9010 (2020-06-17)
 
 * Avoid checking column names for `colData` and `rowData` in `SCE2AnnData()`
