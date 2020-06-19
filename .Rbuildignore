@@ -5,3 +5,5 @@
 ^\.BBSoptions$
 ^\.github$
 ^codecov\.yml$
+^doc$
+^Meta$

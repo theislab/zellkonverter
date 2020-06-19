@@ -1,5 +1,10 @@
 # zellkonverter (development version)
 
+## zellkonverter 0.0.0.9012 (2020-06-19)
+
+* Tidy documentation and code
+* Tidy vignette
+
 ## zellkonverter 0.0.0.9011 (2020-06-18)
 
 * Support for HDF5Array outputs in `readH5AD()` (Fixes #4)
