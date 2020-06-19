@@ -25,7 +25,8 @@ Imports:
     reticulate,
     SingleCellExperiment,
     SummarizedExperiment,
-    DelayedArray
+    DelayedArray,
+    methods
 Suggests: 
     covr,
     spelling,

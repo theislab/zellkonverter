@@ -4,13 +4,13 @@
 \alias{readH5AD}
 \title{Read H5AD}
 \usage{
-readH5AD(file, use.hdf5 = FALSE)
+readH5AD(file, use_hdf5 = FALSE)
 }
 \arguments{
 \item{file}{String containing a path to a \code{.h5ad} file.}
 
-\item{use.hdf5}{Logical scalar indicating whether assays should be
-loaded as HDF5-based matrices from the \pkg{HDF5Array} package.}
+\item{use_hdf5}{Logical scalar indicating whether assays should be
+loaded as HDF5-based matrices from the \strong{HDF5Array} package.}
 }
 \value{
 A \linkS4class{SingleCellExperiment} object is returned.
@@ -19,15 +19,14 @@ A \linkS4class{SingleCellExperiment} object is returned.
 Reads a H5AD file and returns a \linkS4class{SingleCellExperiment} object.
 }
 \details{
-Setting \code{use.hdf5=TRUE} allows for very large datasets to be
-efficiently represented on machines with little memory.
-However, this comes at the cost of access speed as data needs to
-be fetched from the HDF5 file upon request.
+Setting \code{use_hdf5 = TRUE} allows for very large datasets to be efficiently
+represented on machines with little memory. However, this comes at the cost
+of access speed as data needs to be fetched from the HDF5 file upon request.
 
 When first run, this function will instantiate a conda environment
-containing all of the necessary dependencies.
-This will not be performed on any subsequent run or if any other
-\pkg{zellkonverter} function has been run prior to this one.
+containing all of the necessary dependencies. This will not be performed on
+any subsequent run or if any other \strong{zellkonverter} function has been run
+prior to this one.
 }
 \examples{
 library(SummarizedExperiment)
@@ -36,15 +35,19 @@ file <- system.file("extdata", "krumsiek11.h5ad", package = "zellkonverter")
 sce <- readH5AD(file)
 class(assay(sce))
 
-sce2 <- readH5AD(file, use.hdf5=TRUE)
+sce2 <- readH5AD(file, use_hdf5 = TRUE)
 class(assay(sce2))
 
 }
 \seealso{
-\code{\link{writeH5AD}}, to write a SingleCellExperiment file to a H5AD file.
+\code{\link[=writeH5AD]{writeH5AD()}}, to write a \linkS4class{SingleCellExperiment} object to a
+H5AD file.
 
-\code{\link{AnnData2SCE}}, for developers to convert existing AnnData instances to a SingleCellExperiment.
+\code{\link[=AnnData2SCE]{AnnData2SCE()}}, for developers to convert existing AnnData instances to a
+\linkS4class{SingleCellExperiment}.
 }
 \author{
 Luke Zappia
+
+Aaron Lun
 }

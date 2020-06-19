@@ -1,24 +1,26 @@
-#' Define AnnData dependencies
+#' AnnData dependencies
 #'
-#' Define a versioned set of Python dependencies required to operate with AnnData and H5AD files.
+#' Vector defining a set of Python dependencies and versions required to operate
+#' with AnnData and H5AD files.
 #'
 #' @details
-#' This variable is exposed for use by other package developers 
-#' who want an easy way to define the dependencies required for
-#' creating a Python environment to work with AnnData objects,
-#' most typically within a \pkg{basilisk} context.
-#' For example, we can simply combine this vector with additional
-#' dependencies to create a \pkg{basilisk} environment with Python
-#' package versions that are consistent with those in \pkg{zellkonverter}.
+#' This variable is exposed for use by other package developers who want an easy
+#' way to define the dependencies required for creating a Python environment to
+#' work with AnnData objects, most typically within a **basilisk** context. For
+#' example, we can simply combine this vector with additional dependencies to
+#' create a **basilisk** environment with Python package versions that are
+#' consistent with those in **zellkonverter**.
 #'
 #' @format
-#' A character vector containing the pinned versions of all Python packages on which AnnData depends.
+#' A character vector containing the pinned versions of all Python packages on
+#' which AnnData depends.
 #'
 #' @author Luke Zappia
+#' @author Aaron Lun
 #'
 #' @examples
 #' .AnnDataDependencies
-#' 
+#'
 #' @export
 #' @name AnnDataDependencies
 .AnnDataDependencies <- c(

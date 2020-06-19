@@ -3,10 +3,10 @@
 
 library(scRNAseq)
 sce <- ZeiselBrainData()
-reducedDim(sce, "WHEE") <- matrix(runif(ncol(sce)*10), ncol=10)
+reducedDim(sce, "WHEE") <- matrix(runif(ncol(sce) * 10), ncol = 10)
 
 test_that("writeH5AD works as expected", {
-    temp <- tempfile(fileext='.h5ad')
+    temp <- tempfile(fileext = '.h5ad')
     writeH5AD(sce, temp)
 
     # Reading it back out again. Hopefully we didn't lose anything important.
@@ -16,31 +16,31 @@ test_that("writeH5AD works as expected", {
     expect_equal(assay(out), assay(sce))
     expect_identical(reducedDims(out), reducedDims(sce))
 
-    # Need to coerce the factors back to strings. 
-    rd <- rowData(out)
-    for (i in seq_len(ncol(rd))) {
-        if (is.factor(rd[[i]])) {
-            rd[[i]] <- as.character(rd[[i]])
+    # Need to coerce the factors back to strings.
+    row_data <- rowData(out)
+    for (i in seq_len(ncol(row_data))) {
+        if (is.factor(row_data[[i]])) {
+            row_data[[i]] <- as.character(row_data[[i]])
         }
     }
-    expect_identical(rd, rowData(sce))
+    expect_identical(row_data, rowData(sce))
 
-    cd <- colData(out)
-    for (i in seq_len(ncol(cd))) {
-        if (is.factor(cd[[i]])) {
-            cd[[i]] <- as.character(cd[[i]])
+    col_data <- colData(out)
+    for (i in seq_len(ncol(col_data))) {
+        if (is.factor(col_data[[i]])) {
+            col_data[[i]] <- as.character(col_data[[i]])
         }
     }
-    expect_identical(cd, colData(sce))
+    expect_identical(col_data, colData(sce))
 })
 
 test_that("writeH5AD works in a separate process", {
     oldshare <- basilisk::getBasiliskShared()
-    basilisk::setBasiliskShared(FALSE) 
+    basilisk::setBasiliskShared(FALSE)
     oldfork <- basilisk::getBasiliskFork()
     basilisk::setBasiliskFork(FALSE)
 
-    temp <- tempfile(fileext='.h5ad')
+    temp <- tempfile(fileext = '.h5ad')
     writeH5AD(sce, temp)
     expect_true(file.exists(temp))
 

@@ -7,24 +7,29 @@
 #'
 #' @details
 #' When first run, this function will instantiate a conda environment
-#' containing all of the necessary dependencies.
-#' This will not be performed on any subsequent run or if any other
-#' \pkg{zellkonverter} function has been run prior to this one.
+#' containing all of the necessary dependencies. This will not be performed on
+#' any subsequent run or if any other
+#' **zellkonverter** function has been run prior to this one.
 #'
 #' @return A `NULL` is invisibly returned.
-#' @author Luke Zappia
-#' @seealso
-#' \code{\link{readH5AD}}, to read a SingleCellExperiment file from a H5AD file.
 #'
-#' \code{\link{SCE2AnnData}}, for developers to create an AnnData object from a SingleCellExperiment.
+#' @author Luke Zappia
+#' @author Aaron Lun
+#'
+#' @seealso
+#' [`readH5AD()`], to read a \linkS4class{SingleCellExperiment} file from a H5AD
+#' file.
+#'
+#' [`SCE2AnnData()`], for developers to create an AnnData object from a
+#' \linkS4class{SingleCellExperiment}.
 #'
 #' @examples
-#' # Using our old friend, the Zeisel brain dataset.
+#' # Using the Zeisel brain dataset
 #' library(scRNAseq)
 #' sce <- ZeiselBrainData()
 #'
-#' # Writing to a H5AD file.
-#' temp <- tempfile(fileext='.h5ad')
+#' # Writing to a H5AD file
+#' temp <- tempfile(fileext = '.h5ad')
 #' writeH5AD(sce, temp)
 #'
 #' @export
@@ -34,7 +39,7 @@ writeH5AD <- function(sce, file) {
 
     file <- path.expand(file)
 
-    basilisk::basiliskRun(proc, .H5ADwriter, sce=sce, file=file)
+    basilisk::basiliskRun(proc, .H5ADwriter, sce = sce, file = file)
 
     invisible(NULL)
 }

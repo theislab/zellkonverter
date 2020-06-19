@@ -19,25 +19,29 @@ Write a H5AD file from a \linkS4class{SingleCellExperiment} object.
 }
 \details{
 When first run, this function will instantiate a conda environment
-containing all of the necessary dependencies.
-This will not be performed on any subsequent run or if any other
-\pkg{zellkonverter} function has been run prior to this one.
+containing all of the necessary dependencies. This will not be performed on
+any subsequent run or if any other
+\strong{zellkonverter} function has been run prior to this one.
 }
 \examples{
-# Using our old friend, the Zeisel brain dataset.
+# Using the Zeisel brain dataset
 library(scRNAseq)
 sce <- ZeiselBrainData()
 
-# Writing to a H5AD file.
-temp <- tempfile(fileext='.h5ad')
+# Writing to a H5AD file
+temp <- tempfile(fileext = '.h5ad')
 writeH5AD(sce, temp)
 
 }
 \seealso{
-\code{\link{readH5AD}}, to read a SingleCellExperiment file from a H5AD file.
+\code{\link[=readH5AD]{readH5AD()}}, to read a \linkS4class{SingleCellExperiment} file from a H5AD
+file.
 
-\code{\link{SCE2AnnData}}, for developers to create an AnnData object from a SingleCellExperiment.
+\code{\link[=SCE2AnnData]{SCE2AnnData()}}, for developers to create an AnnData object from a
+\linkS4class{SingleCellExperiment}.
 }
 \author{
 Luke Zappia
+
+Aaron Lun
 }
