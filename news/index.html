@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9012</span>
       </span>
     </div>
 
@@ -120,6 +120,39 @@
     <div id="zellkonverter-development-version" class="section level1">
 <h1 class="page-header" data-toc-text="development version">
 <a href="#zellkonverter-development-version" class="anchor"></a>zellkonverter (development version)</h1>
+<div id="zellkonverter-0009012-2020-06-19" class="section level2">
+<h2 class="hasAnchor">
+<a href="#zellkonverter-0009012-2020-06-19" class="anchor"></a>zellkonverter 0.0.0.9012 (2020-06-19)</h2>
+<ul>
+<li>Tidy documentation and code</li>
+<li>Tidy vignette</li>
+</ul>
+</div>
+<div id="zellkonverter-0009011-2020-06-18" class="section level2">
+<h2 class="hasAnchor">
+<a href="#zellkonverter-0009011-2020-06-18" class="anchor"></a>zellkonverter 0.0.0.9011 (2020-06-18)</h2>
+<ul>
+<li>Support for HDF5Array outputs in <code><a href="https://rdrr.io/pkg/zellkonverter/man/readH5AD.html">readH5AD()</a></code> (Fixes <a href='https://github.com/theislab/zellkonverter/issues/4'>#4</a>)</li>
+</ul>
+</div>
+<div id="zellkonverter-0009010-2020-06-17" class="section level2">
+<h2 class="hasAnchor">
+<a href="#zellkonverter-0009010-2020-06-17" class="anchor"></a>zellkonverter 0.0.0.9010 (2020-06-17)</h2>
+<ul>
+<li>Avoid checking column names for <code>colData</code> and <code>rowData</code> in <code><a href="https://rdrr.io/pkg/zellkonverter/man/AnnData-Conversion.html">SCE2AnnData()</a></code>
+</li>
+<li>Make sure that all matrices passes to <strong>{reticulate}</strong> are <strong>numpy</strong> friendly</li>
+<li>Add more tests</li>
+<li>Update vignette front matter</li>
+</ul>
+</div>
+<div id="zellkonverter-0009009-2020-06-15" class="section level2">
+<h2 class="hasAnchor">
+<a href="#zellkonverter-0009009-2020-06-15" class="anchor"></a>zellkonverter 0.0.0.9009 (2020-06-15)</h2>
+<ul>
+<li>Add vignette</li>
+</ul>
+</div>
 <div id="zellkonverter-0009008-2020-06-12" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009008-2020-06-12" class="anchor"></a>zellkonverter 0.0.0.9008 (2020-06-12)</h2>
@@ -132,7 +165,7 @@
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009007-2020-06-11" class="anchor"></a>zellkonverter 0.0.0.9007 (2020-06-11)</h2>
 <ul>
-<li>Add <code><a href="https://rdrr.io/pkg/zellkonverter/man/AnnData2SCE.html">SCE2AnnData()</a></code> function</li>
+<li>Add <code><a href="https://rdrr.io/pkg/zellkonverter/man/AnnData-Conversion.html">SCE2AnnData()</a></code> function</li>
 <li>Add <code><a href="https://rdrr.io/pkg/zellkonverter/man/writeH5AD.html">writeH5AD()</a></code> function</li>
 </ul>
 </div>
@@ -148,9 +181,9 @@
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009005-2020-06-09" class="anchor"></a>zellkonverter 0.0.0.9005 (2020-06-09)</h2>
 <ul>
-<li>Rename <code>adata2SCE()</code> to <code><a href="https://rdrr.io/pkg/zellkonverter/man/AnnData2SCE.html">AnnData2SCE()</a></code>
+<li>Rename <code>adata2SCE()</code> to <code><a href="https://rdrr.io/pkg/zellkonverter/man/AnnData-Conversion.html">AnnData2SCE()</a></code>
 </li>
-<li>Remove <strong>{basilisk}</strong> context from <code><a href="https://rdrr.io/pkg/zellkonverter/man/AnnData2SCE.html">AnnData2SCE()</a></code> (See <a href='https://github.com/theislab/zellkonverter/issues/1'>#1</a>)
+<li>Remove <strong>{basilisk}</strong> context from <code><a href="https://rdrr.io/pkg/zellkonverter/man/AnnData-Conversion.html">AnnData2SCE()</a></code> (See <a href='https://github.com/theislab/zellkonverter/issues/1'>#1</a>)
 <ul>
 <li>Now uses the calling context</li>
 </ul>

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9012</span>
       </span>
     </div>
 
@@ -123,7 +123,7 @@
     <p>Reads a H5AD file and returns a SingleCellExperiment object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>readH5AD</span>(<span class='kw'>file</span>)</pre>
+    <pre class="usage"><span class='fu'>readH5AD</span>(<span class='kw'>file</span>, use_hdf5 = <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -132,6 +132,11 @@
       <th>file</th>
       <td><p>String containing a path to a <code>.h5ad</code> file.</p></td>
     </tr>
+    <tr>
+      <th>use_hdf5</th>
+      <td><p>Logical scalar indicating whether assays should be
+loaded as HDF5-based matrices from the <strong>HDF5Array</strong> package.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -139,24 +144,34 @@
     <p>A SingleCellExperiment object is returned.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>When first run, this function will instantiate a conda environment
-containing all of the necessary dependencies.
-This will not be performed on any subsequent run or if any other
-<span class="pkg">zellkonverter</span> function has been run prior to this one.</p>
+    <p>Setting <code>use_hdf5 = TRUE</code> allows for very large datasets to be efficiently
+represented on machines with little memory. However, this comes at the cost
+of access speed as data needs to be fetched from the HDF5 file upon request.</p>
+<p>When first run, this function will instantiate a conda environment
+containing all of the necessary dependencies. This will not be performed on
+any subsequent run or if any other <strong>zellkonverter</strong> function has been run
+prior to this one.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>writeH5AD</code>, to write a SingleCellExperiment file to a H5AD file.</p>
-<p><code>AnnData2SCE</code>, for developers to convert existing AnnData instances to a SingleCellExperiment.</p></div>
+    <div class='dont-index'><p><code>writeH5AD()</code>, to write a SingleCellExperiment object to a
+H5AD file.</p>
+<p><code>AnnData2SCE()</code>, for developers to convert existing AnnData instances to a
+SingleCellExperiment.</p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Luke Zappia</p>
+<p>Aaron Lun</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Re-using the example from writeH5AD.</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/example.html'>example</a></span>(<span class='kw'>writeH5AD</span>, echo=<span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-06-11</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-06-11</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>using the 'counts' assay as the X matrix</span></div><div class='input'>
-<span class='co'># Reading into a SingleCellExperiment.</span>
-<span class='kw'>sce2</span> <span class='op'>&lt;-</span> <span class='fu'>readH5AD</span>(<span class='kw'>temp</span>)
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>SummarizedExperiment</span>)
+
+<span class='kw'>file</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"krumsiek11.h5ad"</span>, package = <span class='st'>"zellkonverter"</span>)
+<span class='kw'>sce</span> <span class='op'>&lt;-</span> <span class='fu'>readH5AD</span>(<span class='kw'>file</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a></span>(<span class='kw'>sce</span>))</div><div class='output co'>#&gt; [1] "matrix" "array" </div><div class='input'>
+<span class='kw'>sce2</span> <span class='op'>&lt;-</span> <span class='fu'>readH5AD</span>(<span class='kw'>file</span>, use_hdf5 = <span class='fl'>TRUE</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a></span>(<span class='kw'>sce2</span>))</div><div class='output co'>#&gt; [1] "DelayedMatrix"
+#&gt; attr(,"package")
+#&gt; [1] "DelayedArray"</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

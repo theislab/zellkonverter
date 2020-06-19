@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Define AnnData dependencies — AnnDataDependencies • zellkonverter</title>
+<title>AnnData dependencies — AnnDataDependencies • zellkonverter</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Define AnnData dependencies — AnnDataDependencies" />
-<meta property="og:description" content="Define a versioned set of Python dependencies required to operate with AnnData and H5AD files." />
+<meta property="og:title" content="AnnData dependencies — AnnDataDependencies" />
+<meta property="og:description" content="Vector defining a set of Python dependencies and versions required to operate
+with AnnData and H5AD files." />
 
 
 
@@ -72,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9012</span>
       </span>
     </div>
 
@@ -114,13 +115,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Define AnnData dependencies</h1>
+    <h1>AnnData dependencies</h1>
     <small class="dont-index">Source: <a href='https://github.com/theislab/zellkonverter/blob/master/R/basilisk.R'><code>R/basilisk.R</code></a></small>
     <div class="hidden name"><code>AnnDataDependencies.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Define a versioned set of Python dependencies required to operate with AnnData and H5AD files.</p>
+    <p>Vector defining a set of Python dependencies and versions required to operate
+with AnnData and H5AD files.</p>
     </div>
 
     <pre class="usage"><span class='kw'>.AnnDataDependencies</span></pre>
@@ -128,19 +130,20 @@
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A character vector containing the pinned versions of all Python packages on which AnnData depends.</p>
+    <p>A character vector containing the pinned versions of all Python packages on
+which AnnData depends.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This variable is exposed for use by other package developers
-who want an easy way to define the dependencies required for
-creating a Python environment to work with AnnData objects,
-most typically within a <span class="pkg">basilisk</span> context.
-For example, we can simply combine this vector with additional
-dependencies to create a <span class="pkg">basilisk</span> environment with Python
-package versions that are consistent with those in <span class="pkg">zellkonverter</span>.</p>
+    <p>This variable is exposed for use by other package developers who want an easy
+way to define the dependencies required for creating a Python environment to
+work with AnnData objects, most typically within a <strong>basilisk</strong> context. For
+example, we can simply combine this vector with additional dependencies to
+create a <strong>basilisk</strong> environment with Python package versions that are
+consistent with those in <strong>zellkonverter</strong>.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Luke Zappia</p>
+<p>Aaron Lun</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>.AnnDataDependencies</span></div><div class='output co'>#&gt; [1] "anndata==0.7.3"  "h5py==2.10.0"    "hdf5==1.10.5"    "natsort==7.0.1" 

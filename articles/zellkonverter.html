@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Converting single-cell data structures to/from Bioconductor and Python • zellkonverter</title>
+<title>Converting single-cell data structures between Bioconductor and Python • zellkonverter</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Converting single-cell data structures to/from Bioconductor and Python">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Converting single-cell data structures between Bioconductor and Python">
 <meta property="og:description" content="zellkonverter">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9012</span>
       </span>
     </div>
 
@@ -73,7 +73,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Converting single-cell data structures to/from Bioconductor and Python</h1>
+      <h1 data-toc-skip>Converting single-cell data structures between Bioconductor and Python</h1>
                         <h4 class="author">Luke Zappia</h4>
                   <a class="author_email" href="mailto:#"></a><a href="mailto:luke@lazappi.id.au" class="email">luke@lazappi.id.au</a>
       
@@ -81,7 +81,7 @@
                   <a class="author_email" href="mailto:#"></a><a href="mailto:infinite.monkeys.with.keyboards@gmail.com" class="email">infinite.monkeys.with.keyboards@gmail.com</a>
       
                   
-            <h4 class="date">Revised: 16 June 2020</h4>
+            <h4 class="date">Revised: 19 June 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/theislab/zellkonverter/blob/master/vignettes/zellkonverter.Rmd"><code>vignettes/zellkonverter.Rmd</code></a></small>
       <div class="hidden name"><code>zellkonverter.Rmd</code></div>
@@ -95,16 +95,17 @@
 <a href="#overview" class="anchor"></a>Overview</h1>
 <p>This package provides a lightweight interface between the Bioconductor <code>SingleCellExperiment</code> data structure and the Python <code>AnnData</code>-based single-cell analysis environment. The idea is to enable users and developers to easily move data between these frameworks to construct a multi-language analysis pipeline across R/Bioconductor and Python.</p>
 </div>
-<div id="writing-h5ad-files" class="section level1">
+<div id="reading-and-writing-h5ad-files" class="section level1">
 <h1 class="hasAnchor">
-<a href="#writing-h5ad-files" class="anchor"></a>Writing H5AD files</h1>
-<p>Users can use the <code><a href="../reference/readH5AD.html">readH5AD()</a></code> function to read a <code>SingleCellExperiment</code> from a H5AD file. This can be manipulated in the usual way as described in the <em><a href="https://bioconductor.org/packages/3.12/SingleCellExperiment">SingleCellExperiment</a></em> documentation.</p>
+<a href="#reading-and-writing-h5ad-files" class="anchor"></a>Reading and writing H5AD files</h1>
+<p>The <code><a href="../reference/readH5AD.html">readH5AD()</a></code> function can be used to read a <code>SingleCellExperiment</code> from a H5AD file. This can be manipulated in the usual way as described in the <em><a href="https://bioconductor.org/packages/3.12/SingleCellExperiment">SingleCellExperiment</a></em> documentation.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/theislab/zellkonverter">zellkonverter</a></span>)
 
-<span class="co"># Obtaining an example file.</span>
-<span class="kw">example.file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"krumsiek11.h5ad"</span>, package=<span class="st">"zellkonverter"</span>)
-<span class="fu"><a href="../reference/readH5AD.html">readH5AD</a></span>(<span class="kw">example.file</span>)
+<span class="co"># Obtaining an example H5AD file.</span>
+<span class="kw">example_h5ad</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"krumsiek11.h5ad"</span>,
+                            package = <span class="st">"zellkonverter"</span>)
+<span class="fu"><a href="../reference/readH5AD.html">readH5AD</a></span>(<span class="kw">example_h5ad</span>)
 </pre></div>
 <pre><code>## class: SingleCellExperiment 
 ## dim: 11 640 
@@ -116,34 +117,36 @@
 ## colData names(1): cell_type
 ## reducedDimNames(0):
 ## altExpNames(0):</code></pre>
-<p>We can also write a <code>SingleCellExperiment</code> to a H5AD file with the <code><a href="../reference/writeH5AD.html">writeH5AD()</a></code> function. This is demonstrated below on the classic Zeisel mouse brain dataset from the <em><a href="https://bioconductor.org/packages/3.12/scRNAseq">scRNAseq</a></em> package; the subsequent file can then be directly used in compatible Python-based analysis frameworks.</p>
+<p>We can also write a <code>SingleCellExperiment</code> to a H5AD file with the <code><a href="../reference/writeH5AD.html">writeH5AD()</a></code> function. This is demonstrated below on the classic Zeisel mouse brain dataset from the <em><a href="https://bioconductor.org/packages/3.12/scRNAseq">scRNAseq</a></em> package. The resulting file can then be directly used in compatible Python-based analysis frameworks.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">scRNAseq</span>)
-<span class="kw">sce.zeisel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scRNAseq/man/ZeiselBrainData.html">ZeiselBrainData</a></span>()
-<span class="kw">loc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>(pattern=<span class="st">".h5ad"</span>)
-<span class="fu"><a href="../reference/writeH5AD.html">writeH5AD</a></span>(<span class="kw">sce.zeisel</span>, file=<span class="kw">loc</span>)
+
+<span class="kw">sce_zeisel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scRNAseq/man/ZeiselBrainData.html">ZeiselBrainData</a></span>()
+<span class="kw">out_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>(pattern = <span class="st">".h5ad"</span>)
+<span class="fu"><a href="../reference/writeH5AD.html">writeH5AD</a></span>(<span class="kw">sce_zeisel</span>, file = <span class="kw">out_path</span>)
 </pre></div>
 </div>
-<div id="creating-anndata-objects" class="section level1">
+<div id="converting-between-singlecellexperiment-and-anndata-objects" class="section level1">
 <h1 class="hasAnchor">
-<a href="#creating-anndata-objects" class="anchor"></a>Creating <code>AnnData</code> objects</h1>
-<p>Developers and power users who control their Python environments can directly convert between <code>SingleCellExperiment</code> and <a href="https://anndata.readthedocs.io/en/stable/"><code>AnnData</code> objects</a> using the <code><a href="../reference/AnnData2SCE.html">SCE2AnnData()</a></code> and <code><a href="../reference/AnnData2SCE.html">AnnData2SCE()</a></code> utilities. These functions expect that <em><a href="https://bioconductor.org/packages/3.12/reticulate">reticulate</a></em> has already been loaded along with an appropriate version of the <a href="https://pypi.org/project/anndata/"><em>AnnData</em></a> package. We suggest using the <em><a href="https://bioconductor.org/packages/3.12/basilisk">basilisk</a></em> package to set up the Python environment before using these functions.</p>
+<a href="#converting-between-singlecellexperiment-and-anndata-objects" class="anchor"></a>Converting between <code>SingleCellExperiment</code> and <code>AnnData</code> objects</h1>
+<p>Developers and power users who control their Python environments can directly convert between <code>SingleCellExperiment</code> and <a href="https://anndata.readthedocs.io/en/stable/"><code>AnnData</code> objects</a> using the <code><a href="../reference/AnnData-Conversion.html">SCE2AnnData()</a></code> and <code><a href="../reference/AnnData-Conversion.html">AnnData2SCE()</a></code> utilities. These functions expect that <em><a href="https://CRAN.R-project.org/package=reticulate">reticulate</a></em> has already been loaded along with an appropriate version of the <a href="https://pypi.org/project/anndata/"><em>anndata</em></a> package. We suggest using the <em><a href="https://bioconductor.org/packages/3.12/basilisk">basilisk</a></em> package to set up the Python environment before using these functions.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">basilisk</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">scRNAseq</span>)
-<span class="kw">seger</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scRNAseq/man/SegerstolpePancreasData.html">SegerstolpePancreasData</a></span>()
-<span class="kw">roundtrip</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/basilisk/man/basiliskStart.html">basiliskRun</a></span>(env=<span class="kw">zellkonverter</span>:::<span class="kw">anndata_env</span>, fun=<span class="fu">function</span>(<span class="kw">sce</span>) {
-     <span class="co"># Convert SCE to AnnData:</span>
-     <span class="kw">ad</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/AnnData2SCE.html">SCE2AnnData</a></span>(<span class="kw">sce</span>)
 
-     <span class="co"># Maybe do some work in Python on 'ad':</span>
+<span class="kw">seger</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scRNAseq/man/SegerstolpePancreasData.html">SegerstolpePancreasData</a></span>()
+<span class="kw">roundtrip</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/basilisk/man/basiliskStart.html">basiliskRun</a></span>(fun = <span class="fu">function</span>(<span class="kw">sce</span>) {
+     <span class="co"># Convert SCE to AnnData:</span>
+     <span class="kw">adata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/AnnData-Conversion.html">SCE2AnnData</a></span>(<span class="kw">sce</span>)
+
+     <span class="co"># Maybe do some work in Python on 'adata':</span>
      <span class="co"># BLAH BLAH BLAH</span>
 
      <span class="co"># Convert back to an SCE:</span>
-     <span class="fu"><a href="../reference/AnnData2SCE.html">AnnData2SCE</a></span>(<span class="kw">ad</span>)
-}, sce=<span class="kw">seger</span>)
+     <span class="fu"><a href="../reference/AnnData-Conversion.html">AnnData2SCE</a></span>(<span class="kw">adata</span>)
+}, env = <span class="kw">zellkonverter</span>:::<span class="kw">anndata_env</span>, sce = <span class="kw">seger</span>)
 </pre></div>
-<p>Package developers can guarantee that they are using the same versions of Python packages as <em><a href="https://bioconductor.org/packages/3.12/zellconverter">zellconverter</a></em> by using the <code>.AnnDataDependencies</code> variable to set up their Python environments.</p>
+<p>Package developers can guarantee that they are using the same versions of Python packages as <em><a href="https://bioconductor.org/packages/3.12/zellkonverter">zellkonverter</a></em> by using the <code>.AnnDataDependencies</code> variable to set up their Python environments.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="kw">.AnnDataDependencies</span>
 </pre></div>
@@ -176,13 +179,13 @@
 ## [1] parallel stats    graphics utils    stats4   methods  base    
 ## 
 ## other attached packages:
-##  [1] basilisk_1.1.8              scRNAseq_2.3.5             
+##  [1] basilisk_1.1.8              scRNAseq_2.3.6             
 ##  [3] SingleCellExperiment_1.11.4 SummarizedExperiment_1.19.5
 ##  [5] DelayedArray_0.15.4         matrixStats_0.56.0         
 ##  [7] Matrix_1.2-18               Biobase_2.49.0             
 ##  [9] GenomicRanges_1.41.5        GenomeInfoDb_1.25.2        
 ## [11] IRanges_2.23.10             S4Vectors_0.27.12          
-## [13] BiocGenerics_0.35.4         zellkonverter_0.0.0.9010   
+## [13] BiocGenerics_0.35.4         zellkonverter_0.0.0.9012   
 ## [15] knitr_1.28                  BiocStyle_2.17.0           
 ## 
 ## loaded via a namespace (and not attached):
@@ -194,10 +197,10 @@
 ## [11] blob_1.2.1                    GenomeInfoDbData_1.2.3       
 ## [13] yaml_2.2.1                    BiocVersion_3.12.0           
 ## [15] pillar_1.4.4                  RSQLite_2.2.0                
-## [17] backports_1.1.7               lattice_0.20-41              
+## [17] backports_1.1.8               lattice_0.20-41              
 ## [19] glue_1.4.1                    reticulate_1.16              
 ## [21] digest_0.6.25                 promises_1.1.1               
-## [23] XVector_0.29.2                htmltools_0.4.0              
+## [23] XVector_0.29.2                htmltools_0.5.0              
 ## [25] httpuv_1.5.4                  pkgconfig_2.0.3              
 ## [27] bookdown_0.19                 zlibbioc_1.35.0              
 ## [29] xtable_1.8-4                  purrr_0.3.4                  
@@ -212,7 +215,7 @@
 ## [47] compiler_4.0.0                pkgdown_1.5.1.9000           
 ## [49] rlang_0.4.6                   grid_4.0.0                   
 ## [51] RCurl_1.98-1.2                rappdirs_0.3.1               
-## [53] bitops_1.0-6                  rmarkdown_2.2.5              
+## [53] bitops_1.0-6                  rmarkdown_2.2                
 ## [55] ExperimentHub_1.15.0          DBI_1.1.0                    
 ## [57] curl_4.3                      R6_2.4.1                     
 ## [59] dplyr_1.0.0                   fastmap_1.0.1                
