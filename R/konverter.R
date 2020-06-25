@@ -142,8 +142,11 @@ SCE2AnnData <- function(sce, X_name = NULL) {
     anndata <- reticulate::import("anndata")
 
     if (is.null(X_name)) {
+        if (length(assays(sce)) == 0) {
+            stop("'sce' does not contain any assays")
+        }
         X_name <- SummarizedExperiment::assayNames(sce)[1]
-        message("using the '", X_name, "' assay as the X matrix")
+        message("Note: using the '", X_name, "' assay as the X matrix")
     }
 
     X <- t(assay(sce, X_name))
@@ -180,15 +183,32 @@ SCE2AnnData <- function(sce, X_name = NULL) {
     assay_names <- assayNames(sce)
     assay_names <- assay_names[!assay_names == X_name]
     if (length(assay_names) > 0) {
-        assays <- assays(sce, withDimnames = FALSE)
-        assays <- lapply(assays[assay_names], t)
-        assays <- lapply(assays, .makeNumpyFriendly)
-        adata$layers <- assays
+        assays_list <- assays(sce, withDimnames = FALSE)
+        assays_list <- lapply(assays_list[assay_names], t)
+        assays_list <- lapply(assays_list, .makeNumpyFriendly)
+        adata$layers <- assays_lsit
     }
 
     red_dims <- as.list(reducedDims(sce))
     red_dims <- lapply(red_dims, .makeNumpyFriendly)
     adata$obsm <- red_dims
+
+    meta_list <- S4Vectors::metadata(sce)
+    uns_list <- list()
+    for (item_name in names(meta_list)) {
+        item <- meta_list[[item_name]]
+        tryCatch({
+            # Try to convert the item using reticulate, skip if it fails
+            # Capture the object output printed by reticulate
+            capture.output(reticulate::r_to_py(item))
+            uns_list[[item_name]] <- item
+        }, error = function(err) {
+            warning("the '", item_name, "' item in 'metadata' cannot be ",
+                    "converted to a Python type and has been skipped")
+        })
+    }
+
+    adata$uns$data <- uns_list
 
     adata$obs_names <- colnames(sce)
     adata$var_names <- rownames(sce)

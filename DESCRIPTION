@@ -26,7 +26,8 @@ Imports:
     SingleCellExperiment,
     SummarizedExperiment,
     DelayedArray,
-    methods
+    methods,
+    S4Vectors
 Suggests: 
     covr,
     spelling,
