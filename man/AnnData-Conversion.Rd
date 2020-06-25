@@ -57,6 +57,10 @@ for a matrix in the AnnData object. If \code{skip_assays = TRUE}, no error is
 given and empty sparse matrices are created for each assay. The user is
 expected to fill in the assays on the R side, see \code{\link[=readH5AD]{readH5AD()}} for an
 example.
+
+We attempt to convert between items in the \linkS4class{SingleCellExperiment}
+\code{\link[=metadata]{metadata()}} slot and the \code{AnnData} \code{uns} slot. If an item cannot be
+converted a warning will be raised.
 }
 \examples{
 library(basilisk)

@@ -27,6 +27,10 @@
 #' expected to fill in the assays on the R side, see [`readH5AD()`] for an
 #' example.
 #'
+#' We attempt to convert between items in the \linkS4class{SingleCellExperiment}
+#' [`metadata()`] slot and the `AnnData` `uns` slot. If an item cannot be
+#' converted a warning will be raised.
+#'
 #' @author Luke Zappia
 #' @author Aaron Lun
 #'
