@@ -31,6 +31,12 @@
 #' [`metadata()`] slot and the `AnnData` `uns` slot. If an item cannot be
 #' converted a warning will be raised.
 #'
+#' Values stored in the `varm` slot of an `AnnData` object are stored in a
+#' column of [`rowData()`] in a \linkS4class{SingleCellExperiment}
+#' as a \linkS4class{DataFrame} of matrices. No attempt is made to transfer this
+#' information when converting from \linkS4class{SingleCellExperiment} to
+#' `AnnData`.
+#'
 #' @author Luke Zappia
 #' @author Aaron Lun
 #'
@@ -128,9 +134,20 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
     varp_list <- lapply(py_builtins$dict(adata$varp), function(v) {v$todense()})
     obsp_list <- lapply(py_builtins$dict(adata$obsp), function(v) {v$todense()})
 
+    row_data <- S4Vectors::DataFrame(adata$var)
+    varm_list <- py_builtins$dict(adata$varm)
+    if (length(varm_list) > 0) {
+        # Create an empty DataFrame with the correct number of rows
+        varm_df <- S4Vectors::DataFrame(matrix(, nrow = adata$n_vars, ncol = 0))
+        for (varm_name in names(varm_list)) {
+            varm_df[[varm_name]] <- varm_list[[varm_name]]
+        }
+        row_data$varm <- varm_df
+    }
+
     SingleCellExperiment::SingleCellExperiment(
         assays      = assays_list,
-        rowData     = adata$var,
+        rowData     = row_data,
         colData     = adata$obs,
         reducedDims = py_builtins$dict(adata$obsm),
         metadata    = meta_list,

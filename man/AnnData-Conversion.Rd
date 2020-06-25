@@ -61,6 +61,12 @@ example.
 We attempt to convert between items in the \linkS4class{SingleCellExperiment}
 \code{\link[=metadata]{metadata()}} slot and the \code{AnnData} \code{uns} slot. If an item cannot be
 converted a warning will be raised.
+
+Values stored in the \code{varm} slot of an \code{AnnData} object are stored in a
+column of \code{\link[=rowData]{rowData()}} in a \linkS4class{SingleCellExperiment}
+as a \linkS4class{DataFrame} of matrices. No attempt is made to transfer this
+information when converting from \linkS4class{SingleCellExperiment} to
+\code{AnnData}.
 }
 \examples{
 library(basilisk)
