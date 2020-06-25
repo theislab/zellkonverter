@@ -125,12 +125,17 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
         }
     }
 
+    varp_list <- lapply(py_builtins$dict(adata$varp), function(v) {v$todense()})
+    obsp_list <- lapply(py_builtins$dict(adata$obsp), function(v) {v$todense()})
+
     SingleCellExperiment::SingleCellExperiment(
         assays      = assays_list,
         rowData     = adata$var,
         colData     = adata$obs,
         reducedDims = py_builtins$dict(adata$obsm),
-        metadata    = meta_list
+        metadata    = meta_list,
+        rowPairs    = varp_list,
+        colPairs    = obsp_list
     )
 }
 
@@ -215,8 +220,16 @@ SCE2AnnData <- function(sce, X_name = NULL) {
 
     adata$uns$data <- uns_list
 
-    adata$obs_names <- colnames(sce)
-    adata$var_names <- rownames(sce)
+    adata$varp <- as.list(SingleCellExperiment::rowPairs(sce, asSparse=TRUE))
+    adata$obsp <- as.list(SingleCellExperiment::colPairs(sce, asSparse=TRUE))
+
+    if (!is.null(colnames(sce))) {
+        adata$obs_names <- colnames(sce)
+    }
+
+    if (!is.null(rownames(sce))) {
+        adata$var_names <- rownames(sce)
+    }
 
     adata
 }
