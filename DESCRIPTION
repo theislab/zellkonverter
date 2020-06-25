@@ -27,7 +27,8 @@ Imports:
     SummarizedExperiment,
     DelayedArray,
     methods,
-    S4Vectors
+    S4Vectors,
+    utils
 Suggests: 
     covr,
     spelling,

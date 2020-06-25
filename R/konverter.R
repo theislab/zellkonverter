@@ -73,7 +73,7 @@ NULL
 #'
 #' @export
 #' @importFrom Matrix t sparseMatrix
-#' @importFrom methods selectMethod
+#' @importFrom methods selectMethod is
 AnnData2SCE <- function(adata, skip_assays = FALSE) {
     py_builtins <- reticulate::import_builtins()
 
@@ -141,6 +141,7 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
 #' AnnData object. If `NULL`, the first assay of `sce` will be used by default.
 #'
 #' @export
+#' @importFrom utils capture.output
 SCE2AnnData <- function(sce, X_name = NULL) {
 
     anndata <- reticulate::import("anndata")
@@ -190,7 +191,7 @@ SCE2AnnData <- function(sce, X_name = NULL) {
         assays_list <- assays(sce, withDimnames = FALSE)
         assays_list <- lapply(assays_list[assay_names], t)
         assays_list <- lapply(assays_list, .makeNumpyFriendly)
-        adata$layers <- assays_lsit
+        adata$layers <- assays_list
     }
 
     red_dims <- as.list(reducedDims(sce))
