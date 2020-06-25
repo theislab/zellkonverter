@@ -37,14 +37,10 @@ These functions assume that an appropriate Python environment has already
 been loaded. As such, they are largely intended for developer use, most
 typically inside a \strong{basilisk} context.
 
-The conversion is not entirely lossless:
-\itemize{
-\item No attempt is made by \code{AnnData2SCE()} to transfer the alternative
-experiments (\code{\link[SingleCellExperiment:altExp]{altExp}}) from \code{sce} to an
-AnnData object.
-\item Values in the \code{obsm} field of \code{adata} are not transferred to a
-\linkS4class{SingleCellExperiment}.
-}
+The conversion is not entirely lossless. The current mapping is shown below
+(also at \url{https://tinyurl.com/AnnData2SCE}):
+
+\figure{AnnData2SCE.png}{options: width=800}
 
 In \code{SCE2AnnData()}, matrices are converted to a \strong{numpy}-friendly format.
 Sparse matrices are converted to \linkS4class{dgCMatrix} objects while all

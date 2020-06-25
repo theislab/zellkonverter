@@ -8,12 +8,10 @@
 #' been loaded. As such, they are largely intended for developer use, most
 #' typically inside a **basilisk** context.
 #'
-#' The conversion is not entirely lossless:
-#' * No attempt is made by `AnnData2SCE()` to transfer the alternative
-#'   experiments ([`altExp`][SingleCellExperiment::altExp()]) from `sce` to an
-#'   AnnData object.
-#' * Values in the `obsm` field of `adata` are not transferred to a
-#'   \linkS4class{SingleCellExperiment}.
+#' The conversion is not entirely lossless. The current mapping is shown below
+#' (also at <https://tinyurl.com/AnnData2SCE>):
+#'
+#' \figure{AnnData2SCE.png}{options: width=800}
 #'
 #' In `SCE2AnnData()`, matrices are converted to a **numpy**-friendly format.
 #' Sparse matrices are converted to \linkS4class{dgCMatrix} objects while all
