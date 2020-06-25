@@ -8,12 +8,10 @@
 #' been loaded. As such, they are largely intended for developer use, most
 #' typically inside a **basilisk** context.
 #'
-#' The conversion is not entirely lossless:
-#' * No attempt is made by `AnnData2SCE()` to transfer the alternative
-#'   experiments ([`altExp`][SingleCellExperiment::altExp()]) from `sce` to an
-#'   AnnData object.
-#' * Values in the `obsm` field of `adata` are not transferred to a
-#'   \linkS4class{SingleCellExperiment}.
+#' The conversion is not entirely lossless. The current mapping is shown below
+#' (also at <https://tinyurl.com/AnnData2SCE>):
+#'
+#' \figure{AnnData2SCE.png}{options: width=800}
 #'
 #' In `SCE2AnnData()`, matrices are converted to a **numpy**-friendly format.
 #' Sparse matrices are converted to \linkS4class{dgCMatrix} objects while all
@@ -26,6 +24,16 @@
 #' given and empty sparse matrices are created for each assay. The user is
 #' expected to fill in the assays on the R side, see [`readH5AD()`] for an
 #' example.
+#'
+#' We attempt to convert between items in the \linkS4class{SingleCellExperiment}
+#' [`metadata()`] slot and the `AnnData` `uns` slot. If an item cannot be
+#' converted a warning will be raised.
+#'
+#' Values stored in the `varm` slot of an `AnnData` object are stored in a
+#' column of [`rowData()`] in a \linkS4class{SingleCellExperiment}
+#' as a \linkS4class{DataFrame} of matrices. No attempt is made to transfer this
+#' information when converting from \linkS4class{SingleCellExperiment} to
+#' `AnnData`.
 #'
 #' @author Luke Zappia
 #' @author Aaron Lun
@@ -69,7 +77,7 @@ NULL
 #'
 #' @export
 #' @importFrom Matrix t sparseMatrix
-#' @importFrom methods selectMethod
+#' @importFrom methods selectMethod is
 AnnData2SCE <- function(adata, skip_assays = FALSE) {
     py_builtins <- reticulate::import_builtins()
 
@@ -108,11 +116,41 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
         }
     }
 
+    uns_data <- adata$uns$data
+
+    meta_list <- list()
+    for (item_name in names(uns_data)) {
+        item <- uns_data[[item_name]]
+        if (!(is(item, "python.builtin.object"))) {
+            meta_list[[item_name]] <- item
+        } else {
+            warning("the '", item_name, "' item in 'uns' cannot be converted ",
+                    "to an R object and has been skipped")
+        }
+    }
+
+    varp_list <- lapply(py_builtins$dict(adata$varp), function(v) {v$todense()})
+    obsp_list <- lapply(py_builtins$dict(adata$obsp), function(v) {v$todense()})
+
+    row_data <- S4Vectors::DataFrame(adata$var)
+    varm_list <- py_builtins$dict(adata$varm)
+    if (length(varm_list) > 0) {
+        # Create an empty DataFrame with the correct number of rows
+        varm_df <- S4Vectors::DataFrame(matrix(, nrow = adata$n_vars, ncol = 0))
+        for (varm_name in names(varm_list)) {
+            varm_df[[varm_name]] <- varm_list[[varm_name]]
+        }
+        row_data$varm <- varm_df
+    }
+
     SingleCellExperiment::SingleCellExperiment(
         assays      = assays_list,
-        rowData     = adata$var,
+        rowData     = row_data,
         colData     = adata$obs,
-        reducedDims = py_builtins$dict(adata$obsm)
+        reducedDims = py_builtins$dict(adata$obsm),
+        metadata    = meta_list,
+        rowPairs    = varp_list,
+        colPairs    = obsp_list
     )
 }
 
@@ -123,13 +161,17 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
 #' AnnData object. If `NULL`, the first assay of `sce` will be used by default.
 #'
 #' @export
+#' @importFrom utils capture.output
 SCE2AnnData <- function(sce, X_name = NULL) {
 
     anndata <- reticulate::import("anndata")
 
     if (is.null(X_name)) {
+        if (length(assays(sce)) == 0) {
+            stop("'sce' does not contain any assays")
+        }
         X_name <- SummarizedExperiment::assayNames(sce)[1]
-        message("using the '", X_name, "' assay as the X matrix")
+        message("Note: using the '", X_name, "' assay as the X matrix")
     }
 
     X <- t(assay(sce, X_name))
@@ -166,18 +208,43 @@ SCE2AnnData <- function(sce, X_name = NULL) {
     assay_names <- assayNames(sce)
     assay_names <- assay_names[!assay_names == X_name]
     if (length(assay_names) > 0) {
-        assays <- assays(sce, withDimnames = FALSE)
-        assays <- lapply(assays[assay_names], t)
-        assays <- lapply(assays, .makeNumpyFriendly)
-        adata$layers <- assays
+        assays_list <- assays(sce, withDimnames = FALSE)
+        assays_list <- lapply(assays_list[assay_names], t)
+        assays_list <- lapply(assays_list, .makeNumpyFriendly)
+        adata$layers <- assays_list
     }
 
     red_dims <- as.list(reducedDims(sce))
     red_dims <- lapply(red_dims, .makeNumpyFriendly)
     adata$obsm <- red_dims
 
-    adata$obs_names <- colnames(sce)
-    adata$var_names <- rownames(sce)
+    meta_list <- S4Vectors::metadata(sce)
+    uns_list <- list()
+    for (item_name in names(meta_list)) {
+        item <- meta_list[[item_name]]
+        tryCatch({
+            # Try to convert the item using reticulate, skip if it fails
+            # Capture the object output printed by reticulate
+            capture.output(reticulate::r_to_py(item))
+            uns_list[[item_name]] <- item
+        }, error = function(err) {
+            warning("the '", item_name, "' item in 'metadata' cannot be ",
+                    "converted to a Python type and has been skipped")
+        })
+    }
+
+    adata$uns$data <- uns_list
+
+    adata$varp <- as.list(SingleCellExperiment::rowPairs(sce, asSparse=TRUE))
+    adata$obsp <- as.list(SingleCellExperiment::colPairs(sce, asSparse=TRUE))
+
+    if (!is.null(colnames(sce))) {
+        adata$obs_names <- colnames(sce)
+    }
+
+    if (!is.null(rownames(sce))) {
+        adata$var_names <- rownames(sce)
+    }
 
     adata
 }

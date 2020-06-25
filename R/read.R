@@ -53,6 +53,12 @@ readH5AD <- function(file, use_hdf5 = FALSE) {
     )
 
     if (use_hdf5) {
+
+        if (!requireNamespace("HDF5Array", quietly = TRUE)) {
+            stop("The 'HDF5Array' package must be installed to use ",
+                 "'use_hdf5 = TRUE'")
+        }
+
         assay(output, "X", withDimnames = FALSE) <- HDF5Array::HDF5Array(file,
                                                                          "X")
         for (assay_name in setdiff(assayNames(output), "X")) {

@@ -37,14 +37,10 @@ These functions assume that an appropriate Python environment has already
 been loaded. As such, they are largely intended for developer use, most
 typically inside a \strong{basilisk} context.
 
-The conversion is not entirely lossless:
-\itemize{
-\item No attempt is made by \code{AnnData2SCE()} to transfer the alternative
-experiments (\code{\link[SingleCellExperiment:altExp]{altExp}}) from \code{sce} to an
-AnnData object.
-\item Values in the \code{obsm} field of \code{adata} are not transferred to a
-\linkS4class{SingleCellExperiment}.
-}
+The conversion is not entirely lossless. The current mapping is shown below
+(also at \url{https://tinyurl.com/AnnData2SCE}):
+
+\figure{AnnData2SCE.png}{options: width=800}
 
 In \code{SCE2AnnData()}, matrices are converted to a \strong{numpy}-friendly format.
 Sparse matrices are converted to \linkS4class{dgCMatrix} objects while all
@@ -57,6 +53,16 @@ for a matrix in the AnnData object. If \code{skip_assays = TRUE}, no error is
 given and empty sparse matrices are created for each assay. The user is
 expected to fill in the assays on the R side, see \code{\link[=readH5AD]{readH5AD()}} for an
 example.
+
+We attempt to convert between items in the \linkS4class{SingleCellExperiment}
+\code{\link[=metadata]{metadata()}} slot and the \code{AnnData} \code{uns} slot. If an item cannot be
+converted a warning will be raised.
+
+Values stored in the \code{varm} slot of an \code{AnnData} object are stored in a
+column of \code{\link[=rowData]{rowData()}} in a \linkS4class{SingleCellExperiment}
+as a \linkS4class{DataFrame} of matrices. No attempt is made to transfer this
+information when converting from \linkS4class{SingleCellExperiment} to
+\code{AnnData}.
 }
 \examples{
 library(basilisk)
