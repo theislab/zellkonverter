@@ -1,5 +1,14 @@
 # zellkonverter (development version)
 
+## zellkonverter 0.0.0.9013 (2020-06-25)
+
+* Improve conversion between `SingleCellExperiment` and `AnnData`
+  * Convert between `metadata` and `uns` (where objects are compatible)
+  * Convert between `rowPairs` and `varp`
+  * Convert between `colPairs` and `obsp`
+  * Convert from `varm` to `rowData` (but not in reverse)
+* Add mapping table to docs
+
 ## zellkonverter 0.0.0.9012 (2020-06-19)
 
 * Tidy documentation and code
