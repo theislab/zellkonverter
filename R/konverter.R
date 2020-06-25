@@ -108,11 +108,25 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
         }
     }
 
+    uns_data <- adata$uns$data
+
+    meta_list <- list()
+    for (item_name in names(uns_data)) {
+        item <- uns_data[[item_name]]
+        if (!(is(item, "python.builtin.object"))) {
+            meta_list[[item_name]] <- item
+        } else {
+            warning("the '", item_name, "' item in 'uns' cannot be converted ",
+                    "to an R object and has been skipped")
+        }
+    }
+
     SingleCellExperiment::SingleCellExperiment(
         assays      = assays_list,
         rowData     = adata$var,
         colData     = adata$obs,
-        reducedDims = py_builtins$dict(adata$obsm)
+        reducedDims = py_builtins$dict(adata$obsm),
+        metadata    = meta_list
     )
 }
 
