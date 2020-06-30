@@ -1,7 +1,7 @@
 Package: zellkonverter
 Title: Conversion between scRNA-seq objects
-Version: 0.0.0.9013
-Date: 2020-06-25
+Version: 0.0.0.9014
+Date: 2020-06-30
 Authors@R: 
     c(person(given = "Luke",
              family = "Zappia",
