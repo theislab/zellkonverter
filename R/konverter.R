@@ -73,7 +73,8 @@ NULL
 #'
 #' @param adata A **reticulate** reference to a Python AnnData object.
 #' @param skip_assays Logical scalar indicating whether to skip conversion of
-#' any assays in `sce`, replacing them with empty sparse matrices instead.
+#' any assays in `sce` or `adata`, replacing them with empty sparse matrices
+#' instead.
 #'
 #' @export
 #' @importFrom Matrix t sparseMatrix
@@ -162,7 +163,7 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
 #'
 #' @export
 #' @importFrom utils capture.output
-SCE2AnnData <- function(sce, X_name = NULL) {
+SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
 
     anndata <- reticulate::import("anndata")
 
@@ -174,8 +175,18 @@ SCE2AnnData <- function(sce, X_name = NULL) {
         message("Note: using the '", X_name, "' assay as the X matrix")
     }
 
-    X <- t(assay(sce, X_name))
-    adata <- anndata$AnnData(X = .makeNumpyFriendly(X))
+    if (!skip_assays) {
+        X <- t(assay(sce, X_name))
+        X <- .makeNumpyFriendly(X)
+    } else {
+        X <- fake_mat <- sparseMatrix(
+            i    = integer(0),
+            j    = integer(0),
+            x    = numeric(0),
+            dims = rev(dim(sce))
+        )
+    }
+    adata <- anndata$AnnData(X = X)
 
     col_data <- colData(sce)
     if (ncol(col_data) > 0) {
@@ -208,9 +219,14 @@ SCE2AnnData <- function(sce, X_name = NULL) {
     assay_names <- assayNames(sce)
     assay_names <- assay_names[!assay_names == X_name]
     if (length(assay_names) > 0) {
-        assays_list <- assays(sce, withDimnames = FALSE)
-        assays_list <- lapply(assays_list[assay_names], t)
-        assays_list <- lapply(assays_list, .makeNumpyFriendly)
+        if (!skip_assays) {
+            assays_list <- assays(sce, withDimnames = FALSE)
+            assays_list <- lapply(assays_list[assay_names], t)
+            assays_list <- lapply(assays_list, .makeNumpyFriendly)
+        } else {
+            assays_list <- rep(list(fake_mat), length(assay_names))
+            names(assays_list) <- assay_names
+        }
         adata$layers <- assays_list
     }
 
