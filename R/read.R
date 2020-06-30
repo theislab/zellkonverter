@@ -39,14 +39,15 @@
 #' \linkS4class{SingleCellExperiment}.
 #'
 #' @export
+#' @importFrom basilisk basiliskRun getBasiliskShared 
 readH5AD <- function(file, use_hdf5 = FALSE) {
     file <- path.expand(file)
 
     # We set shared = !use_hdf5 because anndata opens a blocking r+ connection
-    # to the HDF5 file that is really hard to shut down via reticulate
-    output <- basilisk::basiliskRun(
+    # to the HDF5 file that is really hard to shut down via reticulate.
+    output <- basiliskRun(
         env    = anndata_env,
-        shared = !use_hdf5,
+        shared = if (!use_hdf5) getBasiliskShared() else FALSE,
         fun    = .H5ADreader,
         file   = file,
         backed = use_hdf5
@@ -57,6 +58,14 @@ readH5AD <- function(file, use_hdf5 = FALSE) {
         if (!requireNamespace("HDF5Array", quietly = TRUE)) {
             stop("The 'HDF5Array' package must be installed to use ",
                  "'use_hdf5 = TRUE'")
+        }
+
+        # Give the process some time to shut down properly and close the file
+        # handles on the Python side. 
+        for (i in 1:10) {
+            if (is(try(rhdf5::h5ls(file), silent=TRUE), "try-error")){ 
+                Sys.sleep(1)
+            }
         }
 
         assay(output, "X", withDimnames = FALSE) <- HDF5Array::HDF5Array(file,
@@ -71,8 +80,9 @@ readH5AD <- function(file, use_hdf5 = FALSE) {
     output
 }
 
+#' @importFrom reticulate import
 .H5ADreader <- function(file, backed = FALSE) {
-    anndata <- reticulate::import("anndata")
+    anndata <- import("anndata")
     adata <- anndata$read_h5ad(file, backed = backed)
     AnnData2SCE(adata, skip_assays = backed)
 }

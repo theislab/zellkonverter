@@ -8,13 +8,14 @@
 \usage{
 AnnData2SCE(adata, skip_assays = FALSE)
 
-SCE2AnnData(sce, X_name = NULL)
+SCE2AnnData(sce, X_name = NULL, skip_assays = FALSE)
 }
 \arguments{
 \item{adata}{A \strong{reticulate} reference to a Python AnnData object.}
 
 \item{skip_assays}{Logical scalar indicating whether to skip conversion of
-any assays in \code{sce}, replacing them with empty sparse matrices instead.}
+any assays in \code{sce} or \code{adata}, replacing them with empty sparse matrices
+instead.}
 
 \item{sce}{A \linkS4class{SingleCellExperiment} object.}
 

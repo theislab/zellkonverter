@@ -8,6 +8,7 @@ reducedDim(sce, "WHEE") <- matrix(runif(ncol(sce) * 10), ncol = 10)
 test_that("writeH5AD works as expected", {
     temp <- tempfile(fileext = '.h5ad')
     writeH5AD(sce, temp)
+    expect_true(file.exists(temp))
 
     # Reading it back out again. Hopefully we didn't lose anything important.
     out <- readH5AD(temp)
@@ -32,6 +33,15 @@ test_that("writeH5AD works as expected", {
         }
     }
     expect_identical(col_data, colData(sce))
+})
+
+test_that("writeH5AD works with assay skipping", {
+    temp <- tempfile(fileext = '.h5ad')
+    writeH5AD(sce, temp, skip_assays = TRUE)
+    expect_true(file.exists(temp))
+
+    out <- HDF5Array::HDF5Array(temp, "X/data")
+    expect_identical(sum(out), 0) # it's empty!
 })
 
 test_that("writeH5AD works in a separate process", {
