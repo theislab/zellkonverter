@@ -4,8 +4,15 @@
 #'
 #' @param sce A \linkS4class{SingleCellExperiment} object.
 #' @param file String containing a path to write the new `.h5ad` file.
+#' @param skip_assays Logical scalar indicating whether assay matrices should
+#' be ignored when writing to `file`.
 #'
 #' @details
+#' Setting `skip_assays=TRUE` can occasionally be useful if the matrices in
+#' `sce` are stored in a format that is not amenable for efficient conversion
+#' to a **numpy**-compatible format. In such cases, it can be better to create
+#' an empty placeholder dataset in `file` and fill it in R afterwards.
+#'
 #' When first run, this function will instantiate a conda environment
 #' containing all of the necessary dependencies. This will not be performed on
 #' any subsequent run or if any other
@@ -34,15 +41,15 @@
 #'
 #' @export
 #' @importFrom basilisk basiliskRun
-writeH5AD <- function(sce, file) {
+writeH5AD <- function(sce, file, skip_assays = FALSE) {
     file <- path.expand(file)
-    basiliskRun(env = anndata_env, fun = .H5ADwriter, sce = sce, file = file)
+    basiliskRun(env = anndata_env, fun = .H5ADwriter, sce = sce, file = file, skip_assays = skip_assays)
     invisible(NULL)
 }
 
 #' @importFrom reticulate import
-.H5ADwriter <- function(sce, file) {
+.H5ADwriter <- function(sce, file, skip_assays) {
     anndata <- import("anndata")
-    adata <- SCE2AnnData(sce)
+    adata <- SCE2AnnData(sce, skip_assays = skip_assays)
     adata$write_h5ad(file)
 }

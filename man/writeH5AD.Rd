@@ -4,12 +4,15 @@
 \alias{writeH5AD}
 \title{Write H5AD}
 \usage{
-writeH5AD(sce, file)
+writeH5AD(sce, file, skip_assays = FALSE)
 }
 \arguments{
 \item{sce}{A \linkS4class{SingleCellExperiment} object.}
 
 \item{file}{String containing a path to write the new \code{.h5ad} file.}
+
+\item{skip_assays}{Logical scalar indicating whether assay matrices should
+be ignored when writing to \code{file}.}
 }
 \value{
 A \code{NULL} is invisibly returned.
@@ -18,6 +21,11 @@ A \code{NULL} is invisibly returned.
 Write a H5AD file from a \linkS4class{SingleCellExperiment} object.
 }
 \details{
+Setting \code{skip_assays=TRUE} can occasionally be useful if the matrices in
+\code{sce} are stored in a format that is not amenable for efficient conversion
+to a \strong{numpy}-compatible format. In such cases, it can be better to create
+an empty placeholder dataset in \code{file} and fill it in R afterwards.
+
 When first run, this function will instantiate a conda environment
 containing all of the necessary dependencies. This will not be performed on
 any subsequent run or if any other
