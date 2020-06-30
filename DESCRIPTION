@@ -38,7 +38,8 @@ Suggests:
     rmarkdown,
     BiocStyle,
     scRNAseq,
-    HDF5Array
+    HDF5Array,
+    rhdf5
 URL: https://github.com/theislab/zellkonverter
 BugReports: https://github.com/theislab/zellkonverter/issues
 Encoding: UTF-8
