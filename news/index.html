@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9012</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9014</span>
       </span>
     </div>
 
@@ -120,6 +120,23 @@
     <div id="zellkonverter-development-version" class="section level1">
 <h1 class="page-header" data-toc-text="development version">
 <a href="#zellkonverter-development-version" class="anchor"></a>zellkonverter (development version)</h1>
+<div id="zellkonverter-0009013-2020-06-25" class="section level2">
+<h2 class="hasAnchor">
+<a href="#zellkonverter-0009013-2020-06-25" class="anchor"></a>zellkonverter 0.0.0.9013 (2020-06-25)</h2>
+<ul>
+<li>Improve conversion between <code>SingleCellExperiment</code> and <code>AnnData</code> (See <a href='https://github.com/theislab/zellkonverter/issues/8'>#8</a>)
+<ul>
+<li>Convert between <code>metadata</code> and <code>uns</code> (where objects are compatible)</li>
+<li>Convert between <code>rowPairs</code> and <code>varp</code>
+</li>
+<li>Convert between <code>colPairs</code> and <code>obsp</code>
+</li>
+<li>Convert from <code>varm</code> to <code>rowData</code> (but not in reverse)</li>
+</ul>
+</li>
+<li>Add mapping table to docs</li>
+</ul>
+</div>
 <div id="zellkonverter-0009012-2020-06-19" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009012-2020-06-19" class="anchor"></a>zellkonverter 0.0.0.9012 (2020-06-19)</h2>

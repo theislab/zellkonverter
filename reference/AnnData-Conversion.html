@@ -73,7 +73,7 @@ SingleCellExperiment objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9012</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9014</span>
       </span>
     </div>
 
@@ -127,7 +127,7 @@ SingleCellExperiment objects.</p>
 
     <pre class="usage"><span class='fu'>AnnData2SCE</span>(<span class='kw'>adata</span>, skip_assays = <span class='fl'>FALSE</span>)
 
-<span class='fu'>SCE2AnnData</span>(<span class='kw'>sce</span>, X_name = <span class='kw'>NULL</span>)</pre>
+<span class='fu'>SCE2AnnData</span>(<span class='kw'>sce</span>, X_name = <span class='kw'>NULL</span>, skip_assays = <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -139,7 +139,8 @@ SingleCellExperiment objects.</p>
     <tr>
       <th>skip_assays</th>
       <td><p>Logical scalar indicating whether to skip conversion of
-any assays in <code>sce</code>, replacing them with empty sparse matrices instead.</p></td>
+any assays in <code>sce</code> or <code>adata</code>, replacing them with empty sparse matrices
+instead.</p></td>
     </tr>
     <tr>
       <th>sce</th>
@@ -163,14 +164,9 @@ containing the content of <code>sce</code>.</p>
     <p>These functions assume that an appropriate Python environment has already
 been loaded. As such, they are largely intended for developer use, most
 typically inside a <strong>basilisk</strong> context.</p>
-<p>The conversion is not entirely lossless:</p><ul>
-<li><p>No attempt is made by <code>AnnData2SCE()</code> to transfer the alternative
-experiments (<code><a href='https://rdrr.io/pkg/SingleCellExperiment/man/altExps.html'>altExp</a></code>) from <code>sce</code> to an
-AnnData object.</p></li>
-<li><p>Values in the <code>obsm</code> field of <code>adata</code> are not transferred to a
-SingleCellExperiment.</p></li>
-</ul>
-
+<p>The conversion is not entirely lossless. The current mapping is shown below
+(also at <a href='https://tinyurl.com/AnnData2SCE'>https://tinyurl.com/AnnData2SCE</a>):</p>
+<p><img src='figures/AnnData2SCE.png' width=800 /></p>
 <p>In <code>SCE2AnnData()</code>, matrices are converted to a <strong>numpy</strong>-friendly format.
 Sparse matrices are converted to dgCMatrix objects while all
 other matrices are converted into ordinary matrices. If <code>skip_assays = TRUE</code>,
@@ -181,6 +177,14 @@ for a matrix in the AnnData object. If <code>skip_assays = TRUE</code>, no error
 given and empty sparse matrices are created for each assay. The user is
 expected to fill in the assays on the R side, see <code>readH5AD()</code> for an
 example.</p>
+<p>We attempt to convert between items in the SingleCellExperiment
+<code>metadata()</code> slot and the <code>AnnData</code> <code>uns</code> slot. If an item cannot be
+converted a warning will be raised.</p>
+<p>Values stored in the <code>varm</code> slot of an <code>AnnData</code> object are stored in a
+column of <code>rowData()</code> in a SingleCellExperiment
+as a DataFrame of matrices. No attempt is made to transfer this
+information when converting from SingleCellExperiment to
+<code>AnnData</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code>writeH5AD()</code> and <code>readH5AD()</code> for dealing directly with H5AD files.</p></div>
@@ -223,7 +227,7 @@ example.</p>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    colMaxs, colMins, colRanges, rowMaxs, rowMins, rowRanges</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    aperm, apply, rowsum</span></div><div class='input'><span class='kw'>seger</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scRNAseq/man/SegerstolpePancreasData.html'>SegerstolpePancreasData</a></span>()</div><div class='output co'>#&gt; <span class='message'>using temporary cache /tmp/Rtmpha7KTY/BiocFileCache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-06-11</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
+#&gt; <span class='message'>    aperm, apply, rowsum</span></div><div class='input'><span class='kw'>seger</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scRNAseq/man/SegerstolpePancreasData.html'>SegerstolpePancreasData</a></span>()</div><div class='output co'>#&gt; <span class='message'>using temporary cache /tmp/RtmpebrRQr/BiocFileCache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-06-26</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
 <span class='co'># These functions are designed to be run inside</span>
 <span class='co'># a specified Python environment</span>
 <span class='kw'>roundtrip</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/basilisk/man/basiliskStart.html'>basiliskRun</a></span>(fun = <span class='fu'>function</span>(<span class='kw'>sce</span>) {
@@ -235,7 +239,7 @@ example.</p>
 
      <span class='co'># Convert back to an SCE:</span>
      <span class='fu'>AnnData2SCE</span>(<span class='kw'>adata</span>)
-}, env = <span class='kw'>zellkonverter</span>:::<span class='kw'>anndata_env</span>, sce = <span class='kw'>seger</span>)</div><div class='output co'>#&gt; <span class='message'>using the 'counts' assay as the X matrix</span></div><div class='output co'>#&gt; <span class='warning'>Warning: index contains duplicated values: row names not set</span></div><div class='input'></div></pre>
+}, env = <span class='kw'>zellkonverter</span>:::<span class='kw'>anndata_env</span>, sce = <span class='kw'>seger</span>)</div><div class='output co'>#&gt; <span class='message'>Note: using the 'counts' assay as the X matrix</span></div><div class='output co'>#&gt; <span class='warning'>Warning: index contains duplicated values: row names not set</span></div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
