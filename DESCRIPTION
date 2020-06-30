@@ -15,9 +15,10 @@ Authors@R:
              comment = c(ORCID = "0000-0002-3564-4813"))
     )
 Description:
-    Zellkonverter is a small package for converting between SingleCellExperiment
-    objects and alternative objects for storing single-cell RNA-sequencing data
-    (such as AnnData).
+    Provides methods to convert AnnData Python objects to and from
+    SingleCellExperiment objects, as well as functions to read/write
+    H5AD files. This is intended for use by downstream Bioconductor 
+    packages that wrap Python methods for single-cell data analysis. 
 License: MIT + file LICENSE
 Imports: 
     Matrix,
@@ -43,7 +44,7 @@ BugReports: https://github.com/theislab/zellkonverter/issues
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Language: en-GB
 StagedInstall: no
 VignetteBuilder: knitr
