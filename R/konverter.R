@@ -79,8 +79,10 @@ NULL
 #' @export
 #' @importFrom Matrix t sparseMatrix
 #' @importFrom methods selectMethod is
+#' @importFrom S4Vectors DataFrame
+#' @importFrom reticulate import_builtins
 AnnData2SCE <- function(adata, skip_assays = FALSE) {
-    py_builtins <- reticulate::import_builtins()
+    py_builtins <- import_builtins()
 
     if (!skip_assays) {
         x_mat <- adata$X
@@ -133,18 +135,18 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
     varp_list <- lapply(py_builtins$dict(adata$varp), function(v) {v$todense()})
     obsp_list <- lapply(py_builtins$dict(adata$obsp), function(v) {v$todense()})
 
-    row_data <- S4Vectors::DataFrame(adata$var)
+    row_data <- DataFrame(adata$var)
     varm_list <- py_builtins$dict(adata$varm)
     if (length(varm_list) > 0) {
         # Create an empty DataFrame with the correct number of rows
-        varm_df <- S4Vectors::DataFrame(matrix(, nrow = adata$n_vars, ncol = 0))
+        varm_df <- DataFrame(matrix(, nrow = adata$n_vars, ncol = 0))
         for (varm_name in names(varm_list)) {
             varm_df[[varm_name]] <- varm_list[[varm_name]]
         }
         row_data$varm <- varm_df
     }
 
-    SingleCellExperiment::SingleCellExperiment(
+    SingleCellExperiment(
         assays      = assays_list,
         rowData     = row_data,
         colData     = adata$obs,
@@ -163,15 +165,17 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
 #'
 #' @export
 #' @importFrom utils capture.output
+#' @importFrom S4Vectors metadata
+#' @importFrom reticulate import r_to_py
 SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
 
-    anndata <- reticulate::import("anndata")
+    anndata <- import("anndata")
 
     if (is.null(X_name)) {
         if (length(assays(sce)) == 0) {
             stop("'sce' does not contain any assays")
         }
-        X_name <- SummarizedExperiment::assayNames(sce)[1]
+        X_name <- assayNames(sce)[1]
         message("Note: using the '", X_name, "' assay as the X matrix")
     }
 
@@ -234,14 +238,14 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     red_dims <- lapply(red_dims, .makeNumpyFriendly)
     adata$obsm <- red_dims
 
-    meta_list <- S4Vectors::metadata(sce)
+    meta_list <- metadata(sce)
     uns_list <- list()
     for (item_name in names(meta_list)) {
         item <- meta_list[[item_name]]
         tryCatch({
             # Try to convert the item using reticulate, skip if it fails
             # Capture the object output printed by reticulate
-            capture.output(reticulate::r_to_py(item))
+            capture.output(r_to_py(item))
             uns_list[[item_name]] <- item
         }, error = function(err) {
             warning("the '", item_name, "' item in 'metadata' cannot be ",
@@ -251,8 +255,8 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
 
     adata$uns$data <- uns_list
 
-    adata$varp <- as.list(SingleCellExperiment::rowPairs(sce, asSparse=TRUE))
-    adata$obsp <- as.list(SingleCellExperiment::colPairs(sce, asSparse=TRUE))
+    adata$varp <- as.list(rowPairs(sce, asSparse=TRUE))
+    adata$obsp <- as.list(colPairs(sce, asSparse=TRUE))
 
     if (!is.null(colnames(sce))) {
         adata$obs_names <- colnames(sce)

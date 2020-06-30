@@ -39,12 +39,13 @@
 #' \linkS4class{SingleCellExperiment}.
 #'
 #' @export
+#' @importFrom basilisk basiliskRun
 readH5AD <- function(file, use_hdf5 = FALSE) {
     file <- path.expand(file)
 
     # We set shared = !use_hdf5 because anndata opens a blocking r+ connection
     # to the HDF5 file that is really hard to shut down via reticulate
-    output <- basilisk::basiliskRun(
+    output <- basiliskRun(
         env    = anndata_env,
         shared = !use_hdf5,
         fun    = .H5ADreader,
@@ -71,8 +72,9 @@ readH5AD <- function(file, use_hdf5 = FALSE) {
     output
 }
 
+#' @importFrom reticulate import
 .H5ADreader <- function(file, backed = FALSE) {
-    anndata <- reticulate::import("anndata")
+    anndata <- import("anndata")
     adata <- anndata$read_h5ad(file, backed = backed)
     AnnData2SCE(adata, skip_assays = backed)
 }

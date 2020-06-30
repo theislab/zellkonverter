@@ -33,19 +33,16 @@
 #' writeH5AD(sce, temp)
 #'
 #' @export
+#' @importFrom basilisk basiliskRun
 writeH5AD <- function(sce, file) {
-    proc <- basilisk::basiliskStart(anndata_env)
-    on.exit(basilisk::basiliskStop(proc))
-
     file <- path.expand(file)
-
-    basilisk::basiliskRun(proc, .H5ADwriter, sce = sce, file = file)
-
+    basiliskRun(env = anndata_env, fun = .H5ADwriter, sce = sce, file = file)
     invisible(NULL)
 }
 
+#' @importFrom reticulate import
 .H5ADwriter <- function(sce, file) {
-    anndata <- reticulate::import("anndata")
+    anndata <- import("anndata")
     adata <- SCE2AnnData(sce)
     adata$write_h5ad(file)
 }
