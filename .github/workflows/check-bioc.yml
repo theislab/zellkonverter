@@ -12,10 +12,12 @@ on:
     branches:
       - master
       - 'RELEASE_*'
+      - actions
   pull_request:
     branches:
       - master
       - 'RELEASE_*'
+      - actions
 
 jobs:
   ## Use the GitHub repository branch name to find the Bioconductor version
@@ -46,7 +48,7 @@ jobs:
     outputs:
       Rversion: ${{ steps.info.set-versions.rversion }}
       biocversion: ${{ steps.info.set-versions.rversion }}
-    steps
+    steps:
       - id: get-versions
         run: |
           biocconfig <- "https://bioconductor.org/config.yaml"
