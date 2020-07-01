@@ -24,10 +24,11 @@ jobs:
   get-bioc-release:
     runs-on: ubuntu-latest
     outputs:
-      biocimage: ${{ steps.info.outputs.biocimage }}
-      biocversion: ${{ steps.info.outputs.biocrelease }}
+      biocimage: ${{ steps.get-release.outputs.biocimage }}
+      biocversion: ${{ steps.get-release.outputs.biocrelease }}
     steps:
-      - id: info
+      - id: get-release
+        name: Get Bioconductor release
         run: |
           if echo "$GITHUB_REF" | grep -q "RELEASE_"; then
               biocrelease="$(basename -- $GITHUB_REF | tr '[:upper:]' '[:lower:]')"
@@ -51,6 +52,7 @@ jobs:
       biocversion: ${{ steps.info.set-versions.rversion }}
     steps:
       - id: get-versions
+        name: Get Bioconductor/R versions
         run: |
           biocconfig <- "https://bioconductor.org/config.yaml"
           biocrelease <- ifelse(
@@ -60,16 +62,17 @@ jobs:
           biocversion <- subset(biocmap, BiocStatus == biocrelease)[, 'Bioc']
           rversion <- subset(biocmap, BiocStatus == biocrelease)[, 'R']
           writeLines(as.character(c(biocversion, rversion)),
-                     ".github/versions.txt")
+                     "versions.txt")
           cat("SET VERSIONS")
           cat("Bioc release: ", biocrelease)
           cat("Bioc version: ", biocversion)
           cat("R version: ", rversion)
         shell: Rscript {0}
       - id: set-versions
+        name: Set Bioconductor/R versions
         run: |
-          biocversion=$(head -n 1 github/versions.txt)
-          rversion=$(tail -n 1 github/versions.txt)
+          biocversion=$(head -n 1 versions.txt)
+          rversion=$(tail -n 1 versions.txt)
           echo "GET VERSIONS"
           echo "Bioc version: {$biocversion}"
           echo "R version: {$rversion}"
