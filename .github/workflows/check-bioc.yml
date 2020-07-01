@@ -65,8 +65,8 @@ jobs:
                      "versions.txt")
           cat("SET VERSIONS")
           cat("Bioc release: ", biocrelease)
-          cat("Bioc version: ", biocversion)
-          cat("R version: ", rversion)
+          cat("Bioc version: ", as.character(biocversion))
+          cat("R version: ", as.character(rversion))
         shell: Rscript {0}
       - id: set-versions
         name: Set Bioconductor/R versions
