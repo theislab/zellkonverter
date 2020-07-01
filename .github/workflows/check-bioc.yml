@@ -63,10 +63,10 @@ jobs:
           rversion <- subset(biocmap, BiocStatus == biocrelease)[, 'R']
           writeLines(as.character(c(biocversion, rversion)),
                      "versions.txt")
-          cat("SET VERSIONS")
-          cat("Bioc release: ", biocrelease)
-          cat("Bioc version: ", as.character(biocversion))
-          cat("R version: ", as.character(rversion))
+          cat("SET VERSIONS", "\n")
+          cat("Bioc release: ", biocrelease, "\n")
+          cat("Bioc version: ", as.character(biocversion), "\n")
+          cat("R version: ", as.character(rversion), "\n")
         shell: Rscript {0}
       - id: set-versions
         name: Set Bioconductor/R versions
@@ -74,8 +74,8 @@ jobs:
           biocversion=$(head -n 1 versions.txt)
           rversion=$(tail -n 1 versions.txt)
           echo "GET VERSIONS"
-          echo "Bioc version: {$biocversion}"
-          echo "R version: {$rversion}"
+          echo "Bioc version: ${biocversion}"
+          echo "R version: ${rversion}"
           ## Store the information
           echo "::set-output name=biocversion::${biocversion}"
           echo "::set-output name=rversion::${rversion}"
