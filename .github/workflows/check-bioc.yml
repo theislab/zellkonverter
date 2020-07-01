@@ -44,7 +44,8 @@ jobs:
   get-bioc-version:
     runs-on: ubuntu-latest
     needs: get-bioc-info
-    image: ${{ needs.get-bioc-release.outputs.biocimage }}
+    container:
+      image: ${{ needs.get-bioc-release.outputs.biocimage }}
     outputs:
       Rversion: ${{ steps.info.set-versions.rversion }}
       biocversion: ${{ steps.info.set-versions.rversion }}
