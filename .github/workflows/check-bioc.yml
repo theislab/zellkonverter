@@ -84,7 +84,7 @@ jobs:
     needs: [get-bioc-release, get-bioc-version]
     runs-on: ubuntu-latest
     container:
-      image: ${{ needs.get-bioc-release.outputs.bioc-image }}
+      image: ${{ needs.get-bioc-release.outputs.biocimage }}
       volumes:
         - /home/runner/work/_temp/Library:/usr/local/lib/R/host-site-library
     env:
