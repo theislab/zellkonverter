@@ -82,7 +82,7 @@ NULL
 #'
 #' @export
 #' @importFrom methods selectMethod is
-#' @importFrom S4Vectors DataFrame
+#' @importFrom S4Vectors DataFrame make_zero_col_DFrame
 #' @importFrom reticulate import_builtins
 AnnData2SCE <- function(adata, skip_assays = FALSE) {
     py_builtins <- import_builtins()
