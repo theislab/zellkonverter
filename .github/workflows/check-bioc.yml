@@ -47,8 +47,8 @@ jobs:
     container:
       image: ${{ needs.get-bioc-release.outputs.biocimage }}
     outputs:
-      Rversion: ${{ steps.info.set-versions.rversion }}
-      biocversion: ${{ steps.info.set-versions.biocversion }}
+      Rversion: ${{ steps.set-versions.outputs.rversion }}
+      biocversion: ${{ steps.set-versions.outputs.biocversion }}
     steps:
       - id: get-versions
         name: Get Bioconductor/R versions
@@ -98,7 +98,6 @@ jobs:
         run: |
           install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
-          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
         shell: Rscript {0}
 
       - name: Cache R packages
