@@ -158,8 +158,8 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
 
     # Specifying which assays got skipped, if the skipping was variable.
     if (is.na(skip_assays)) {
-        int_metadata(output) <- list(skipped_x = skipped_x,
-            skipped_layers = skipped_layers)
+        int_metadata(output)$skipped_x <- skipped_x
+        int_metadata(output)$skipped_layers <- skipped_layers
     }
 
     output

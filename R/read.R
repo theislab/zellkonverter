@@ -72,14 +72,14 @@ readH5AD <- function(file, use_hdf5 = FALSE) {
             assay(output, "X", withDimnames = FALSE) <- HDF5Array::HDF5Array(
                 file, "X")
         }
+        int_metadata(output)$skipped_x <- NULL
 
         for (assay_name in int_metadata(output)$skipped_layers) {
             hdf5_layer <- HDF5Array::HDF5Array(file,
                                                file.path("layers", assay_name))
             assay(output, assay_name, withDimnames = FALSE) <- hdf5_layer
         }
-
-        int_metadata(output) <- list()
+        int_metadata(output)$skipped_layers <- NULL
     }
 
     output
