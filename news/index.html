@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9014</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9015</span>
       </span>
     </div>
 
@@ -120,6 +120,27 @@
     <div id="zellkonverter-development-version" class="section level1">
 <h1 class="page-header" data-toc-text="development version">
 <a href="#zellkonverter-development-version" class="anchor"></a>zellkonverter (development version)</h1>
+<div id="zellkonverter-0009015-2020-07-02" class="section level2">
+<h2 class="hasAnchor">
+<a href="#zellkonverter-0009015-2020-07-02" class="anchor"></a>zellkonverter 0.0.0.9015 (2020-07-02)</h2>
+<ul>
+<li>Skip <code>AnnData</code> matrices without a transposable R counterpart</li>
+<li>Only replace skipped matrices when <code>use_hdf5 = TRUE</code> in <code><a href="https://rdrr.io/pkg/zellkonverter/man/readH5AD.html">readH5AD()</a></code> (Fixes <a href='https://github.com/theislab/zellkonverter/issues/12'>#12</a>)</li>
+<li>Additional tests for sparse matrices</li>
+</ul>
+</div>
+<div id="zellkonverter-0009014-2020-06-30" class="section level2">
+<h2 class="hasAnchor">
+<a href="#zellkonverter-0009014-2020-06-30" class="anchor"></a>zellkonverter 0.0.0.9014 (2020-06-30)</h2>
+<ul>
+<li>Allow assay skipping when converting from <code>SingleCellExperiment</code> to <code>AnnData</code>
+</li>
+<li>Allow skipping of assays that aren’t <strong>numpy</strong> friendly in <code><a href="https://rdrr.io/pkg/zellkonverter/man/writeH5AD.html">writeH5AD()</a></code>
+</li>
+<li>Wait for <strong>basilisk</strong> process shutdown to release <code>.h5ad</code> file</li>
+<li>Updates to documentation and tests</li>
+</ul>
+</div>
 <div id="zellkonverter-0009013-2020-06-25" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009013-2020-06-25" class="anchor"></a>zellkonverter 0.0.0.9013 (2020-06-25)</h2>

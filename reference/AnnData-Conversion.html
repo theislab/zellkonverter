@@ -73,7 +73,7 @@ SingleCellExperiment objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9014</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9015</span>
       </span>
     </div>
 
@@ -172,11 +172,15 @@ Sparse matrices are converted to dgCMatrix objects while all
 other matrices are converted into ordinary matrices. If <code>skip_assays = TRUE</code>,
 empty sparse matrices are created instead and the user is expected to fill in
 the assays on the Python side.</p>
-<p>For <code>AnnData2SCE()</code>, an error is raised if there is no corresponding R format
-for a matrix in the AnnData object. If <code>skip_assays = TRUE</code>, no error is
-given and empty sparse matrices are created for each assay. The user is
-expected to fill in the assays on the R side, see <code>readH5AD()</code> for an
-example.</p>
+<p>For <code>AnnData2SCE()</code>, a warning is raised if there is no corresponding R format
+for a matrix in the AnnData object, and an empty sparse matrix is created
+instead as a placeholder. If <code>skip_assays = NA</code>, no warning is emitted
+but variables are created in the <code>int_metadata()</code> of the output to specify
+which assays were skipped.
+If <code>skip_assays = TRUE</code>, empty sparse matrices are created for all assays,
+regardless of whether they might be convertible to an R format or not.
+In both cases, the user is expected to fill in the assays on the R side,
+see <code>readH5AD()</code> for an example.</p>
 <p>We attempt to convert between items in the SingleCellExperiment
 <code>metadata()</code> slot and the <code>AnnData</code> <code>uns</code> slot. If an item cannot be
 converted a warning will be raised.</p>
@@ -227,7 +231,7 @@ information when converting from SingleCellExperiment to
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    colMaxs, colMins, colRanges, rowMaxs, rowMins, rowRanges</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    aperm, apply, rowsum</span></div><div class='input'><span class='kw'>seger</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scRNAseq/man/SegerstolpePancreasData.html'>SegerstolpePancreasData</a></span>()</div><div class='output co'>#&gt; <span class='message'>using temporary cache /tmp/RtmpebrRQr/BiocFileCache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-06-26</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
+#&gt; <span class='message'>    aperm, apply, rowsum</span></div><div class='input'><span class='kw'>seger</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scRNAseq/man/SegerstolpePancreasData.html'>SegerstolpePancreasData</a></span>()</div><div class='output co'>#&gt; <span class='message'>using temporary cache /tmp/RtmpSBTjWJ/BiocFileCache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-06-26</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='input'>
 <span class='co'># These functions are designed to be run inside</span>
 <span class='co'># a specified Python environment</span>
 <span class='kw'>roundtrip</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/basilisk/man/basiliskStart.html'>basiliskRun</a></span>(fun = <span class='fu'>function</span>(<span class='kw'>sce</span>) {
