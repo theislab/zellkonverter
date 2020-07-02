@@ -107,3 +107,9 @@ jobs:
           path: /home/runner/work/_temp/Library
           key: ${{ env.cache-version }}-${{ runner.os }}-biocdocker-bioc-${{ needs.get-bioc-version.outputs.biocversion }}-r-${{ needs.get-bioc-version.outputs.rversion }}-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ env.cache-version }}-${{ runner.os }}-biocdocker-bioc-${{ needs.get-bioc-version.outputs.biocversion }}-r-${{ needs.get-bioc-version.outputs.rversion }}-
+
+      - name: Install dependencies
+        run: |
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran("rcmdcheck")
+        shell: Rscript {0}
