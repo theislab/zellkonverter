@@ -68,13 +68,18 @@ readH5AD <- function(file, use_hdf5 = FALSE) {
             }
         }
 
-        assay(output, "X", withDimnames = FALSE) <- HDF5Array::HDF5Array(file,
-                                                                         "X")
-        for (assay_name in setdiff(assayNames(output), "X")) {
+        if (int_metadata(output)$skipped_x) {
+            assay(output, "X", withDimnames = FALSE) <- HDF5Array::HDF5Array(
+                file, "X")
+        }
+        int_metadata(output)$skipped_x <- NULL
+
+        for (assay_name in int_metadata(output)$skipped_layers) {
             hdf5_layer <- HDF5Array::HDF5Array(file,
                                                file.path("layers", assay_name))
             assay(output, assay_name, withDimnames = FALSE) <- hdf5_layer
         }
+        int_metadata(output)$skipped_layers <- NULL
     }
 
     output
@@ -84,5 +89,5 @@ readH5AD <- function(file, use_hdf5 = FALSE) {
 .H5ADreader <- function(file, backed = FALSE) {
     anndata <- import("anndata")
     adata <- anndata$read_h5ad(file, backed = backed)
-    AnnData2SCE(adata, skip_assays = backed)
+    AnnData2SCE(adata, skip_assays = if (backed) NA else FALSE)
 }

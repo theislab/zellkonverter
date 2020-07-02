@@ -49,11 +49,15 @@ other matrices are converted into ordinary matrices. If \code{skip_assays = TRUE
 empty sparse matrices are created instead and the user is expected to fill in
 the assays on the Python side.
 
-For \code{AnnData2SCE()}, an error is raised if there is no corresponding R format
-for a matrix in the AnnData object. If \code{skip_assays = TRUE}, no error is
-given and empty sparse matrices are created for each assay. The user is
-expected to fill in the assays on the R side, see \code{\link[=readH5AD]{readH5AD()}} for an
-example.
+For \code{AnnData2SCE()}, a warning is raised if there is no corresponding R format
+for a matrix in the AnnData object, and an empty sparse matrix is created
+instead as a placeholder. If \code{skip_assays = NA}, no warning is emitted
+but variables are created in the \code{\link[=int_metadata]{int_metadata()}} of the output to specify
+which assays were skipped.
+If \code{skip_assays = TRUE}, empty sparse matrices are created for all assays,
+regardless of whether they might be convertible to an R format or not.
+In both cases, the user is expected to fill in the assays on the R side,
+see \code{\link[=readH5AD]{readH5AD()}} for an example.
 
 We attempt to convert between items in the \linkS4class{SingleCellExperiment}
 \code{\link[=metadata]{metadata()}} slot and the \code{AnnData} \code{uns} slot. If an item cannot be

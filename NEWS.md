@@ -1,5 +1,19 @@
 # zellkonverter (development version)
 
+## zellkonverter 0.0.0.9015 (2020-07-02)
+
+* Skip `AnnData` matrices without a transposable R counterpart
+* Only replace skipped matrices when `use_hdf5 = TRUE` in `readH5AD()`
+  (Fixes #12)
+* Additional tests for sparse matrices
+
+## zellkonverter 0.0.0.9014 (2020-06-30)
+
+* Allow assay skipping when converting from `SingleCellExperiment` to `AnnData`
+* Allow skipping of assays that aren't **numpy** friendly in `writeH5AD()`
+* Wait for **basilisk** process shutdown to release `.h5ad` file
+* Updates to documentation and tests
+
 ## zellkonverter 0.0.0.9013 (2020-06-25)
 
 * Improve conversion between `SingleCellExperiment` and `AnnData` (See #8)

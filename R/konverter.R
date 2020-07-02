@@ -19,11 +19,15 @@
 #' empty sparse matrices are created instead and the user is expected to fill in
 #' the assays on the Python side.
 #'
-#' For `AnnData2SCE()`, an error is raised if there is no corresponding R format
-#' for a matrix in the AnnData object. If `skip_assays = TRUE`, no error is
-#' given and empty sparse matrices are created for each assay. The user is
-#' expected to fill in the assays on the R side, see [`readH5AD()`] for an
-#' example.
+#' For `AnnData2SCE()`, a warning is raised if there is no corresponding R format
+#' for a matrix in the AnnData object, and an empty sparse matrix is created 
+#' instead as a placeholder. If `skip_assays = NA`, no warning is emitted
+#' but variables are created in the [`int_metadata()`] of the output to specify
+#' which assays were skipped.
+#' If `skip_assays = TRUE`, empty sparse matrices are created for all assays,
+#' regardless of whether they might be convertible to an R format or not. 
+#' In both cases, the user is expected to fill in the assays on the R side, 
+#' see [`readH5AD()`] for an example. 
 #'
 #' We attempt to convert between items in the \linkS4class{SingleCellExperiment}
 #' [`metadata()`] slot and the `AnnData` `uns` slot. If an item cannot be
@@ -77,46 +81,42 @@ NULL
 #' instead.
 #'
 #' @export
-#' @importFrom Matrix t sparseMatrix
 #' @importFrom methods selectMethod is
-#' @importFrom S4Vectors DataFrame
+#' @importFrom S4Vectors DataFrame make_zero_col_DFrame
 #' @importFrom reticulate import_builtins
 AnnData2SCE <- function(adata, skip_assays = FALSE) {
     py_builtins <- import_builtins()
 
-    if (!skip_assays) {
-        x_mat <- adata$X
-        t_FUN <- selectMethod("t", signature = class(x_mat), optional = TRUE)
-        if (is.null(t_FUN)) {
-            stop("assay matrices do not support transposition")
-        }
-        x_mat <- t_FUN(x_mat)
-    } else {
-        dims <- unlist(adata$X$shape)
-        fake_mat <- sparseMatrix(
-            i    = integer(0),
-            j    = integer(0),
-            x    = numeric(0),
-            dims = rev(dims)
-        )
-        x_mat <- fake_mat
-    }
+    dims <- unlist(adata$shape)
+    dims <- rev(dims)
 
+    x_out <- .extract_or_skip_assay(
+        skip_assays = skip_assays, 
+        dims        = dims, 
+        mat         = adata$X, 
+        name        = "'X' matrix"
+    )
+
+    x_mat <- x_out$mat
     colnames(x_mat) <- adata$obs_names$to_list()
     rownames(x_mat) <- adata$var_names$to_list()
+    skipped_x <- x_out$skipped
 
     assays_list <- list(X = x_mat)
     layer_names <- names(py_builtins$dict(adata$layers))
+    skipped_layers <- character(0)
 
-    if (length(layer_names) > 0) {
-        for (layer_name in layer_names) {
-            if (!skip_assays) {
-                layer_mat <- t(adata$layers$get(layer_name))
-            } else {
-                layer_mat <- fake_mat
-            }
-            assays_list[[layer_name]] <- layer_mat
+    for (layer_name in layer_names) {
+        layer_out <- .extract_or_skip_assay(
+            skip_assays = skip_assays,
+            dims        = dims, 
+            mat         = adata$layers$get(layer_name), 
+            name        = sprintf("'%s' layer matrix", layer_name)
+        )
+        if (layer_out$skipped) {
+            skipped_layers <- c(skipped_layers, layer_name)
         }
+        assays_list[[layer_name]] <- layer_out$mat
     }
 
     uns_data <- adata$uns$data
@@ -124,7 +124,7 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
     meta_list <- list()
     for (item_name in names(uns_data)) {
         item <- uns_data[[item_name]]
-        if (!(is(item, "python.builtin.object"))) {
+        if (!is(item, "python.builtin.object")) {
             meta_list[[item_name]] <- item
         } else {
             warning("the '", item_name, "' item in 'uns' cannot be converted ",
@@ -132,21 +132,21 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
         }
     }
 
-    varp_list <- lapply(py_builtins$dict(adata$varp), function(v) {v$todense()})
-    obsp_list <- lapply(py_builtins$dict(adata$obsp), function(v) {v$todense()})
+    varp_list <- lapply(py_builtins$dict(adata$varp), function(v) v$todense())
+    obsp_list <- lapply(py_builtins$dict(adata$obsp), function(v) v$todense())
 
     row_data <- DataFrame(adata$var)
     varm_list <- py_builtins$dict(adata$varm)
     if (length(varm_list) > 0) {
         # Create an empty DataFrame with the correct number of rows
-        varm_df <- DataFrame(matrix(, nrow = adata$n_vars, ncol = 0))
+        varm_df <- make_zero_col_DFrame(adata$n_vars)
         for (varm_name in names(varm_list)) {
             varm_df[[varm_name]] <- varm_list[[varm_name]]
         }
         row_data$varm <- varm_df
     }
 
-    SingleCellExperiment(
+    output <- SingleCellExperiment(
         assays      = assays_list,
         rowData     = row_data,
         colData     = adata$obs,
@@ -154,6 +154,46 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
         metadata    = meta_list,
         rowPairs    = varp_list,
         colPairs    = obsp_list
+    )
+
+    # Specifying which assays got skipped, if the skipping was variable.
+    if (is.na(skip_assays)) {
+        int_metadata(output)$skipped_x <- skipped_x
+        int_metadata(output)$skipped_layers <- skipped_layers
+    }
+
+    output
+}
+
+#' @importFrom Matrix t
+.extract_or_skip_assay <- function(skip_assays, dims, mat, name) {
+    skipped <- FALSE
+
+    if (isTRUE(skip_assays)) {
+        # Value of 'mat' is never used so the promise never evaluates; thus,
+        # skip_assays=TRUE avoids any actual transfer of content from Python.
+        mat <- .make_fake_mat(dims)
+    } else {
+        mat <- try(t(mat), silent=TRUE)
+        if (is(mat, "try-error")) {
+            if (isFALSE(skip_assays)) {
+                warning(name, " does not support transposition and has been skipped")
+            }
+            mat <- .make_fake_mat(dims)
+            skipped <- TRUE
+        }
+    }
+
+    list(mat=mat, skipped=skipped)
+}
+
+#' @importFrom Matrix sparseMatrix
+.make_fake_mat <- function(dims) {
+    sparseMatrix(
+        i    = integer(0),
+        j    = integer(0),
+        x    = numeric(0),
+        dims = dims
     )
 }
 
@@ -164,6 +204,7 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
 #' AnnData object. If `NULL`, the first assay of `sce` will be used by default.
 #'
 #' @export
+#' @importFrom Matrix t
 #' @importFrom utils capture.output
 #' @importFrom S4Vectors metadata
 #' @importFrom reticulate import r_to_py
@@ -183,12 +224,7 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
         X <- t(assay(sce, X_name))
         X <- .makeNumpyFriendly(X)
     } else {
-        X <- fake_mat <- sparseMatrix(
-            i    = integer(0),
-            j    = integer(0),
-            x    = numeric(0),
-            dims = rev(dim(sce))
-        )
+        X <- fake_mat <- .make_fake_mat(rev(dim(sce)))
     }
     adata <- anndata$AnnData(X = X)
 
