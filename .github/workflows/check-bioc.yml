@@ -20,7 +20,6 @@ on:
       - actions
 
 jobs:
-  ## Use the GitHub repository branch name to find the Bioconductor version
   get-bioc-release:
     runs-on: ubuntu-latest
     outputs:
@@ -79,3 +78,36 @@ jobs:
           ## Store the information
           echo "::set-output name=biocversion::${biocversion}"
           echo "::set-output name=rversion::${rversion}"
+
+  R-CMD-check-bioc:
+    name: ubuntu-latest (r-biocdocker bioc-${{ needs.get-bioc-release.outputs.biocrelease }})
+    needs: [get-bioc-release, get-bioc-version]
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ needs.get-bioc-release.outputs.bioc-image }}
+      volumes:
+        - /home/runner/work/_temp/Library:/usr/local/lib/R/host-site-library
+    env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      TZ: UTC
+      NOT_CRAN: true
+    steps:
+      ## Related to https://github.com/rocker-org/rocker-versioned2/issues/52
+      - name: Install latest git
+        run: |
+          ## git version provided
+          git --version
+          ## to be able to install software properties
+          sudo apt-get update -y
+          ## to be able to use add-apt-repository
+          sudo apt-get install software-properties-common -y
+          ## to use stable releases of git that are already in a PPA at
+          ## https://launchpad.net/~git-core/+archive/ubuntu/candidate
+          sudo add-apt-repository ppa:git-core/candidate -y
+          ## Update
+          sudo apt-get update -y
+          ## Upgrade git and other tools
+          sudo apt-get upgrade -y
+          ## latest git version
+          git --version
+        shell: bash {0}
