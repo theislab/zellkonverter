@@ -55,8 +55,11 @@ jobs:
         run: |
           biocconfig <- "https://bioconductor.org/config.yaml"
           biocrelease <- ifelse(
-            grepl("${{ needs.get-bioc-release.outputs.biocrelease }}", "release"),
-            "release", "devel")
+            grepl("${{ needs.get-bioc-release.outputs.biocrelease }}",
+                  "release"),
+            "release",
+            "devel"
+          )
           biocmap <- BiocManager:::.version_map_get_online(biocconfig)
           biocversion <- subset(biocmap, BiocStatus == biocrelease)[, 'Bioc']
           rversion <- subset(biocmap, BiocStatus == biocrelease)[, 'R']
@@ -108,9 +111,21 @@ jobs:
           key: ${{ env.cache-version }}-${{ runner.os }}-biocdocker-bioc-${{ needs.get-bioc-version.outputs.biocversion }}-r-${{ needs.get-bioc-version.outputs.rversion }}-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ env.cache-version }}-${{ runner.os }}-biocdocker-bioc-${{ needs.get-bioc-version.outputs.biocversion }}-r-${{ needs.get-bioc-version.outputs.rversion }}-
 
+      - name: Install system dependencies
+        if: runner.os == 'Linux'
+        env:
+          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+        run: |
+          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          sudo -s eval "$sysreqs"
+
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
+          deps <- remotes::dev_package_deps(dependencies = TRUE,
+                                            repos = BiocManager::repositories())
+          remotes::install_cran(deps$package[deps$diff != 0])
           deps <- remotes::dev_package_deps(dependencies = TRUE,
                                             repos = BiocManager::repositories())
           BiocManager::install(deps$package[deps$diff != 0])
