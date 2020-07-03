@@ -1,7 +1,7 @@
 Package: zellkonverter
 Title: Conversion between scRNA-seq objects
-Version: 0.0.0.9015
-Date: 2020-07-02
+Version: 0.0.0.9016
+Date: 2020-07-03
 Authors@R: 
     c(person(given = "Luke",
              family = "Zappia",
@@ -29,6 +29,7 @@ Imports:
     DelayedArray,
     methods,
     S4Vectors,
+    scRNAseq,
     utils
 Suggests: 
     covr,
@@ -37,7 +38,6 @@ Suggests:
     knitr,
     rmarkdown,
     BiocStyle,
-    scRNAseq,
     HDF5Array,
     rhdf5
 URL: https://github.com/theislab/zellkonverter
