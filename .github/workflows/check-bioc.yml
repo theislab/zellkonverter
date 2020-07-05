@@ -22,7 +22,7 @@ on:
 jobs:
   R-CMD-check:
     runs-on: ubuntu-latest
-    container: bioconductor/bioconductor_docker:release_3_11
+    container: bioconductor/bioconductor_docker:RELEASE_3_11
     steps:
       - uses: actions/checkout@v2
 
