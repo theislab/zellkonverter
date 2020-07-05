@@ -49,14 +49,12 @@ jobs:
     outputs:
       Rversion: ${{ steps.set-versions.outputs.rversion }}
       biocversion: ${{ steps.set-versions.outputs.biocversion }}
-    env:
-      BIOC_RELEASE: ${{ needs.get-bioc-release.outputs.biocrelease }}
     steps:
       - id: get-versions
         name: Get Bioconductor/R versions
         run: |
           biocconfig <- "https://bioconductor.org/config.yaml"
-          biocrelease <- Sys.getenv("BIOC_RELEASE")
+          biocrelease <- "${{ needs.get-bioc-release.outputs.biocrelease }}"
           cat("Bioc release RAW: ", biocrelease, "\n")
           biocrelease <- ifelse(
             grepl(biocrelease, "release"),
@@ -67,7 +65,7 @@ jobs:
           rversion <- subset(biocmap, BiocStatus == biocrelease)[, 'R']
           writeLines(as.character(c(biocversion, rversion)),
                      "versions.txt")
-          cat("SET VERSIONS", "\n")
+          cat("GET VERSIONS", "\n")
           cat("Bioc release: ", biocrelease, "\n")
           cat("Bioc version: ", as.character(biocversion), "\n")
           cat("R version: ", as.character(rversion), "\n")
@@ -77,7 +75,7 @@ jobs:
         run: |
           biocversion=$(head -n 1 versions.txt)
           rversion=$(tail -n 1 versions.txt)
-          echo "GET VERSIONS"
+          echo "SET VERSIONS"
           echo "Bioc version: ${biocversion}"
           echo "R version: ${rversion}"
           ## Store the information
