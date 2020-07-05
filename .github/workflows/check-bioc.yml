@@ -58,7 +58,7 @@ jobs:
           cat("Bioc release RAW: ", biocrelease, "\n")
           biocrelease <- ifelse(
             grepl(biocrelease, "release"),
-            "release", "devel")
+            "release", "devel"
           )
           biocmap <- BiocManager:::.version_map_get_online(biocconfig)
           biocversion <- subset(biocmap, BiocStatus == biocrelease)[, 'Bioc']
