@@ -95,7 +95,7 @@ jobs:
 
       - name: Query dependencies
         run: |
-          install.packages('remotes')
+          install.packages("remotes")
           saveRDS(remotes::dev_package_deps(dependencies = TRUE),
                   ".github/depends.Rds", version = 2)
           writeLines(sprintf("R-%i.%i", getRversion()$major,
@@ -104,12 +104,12 @@ jobs:
         shell: Rscript {0}
 
       - name: Cache R packages
-        if: runner.os != 'Windows'
+        if: "!contains(github.event.head_commit.message, '/nocache')"
         uses: actions/cache@v1
         with:
-          path: /usr/local/lib/R/site-library
-          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
+          path: /home/runner/work/_temp/Library
+          key: ${{ env.cache-version }}-${{ runner.os }}-biocdocker-bioc-${{ needs.get-bioc-version.outputs.biocversion }}-r-${{ needs.get-bioc-version.outputs.rversion }}-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ env.cache-version }}-${{ runner.os }}-biocdocker-bioc-${{ needs.get-bioc-version.outputs.biocversion }}-r-${{ needs.get-bioc-version.outputs.rversion }}-
 
       - name: Install system dependencies
         if: runner.os == 'Linux'
