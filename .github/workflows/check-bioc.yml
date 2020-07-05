@@ -90,6 +90,9 @@ jobs:
       image: ${{ needs.get-bioc-release.outputs.biocimage }}
       volumes:
         - /home/runner/work/_temp/Library:/usr/local/lib/R/host-site-library
+    env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2
 
