@@ -158,7 +158,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Run covr
-        if: github.ref == 'refs/heads/master'
+        # if: github.ref == 'refs/heads/master'
         run: |
           remotes::install_cran("covr")
           covr::codecov()
@@ -168,7 +168,7 @@ jobs:
         run: R CMD INSTALL .
 
       - name: Deploy pkgdown
-        if: github.ref == 'refs/heads/master'
+        # if: github.ref == 'refs/heads/master'
         run: |
           remotes::install_dev("pkgdown")
           pkgdown::deploy_to_branch(new_process = FALSE)
