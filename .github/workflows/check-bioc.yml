@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       biocimage: ${{ steps.get-release.outputs.biocimage }}
-      biocversion: ${{ steps.get-release.outputs.biocrelease }}
+      biocrelease: ${{ steps.get-release.outputs.biocrelease }}
     steps:
       - id: get-release
         name: Get Bioconductor release
