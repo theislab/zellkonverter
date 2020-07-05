@@ -163,3 +163,13 @@ jobs:
           remotes::install_cran("covr")
           covr::codecov()
         shell: Rscript {0}
+
+      - name: Install package
+        run: R CMD INSTALL .
+
+      - name: Deploy pkgdown
+        if: github.ref == 'refs/heads/master'
+        run: |
+          remotes::install_dev("pkgdown")
+          pkgdown::deploy_to_branch(new_process = FALSE)
+        shell: Rscript {0}
