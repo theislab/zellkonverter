@@ -82,7 +82,7 @@ jobs:
           echo "::set-output name=biocversion::${biocversion}"
           echo "::set-output name=rversion::${rversion}"
 
-  R-CMD-check:
+  R-CMD-check-docker:
     name: ubuntu-latest (r-biocdocker bioc-${{ needs.get-bioc-version.outputs.biocversion }})
     needs: [get-bioc-release, get-bioc-version]
     runs-on: ubuntu-latest
@@ -145,7 +145,7 @@ jobs:
           )
         shell: Rscript {0}
 
-      - name: Show testthat results
+      - name: Show testthat output
         run: find . -name testthat.Rout -exec cat '{}' ';'
 
       - name: BiocCheck
@@ -172,8 +172,112 @@ jobs:
           name: ${{ runner.os }}-biocdocker-bioc-${{ needs.get-bioc-version.outputs.biocversion }}-r-${{ needs.get-bioc-version.outputs.rversion }}-results
           path: check
 
+  R-CMD-check:
+    name: ${{ matrix.config.os }} (r-${{ needs.get-bioc-version.outputs.rversion }} bioc-${{ needs.get-bioc-version.outputs.biocversion }})
+    needs: [get-bioc-release, get-bioc-version]
+    runs-on: ${{ matrix.config.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {os: windows-latest}
+          - {os: macOS-latest}
+          - {os: ubuntu-16.04, rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+
+    env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      RSPM: ${{ matrix.config.rspm }}
+      BIOCVERSION: ${{ needs.get-bioc-version.outputs.biocversionnum }}
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@master
+        with:
+          r-version: ${{ needs.get-bioc-version.outputs.rversion }}
+
+      - name: Setup Pandoc
+        uses: r-lib/actions/setup-pandoc@master
+
+      - name: Query dependencies
+        run: |
+          install.packages("remotes")
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE),
+                  ".github/depends.Rds", version = 2)
+          writeLines(sprintf("R-%i.%i", getRversion()$major,
+                             getRversion()$minor),
+                     ".github/R-version")
+        shell: Rscript {0}
+
+       - name: Cache R packages
+        if: "!contains(github.event.head_commit.message, '/nocache')"
+        uses: actions/cache@v1
+        with:
+          path: /home/runner/work/_temp/Library
+          key: ${{ env.cache-version }}-${{ runner.os }}-biocdocker-bioc-${{ needs.get-bioc-version.outputs.biocversion }}-r-${{ needs.get-bioc-version.outputs.rversion }}-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ env.cache-version }}-${{ runner.os }}-biocdocker-bioc-${{ needs.get-bioc-version.outputs.biocversion }}-r-${{ needs.get-bioc-version.outputs.rversion }}-
+
+      - name: Install Linux system dependencies
+        if: runner.os == 'Linux'
+        env:
+          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+        run: |
+          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          sudo -s eval "$sysreqs"
+
+      - name: Install dependencies
+        run: |
+          remotes::install_cran("BiocManager")
+          BiocManager::install(version = Sys.getenv("BIOCVERSION"), ask = FALSE)
+          remotes::install_deps(dependencies = TRUE,
+                                repos = BiocManager::repositories())
+          remotes::install_cran("rcmdcheck")
+        shell: Rscript {0}
+
+      - name: Session info
+        run: |
+          options(width = 100)
+          pkgs <- installed.packages()[, "Package"]
+          sessioninfo::session_info(pkgs, include_base = TRUE)
+        shell: Rscript {0}
+
+      - name: Check
+        env:
+          _R_CHECK_CRAN_INCOMING_REMOTE_: false
+        run: |
+          rcmdcheck::rcmdcheck(
+            args = c("--no-manual"),
+            error_on = "warning",
+            check_dir = "check"
+          )
+        shell: Rscript {0}
+
+      - name: Show testthat output
+        run: find . -name testthat.Rout -exec cat '{}' ';'
+
+      - name: BiocCheck
+        run: |
+          BiocManager::install("BiocCheck")
+          BiocCheck::BiocCheck(
+            dir('check', 'tar.gz$', full.names = TRUE),
+            `no-check-R-ver` = TRUE,
+            `no-check-bioc-help` = TRUE
+          )
+        shell: Rscript {0}
+
+      - name: Upload check results
+        if: failure()
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{ runner.os }}-bioc-${{ needs.get-bioc-version.outputs.biocversion }}-r-${{ needs.get-bioc-version.outputs.rversion }}-results
+          path: check
+
   pkgdown:
-    needs: [get-bioc-release, get-bioc-version, R-CMD-check]
+    needs: [get-bioc-release, get-bioc-version, R-CMD-check-docker]
     runs-on: ubuntu-latest
     container:
       image: ${{ needs.get-bioc-release.outputs.biocimage }}
