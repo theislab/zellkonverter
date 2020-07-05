@@ -49,12 +49,14 @@ jobs:
     outputs:
       Rversion: ${{ steps.set-versions.outputs.rversion }}
       biocversion: ${{ steps.set-versions.outputs.biocversion }}
+    env:
+      BIOC_RELEASE: ${{ needs.get-bioc-release.outputs.biocrelease }}
     steps:
       - id: get-versions
         name: Get Bioconductor/R versions
         run: |
           biocconfig <- "https://bioconductor.org/config.yaml"
-          biocrelease <- commandArgs(trailingOnly = TRUE)[1]
+          biocrelease <- Sys.getenv("BIOC_RELEASE")
           cat("Bioc release RAW: ", biocrelease, "\n")
           biocrelease <- ifelse(
             grepl(biocrelease, "release"),
@@ -69,7 +71,7 @@ jobs:
           cat("Bioc release: ", biocrelease, "\n")
           cat("Bioc version: ", as.character(biocversion), "\n")
           cat("R version: ", as.character(rversion), "\n")
-        shell: Rscript {0} ${{ needs.get-bioc-release.outputs.biocrelease }}
+        shell: Rscript {0}
       - id: set-versions
         name: Set Bioconductor/R versions
         run: |
