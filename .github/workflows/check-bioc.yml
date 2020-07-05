@@ -1,7 +1,7 @@
 ## This is a simplified action for building and testing a Bioconductor package
 ## based on https://github.com/lcolladotor/biocthis/blob/master/actions/check-bioc.yml
 ## and https://github.com/r-lib/actions/blob/master/examples/check-standard.yaml
-
+## https://github.com/seandavi/BuildABiocWorkshop2020/blob/master/.github/workflows/basic_checks.yaml
 name: R-CMD-check-bioc
 
 ## Specify which branches to run on
@@ -20,96 +20,29 @@ on:
       - actions
 
 jobs:
-  get-bioc-release:
+  R-CMD-check:
     runs-on: ubuntu-latest
-    outputs:
-      biocimage: ${{ steps.get-release.outputs.biocimage }}
-      biocversion: ${{ steps.get-release.outputs.biocrelease }}
-    steps:
-      - id: get-release
-        name: Get Bioconductor release
-        run: |
-          if echo "$GITHUB_REF" | grep -q "RELEASE_"; then
-              biocrelease="$(basename -- $GITHUB_REF | tr '[:upper:]' '[:lower:]')"
-          else
-              biocrelease="devel"
-          fi
-          biocimage="bioconductor/bioconductor_docker:${biocrelease}"
-          echo "Bioc release: ${biocrelease}"
-          echo "Bioc docker image: {$biocimage}"
-          ## Store the information
-          echo "::set-output name=biocimage::${biocimage}"
-          echo "::set-output name=biocrelease::${biocrelease}"
-
-  get-bioc-version:
-    runs-on: ubuntu-latest
-    needs: get-bioc-release
-    container:
-      image: ${{ needs.get-bioc-release.outputs.biocimage }}
-    outputs:
-      Rversion: ${{ steps.set-versions.outputs.rversion }}
-      biocversion: ${{ steps.set-versions.outputs.biocversion }}
-    steps:
-      - id: get-versions
-        name: Get Bioconductor/R versions
-        run: |
-          biocconfig <- "https://bioconductor.org/config.yaml"
-          biocrelease <- ifelse(
-            grepl("${{ needs.get-bioc-release.outputs.biocrelease }}",
-                  "release"),
-            "release",
-            "devel"
-          )
-          biocmap <- BiocManager:::.version_map_get_online(biocconfig)
-          biocversion <- subset(biocmap, BiocStatus == biocrelease)[, 'Bioc']
-          rversion <- subset(biocmap, BiocStatus == biocrelease)[, 'R']
-          writeLines(as.character(c(biocversion, rversion)),
-                     "versions.txt")
-          cat("SET VERSIONS", "\n")
-          cat("Bioc release: ", biocrelease, "\n")
-          cat("Bioc version: ", as.character(biocversion), "\n")
-          cat("R version: ", as.character(rversion), "\n")
-        shell: Rscript {0}
-      - id: set-versions
-        name: Set Bioconductor/R versions
-        run: |
-          biocversion=$(head -n 1 versions.txt)
-          rversion=$(tail -n 1 versions.txt)
-          echo "GET VERSIONS"
-          echo "Bioc version: ${biocversion}"
-          echo "R version: ${rversion}"
-          ## Store the information
-          echo "::set-output name=biocversion::${biocversion}"
-          echo "::set-output name=rversion::${rversion}"
-
-  R-CMD-check-bioc:
-    name: ubuntu-latest (r-biocdocker bioc-${{ needs.get-bioc-version.outputs.biocversion }})
-    needs: [get-bioc-release, get-bioc-version]
-    runs-on: ubuntu-latest
-    container:
-      image: ${{ needs.get-bioc-release.outputs.biocimage }}
-      volumes:
-        - /home/runner/work/_temp/Library:/usr/local/lib/R/host-site-library
-    env:
-      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      TZ: UTC
-      NOT_CRAN: true
+    container: bioconductor/bioconductor_docker:devel
     steps:
       - uses: actions/checkout@v2
 
       - name: Query dependencies
         run: |
           install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE),
+                  ".github/depends.Rds", version = 2)
+          writeLines(sprintf("R-%i.%i", getRversion()$major,
+                             getRversion()$minor),
+                     ".github/R-version")
         shell: Rscript {0}
 
       - name: Cache R packages
-        if: "!contains(github.event.head_commit.message, '/nocache')"
+        if: runner.os != 'Windows'
         uses: actions/cache@v1
         with:
-          path: /home/runner/work/_temp/Library
-          key: ${{ env.cache-version }}-${{ runner.os }}-biocdocker-bioc-${{ needs.get-bioc-version.outputs.biocversion }}-r-${{ needs.get-bioc-version.outputs.rversion }}-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ env.cache-version }}-${{ runner.os }}-biocdocker-bioc-${{ needs.get-bioc-version.outputs.biocversion }}-r-${{ needs.get-bioc-version.outputs.rversion }}-
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
       - name: Install system dependencies
         if: runner.os == 'Linux'
@@ -122,21 +55,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          remotes::install_deps(dependencies = TRUE)
-          deps <- remotes::dev_package_deps(dependencies = TRUE,
-                                            repos = BiocManager::repositories())
-          remotes::install_cran(deps$package[deps$diff != 0])
-          deps <- remotes::dev_package_deps(dependencies = TRUE,
-                                            repos = BiocManager::repositories())
-          BiocManager::install(deps$package[deps$diff != 0])
+          remotes::install_deps(dependencies = TRUE,
+                                repos = BiocManager::repositories())
           remotes::install_cran("rcmdcheck")
-        shell: Rscript {0}
-
-      - name: Installed packages
-        run: |
-          options(width = 100)
-          pkgs <- installed.packages()[, "Package"]
-          sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
 
       - name: Check
@@ -144,7 +65,7 @@ jobs:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
         run: |
           rcmdcheck::rcmdcheck(
-            args = c("--no-manual", "--as-cran"),
+            args = c("--no-manual"),
             error_on = "warning",
             check_dir = "check"
           )
