@@ -156,3 +156,10 @@ jobs:
             `no-check-bioc-help` = TRUE
           )
         shell: Rscript {0}
+
+      - name: Run covr
+        if: github.ref == 'refs/heads/master'
+        run: |
+          remotes::install_cran("covr")
+          covr::codecov()
+        shell: Rscript {0}
