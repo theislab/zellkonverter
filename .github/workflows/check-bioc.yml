@@ -150,6 +150,7 @@ jobs:
 
       - name: BiocCheck
         run: |
+          BiocManager::install("BiocCheck")
           BiocCheck::BiocCheck(
             dir('check', 'tar.gz$', full.names = TRUE),
             `no-check-R-ver` = TRUE,
