@@ -238,6 +238,9 @@ jobs:
           BiocManager::install(version = Sys.getenv("BIOCVERSION"), ask = FALSE)
           remotes::install_deps(dependencies = TRUE,
                                 repos = BiocManager::repositories())
+          deps <- remotes::dev_package_deps(dependencies = TRUE,
+                                            repos = BiocManager::repositories())
+          BiocManager::install(deps$package[deps$diff != 0])
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
