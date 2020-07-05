@@ -165,19 +165,57 @@ jobs:
           covr::codecov()
         shell: Rscript {0}
 
-      - name: Install package
-        run: R CMD INSTALL .
-
-      - name: Deploy pkgdown
-        # if: github.ref == 'refs/heads/master'
-        run: |
-          remotes::install_dev("pkgdown")
-          pkgdown::deploy_to_branch(new_process = FALSE)
-        shell: Rscript {0}
-
       - name: Upload check results
         if: failure()
         uses: actions/upload-artifact@master
         with:
           name: ${{ runner.os }}-biocdocker-bioc-${{ needs.get-bioc-version.outputs.biocversion }}-r-${{ needs.get-bioc-version.outputs.rversion }}-results
           path: check
+
+  pkgdown:
+    needs: [get-bioc-release, get-bioc-version, R-CMD-check]
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ needs.get-bioc-release.outputs.biocimage }}
+      volumes:
+        - /home/runner/work/_temp/Library:/usr/local/lib/R/host-site-library
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-r@master
+
+      - uses: r-lib/actions/setup-pandoc@master
+
+      - name: Query dependencies
+        run: |
+          install.packages("remotes")
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE),
+                  ".github/depends.Rds", version = 2)
+          writeLines(sprintf("R-%i.%i", getRversion()$major,
+                             getRversion()$minor),
+                     ".github/R-version")
+        shell: Rscript {0}
+
+     - name: Cache R packages
+        if: "!contains(github.event.head_commit.message, '/nocache')"
+        uses: actions/cache@v1
+        with:
+          path: /home/runner/work/_temp/Library
+          key: ${{ env.cache-version }}-${{ runner.os }}-biocdocker-bioc-${{ needs.get-bioc-version.outputs.biocversion }}-r-${{ needs.get-bioc-version.outputs.rversion }}-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ env.cache-version }}-${{ runner.os }}-biocdocker-bioc-${{ needs.get-bioc-version.outputs.biocversion }}-r-${{ needs.get-bioc-version.outputs.rversion }}-
+
+      - name: Install dependencies
+        run: |
+          remotes::install_deps(dependencies = TRUE,
+                                repos = BiocManager::repositories())
+          remotes::install_dev("pkgdown")
+        shell: Rscript {0}
+
+      - name: Install package
+        run: R CMD INSTALL .
+
+      - name: Deploy package
+        run: pkgdown::deploy_to_branch(new_process = FALSE)
+        shell: Rscript {0}
