@@ -145,5 +145,14 @@ jobs:
           )
         shell: Rscript {0}
 
-      - name: Show testthat details
+      - name: Show testthat results
         run: find . -name testthat.Rout -exec cat '{}' ';'
+
+      - name: BiocCheck
+        run: |
+          BiocCheck::BiocCheck(
+            dir('check', 'tar.gz$', full.names = TRUE),
+            `no-check-R-ver` = TRUE,
+            `no-check-bioc-help` = TRUE
+          )
+        shell: Rscript {0}
