@@ -321,7 +321,7 @@ jobs:
           remotes::install_deps(dependencies = TRUE,
                                 repos = BiocManager::repositories())
           remotes::install_dev("pkgdown",
-                               repos = "https://cloud.r-project.org/")
+                               cran_url = "https://cloud.r-project.org/")
         shell: Rscript {0}
 
       - name: Install package
