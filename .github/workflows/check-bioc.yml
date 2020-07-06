@@ -292,6 +292,19 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - name: Install latest git
+        run: |
+          echo "ORIGINAL GIT"
+          git --version
+          sudo apt-get update -y
+          sudo apt-get install software-properties-common -y
+          sudo add-apt-repository ppa:git-core/candidate -y
+          sudo apt-get update -y
+          sudo apt-get upgrade -y
+          echo "CURRENT GIT"
+          git --version
+        shell: bash {0}
+
       - uses: actions/checkout@v2
 
       - uses: r-lib/actions/setup-r@master
