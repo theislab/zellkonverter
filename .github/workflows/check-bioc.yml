@@ -313,11 +313,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup R
-        uses: r-lib/actions/setup-r@master
-
-      - name: Setup Pandoc
-        uses: r-lib/actions/setup-pandoc@master
+      # - name: Setup R
+      #   uses: r-lib/actions/setup-r@master
+      #
+      # - name: Setup Pandoc
+      #   uses: r-lib/actions/setup-pandoc@master
 
       - name: Query dependencies
         run: |
