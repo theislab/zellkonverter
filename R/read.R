@@ -39,14 +39,15 @@
 #' \linkS4class{SingleCellExperiment}.
 #'
 #' @export
+#' @importFrom basilisk basiliskRun getBasiliskShared 
 readH5AD <- function(file, use_hdf5 = FALSE) {
     file <- path.expand(file)
 
     # We set shared = !use_hdf5 because anndata opens a blocking r+ connection
-    # to the HDF5 file that is really hard to shut down via reticulate
-    output <- basilisk::basiliskRun(
+    # to the HDF5 file that is really hard to shut down via reticulate.
+    output <- basiliskRun(
         env    = anndata_env,
-        shared = !use_hdf5,
+        shared = if (!use_hdf5) getBasiliskShared() else FALSE,
         fun    = .H5ADreader,
         file   = file,
         backed = use_hdf5
@@ -59,20 +60,34 @@ readH5AD <- function(file, use_hdf5 = FALSE) {
                  "'use_hdf5 = TRUE'")
         }
 
-        assay(output, "X", withDimnames = FALSE) <- HDF5Array::HDF5Array(file,
-                                                                         "X")
-        for (assay_name in setdiff(assayNames(output), "X")) {
+        # Give the process some time to shut down properly and close the file
+        # handles on the Python side. 
+        for (i in 1:10) {
+            if (is(try(rhdf5::h5ls(file), silent=TRUE), "try-error")){ 
+                Sys.sleep(1)
+            }
+        }
+
+        if (int_metadata(output)$skipped_x) {
+            assay(output, "X", withDimnames = FALSE) <- HDF5Array::HDF5Array(
+                file, "X")
+        }
+        int_metadata(output)$skipped_x <- NULL
+
+        for (assay_name in int_metadata(output)$skipped_layers) {
             hdf5_layer <- HDF5Array::HDF5Array(file,
                                                file.path("layers", assay_name))
             assay(output, assay_name, withDimnames = FALSE) <- hdf5_layer
         }
+        int_metadata(output)$skipped_layers <- NULL
     }
 
     output
 }
 
+#' @importFrom reticulate import
 .H5ADreader <- function(file, backed = FALSE) {
-    anndata <- reticulate::import("anndata")
+    anndata <- import("anndata")
     adata <- anndata$read_h5ad(file, backed = backed)
-    AnnData2SCE(adata, skip_assays = backed)
+    AnnData2SCE(adata, skip_assays = if (backed) NA else FALSE)
 }

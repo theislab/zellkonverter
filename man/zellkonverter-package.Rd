@@ -6,9 +6,10 @@
 \alias{zellkonverter-package}
 \title{zellkonverter: Conversion between scRNA-seq objects}
 \description{
-Zellkonverter is a small package for converting between SingleCellExperiment
-    objects and alternative objects for storing single-cell RNA-sequencing data
-    (such as AnnData).
+Provides methods to convert AnnData Python objects to and from
+    SingleCellExperiment objects, as well as functions to read/write
+    H5AD files. This is intended for use by downstream Bioconductor 
+    packages that wrap Python methods for single-cell data analysis.
 }
 \seealso{
 Useful links:
