@@ -303,7 +303,11 @@ jobs:
           sudo apt-get upgrade -y
           echo "CURRENT GIT"
           git --version
+          git
         shell: bash {0}
+
+      - name: Configure git credentials
+        uses: OleksiyRudenko/gha-git-credentials@v1
 
       - uses: actions/checkout@v2
 
