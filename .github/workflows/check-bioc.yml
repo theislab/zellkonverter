@@ -308,18 +308,12 @@ jobs:
 
       - name: Set git credentials
         run: |
-          git config --global user.name "GitHub Actions User"
-          git config --global user.email "github-action@users.noreply.github.com"
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
         shell: bash {0}
 
       - name: Checkout
         uses: actions/checkout@v2
-
-      # - name: Setup R
-      #   uses: r-lib/actions/setup-r@master
-      #
-      # - name: Setup Pandoc
-      #   uses: r-lib/actions/setup-pandoc@master
 
       - name: Query dependencies
         run: |
