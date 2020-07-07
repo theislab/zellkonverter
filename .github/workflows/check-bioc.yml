@@ -324,6 +324,9 @@ jobs:
           git --version
         shell: bash {0}
 
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Set git credentials
         ## Assign commits to the GitHub Action user. This should happen
         ## automatically but doesn't (maybe because of Docker).
@@ -331,9 +334,6 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
         shell: bash {0}
-
-      - name: Checkout
-        uses: actions/checkout@v2
 
       - name: Query dependencies
         run: |
