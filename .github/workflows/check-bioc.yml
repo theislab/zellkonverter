@@ -306,8 +306,11 @@ jobs:
           git --version
         shell: bash {0}
 
-      - name: Configure git credentials
-        uses: OleksiyRudenko/gha-git-credentials@v1
+      - name: Set git credentials
+        run: |
+          git config --global user.name "GitHub Actions User"
+          git config --global user.email "github-action@users.noreply.github.com"
+        shell: bash {0}
 
       - name: Checkout
         uses: actions/checkout@v2
