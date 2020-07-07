@@ -163,7 +163,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Run covr
-        # if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         run: |
           remotes::install_cran("covr")
           covr::codecov()
@@ -284,6 +284,7 @@ jobs:
           path: check
 
   pkgdown:
+    if: github.ref == 'refs/heads/master'
     needs: [get-bioc-release, get-bioc-version, R-CMD-check-docker]
     runs-on: ubuntu-latest
     container:
