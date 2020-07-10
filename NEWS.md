@@ -1,5 +1,11 @@
 # zellkonverter (development version)
 
+## zellkonverter 0.0.0.9017 (2020-07-10)
+
+* Add biocViews to DESCRIPTION
+* Edit package description
+* Tidy code
+
 ## zellkonverter 0.0.0.9016 (2020-07-10)
 
 * Add check for **scRNAseq** in examples (Fixes #18)
