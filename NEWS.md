@@ -1,5 +1,9 @@
 # zellkonverter (development version)
 
+## zellkonverter 0.0.0.9016 (2020-07-10)
+
+* Add check for **scRNAseq** in examples (Fixes #18)
+
 ## zellkonverter 0.0.0.9015 (2020-07-02)
 
 * Skip `AnnData` matrices without a transposable R counterpart

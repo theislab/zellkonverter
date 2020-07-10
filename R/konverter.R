@@ -20,14 +20,14 @@
 #' the assays on the Python side.
 #'
 #' For `AnnData2SCE()`, a warning is raised if there is no corresponding R format
-#' for a matrix in the AnnData object, and an empty sparse matrix is created 
+#' for a matrix in the AnnData object, and an empty sparse matrix is created
 #' instead as a placeholder. If `skip_assays = NA`, no warning is emitted
 #' but variables are created in the [`int_metadata()`] of the output to specify
 #' which assays were skipped.
 #' If `skip_assays = TRUE`, empty sparse matrices are created for all assays,
-#' regardless of whether they might be convertible to an R format or not. 
-#' In both cases, the user is expected to fill in the assays on the R side, 
-#' see [`readH5AD()`] for an example. 
+#' regardless of whether they might be convertible to an R format or not.
+#' In both cases, the user is expected to fill in the assays on the R side,
+#' see [`readH5AD()`] for an example.
 #'
 #' We attempt to convert between items in the \linkS4class{SingleCellExperiment}
 #' [`metadata()`] slot and the `AnnData` `uns` slot. If an item cannot be
@@ -52,22 +52,24 @@
 #' [`writeH5AD()`] and [`readH5AD()`] for dealing directly with H5AD files.
 #'
 #' @examples
-#' library(basilisk)
-#' library(scRNAseq)
-#' seger <- SegerstolpePancreasData()
+#' if (requireNamespace("scRNAseq", quietly = TRUE)) {
+#'     library(basilisk)
+#'     library(scRNAseq)
+#'     seger <- SegerstolpePancreasData()
 #'
-#' # These functions are designed to be run inside
-#' # a specified Python environment
-#' roundtrip <- basiliskRun(fun = function(sce) {
-#'      # Convert SCE to AnnData:
-#'      adata <- SCE2AnnData(sce)
+#'     # These functions are designed to be run inside
+#'     # a specified Python environment
+#'     roundtrip <- basiliskRun(fun = function(sce) {
+#'         # Convert SCE to AnnData:
+#'         adata <- SCE2AnnData(sce)
 #'
-#'      # Maybe do some work in Python on 'adata':
-#'      # BLAH BLAH BLAH
+#'         # Maybe do some work in Python on 'adata':
+#'         # BLAH BLAH BLAH
 #'
-#'      # Convert back to an SCE:
-#'      AnnData2SCE(adata)
-#' }, env = zellkonverter:::anndata_env, sce = seger)
+#'         # Convert back to an SCE:
+#'         AnnData2SCE(adata)
+#'     }, env = zellkonverter:::anndata_env, sce = seger)
+#' }
 #'
 #' @name AnnData-Conversion
 #' @rdname AnnData-Conversion
@@ -91,9 +93,9 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
     dims <- rev(dims)
 
     x_out <- .extract_or_skip_assay(
-        skip_assays = skip_assays, 
-        dims        = dims, 
-        mat         = adata$X, 
+        skip_assays = skip_assays,
+        dims        = dims,
+        mat         = adata$X,
         name        = "'X' matrix"
     )
 
@@ -109,8 +111,8 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
     for (layer_name in layer_names) {
         layer_out <- .extract_or_skip_assay(
             skip_assays = skip_assays,
-            dims        = dims, 
-            mat         = adata$layers$get(layer_name), 
+            dims        = dims,
+            mat         = adata$layers$get(layer_name),
             name        = sprintf("'%s' layer matrix", layer_name)
         )
         if (layer_out$skipped) {

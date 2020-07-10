@@ -32,12 +32,14 @@
 #'
 #' @examples
 #' # Using the Zeisel brain dataset
-#' library(scRNAseq)
-#' sce <- ZeiselBrainData()
+#' if (requireNamespace("scRNAseq", quietly = TRUE)) {
+#'     library(scRNAseq)
+#'     sce <- ZeiselBrainData()
 #'
-#' # Writing to a H5AD file
-#' temp <- tempfile(fileext = '.h5ad')
-#' writeH5AD(sce, temp)
+#'     # Writing to a H5AD file
+#'     temp <- tempfile(fileext = '.h5ad')
+#'     writeH5AD(sce, temp)
+#' }
 #'
 #' @export
 #' @importFrom basilisk basiliskRun

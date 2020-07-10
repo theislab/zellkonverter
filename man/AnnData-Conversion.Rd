@@ -70,22 +70,24 @@ information when converting from \linkS4class{SingleCellExperiment} to
 \code{AnnData}.
 }
 \examples{
-library(basilisk)
-library(scRNAseq)
-seger <- SegerstolpePancreasData()
+if (requireNamespace("scRNAseq", quietly = TRUE)) {
+    library(basilisk)
+    library(scRNAseq)
+    seger <- SegerstolpePancreasData()
 
-# These functions are designed to be run inside
-# a specified Python environment
-roundtrip <- basiliskRun(fun = function(sce) {
-     # Convert SCE to AnnData:
-     adata <- SCE2AnnData(sce)
+    # These functions are designed to be run inside
+    # a specified Python environment
+    roundtrip <- basiliskRun(fun = function(sce) {
+        # Convert SCE to AnnData:
+        adata <- SCE2AnnData(sce)
 
-     # Maybe do some work in Python on 'adata':
-     # BLAH BLAH BLAH
+        # Maybe do some work in Python on 'adata':
+        # BLAH BLAH BLAH
 
-     # Convert back to an SCE:
-     AnnData2SCE(adata)
-}, env = zellkonverter:::anndata_env, sce = seger)
+        # Convert back to an SCE:
+        AnnData2SCE(adata)
+    }, env = zellkonverter:::anndata_env, sce = seger)
+}
 
 }
 \seealso{
