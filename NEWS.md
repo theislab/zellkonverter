@@ -5,6 +5,7 @@
 * Add biocViews to DESCRIPTION
 * Edit package description
 * Tidy code
+* Replace 1:... with `seq_len()`
 
 ## zellkonverter 0.0.0.9016 (2020-07-10)
 
