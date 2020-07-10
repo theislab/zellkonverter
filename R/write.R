@@ -45,7 +45,11 @@
 #' @importFrom basilisk basiliskRun
 writeH5AD <- function(sce, file, skip_assays = FALSE) {
     file <- path.expand(file)
-    basiliskRun(env = anndata_env, fun = .H5ADwriter, sce = sce, file = file, skip_assays = skip_assays)
+    basiliskRun(
+        env = anndata_env,
+        fun = .H5ADwriter,
+        sce = sce, file = file, skip_assays = skip_assays
+    )
     invisible(NULL)
 }
 
