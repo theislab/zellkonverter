@@ -1,4 +1,10 @@
-# zellkonverter (development version)
+# zellkonverter 1.0 (Bioconductor 3.12)
+
+## zellkonverter 0.99.0 (2020-07-10)
+
+* Initial Biocoductor submission
+
+# zellkonverter (early development version)
 
 ## zellkonverter 0.0.0.9017 (2020-07-10)
 
