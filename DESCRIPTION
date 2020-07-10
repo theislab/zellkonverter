@@ -18,7 +18,8 @@ Description:
     Provides methods to convert AnnData Python objects to and from
     SingleCellExperiment objects, as well as functions to read/write
     H5AD files. This is intended for use by downstream Bioconductor 
-    packages that wrap Python methods for single-cell data analysis. 
+    packages that wrap Python methods for single-cell data analysis.
+biocViews: SingleCell, DataImport, DataRepresentation
 License: MIT + file LICENSE
 Imports: 
     Matrix,
