@@ -41,7 +41,8 @@ typically inside a \strong{basilisk} context.
 The conversion is not entirely lossless. The current mapping is shown below
 (also at \url{https://tinyurl.com/AnnData2SCE}):
 
-\figure{AnnData2SCE.png}{options: width=800}
+\if{html}{\figure{AnnData2SCE.png}{options: width=800, alt="SCE-AnnData map"}}
+\if{latex}{\figure{AnnData2SCE.png}{options: width=5in}}
 
 In \code{SCE2AnnData()}, matrices are converted to a \strong{numpy}-friendly format.
 Sparse matrices are converted to \linkS4class{dgCMatrix} objects while all
