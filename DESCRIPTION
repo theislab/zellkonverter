@@ -1,7 +1,7 @@
 Package: zellkonverter
-Title: Conversion between scRNA-seq objects
-Version: 0.99.0
-Date: 2020-07-10
+Title: Conversion Between scRNA-seq Objects
+Version: 0.99.1
+Date: 2020-07-15
 Authors@R: 
     c(person(given = "Luke",
              family = "Zappia",
@@ -15,11 +15,11 @@ Authors@R:
              comment = c(ORCID = "0000-0002-3564-4813"))
     )
 Description:
-    The zellkonverter package provides methods to convert between Python AnnData
-    objects and SingleCellExperiment objects. These are primarily intended for
-    use by downstream Bioconductor  packages that wrap Python methods for
-    single-cell data analysis. It also includes functions to read and write
-    H5AD files used for saving AnnData objects to disk. 
+    Provides methods to convert between Python AnnData objects and
+    SingleCellExperiment objects. These are primarily intended for use by
+    downstream Bioconductor packages that wrap Python methods for single-cell
+    data analysis. It also includes functions to read and write H5AD files used
+    for saving AnnData objects to disk. 
 biocViews: SingleCell, DataImport, DataRepresentation
 License: MIT + file LICENSE
 Imports: 
