@@ -1,5 +1,10 @@
 # zellkonverter 1.0 (Bioconductor 3.12)
 
+## zellkonverter 0.99.3 (2020-08-21)
+
+* Document the `krumsiek11.h5ad` file
+* Remove the `internal` keyword from the `zellkonverter-package` documentation
+
 ## zellkonverter 0.99.2 (2020-08-21)
 
 * Update `.gitignore`
