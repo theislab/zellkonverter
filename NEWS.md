@@ -1,5 +1,9 @@
 # zellkonverter 1.0 (Bioconductor 3.12)
 
+## zellkonverter 0.99.2 (2020-08-21)
+
+* Update `.gitignore`
+
 ## zellkonverter 0.99.1 (2020-07-15)
 
 * Fix SCE to AnnData map figure in PDF manual
@@ -9,7 +13,7 @@
 
 ## zellkonverter 0.99.0 (2020-07-10)
 
-* Initial Biocoductor submission
+* Initial Bioconductor submission
 
 # zellkonverter (early development version)
 
