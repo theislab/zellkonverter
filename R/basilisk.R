@@ -24,7 +24,7 @@
 #' @export
 #' @name AnnDataDependencies
 .AnnDataDependencies <- c(
-    "anndata==0.7.3",
+    "anndata==0.7.4",
     "h5py==2.10.0",
     "hdf5==1.10.5",
     "natsort==7.0.1",
