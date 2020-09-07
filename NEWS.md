@@ -1,5 +1,9 @@
 # zellkonverter 1.0 (Bioconductor 3.12)
 
+## zellkonverter 0.99.4 (2020-08-28)
+
+* Bump anndata version to 0.7.4
+
 ## zellkonverter 0.99.3 (2020-08-21)
 
 * Document the `krumsiek11.h5ad` file
