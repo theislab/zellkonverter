@@ -1,4 +1,10 @@
-# zellkonverter 1.0 (Bioconductor 3.12)
+# zellkonverter 1.0
+
+* Bioconductor 3.12, October 2020
+
+## zellkonverter 0.99.5 (2020-09-28)
+
+* Tidy NEWS files for Bioconductor release
 
 ## zellkonverter 0.99.4 (2020-08-28)
 
@@ -24,7 +30,7 @@
 
 * Initial Bioconductor submission
 
-# zellkonverter (early development version)
+# zellkonverter 0.0.0 (early development version)
 
 ## zellkonverter 0.0.0.9017 (2020-07-10)
 
