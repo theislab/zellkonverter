@@ -131,12 +131,14 @@ jobs:
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
+          # Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          # sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          # echo "$sysreqs"
+          # sudo -s eval "$sysreqs"
           sudo apt-get -y update
-          apt-get install python2-minimal
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          echo "$sysreqs"
-          sudo -s eval "$sysreqs"
+          apt-get install -y pandoc
+          apt-get install -y pandoc-citeproc
+          apt-get install -y devscripts
 
       - name: Install dependencies
         run: |
