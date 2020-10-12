@@ -2,6 +2,11 @@
 
 * Bioconductor 3.12, October 2020
 
+## zellkonverter 0.99.6 (2020-10-12)
+
+* Document character to factor coercion in `writeH5ad()` (Fixes #6)
+* Add `X_name` argument to `writeH5AD()` (Fixes #23)
+
 ## zellkonverter 0.99.5 (2020-09-28)
 
 * Tidy NEWS files for Bioconductor release

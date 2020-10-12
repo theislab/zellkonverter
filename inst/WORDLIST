@@ -1,11 +1,15 @@
 anndata
 AnnData
+BiocManager
+biocViews
 Codecov
 conda
 HDF
 Lifecycle
 numpy
 ORCID
+pkgdown
+SCE
 scRNA
 scRNAseq
 seq
