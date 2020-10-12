@@ -63,6 +63,15 @@ test_that("writeH5AD works with assay skipping", {
     expect_identical(sum(out), 0) # it's empty!
 })
 
+test_that("writeH5AD works with X_name", {
+    temp <- tempfile(fileext = '.h5ad')
+    writeH5AD(sce, temp, X_name = "counts")
+    expect_true(file.exists(temp))
+
+    out <- readH5AD(temp)
+    expect_equal(assay(out, "X"), assay(sce, "counts"))
+})
+
 test_that("writeH5AD works in a separate process", {
     oldshare <- basilisk::getBasiliskShared()
     basilisk::setBasiliskShared(FALSE)

@@ -4,6 +4,8 @@
 #'
 #' @param sce A \linkS4class{SingleCellExperiment} object.
 #' @param file String containing a path to write the new `.h5ad` file.
+#' @param X_name Name of the assay to use as the primary matrix (`X`) of the
+#' AnnData object. If `NULL`, the first assay of `sce` will be used by default.
 #' @param skip_assays Logical scalar indicating whether assay matrices should
 #' be ignored when writing to `file`.
 #'
@@ -42,25 +44,25 @@
 #'     sce <- ZeiselBrainData()
 #'
 #'     # Writing to a H5AD file
-#'     temp <- tempfile(fileext = '.h5ad')
+#'     temp <- tempfile(fileext = ".h5ad")
 #'     writeH5AD(sce, temp)
 #' }
 #'
 #' @export
 #' @importFrom basilisk basiliskRun
-writeH5AD <- function(sce, file, skip_assays = FALSE) {
+writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
     file <- path.expand(file)
     basiliskRun(
         env = anndata_env,
         fun = .H5ADwriter,
-        sce = sce, file = file, skip_assays = skip_assays
+        sce = sce, file = file, X_name = X_name, skip_assays = skip_assays
     )
     invisible(NULL)
 }
 
 #' @importFrom reticulate import
-.H5ADwriter <- function(sce, file, skip_assays) {
+.H5ADwriter <- function(sce, file, X_name, skip_assays) {
     anndata <- import("anndata")
-    adata <- SCE2AnnData(sce, skip_assays = skip_assays)
+    adata <- SCE2AnnData(sce, X_name = X_name, skip_assays = skip_assays)
     adata$write_h5ad(file)
 }
