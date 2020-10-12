@@ -78,7 +78,6 @@ jobs:
           cat("Bioc version: ", as.character(biocversion), "\n")
           cat("R version: ", as.character(rversion), "\n")
         shell: Rscript {0}
-
       - id: set-versions
         name: Set Bioconductor/R versions
         run: |

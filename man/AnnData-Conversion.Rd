@@ -41,7 +41,8 @@ typically inside a \strong{basilisk} context.
 The conversion is not entirely lossless. The current mapping is shown below
 (also at \url{https://tinyurl.com/AnnData2SCE}):
 
-\figure{AnnData2SCE.png}{options: width=800}
+\if{html}{\figure{AnnData2SCE.png}{options: width=800, alt="SCE-AnnData map"}}
+\if{latex}{\figure{AnnData2SCE.png}{options: width=5in}}
 
 In \code{SCE2AnnData()}, matrices are converted to a \strong{numpy}-friendly format.
 Sparse matrices are converted to \linkS4class{dgCMatrix} objects while all
@@ -70,22 +71,24 @@ information when converting from \linkS4class{SingleCellExperiment} to
 \code{AnnData}.
 }
 \examples{
-library(basilisk)
-library(scRNAseq)
-seger <- SegerstolpePancreasData()
+if (requireNamespace("scRNAseq", quietly = TRUE)) {
+    library(basilisk)
+    library(scRNAseq)
+    seger <- SegerstolpePancreasData()
 
-# These functions are designed to be run inside
-# a specified Python environment
-roundtrip <- basiliskRun(fun = function(sce) {
-     # Convert SCE to AnnData:
-     adata <- SCE2AnnData(sce)
+    # These functions are designed to be run inside
+    # a specified Python environment
+    roundtrip <- basiliskRun(fun = function(sce) {
+        # Convert SCE to AnnData:
+        adata <- SCE2AnnData(sce)
 
-     # Maybe do some work in Python on 'adata':
-     # BLAH BLAH BLAH
+        # Maybe do some work in Python on 'adata':
+        # BLAH BLAH BLAH
 
-     # Convert back to an SCE:
-     AnnData2SCE(adata)
-}, env = zellkonverter:::anndata_env, sce = seger)
+        # Convert back to an SCE:
+        AnnData2SCE(adata)
+    }, env = zellkonverter:::anndata_env, sce = seger)
+}
 
 }
 \seealso{

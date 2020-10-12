@@ -39,7 +39,7 @@
 #' \linkS4class{SingleCellExperiment}.
 #'
 #' @export
-#' @importFrom basilisk basiliskRun getBasiliskShared 
+#' @importFrom basilisk basiliskRun getBasiliskShared
 readH5AD <- function(file, use_hdf5 = FALSE) {
     file <- path.expand(file)
 
@@ -61,9 +61,9 @@ readH5AD <- function(file, use_hdf5 = FALSE) {
         }
 
         # Give the process some time to shut down properly and close the file
-        # handles on the Python side. 
-        for (i in 1:10) {
-            if (is(try(rhdf5::h5ls(file), silent=TRUE), "try-error")){ 
+        # handles on the Python side.
+        for (i in seq_len(10)) {
+            if (is(try(rhdf5::h5ls(file), silent = TRUE), "try-error")){
                 Sys.sleep(1)
             }
         }
