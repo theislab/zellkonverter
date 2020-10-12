@@ -72,19 +72,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9015</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.5</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/zellkonverter.html">Get started</a>
 </li>
 <li>
@@ -123,7 +117,7 @@
     <p>Reads a H5AD file and returns a SingleCellExperiment object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>readH5AD</span>(<span class='kw'>file</span>, use_hdf5 = <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>readH5AD</span><span class='op'>(</span><span class='va'>file</span>, use_hdf5 <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -153,9 +147,9 @@ any subsequent run or if any other <strong>zellkonverter</strong> function has b
 prior to this one.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>writeH5AD()</code>, to write a SingleCellExperiment object to a
+    <div class='dont-index'><p><code><a href='writeH5AD.html'>writeH5AD()</a></code>, to write a SingleCellExperiment object to a
 H5AD file.</p>
-<p><code>AnnData2SCE()</code>, for developers to convert existing AnnData instances to a
+<p><code><a href='AnnData-Conversion.html'>AnnData2SCE()</a></code>, for developers to convert existing AnnData instances to a
 SingleCellExperiment.</p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
@@ -163,15 +157,18 @@ SingleCellExperiment.</p></div>
 <p>Aaron Lun</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>SummarizedExperiment</span>)
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>SummarizedExperiment</span><span class='op'>)</span>
 
-<span class='kw'>file</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"krumsiek11.h5ad"</span>, package = <span class='st'>"zellkonverter"</span>)
-<span class='kw'>sce</span> <span class='op'>&lt;-</span> <span class='fu'>readH5AD</span>(<span class='kw'>file</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a></span>(<span class='kw'>sce</span>))</div><div class='output co'>#&gt; [1] "matrix" "array" </div><div class='input'>
-<span class='kw'>sce2</span> <span class='op'>&lt;-</span> <span class='fu'>readH5AD</span>(<span class='kw'>file</span>, use_hdf5 = <span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a></span>(<span class='kw'>sce2</span>))</div><div class='output co'>#&gt; [1] "DelayedMatrix"
+<span class='va'>file</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"krumsiek11.h5ad"</span>, package <span class='op'>=</span> <span class='st'>"zellkonverter"</span><span class='op'>)</span>
+<span class='va'>sce</span> <span class='op'>&lt;-</span> <span class='fu'>readH5AD</span><span class='op'>(</span><span class='va'>file</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a></span><span class='op'>(</span><span class='va'>sce</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "matrix" "array" </div><div class='input'>
+<span class='va'>sce2</span> <span class='op'>&lt;-</span> <span class='fu'>readH5AD</span><span class='op'>(</span><span class='va'>file</span>, use_hdf5 <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a></span><span class='op'>(</span><span class='va'>sce2</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "DelayedMatrix"
 #&gt; attr(,"package")
-#&gt; [1] "DelayedArray"</div><div class='input'></div></pre>
+#&gt; [1] "DelayedArray"</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -187,7 +184,7 @@ SingleCellExperiment.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

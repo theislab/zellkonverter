@@ -31,18 +31,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9015</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.5</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/zellkonverter.html">Get started</a>
 </li>
@@ -90,7 +84,6 @@
 
     
     
-<pre><code>## Warning: package 'knitr' was built under R version 4.0.2</code></pre>
 <div id="overview" class="section level1">
 <h1 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h1>
@@ -100,14 +93,13 @@
 <h1 class="hasAnchor">
 <a href="#reading-and-writing-h5ad-files" class="anchor"></a>Reading and writing H5AD files</h1>
 <p>The <code><a href="../reference/readH5AD.html">readH5AD()</a></code> function can be used to read a <code>SingleCellExperiment</code> from a H5AD file. This can be manipulated in the usual way as described in the <em><a href="https://bioconductor.org/packages/3.12/SingleCellExperiment">SingleCellExperiment</a></em> documentation.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/theislab/zellkonverter">zellkonverter</a></span>)
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/theislab/zellkonverter">zellkonverter</a></span><span class="op">)</span>
 
 <span class="co"># Obtaining an example H5AD file.</span>
-<span class="kw">example_h5ad</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"krumsiek11.h5ad"</span>,
-                            package = <span class="st">"zellkonverter"</span>)
-<span class="fu"><a href="../reference/readH5AD.html">readH5AD</a></span>(<span class="kw">example_h5ad</span>)
-</pre></div>
+<span class="va">example_h5ad</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"krumsiek11.h5ad"</span>,
+                            package <span class="op">=</span> <span class="st">"zellkonverter"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/readH5AD.html">readH5AD</a></span><span class="op">(</span><span class="va">example_h5ad</span><span class="op">)</span></pre></div>
 <pre><code>## class: SingleCellExperiment 
 ## dim: 11 640 
 ## metadata(2): highlights iroot
@@ -119,54 +111,50 @@
 ## reducedDimNames(0):
 ## altExpNames(0):</code></pre>
 <p>We can also write a <code>SingleCellExperiment</code> to a H5AD file with the <code><a href="../reference/writeH5AD.html">writeH5AD()</a></code> function. This is demonstrated below on the classic Zeisel mouse brain dataset from the <em><a href="https://bioconductor.org/packages/3.12/scRNAseq">scRNAseq</a></em> package. The resulting file can then be directly used in compatible Python-based analysis frameworks.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">scRNAseq</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">scRNAseq</span><span class="op">)</span>
 
-<span class="kw">sce_zeisel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scRNAseq/man/ZeiselBrainData.html">ZeiselBrainData</a></span>()
-<span class="kw">out_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>(pattern = <span class="st">".h5ad"</span>)
-<span class="fu"><a href="../reference/writeH5AD.html">writeH5AD</a></span>(<span class="kw">sce_zeisel</span>, file = <span class="kw">out_path</span>)
-</pre></div>
+<span class="va">sce_zeisel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scRNAseq/man/ZeiselBrainData.html">ZeiselBrainData</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">out_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">".h5ad"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/writeH5AD.html">writeH5AD</a></span><span class="op">(</span><span class="va">sce_zeisel</span>, file <span class="op">=</span> <span class="va">out_path</span><span class="op">)</span></pre></div>
 </div>
 <div id="converting-between-singlecellexperiment-and-anndata-objects" class="section level1">
 <h1 class="hasAnchor">
 <a href="#converting-between-singlecellexperiment-and-anndata-objects" class="anchor"></a>Converting between <code>SingleCellExperiment</code> and <code>AnnData</code> objects</h1>
 <p>Developers and power users who control their Python environments can directly convert between <code>SingleCellExperiment</code> and <a href="https://anndata.readthedocs.io/en/stable/"><code>AnnData</code> objects</a> using the <code><a href="../reference/AnnData-Conversion.html">SCE2AnnData()</a></code> and <code><a href="../reference/AnnData-Conversion.html">AnnData2SCE()</a></code> utilities. These functions expect that <em><a href="https://CRAN.R-project.org/package=reticulate">reticulate</a></em> has already been loaded along with an appropriate version of the <a href="https://pypi.org/project/anndata/"><em>anndata</em></a> package. We suggest using the <em><a href="https://bioconductor.org/packages/3.12/basilisk">basilisk</a></em> package to set up the Python environment before using these functions.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">basilisk</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">scRNAseq</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">basilisk</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">scRNAseq</span><span class="op">)</span>
 
-<span class="kw">seger</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scRNAseq/man/SegerstolpePancreasData.html">SegerstolpePancreasData</a></span>()
-<span class="kw">roundtrip</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/basilisk/man/basiliskStart.html">basiliskRun</a></span>(fun = <span class="fu">function</span>(<span class="kw">sce</span>) {
+<span class="va">seger</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scRNAseq/man/SegerstolpePancreasData.html">SegerstolpePancreasData</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">roundtrip</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/basilisk/man/basiliskStart.html">basiliskRun</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">sce</span><span class="op">)</span> <span class="op">{</span>
      <span class="co"># Convert SCE to AnnData:</span>
-     <span class="kw">adata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/AnnData-Conversion.html">SCE2AnnData</a></span>(<span class="kw">sce</span>)
+     <span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/AnnData-Conversion.html">SCE2AnnData</a></span><span class="op">(</span><span class="va">sce</span><span class="op">)</span>
 
      <span class="co"># Maybe do some work in Python on 'adata':</span>
      <span class="co"># BLAH BLAH BLAH</span>
 
      <span class="co"># Convert back to an SCE:</span>
-     <span class="fu"><a href="../reference/AnnData-Conversion.html">AnnData2SCE</a></span>(<span class="kw">adata</span>)
-}, env = <span class="kw">zellkonverter</span>:::<span class="kw">anndata_env</span>, sce = <span class="kw">seger</span>)
-</pre></div>
+     <span class="fu"><a href="../reference/AnnData-Conversion.html">AnnData2SCE</a></span><span class="op">(</span><span class="va">adata</span><span class="op">)</span>
+<span class="op">}</span>, env <span class="op">=</span> <span class="fu">zellkonverter</span><span class="fu">:::</span><span class="va">anndata_env</span>, sce <span class="op">=</span> <span class="va">seger</span><span class="op">)</span></pre></div>
 <p>Package developers can guarantee that they are using the same versions of Python packages as <em><a href="https://bioconductor.org/packages/3.12/zellkonverter">zellkonverter</a></em> by using the <code>.AnnDataDependencies</code> variable to set up their Python environments.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw">.AnnDataDependencies</span>
-</pre></div>
-<pre><code>## [1] "anndata==0.7.3"  "h5py==2.10.0"    "hdf5==1.10.5"    "natsort==7.0.1" 
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="va">.AnnDataDependencies</span></pre></div>
+<pre><code>## [1] "anndata==0.7.4"  "h5py==2.10.0"    "hdf5==1.10.5"    "natsort==7.0.1" 
 ## [5] "numpy==1.18.5"   "packaging==20.4" "pandas==1.0.4"   "scipy==1.4.1"   
 ## [9] "sqlite==3.30.1"</code></pre>
 </div>
 <div id="session-information" class="section level1">
 <h1 class="hasAnchor">
 <a href="#session-information" class="anchor"></a>Session information</h1>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()
-</pre></div>
-<pre><code>## R version 4.0.0 (2020-04-24)
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></pre></div>
+<pre><code>## R version 4.0.2 (2020-06-22)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 18.04.4 LTS
+## Running under: Ubuntu 20.04.1 LTS
 ## 
 ## Matrix products: default
-## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/libopenblasp-r0.2.20.so
+## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so
 ## 
 ## locale:
 ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -180,51 +168,63 @@
 ## [1] parallel stats    graphics utils    stats4   methods  base    
 ## 
 ## other attached packages:
-##  [1] basilisk_1.1.8              scRNAseq_2.3.9             
-##  [3] SingleCellExperiment_1.11.6 SummarizedExperiment_1.19.5
-##  [5] DelayedArray_0.15.6         matrixStats_0.56.0         
-##  [7] Matrix_1.2-18               Biobase_2.49.0             
-##  [9] GenomicRanges_1.41.5        GenomeInfoDb_1.25.8        
-## [11] IRanges_2.23.10             S4Vectors_0.27.12          
-## [13] BiocGenerics_0.35.4         zellkonverter_0.0.0.9015   
-## [15] knitr_1.29                  BiocStyle_2.17.0           
+##  [1] basilisk_1.1.18             scRNAseq_2.3.15            
+##  [3] SingleCellExperiment_1.11.8 SummarizedExperiment_1.19.9
+##  [5] Biobase_2.49.1              GenomicRanges_1.41.6       
+##  [7] GenomeInfoDb_1.25.11        IRanges_2.23.10            
+##  [9] S4Vectors_0.27.14           BiocGenerics_0.35.4        
+## [11] MatrixGenerics_1.1.4        matrixStats_0.57.0         
+## [13] zellkonverter_0.99.5        knitr_1.30                 
+## [15] BiocStyle_2.17.1           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] httr_1.4.1                    bit64_0.9-7                  
-##  [3] jsonlite_1.7.0                AnnotationHub_2.21.1         
-##  [5] shiny_1.5.0                   assertthat_0.2.1             
-##  [7] interactiveDisplayBase_1.27.5 BiocManager_1.30.10          
-##  [9] BiocFileCache_1.13.0          grDevices_4.0.0              
-## [11] blob_1.2.1                    GenomeInfoDbData_1.2.3       
-## [13] yaml_2.2.1                    BiocVersion_3.12.0           
-## [15] pillar_1.4.4                  RSQLite_2.2.0                
-## [17] backports_1.1.8               lattice_0.20-41              
-## [19] glue_1.4.1                    reticulate_1.16              
-## [21] digest_0.6.25                 promises_1.1.1               
-## [23] XVector_0.29.3                htmltools_0.5.0              
-## [25] httpuv_1.5.4                  pkgconfig_2.0.3              
-## [27] bookdown_0.20                 zlibbioc_1.35.0              
-## [29] xtable_1.8-4                  purrr_0.3.4                  
-## [31] later_1.1.0.1                 tibble_3.0.1                 
-## [33] generics_0.0.2                datasets_4.0.0               
-## [35] ellipsis_0.3.1                mime_0.9                     
-## [37] magrittr_1.5                  crayon_1.3.4                 
-## [39] memoise_1.1.0                 evaluate_0.14                
-## [41] fs_1.4.2                      tools_4.0.0                  
-## [43] lifecycle_0.2.0               basilisk.utils_1.1.7         
-## [45] stringr_1.4.0                 AnnotationDbi_1.51.1         
-## [47] compiler_4.0.0                pkgdown_1.5.1.9000           
-## [49] rlang_0.4.6                   grid_4.0.0                   
-## [51] RCurl_1.98-1.2                rappdirs_0.3.1               
-## [53] bitops_1.0-6                  rmarkdown_2.3.2              
-## [55] ExperimentHub_1.15.0          DBI_1.1.0                    
-## [57] curl_4.3                      R6_2.4.1                     
-## [59] dplyr_1.0.0                   fastmap_1.0.1                
-## [61] bit_1.1-15.2                  rprojroot_1.3-2              
-## [63] desc_1.2.0                    stringi_1.4.6                
-## [65] Rcpp_1.0.4.6                  vctrs_0.3.1                  
-## [67] dbplyr_1.4.4                  tidyselect_1.1.0             
-## [69] xfun_0.15</code></pre>
+##  [1] ProtGenerics_1.21.0           bitops_1.0-6                 
+##  [3] fs_1.5.0                      bit64_4.0.5                  
+##  [5] filelock_1.0.2                progress_1.2.2               
+##  [7] httr_1.4.2                    rprojroot_1.3-2              
+##  [9] tools_4.0.2                   backports_1.1.10             
+## [11] R6_2.4.1                      lazyeval_0.2.2               
+## [13] DBI_1.1.0                     prettyunits_1.1.1            
+## [15] tidyselect_1.1.0              bit_4.0.4                    
+## [17] curl_4.3                      compiler_4.0.2               
+## [19] textshaping_0.1.2             datasets_4.0.2               
+## [21] basilisk.utils_1.1.11         xml2_1.3.2                   
+## [23] desc_1.2.0                    DelayedArray_0.15.16         
+## [25] rtracklayer_1.49.5            bookdown_0.20                
+## [27] askpass_1.1                   rappdirs_0.3.1               
+## [29] pkgdown_1.6.1.9000            Rsamtools_2.5.3              
+## [31] systemfonts_0.3.2             stringr_1.4.0                
+## [33] digest_0.6.25                 rmarkdown_2.4                
+## [35] XVector_0.29.3                pkgconfig_2.0.3              
+## [37] htmltools_0.5.0               ensembldb_2.13.1             
+## [39] dbplyr_1.4.4                  fastmap_1.0.1                
+## [41] grDevices_4.0.2               rlang_0.4.8                  
+## [43] RSQLite_2.2.1                 shiny_1.5.0                  
+## [45] generics_0.0.2                jsonlite_1.7.1               
+## [47] BiocParallel_1.23.2           dplyr_1.0.2                  
+## [49] RCurl_1.98-1.2                magrittr_1.5                 
+## [51] GenomeInfoDbData_1.2.4        Matrix_1.2-18                
+## [53] Rcpp_1.0.5                    reticulate_1.16              
+## [55] lifecycle_0.2.0               stringi_1.5.3                
+## [57] yaml_2.2.1                    zlibbioc_1.35.0              
+## [59] BiocFileCache_1.13.1          AnnotationHub_2.21.5         
+## [61] grid_4.0.2                    blob_1.2.1                   
+## [63] promises_1.1.1                ExperimentHub_1.15.3         
+## [65] crayon_1.3.4                  lattice_0.20-41              
+## [67] Biostrings_2.57.2             GenomicFeatures_1.41.3       
+## [69] hms_0.5.3                     pillar_1.4.6                 
+## [71] biomaRt_2.45.5                XML_3.99-0.5                 
+## [73] glue_1.4.2                    BiocVersion_3.12.0           
+## [75] evaluate_0.14                 BiocManager_1.30.10          
+## [77] vctrs_0.3.4                   httpuv_1.5.4                 
+## [79] openssl_1.4.3                 purrr_0.3.4                  
+## [81] assertthat_0.2.1              xfun_0.18                    
+## [83] mime_0.9                      xtable_1.8-4                 
+## [85] AnnotationFilter_1.13.0       later_1.1.0.1                
+## [87] ragg_0.4.0                    tibble_3.0.3                 
+## [89] GenomicAlignments_1.25.3      AnnotationDbi_1.51.3         
+## [91] memoise_1.1.0                 ellipsis_0.3.1               
+## [93] interactiveDisplayBase_1.27.5</code></pre>
 </div>
   </div>
 
@@ -243,7 +243,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
