@@ -18,6 +18,11 @@
 #' any subsequent run or if any other
 #' **zellkonverter** function has been run prior to this one.
 #'
+#' The **anndata** package automatically converts some character vectors to
+#' factors when saving `.h5ad` files. This can effect columns of `rowData(sce)`
+#' and `colData(sce)` which may change type when the `.h5ad` file is read back
+#' into R.
+#'
 #' @return A `NULL` is invisibly returned.
 #'
 #' @author Luke Zappia

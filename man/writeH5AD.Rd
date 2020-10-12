@@ -30,6 +30,11 @@ When first run, this function will instantiate a conda environment
 containing all of the necessary dependencies. This will not be performed on
 any subsequent run or if any other
 \strong{zellkonverter} function has been run prior to this one.
+
+The \strong{anndata} package automatically converts some character vectors to
+factors when saving \code{.h5ad} files. This can effect columns of \code{rowData(sce)}
+and \code{colData(sce)} which may change type when the \code{.h5ad} file is read back
+into R.
 }
 \examples{
 # Using the Zeisel brain dataset
