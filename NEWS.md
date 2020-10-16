@@ -2,6 +2,14 @@
 
 * Bioconductor 3.12, October 2020
 
+## zellkonverter 0.99.7 (2020-10-16)
+
+* Update Python dependencies
+  * **numpy** 1.18.5 -> 1.19.1
+  * **pandas** 1.0.4 -> 1.1.2
+  * **scipy** 1.4.1 -> 1.5.2
+  * **sqlite** 3.30.1 -> 3.33.0
+
 ## zellkonverter 0.99.6 (2020-10-12)
 
 * Document character to factor coercion in `writeH5ad()` (Fixes #6)
