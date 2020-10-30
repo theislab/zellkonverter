@@ -1,4 +1,12 @@
-# zellkonverter 1.0 (2020-10-28)
+# zellkonverter 1.2.0
+
+* Bioconductor 3.13, April 2021
+
+## zellkonverter 1.1.0 (2020-10-28)
+
+* Bioconductore 3.13 devel
+
+# zellkonverter 1.0.0 (2020-10-28)
 
 * Bioconductor 3.12, October 2020
 
