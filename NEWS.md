@@ -2,9 +2,13 @@
 
 * Bioconductor 3.13, April 2021
 
+## zellkonverter 1.1.1 (2020-12-03)
+
+* Add example_anndata.h5ad file to `inst/extdata/` and creation script to `inst/scripts/`
+
 ## zellkonverter 1.1.0 (2020-10-28)
 
-* Bioconductore 3.13 devel
+* Bioconductor 3.13 devel
 
 # zellkonverter 1.0.0 (2020-10-28)
 
