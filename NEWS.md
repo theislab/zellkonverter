@@ -5,6 +5,7 @@
 ## zellkonverter 1.1.1 (2020-12-03)
 
 * Add example_anndata.h5ad file to `inst/extdata/` and creation script to `inst/scripts/`
+* Improve conversion checks when converting `.uns` to `metadata`
 
 ## zellkonverter 1.1.0 (2020-10-28)
 

@@ -122,17 +122,29 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
         assays_list[[layer_name]] <- layer_out$mat
     }
 
-    uns_data <- adata$uns$data
+    uns_keys <- py_builtins$list(adata$uns$keys())
 
     meta_list <- list()
-    for (item_name in names(uns_data)) {
-        item <- uns_data[[item_name]]
-        if (!is(item, "python.builtin.object")) {
-            meta_list[[item_name]] <- item
-        } else {
-            warning("the '", item_name, "' item in 'uns' cannot be converted ",
-                    "to an R object and has been skipped")
-        }
+    for (key in uns_keys) {
+        tryCatch({
+            item <- adata$uns[[key]]
+
+            item_type <- py_builtins$str(py_builtins$type(item))
+            if (grepl("OverloadedDict", item_type)) {
+                item <- py_builtins$dict(item)
+            }
+
+            if (!is(item, "python.builtin.object")) {
+                meta_list[[key]] <- item
+            } else {
+                warning("the '", key, "' item in 'uns' cannot be converted ",
+                        "to an R object and has been skipped", call. = FALSE)
+            }
+        }, error = function(err) {
+            warning("conversion failed for the item '", key, "' in 'uns' with ",
+                    "the following error and has been skipped\n",
+                    "Error message: ", err, call. = FALSE)
+        })
     }
 
     varp_list <- lapply(py_builtins$dict(adata$varp), function(v) v$todense())
