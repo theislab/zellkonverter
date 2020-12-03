@@ -147,8 +147,8 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
         })
     }
 
-    varp_list <- lapply(py_builtins$dict(adata$varp), function(v) v$todense())
-    obsp_list <- lapply(py_builtins$dict(adata$obsp), function(v) v$todense())
+    varp_list <- lapply(py_builtins$dict(adata$varp), reticulate::py_to_r)
+    obsp_list <- lapply(py_builtins$dict(adata$obsp), reticulate::py_to_r)
 
     row_data <- DataFrame(adata$var)
     varm_list <- py_builtins$dict(adata$varm)

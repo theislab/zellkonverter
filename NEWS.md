@@ -6,6 +6,7 @@
 
 * Add example_anndata.h5ad file to `inst/extdata/` and creation script to `inst/scripts/`
 * Improve conversion checks when converting `.uns` to `metadata`
+* Avoid converting `obsp` and `varp` to dense matrices
 
 ## zellkonverter 1.1.0 (2020-10-28)
 
