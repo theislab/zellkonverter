@@ -2,6 +2,10 @@
 
 * Bioconductor 3.12, October 2020
 
+## zellkonverter 1.0.3 (2021-03-08)
+
+* Avoid converting `obsp` and `varp` to dense matrices
+
 ## zellkonverter 1.0.2 (2021-01-28)
 
 * Merge remaining commits for HDF5 conversion (fixes #33)
