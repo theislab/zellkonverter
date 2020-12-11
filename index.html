@@ -71,11 +71,13 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
+
+<p><img src="reference/figures/zellkonverter.png" align="right" alt="zellkonverter logo" width="180"></p>
 <div id="zellkonverter" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#zellkonverter" class="anchor"></a>zellkonverter</h1></div>
 <!-- badges: start -->
-
+<p><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a> <a href="https://bioconductor.org/packages/devel/bioc/html/zellkonverter.html"><img src="https://bioconductor.org/shields/years-in-bioc/zellkonverter.svg" alt="Bioconductor since"></a> <a href="https://bioconductor.org/packages/devel/bioc/html/zellkonverter.html"><img src="https://bioconductor.org/shields/downloads/devel/zellkonverter.svg" alt="Bioconductor rank"></a> <a href="https://codecov.io/gh/theislab/zellkonverter?branch=master"><img src="https://codecov.io/gh/theislab/zellkonverter/branch/master/graph/badge.svg" alt="Codecov test coverage"></a> <!-- badges: end --></p>
 <p><strong>zellkonverter</strong> is a small package for converting between SingleCellExperiment objects and alternative objects for storing single-cell RNA-sequencing data (such as AnnData). It is built on top of the <a href="https://www.bioconductor.org/packages/basilisk/" title="basilisk on Bioconductor"><strong>basilisk</strong></a> package.</p>
 <p>For documentation see please refer to <a href="https://bioconductor.org/packages/zellkonverter/" title="zellkonverter on Bioconductor">Bioconductor</a>. Development documentation is also available on <a href="https://bioconductor.org/packages/devel/bioc/html/zellkonverter.html" title="zellkonverter on Bioconductor devel">Bioconductor devel</a> or the <a href="https://theislab.github.io/zellkonverter/" title="zellkonverter pkgdown site">pkgdown site</a>.</p>
 <div id="installation" class="section level2">
@@ -88,12 +90,47 @@
 <span class="op">}</span>
 <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"zellkonverter"</span><span class="op">)</span></code></pre></div>
 </div>
+<div id="build-status" class="section level2">
+<h2 class="hasAnchor">
+<a href="#build-status" class="anchor"></a>Build status</h2>
+<table class="table">
+<thead><tr class="header">
+<th align="center">Source</th>
+<th align="center">Checks</th>
+<th align="center">Updated</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center"><a href="http://bioconductor.org/packages/release/bioc/html/zellkonverter.html">Bioc release</a></td>
+<td align="center"><a href="http://bioconductor.org/checkResults/release/bioc-LATEST/zellkonverter"><img src="http://bioconductor.org/shields/build/release/bioc/zellkonverter.svg" alt="Bioconductor-release Build Status"></a></td>
+<td align="center"><img src="http://bioconductor.org/shields/lastcommit/release/bioc/zellkonverter.svg"></td>
+</tr>
+<tr class="even">
+<td align="center"><a href="http://bioconductor.org/packages/devel/bioc/html/zellkonverter.html">Bioc devel</a></td>
+<td align="center"><a href="http://bioconductor.org/checkResults/devel/bioc-LATEST/zellkonverter"><img src="http://bioconductor.org/shields/build/devel/bioc/zellkonverter.svg" alt="Bioconductor-devel Build Status"></a></td>
+<td align="center"><img src="http://bioconductor.org/shields/lastcommit/devel/bioc/zellkonverter.svg"></td>
+</tr>
+<tr class="odd">
+<td align="center"><a href="https://github.com/theislab/zellkonverter/actions">GitHub actions</a></td>
+<td align="center"><a href="https://github.com/theislab/zellkonverter/actions"><img src="https://github.com/theislab/zellkonverter/workflows/R-CMD-check-bioc/badge.svg" alt="R build status"></a></td>
+<td align="center"><img src="https://img.shields.io/github/last-commit/theislab/zellkonverter" alt="GitHub last commit"></td>
+</tr>
+</tbody>
+</table>
+</div>
 <div id="code-of-conduct" class="section level2">
 <h2 class="hasAnchor">
 <a href="#code-of-conduct" class="anchor"></a>Code of Conduct</h2>
-<p>Please note that the zellkonverter project is released with a <a href="https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+<p>Please note that the <strong>zellkonverter</strong> project is released with a <a href="https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+</div>
+<div id="contributors" class="section level2">
+<h2 class="hasAnchor">
+<a href="#contributors" class="anchor"></a>Contributors</h2>
+<p><a href="https://github.com/theislab/zellkonverter/graphs/contributors"> <img src="https://contrib.rocks/image?repo=theislab/zellkonverter"></a></p>
+<p>Made with <a href="https://contrib.rocks">contributors-img</a>.</p>
 </div>
 </div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -129,19 +166,7 @@
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
-<li><a href="https://bioconductor.org/packages/devel/bioc/html/zellkonverter.html"><img src="https://bioconductor.org/shields/years-in-bioc/zellkonverter.svg" alt="Bioconductor since"></a></li>
-<li><a href="https://bioconductor.org/packages/devel/bioc/html/zellkonverter.html"><img src="https://bioconductor.org/shields/downloads/devel/zellkonverter.svg" alt="Bioconductor rank"></a></li>
-<li><a href="https://bioconductor.org/packages/devel/bioc/html/zellkonverter.html"><img src="https://bioconductor.org/shields/lastcommit/devel/bioc/zellkonverter.svg" alt="Bioconductor update"></a></li>
-<li><a href="https://bioconductor.org/packages/devel/bioc/html/zellkonverter.html"><img src="https://bioconductor.org/shields/build/devel/bioc/zellkonverter.svg" alt="Bioconductor build"></a></li>
-<li><a href="https://github.com/theislab/zellkonverter/actions"><img src="https://github.com/theislab/zellkonverter/workflows/R-CMD-check-bioc/badge.svg" alt="R build status"></a></li>
-<li><a href="https://codecov.io/gh/theislab/zellkonverter?branch=master"><img src="https://codecov.io/gh/theislab/zellkonverter/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-</ul>
-</div>
-</div>
+  </div>
 </div>
 
 
