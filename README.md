@@ -37,12 +37,19 @@ BiocManager::install("zellkonverter")
 | [Bioc devel](http://bioconductor.org/packages/devel/bioc/html/zellkonverter.html) | [![Bioconductor-devel Build Status](http://bioconductor.org/shields/build/devel/bioc/zellkonverter.svg)](http://bioconductor.org/checkResults/devel/bioc-LATEST/zellkonverter) | ![](http://bioconductor.org/shields/lastcommit/devel/bioc/zellkonverter.svg) |
 | [GitHub actions](https://github.com/theislab/zellkonverter/actions) | [![R build status](https://github.com/theislab/zellkonverter/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/theislab/zellkonverter/actions) | ![GitHub last commit](https://img.shields.io/github/last-commit/theislab/zellkonverter) |
 
-
 ## Code of Conduct
 
-Please note that the zellkonverter project is released with a
+Please note that the **zellkonverter** project is released with a
 [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.
+
+## Contributors
+
+<a href="https://github.com/theislab/zellkonverter/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=theislab/zellkonverter" />
+</a>
+
+Made with [contributors-img](https://contrib.rocks).
 
 [basilisk]: https://www.bioconductor.org/packages/basilisk/ "basilisk on Bioconductor"
 [bioc]: https://bioconductor.org/packages/zellkonverter/ "zellkonverter on Bioconductor"
