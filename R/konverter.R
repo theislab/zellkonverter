@@ -234,7 +234,7 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
 #' @importFrom utils capture.output
 #' @importFrom S4Vectors metadata
 #' @importFrom reticulate import r_to_py
-SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
+SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE, hdf5_backed = TRUE) {
 
     anndata <- import("anndata")
 
@@ -247,8 +247,8 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     }
 
     if (!skip_assays) {
-        X <- t(assay(sce, X_name))
-        X <- .makeNumpyFriendly(X)
+        X <- assay(sce, X_name)
+        X <- .makeNumpyFriendly(X, hdf5_backed = hdf5_backed)
     } else {
         X <- fake_mat <- .make_fake_mat(rev(dim(sce)))
     }
@@ -287,8 +287,7 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     if (length(assay_names) > 0) {
         if (!skip_assays) {
             assays_list <- assays(sce, withDimnames = FALSE)
-            assays_list <- lapply(assays_list[assay_names], t)
-            assays_list <- lapply(assays_list, .makeNumpyFriendly)
+            assays_list <- lapply(assays_list[assay_names], .makeNumpyFriendly)
         } else {
             assays_list <- rep(list(fake_mat), length(assay_names))
             names(assays_list) <- assay_names
@@ -331,11 +330,30 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     adata
 }
 
-#' @importFrom DelayedArray is_sparse
-#' @importFrom methods as
+#' @importFrom DelayedArray is_sparse seed isPristine path
+#' @importFrom methods as is
 #' @importClassesFrom Matrix dgCMatrix
-.makeNumpyFriendly <- function(x) {
-    # Written originally by Charlotte Soneson in kevinrue/velociraptor.
+#' @importFrom reticulate py_run_string
+.makeNumpyFriendly <- function(x, hdf5_backed) {
+    if (hdf5_backed && 
+        is(x, "DelayedArray") && 
+        is(seed(x), "HDF5ArraySeed") && 
+        isPristine(x, ignore.dimnames=TRUE)) 
+    {
+        # The strategy here is to load a h5py.Dataset in Python
+        # and to realize it as a numpy array. This involves a bit of effort:
+        cmds <- c(
+            "import h5py",
+            sprintf("fhandle = h5py.File(%s, 'r')", deparse(path(x))),
+            sprintf("dset = fhandle[%s]", deparse(seed(x)@name)),
+            "y = dset[()]"
+        )
+        out <- py_run_string(paste(cmds, collapse="\n"), local=TRUE, convert=FALSE)
+        return(out["y"])
+    }
+
+    # Code from Charlotte Soneson in kevinrue/velociraptor.
+    x <- t(x)
     if (is_sparse(x)) {
         as(x, "dgCMatrix")
     } else {
