@@ -221,7 +221,6 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
 #' AnnData object. If `NULL`, the first assay of `sce` will be used by default.
 #'
 #' @export
-#' @importFrom Matrix t
 #' @importFrom utils capture.output
 #' @importFrom S4Vectors metadata
 #' @importFrom reticulate import r_to_py
@@ -287,7 +286,7 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     }
 
     red_dims <- as.list(reducedDims(sce))
-    red_dims <- lapply(red_dims, .makeNumpyFriendly)
+    red_dims <- lapply(red_dims, .makeNumpyFriendly, transpose=FALSE)
     adata$obsm <- red_dims
 
     meta_list <- metadata(sce)
@@ -323,10 +322,14 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
 
 #' @importFrom methods as is
 #' @importClassesFrom Matrix dgCMatrix
-#' @importFrom reticulate py_run_string
-.makeNumpyFriendly <- function(x) {
+#' @importFrom DelayedArray is_sparse
+#' @importFrom Matrix t
+.makeNumpyFriendly <- function(x, transpose=TRUE) {
+    if (transpose) {
+        x <- t(x)
+    }
+
     # Code from Charlotte Soneson in kevinrue/velociraptor.
-    x <- t(x)
     if (is_sparse(x)) {
         as(x, "dgCMatrix")
     } else {
