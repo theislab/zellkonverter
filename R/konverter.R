@@ -195,7 +195,9 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
         mat <- .make_fake_mat(dims)
     } else {
         if (hdf5_backed && any(grepl("^h5py\\..*\\.Dataset", class(mat)))) {
-            # It's a HDF5 file, so let's treat it as such.
+            # It's a HDF5 file, so let's treat it as such. Happily enough, H5AD
+            # stores it in a transposed format that is correctly understood by
+            # HDF5Array and untransposed automatically; no need for extra work here.
             file <- as.character(mat$file$id$name)
             name <- as.character(mat$name)
             mat <- HDF5Array::HDF5Array(file, name)
@@ -235,7 +237,7 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
 #' @importFrom utils capture.output
 #' @importFrom S4Vectors metadata
 #' @importFrom reticulate import r_to_py
-SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE, hdf5_backed = TRUE) {
+SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
 
     anndata <- import("anndata")
 
@@ -249,7 +251,7 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE, hdf5_backed = T
 
     if (!skip_assays) {
         X <- assay(sce, X_name)
-        X <- .makeNumpyFriendly(X, hdf5_backed = hdf5_backed)
+        X <- .makeNumpyFriendly(X)
     } else {
         X <- fake_mat <- .make_fake_mat(rev(dim(sce)))
     }
@@ -288,8 +290,7 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE, hdf5_backed = T
     if (length(assay_names) > 0) {
         if (!skip_assays) {
             assays_list <- assays(sce, withDimnames = FALSE)
-            assays_list <- lapply(assays_list[assay_names], .makeNumpyFriendly, 
-                hdf5_backed = hdf5_backed)
+            assays_list <- lapply(assays_list[assay_names], .makeNumpyFriendly)
         } else {
             assays_list <- rep(list(fake_mat), length(assay_names))
             names(assays_list) <- assay_names
@@ -298,7 +299,7 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE, hdf5_backed = T
     }
 
     red_dims <- as.list(reducedDims(sce))
-    red_dims <- lapply(red_dims, .makeNumpyFriendly, hdf5_backed = FALSE)
+    red_dims <- lapply(red_dims, .makeNumpyFriendly)
     adata$obsm <- red_dims
 
     meta_list <- metadata(sce)
@@ -332,28 +333,10 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE, hdf5_backed = T
     adata
 }
 
-#' @importFrom DelayedArray is_sparse seed isPristine path
 #' @importFrom methods as is
 #' @importClassesFrom Matrix dgCMatrix
 #' @importFrom reticulate py_run_string
-.makeNumpyFriendly <- function(x, hdf5_backed) {
-    if (hdf5_backed && 
-        is(x, "DelayedArray") && 
-        is(seed(x), "HDF5ArraySeed") && 
-        isPristine(x, ignore.dimnames=TRUE)) 
-    {
-        # The strategy here is to load a h5py.Dataset in Python
-        # and to realize it as a numpy array. This involves a bit of effort:
-        cmds <- c(
-            "import h5py",
-            sprintf("fhandle = h5py.File(%s, 'r')", deparse(path(x))),
-            sprintf("dset = fhandle[%s]", deparse(seed(x)@name)),
-            "y = dset[()]"
-        )
-        out <- py_run_string(paste(cmds, collapse="\n"), local=TRUE, convert=FALSE)
-        return(out["y"])
-    }
-
+.makeNumpyFriendly <- function(x) {
     # Code from Charlotte Soneson in kevinrue/velociraptor.
     x <- t(x)
     if (is_sparse(x)) {

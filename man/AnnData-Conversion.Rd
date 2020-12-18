@@ -8,7 +8,7 @@
 \usage{
 AnnData2SCE(adata, skip_assays = FALSE, hdf5_backed = TRUE)
 
-SCE2AnnData(sce, X_name = NULL, skip_assays = FALSE, hdf5_backed = TRUE)
+SCE2AnnData(sce, X_name = NULL, skip_assays = FALSE)
 }
 \arguments{
 \item{adata}{A \strong{reticulate} reference to a Python AnnData object.}
