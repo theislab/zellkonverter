@@ -116,6 +116,7 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
     for (layer_name in layer_names) {
         layer_out <- .extract_or_skip_assay(
             skip_assays = skip_assays,
+            hdf5_backed = hdf5_backed,
             dims        = dims,
             mat         = adata$layers$get(layer_name),
             name        = sprintf("'%s' layer matrix", layer_name)
@@ -275,7 +276,8 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE, hdf5_backed = T
     if (length(assay_names) > 0) {
         if (!skip_assays) {
             assays_list <- assays(sce, withDimnames = FALSE)
-            assays_list <- lapply(assays_list[assay_names], .makeNumpyFriendly)
+            assays_list <- lapply(assays_list[assay_names], .makeNumpyFriendly, 
+                hdf5_backed = hdf5_backed)
         } else {
             assays_list <- rep(list(fake_mat), length(assay_names))
             names(assays_list) <- assay_names
@@ -284,7 +286,7 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE, hdf5_backed = T
     }
 
     red_dims <- as.list(reducedDims(sce))
-    red_dims <- lapply(red_dims, .makeNumpyFriendly)
+    red_dims <- lapply(red_dims, .makeNumpyFriendly, hdf5_backed = FALSE)
     adata$obsm <- red_dims
 
     meta_list <- metadata(sce)
