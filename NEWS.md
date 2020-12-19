@@ -2,6 +2,10 @@
 
 * Bioconductor 3.13, April 2021
 
+## zellkonverter 1.1.2 (2020-12-19)
+
+* Improved support for HDF5 backed conversion (PR #29, fixes #13)
+
 ## zellkonverter 1.1.1 (2020-12-03)
 
 * Add example_anndata.h5ad file to `inst/extdata/` and creation script to `inst/scripts/`
