@@ -6,7 +6,7 @@
 \alias{SCE2AnnData}
 \title{Convert AnnData between and SingleCellExperiment}
 \usage{
-AnnData2SCE(adata, skip_assays = FALSE)
+AnnData2SCE(adata, skip_assays = FALSE, hdf5_backed = TRUE)
 
 SCE2AnnData(sce, X_name = NULL, skip_assays = FALSE)
 }
@@ -16,6 +16,10 @@ SCE2AnnData(sce, X_name = NULL, skip_assays = FALSE)
 \item{skip_assays}{Logical scalar indicating whether to skip conversion of
 any assays in \code{sce} or \code{adata}, replacing them with empty sparse matrices
 instead.}
+
+\item{hdf5_backed}{Logical scalar indicating whether HDF5-backed matrices
+in \code{adata} should be represented as HDF5Array objects. This assumes that
+\code{adata} is created with \code{backed="r"}.}
 
 \item{sce}{A \linkS4class{SingleCellExperiment} object.}
 

@@ -82,12 +82,15 @@ NULL
 #' @param skip_assays Logical scalar indicating whether to skip conversion of
 #' any assays in `sce` or `adata`, replacing them with empty sparse matrices
 #' instead.
+#' @param hdf5_backed Logical scalar indicating whether HDF5-backed matrices
+#' in `adata` should be represented as HDF5Array objects. This assumes that
+#' `adata` is created with `backed="r"`.
 #'
 #' @export
 #' @importFrom methods selectMethod is
 #' @importFrom S4Vectors DataFrame make_zero_col_DFrame
 #' @importFrom reticulate import_builtins
-AnnData2SCE <- function(adata, skip_assays = FALSE) {
+AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
     py_builtins <- import_builtins()
 
     dims <- unlist(adata$shape)
@@ -95,6 +98,7 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
 
     x_out <- .extract_or_skip_assay(
         skip_assays = skip_assays,
+        hdf5_backed = hdf5_backed,
         dims        = dims,
         mat         = adata$X,
         name        = "'X' matrix"
@@ -112,6 +116,7 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
     for (layer_name in layer_names) {
         layer_out <- .extract_or_skip_assay(
             skip_assays = skip_assays,
+            hdf5_backed = hdf5_backed,
             dims        = dims,
             mat         = adata$layers$get(layer_name),
             name        = sprintf("'%s' layer matrix", layer_name)
@@ -181,7 +186,7 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
 }
 
 #' @importFrom Matrix t
-.extract_or_skip_assay <- function(skip_assays, dims, mat, name) {
+.extract_or_skip_assay <- function(skip_assays, hdf5_backed, dims, mat, name) {
     skipped <- FALSE
 
     if (isTRUE(skip_assays)) {
@@ -189,13 +194,22 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
         # skip_assays=TRUE avoids any actual transfer of content from Python.
         mat <- .make_fake_mat(dims)
     } else {
-        mat <- try(t(mat), silent=TRUE)
-        if (is(mat, "try-error")) {
-            if (isFALSE(skip_assays)) {
-                warning(name, " does not support transposition and has been skipped")
+        if (hdf5_backed && any(grepl("^h5py\\..*\\.Dataset", class(mat)))) {
+            # It's a HDF5 file, so let's treat it as such. Happily enough, H5AD
+            # stores it in a transposed format that is correctly understood by
+            # HDF5Array and untransposed automatically; no need for extra work here.
+            file <- as.character(mat$file$id$name)
+            name <- as.character(mat$name)
+            mat <- HDF5Array::HDF5Array(file, name)
+        } else {
+            mat <- try(t(mat), silent=TRUE)
+            if (is(mat, "try-error")) {
+                if (isFALSE(skip_assays)) {
+                    warning(name, " does not support transposition and has been skipped")
+                }
+                mat <- .make_fake_mat(dims)
+                skipped <- TRUE
             }
-            mat <- .make_fake_mat(dims)
-            skipped <- TRUE
         }
     }
 
@@ -219,7 +233,6 @@ AnnData2SCE <- function(adata, skip_assays = FALSE) {
 #' AnnData object. If `NULL`, the first assay of `sce` will be used by default.
 #'
 #' @export
-#' @importFrom Matrix t
 #' @importFrom utils capture.output
 #' @importFrom S4Vectors metadata
 #' @importFrom reticulate import r_to_py
@@ -236,7 +249,7 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     }
 
     if (!skip_assays) {
-        X <- t(assay(sce, X_name))
+        X <- assay(sce, X_name)
         X <- .makeNumpyFriendly(X)
     } else {
         X <- fake_mat <- .make_fake_mat(rev(dim(sce)))
@@ -276,8 +289,7 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     if (length(assay_names) > 0) {
         if (!skip_assays) {
             assays_list <- assays(sce, withDimnames = FALSE)
-            assays_list <- lapply(assays_list[assay_names], t)
-            assays_list <- lapply(assays_list, .makeNumpyFriendly)
+            assays_list <- lapply(assays_list[assay_names], .makeNumpyFriendly)
         } else {
             assays_list <- rep(list(fake_mat), length(assay_names))
             names(assays_list) <- assay_names
@@ -286,7 +298,7 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     }
 
     red_dims <- as.list(reducedDims(sce))
-    red_dims <- lapply(red_dims, .makeNumpyFriendly)
+    red_dims <- lapply(red_dims, .makeNumpyFriendly, transpose=FALSE)
     adata$obsm <- red_dims
 
     meta_list <- metadata(sce)
@@ -320,11 +332,16 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     adata
 }
 
-#' @importFrom DelayedArray is_sparse
-#' @importFrom methods as
+#' @importFrom methods as is
 #' @importClassesFrom Matrix dgCMatrix
-.makeNumpyFriendly <- function(x) {
-    # Written originally by Charlotte Soneson in kevinrue/velociraptor.
+#' @importFrom DelayedArray is_sparse
+#' @importFrom Matrix t
+.makeNumpyFriendly <- function(x, transpose=TRUE) {
+    if (transpose) {
+        x <- t(x)
+    }
+
+    # Code from Charlotte Soneson in kevinrue/velociraptor.
     if (is_sparse(x)) {
         as(x, "dgCMatrix")
     } else {
