@@ -92,7 +92,7 @@ SingleCellExperiment objects." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/theislab/zellkonverter/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -119,7 +119,7 @@ SingleCellExperiment objects." />
 SingleCellExperiment objects.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>AnnData2SCE</span><span class='op'>(</span><span class='va'>adata</span>, skip_assays <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>AnnData2SCE</span><span class='op'>(</span><span class='va'>adata</span>, skip_assays <span class='op'>=</span> <span class='cn'>FALSE</span>, hdf5_backed <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 <span class='fu'>SCE2AnnData</span><span class='op'>(</span><span class='va'>sce</span>, X_name <span class='op'>=</span> <span class='cn'>NULL</span>, skip_assays <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
@@ -135,6 +135,12 @@ SingleCellExperiment objects.</p>
       <td><p>Logical scalar indicating whether to skip conversion of
 any assays in <code>sce</code> or <code>adata</code>, replacing them with empty sparse matrices
 instead.</p></td>
+    </tr>
+    <tr>
+      <th>hdf5_backed</th>
+      <td><p>Logical scalar indicating whether HDF5-backed matrices
+in <code>adata</code> should be represented as HDF5Array objects. This assumes that
+<code>adata</code> is created with <code>backed="r"</code>.</p></td>
     </tr>
     <tr>
       <th>sce</th>
@@ -253,7 +259,7 @@ information when converting from SingleCellExperiment to
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    rowMedians</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:matrixStats':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    anyMissing, rowMedians</span></div><div class='output co'>#&gt; <span class='message'>using temporary cache /tmp/RtmpmGfqQV/BiocFileCache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-12-09</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-12-09</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>Note: using the 'counts' assay as the X matrix</span></div><div class='output co'>#&gt; <span class='warning'>Warning: index contains duplicated values: row names not set</span></div><div class='input'>
+#&gt; <span class='message'>    anyMissing, rowMedians</span></div><div class='output co'>#&gt; <span class='message'>using temporary cache /tmp/RtmpoRZlNW/BiocFileCache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-12-14</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2020-12-14</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>Note: using the 'counts' assay as the X matrix</span></div><div class='output co'>#&gt; <span class='warning'>Warning: index contains duplicated values: row names not set</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
