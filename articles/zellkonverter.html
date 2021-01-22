@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
       </span>
     </div>
 
@@ -64,7 +64,7 @@
 
       
 
-      </header><script src="zellkonverter_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="zellkonverter_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Converting single-cell data structures between Bioconductor and Python</h1>
@@ -109,6 +109,7 @@
 ## colnames(640): 0 1 ... 158-3 159-3
 ## colData names(1): cell_type
 ## reducedDimNames(0):
+## mainExpName: NULL
 ## altExpNames(0):</code></pre>
 <p>We can also write a <code>SingleCellExperiment</code> to a H5AD file with the <code><a href="../reference/writeH5AD.html">writeH5AD()</a></code> function. This is demonstrated below on the classic Zeisel mouse brain dataset from the <em><a href="https://bioconductor.org/packages/3.13/scRNAseq">scRNAseq</a></em> package. The resulting file can then be directly used in compatible Python-based analysis frameworks.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -149,7 +150,7 @@
 <a href="#session-information" class="anchor"></a>Session information</h1>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## R Under development (unstable) (2020-12-17 r79645)
+<pre><code>## R Under development (unstable) (2021-01-14 r79832)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.1 LTS
 ## 
@@ -168,63 +169,64 @@
 ## [1] parallel stats    graphics utils    stats4   methods  base    
 ## 
 ## other attached packages:
-##  [1] basilisk_1.3.2              scRNAseq_2.5.0             
-##  [3] SingleCellExperiment_1.13.3 SummarizedExperiment_1.21.1
-##  [5] Biobase_2.51.0              GenomicRanges_1.43.1       
-##  [7] GenomeInfoDb_1.27.3         IRanges_2.25.5             
+##  [1] basilisk_1.3.6              scRNAseq_2.5.2             
+##  [3] SingleCellExperiment_1.13.4 SummarizedExperiment_1.21.1
+##  [5] Biobase_2.51.0              GenomicRanges_1.43.3       
+##  [7] GenomeInfoDb_1.27.3         IRanges_2.25.6             
 ##  [9] S4Vectors_0.29.6            BiocGenerics_0.37.0        
 ## [11] MatrixGenerics_1.3.0        matrixStats_0.57.0         
-## [13] zellkonverter_1.1.2         knitr_1.30                 
+## [13] zellkonverter_1.1.3         knitr_1.30                 
 ## [15] BiocStyle_2.19.1           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] ProtGenerics_1.23.5           bitops_1.0-6                 
+##  [1] ProtGenerics_1.23.6           bitops_1.0-6                 
 ##  [3] fs_1.5.0                      bit64_4.0.5                  
 ##  [5] filelock_1.0.2                progress_1.2.2               
 ##  [7] httr_1.4.2                    rprojroot_2.0.2              
 ##  [9] tools_4.1.0                   R6_2.5.0                     
-## [11] lazyeval_0.2.2                DBI_1.1.0                    
-## [13] withr_2.3.0                   tidyselect_1.1.0             
+## [11] lazyeval_0.2.2                DBI_1.1.1                    
+## [13] withr_2.4.0                   tidyselect_1.1.0             
 ## [15] prettyunits_1.1.1             bit_4.0.4                    
 ## [17] curl_4.3                      compiler_4.1.0               
 ## [19] textshaping_0.2.1             datasets_4.1.0               
-## [21] basilisk.utils_1.3.2          xml2_1.3.2                   
-## [23] desc_1.2.0                    DelayedArray_0.17.6          
-## [25] rtracklayer_1.51.1            bookdown_0.21                
+## [21] basilisk.utils_1.3.4          xml2_1.3.2                   
+## [23] desc_1.2.0                    DelayedArray_0.17.7          
+## [25] rtracklayer_1.51.4            bookdown_0.21                
 ## [27] askpass_1.1                   rappdirs_0.3.1               
-## [29] pkgdown_1.6.1.9000            Rsamtools_2.7.0              
+## [29] pkgdown_1.6.1.9000            Rsamtools_2.7.1              
 ## [31] systemfonts_0.3.2             stringr_1.4.0                
 ## [33] digest_0.6.27                 rmarkdown_2.6                
 ## [35] XVector_0.31.1                pkgconfig_2.0.3              
-## [37] htmltools_0.5.0               ensembldb_2.15.1             
+## [37] htmltools_0.5.1               ensembldb_2.15.1             
 ## [39] dbplyr_2.0.0                  fastmap_1.0.1                
-## [41] grDevices_4.1.0               rlang_0.4.9                  
-## [43] RSQLite_2.2.1                 shiny_1.5.0                  
+## [41] grDevices_4.1.0               rlang_0.4.10                 
+## [43] RSQLite_2.2.2                 shiny_1.5.0                  
 ## [45] BiocIO_1.1.2                  generics_0.1.0               
-## [47] jsonlite_1.7.2                BiocParallel_1.25.1          
-## [49] dplyr_1.0.2                   RCurl_1.98-1.2               
+## [47] jsonlite_1.7.2                BiocParallel_1.25.2          
+## [49] dplyr_1.0.3                   RCurl_1.98-1.2               
 ## [51] magrittr_2.0.1                GenomeInfoDbData_1.2.4       
-## [53] Matrix_1.2-18                 Rcpp_1.0.5                   
+## [53] Matrix_1.3-2                  Rcpp_1.0.6                   
 ## [55] reticulate_1.18               lifecycle_0.2.0              
 ## [57] stringi_1.5.3                 yaml_2.2.1                   
 ## [59] zlibbioc_1.37.0               BiocFileCache_1.15.1         
 ## [61] AnnotationHub_2.23.0          grid_4.1.0                   
 ## [63] blob_1.2.1                    promises_1.1.1               
 ## [65] ExperimentHub_1.17.0          crayon_1.3.4                 
-## [67] lattice_0.20-41               Biostrings_2.59.1            
-## [69] GenomicFeatures_1.43.3        hms_0.5.3                    
-## [71] pillar_1.4.7                  biomaRt_2.47.1               
-## [73] XML_3.99-0.5                  glue_1.4.2                   
-## [75] BiocVersion_3.13.1            evaluate_0.14                
-## [77] BiocManager_1.30.10           vctrs_0.3.6                  
-## [79] httpuv_1.5.4                  openssl_1.4.3                
-## [81] purrr_0.3.4                   assertthat_0.2.1             
-## [83] xfun_0.19                     mime_0.9                     
-## [85] xtable_1.8-4                  AnnotationFilter_1.15.0      
-## [87] later_1.1.0.1                 ragg_0.4.0                   
-## [89] tibble_3.0.4                  GenomicAlignments_1.27.2     
-## [91] AnnotationDbi_1.53.0          memoise_1.1.0                
-## [93] ellipsis_0.3.1                interactiveDisplayBase_1.29.0</code></pre>
+## [67] lattice_0.20-41               Biostrings_2.59.2            
+## [69] GenomicFeatures_1.43.3        hms_1.0.0                    
+## [71] pillar_1.4.7                  rjson_0.2.20                 
+## [73] biomaRt_2.47.1                XML_3.99-0.5                 
+## [75] glue_1.4.2                    BiocVersion_3.13.1           
+## [77] evaluate_0.14                 BiocManager_1.30.10          
+## [79] vctrs_0.3.6                   httpuv_1.5.5                 
+## [81] openssl_1.4.3                 purrr_0.3.4                  
+## [83] assertthat_0.2.1              xfun_0.20                    
+## [85] mime_0.9                      xtable_1.8-4                 
+## [87] AnnotationFilter_1.15.0       restfulr_0.0.13              
+## [89] later_1.1.0.1                 ragg_0.4.1                   
+## [91] tibble_3.0.5                  GenomicAlignments_1.27.2     
+## [93] AnnotationDbi_1.53.0          memoise_1.1.0                
+## [95] ellipsis_0.3.1                interactiveDisplayBase_1.29.0</code></pre>
 </div>
   </div>
 
