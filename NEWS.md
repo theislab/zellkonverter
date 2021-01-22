@@ -2,6 +2,10 @@
 
 * Bioconductor 3.13, April 2021
 
+## zellkonverter 1.1.3 (2021-01-22)
+
+* Adjust `SCE2AnnData()` example (Fixes #31)
+
 ## zellkonverter 1.1.2 (2020-12-19)
 
 * Improved support for HDF5 backed conversion (PR #29, fixes #13)

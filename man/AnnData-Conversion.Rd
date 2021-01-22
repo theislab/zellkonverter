@@ -84,13 +84,13 @@ if (requireNamespace("scRNAseq", quietly = TRUE)) {
     # a specified Python environment
     roundtrip <- basiliskRun(fun = function(sce) {
         # Convert SCE to AnnData:
-        adata <- SCE2AnnData(sce)
+        adata <- zellkonverter::SCE2AnnData(sce)
 
         # Maybe do some work in Python on 'adata':
         # BLAH BLAH BLAH
 
         # Convert back to an SCE:
-        AnnData2SCE(adata)
+        zellkonverter::AnnData2SCE(adata)
     }, env = zellkonverter:::anndata_env, sce = seger)
 }
 
