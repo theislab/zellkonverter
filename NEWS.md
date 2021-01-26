@@ -24,6 +24,10 @@
 
 * Bioconductor 3.12, October 2020
 
+## zellkonverter 1.0.1 (2021-01-26)
+
+* Improved support for HDF5 backed conversion (PR #29, fixes #13, fixes #33)
+
 ## zellkonverter 0.99.7 (2020-10-16)
 
 * Update Python dependencies
