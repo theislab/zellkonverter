@@ -50,13 +50,45 @@
 #'
 #' @export
 #' @importFrom basilisk basiliskRun
+#' @importFrom Matrix sparseMatrix
 writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
+    # Loop over and replace DelayedArrays.
+    ass_list <- assays(sce)
+    is_da <- logical(length(ass_list))
+    for (a in seq_along(ass_list)) {
+        if (is(ass_list[[a]], "DelayedMatrix")) {
+            is_da[a] <- TRUE
+            assay(sce, a, withDimnames=FALSE) <- sparseMatrix(i=integer(0), 
+                j=integer(0), x=numeric(0), dims=dim(sce))
+        }
+    }
+
     file <- path.expand(file)
     basiliskRun(
         env = anndata_env,
         fun = .H5ADwriter,
         sce = sce, file = file, X_name = X_name, skip_assays = skip_assays
     )
+
+    # Going back out and replacing each of them.
+    if (any(is_da)) {
+        paths <- file.path("layers", assayNames(sce)[is_da])
+        if (is_da[1]) {
+            paths[1] <- "X"
+        }
+
+        for (p in which(is_da)) {
+            if (p==1L) {
+                curp <- "X"
+            } else {
+                curp <- paths[p]
+            }
+            rhdf5::h5delete(file, curp)
+            mat <- ass_list[[p]]
+            HDF5Array::writeHDF5Array(mat, file=file, name=curp)
+        }
+    }
+
     invisible(NULL)
 }
 
