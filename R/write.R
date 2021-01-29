@@ -51,6 +51,7 @@
 #' @export
 #' @importFrom basilisk basiliskRun
 #' @importFrom Matrix sparseMatrix
+#' @importFrom DelayedArray is_sparse
 writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
     # Loop over and replace DelayedArrays.
     ass_list <- assays(sce)
@@ -58,8 +59,7 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
     for (a in seq_along(ass_list)) {
         if (is(ass_list[[a]], "DelayedMatrix")) {
             is_da[a] <- TRUE
-            assay(sce, a, withDimnames=FALSE) <- sparseMatrix(i=integer(0), 
-                j=integer(0), x=numeric(0), dims=dim(sce))
+            assay(sce, a, withDimnames=FALSE) <- .make_fake_mat(dim(sce))
         }
     }
 
@@ -85,7 +85,12 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
             }
             rhdf5::h5delete(file, curp)
             mat <- ass_list[[p]]
-            HDF5Array::writeHDF5Array(mat, file=file, name=curp)
+
+            if (!is_sparse(mat)) {
+                HDF5Array::writeHDF5Array(mat, file=file, name=curp)
+            } else {
+                .write_CSR_matrix(file, name=curp, mat=mat)
+            }
         }
     }
 
@@ -97,4 +102,53 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
     anndata <- import("anndata")
     adata <- SCE2AnnData(sce, X_name = X_name, skip_assays = skip_assays)
     adata$write_h5ad(file)
+}
+
+#' @importFrom DelayedArray blockApply rowAutoGrid
+.write_CSR_matrix <- function(file, name, mat, chunk_dim=10000) {
+    handle <- rhdf5::H5Fopen(file)
+    on.exit(rhdf5::H5Fclose(handle))
+
+    rhdf5::h5createGroup(handle, name)
+    rhdf5::h5createDataset(handle, file.path(name, "values"), dims=0, maxdims=rhdf5::H5Sunlimited(), 
+        H5type=if (type(mat)=="integer") "H5T_NATIVE_INT32" else "H5T_NATIVE_DOUBLE", chunk = chunk_dim)
+    rhdf5::h5createDataset(handle, file.path(name, "indptrs"), dims=0, maxdims=rhdf5::H5Sunlimited(),
+        H5type="H5T_NATIVE_UINT32", chunk = chunk_dim)
+
+    env <- new.env() # persist the 'last' counter.
+    env$last <- 0L
+    out <- blockApply(mat, grid=rowAutoGrid(mat), FUN=.blockwise_sparse_writer, env=env, 
+        file=handle, name=name, as.sparse=TRUE)
+
+    out <- as.double(unlist(out))
+    iname <- file.path(name, "index")
+    rhdf5::h5createDataset(handle, iname, dims=length(out)+1L, H5type="H5T_NATIVE_UINT64")
+    rhdf5::h5writeDataset(c(0, cumsum(out)), handle, iname)
+}
+
+#' @importFrom DelayedArray nzdata nzindex
+.blockwise_sparse_writer <- function(block, env, file, name) {
+    nzdex <- nzindex(block)
+    i <- nzdex[,1]
+    j <- nzdex[,2]
+    v <- nzdata(block)
+
+    o <- order(i)
+    i <- i[o]
+    j <- j[o]
+    v <- v[o]
+
+    last <- env$last
+    index <- list(last + seq_along(j))
+
+    iname <- file.path(name, "indptrs")
+    rhdf5::h5set_extent(file, iname, last + length(j))
+    rhdf5::h5writeDataset(j - 1L, file, iname, index=index)
+
+    vname <- file.path(name, "values")
+    rhdf5::h5set_extent(file, vname, last + length(j))
+    rhdf5::h5writeDataset(v, file, vname, index=index)
+
+    env$last <- last + length(j)
+    tabulate(i, nrow(block))
 }
