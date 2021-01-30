@@ -110,9 +110,15 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
     on.exit(rhdf5::H5Fclose(handle))
 
     rhdf5::h5createGroup(handle, name)
-    rhdf5::h5createDataset(handle, file.path(name, "values"), dims=0, maxdims=rhdf5::H5Sunlimited(), 
+    ghandle <- rhdf5::H5Gopen(handle, name)
+    on.exit(rhdf5::H5Gclose(ghandle), add=TRUE, after=FALSE)
+    rhdf5::h5writeAttribute("csc_matrix", ghandle, "encoding-type")
+    rhdf5::h5writeAttribute("0.1.0", ghandle, "encoding-version")
+    rhdf5::h5writeAttribute(rev(dim(mat)), ghandle, "shape")
+
+    rhdf5::h5createDataset(handle, file.path(name, "data"), dims=0, maxdims=rhdf5::H5Sunlimited(), 
         H5type=if (type(mat)=="integer") "H5T_NATIVE_INT32" else "H5T_NATIVE_DOUBLE", chunk = chunk_dim)
-    rhdf5::h5createDataset(handle, file.path(name, "indptrs"), dims=0, maxdims=rhdf5::H5Sunlimited(),
+    rhdf5::h5createDataset(handle, file.path(name, "indices"), dims=0, maxdims=rhdf5::H5Sunlimited(),
         H5type="H5T_NATIVE_UINT32", chunk = chunk_dim)
 
     env <- new.env() # persist the 'last' counter.
@@ -121,7 +127,7 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
         file=handle, name=name, as.sparse=TRUE)
 
     out <- as.double(unlist(out))
-    iname <- file.path(name, "index")
+    iname <- file.path(name, "indptr")
     rhdf5::h5createDataset(handle, iname, dims=length(out)+1L, H5type="H5T_NATIVE_UINT64")
     rhdf5::h5writeDataset(c(0, cumsum(out)), handle, iname)
 }
@@ -141,11 +147,11 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
     last <- env$last
     index <- list(last + seq_along(j))
 
-    iname <- file.path(name, "indptrs")
+    iname <- file.path(name, "indices")
     rhdf5::h5set_extent(file, iname, last + length(j))
     rhdf5::h5writeDataset(j - 1L, file, iname, index=index)
 
-    vname <- file.path(name, "values")
+    vname <- file.path(name, "data")
     rhdf5::h5set_extent(file, vname, last + length(j))
     rhdf5::h5writeDataset(v, file, vname, index=index)
 
