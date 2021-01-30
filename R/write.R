@@ -99,7 +99,7 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
     adata$write_h5ad(file)
 }
 
-#' @importFrom DelayedArray blockApply rowAutoGrid
+#' @importFrom DelayedArray blockApply rowAutoGrid type
 .write_CSR_matrix <- function(file, name, mat, chunk_dim=10000) {
     handle <- rhdf5::H5Fopen(file)
     on.exit(rhdf5::H5Fclose(handle))
