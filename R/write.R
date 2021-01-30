@@ -72,16 +72,11 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
 
     # Going back out and replacing each of them.
     if (any(is_da)) {
-        paths <- file.path("layers", assayNames(sce)[is_da])
-        if (is_da[1]) {
-            paths[1] <- "X"
-        }
-
         for (p in which(is_da)) {
-            if (p==1L) {
+            if (p == 1L) {
                 curp <- "X"
             } else {
-                curp <- paths[p]
+                curp <- file.path("layers", assayNames(sce)[p])
             }
             rhdf5::h5delete(file, curp)
             mat <- ass_list[[p]]
@@ -116,14 +111,14 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
     rhdf5::h5writeAttribute("0.1.0", ghandle, "encoding-version")
     rhdf5::h5writeAttribute(rev(dim(mat)), ghandle, "shape")
 
-    rhdf5::h5createDataset(handle, file.path(name, "data"), dims=0, maxdims=rhdf5::H5Sunlimited(), 
+    rhdf5::h5createDataset(handle, file.path(name, "data"), dims=0, maxdims=rhdf5::H5Sunlimited(),
         H5type=if (type(mat)=="integer") "H5T_NATIVE_INT32" else "H5T_NATIVE_DOUBLE", chunk = chunk_dim)
     rhdf5::h5createDataset(handle, file.path(name, "indices"), dims=0, maxdims=rhdf5::H5Sunlimited(),
         H5type="H5T_NATIVE_UINT32", chunk = chunk_dim)
 
     env <- new.env() # persist the 'last' counter.
     env$last <- 0L
-    out <- blockApply(mat, grid=rowAutoGrid(mat), FUN=.blockwise_sparse_writer, env=env, 
+    out <- blockApply(mat, grid=rowAutoGrid(mat), FUN=.blockwise_sparse_writer, env=env,
         file=handle, name=name, as.sparse=TRUE)
 
     out <- as.double(unlist(out))
