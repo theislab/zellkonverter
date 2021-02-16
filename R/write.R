@@ -57,7 +57,9 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
     ass_list <- assays(sce)
     is_da <- logical(length(ass_list))
     for (a in seq_along(ass_list)) {
-        if (is(ass_list[[a]], "DelayedMatrix")) {
+        # Skip sparse DelayedArrays due to rhdf5 issue
+        # https://github.com/grimbough/rhdf5/issues/79
+        if (is(ass_list[[a]], "DelayedMatrix") && !is_sparse(ass_list[[a]])) {
             is_da[a] <- TRUE
             assay(sce, a, withDimnames=FALSE) <- .make_fake_mat(dim(sce))
         }
