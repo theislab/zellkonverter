@@ -196,8 +196,8 @@ jobs:
     runs-on: ${{ matrix.config.os }}
     strategy:
       fail-fast: false
-      experimental: [true]
       matrix:
+        experimental: [true]
         config:
           - {os: windows-latest}
           - {os: macOS-latest}
