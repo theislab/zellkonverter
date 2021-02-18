@@ -24,20 +24,40 @@ A \code{NULL} is invisibly returned.
 Write a H5AD file from a \linkS4class{SingleCellExperiment} object.
 }
 \details{
+\subsection{Environment}{
+
+When first run, this function will instantiate a conda environment
+containing all of the necessary dependencies. This will not be performed on
+any subsequent run or if any other \strong{zellkonverter} function has been run
+prior to this one.
+}
+
+\subsection{Skipping assays}{
+
 Setting \code{skip_assays=TRUE} can occasionally be useful if the matrices in
 \code{sce} are stored in a format that is not amenable for efficient conversion
 to a \strong{numpy}-compatible format. In such cases, it can be better to create
 an empty placeholder dataset in \code{file} and fill it in R afterwards.
+}
 
-When first run, this function will instantiate a conda environment
-containing all of the necessary dependencies. This will not be performed on
-any subsequent run or if any other
-\strong{zellkonverter} function has been run prior to this one.
+\subsection{\strong{DelayedArray} assays}{
+
+If \code{sce} contains any \strong{DelayedArray} matrices as assays \code{writeH5AD()} will
+write them to disk using the \strong{rhdf5} package directly rather than via
+Python to avoid instantiating them in memory. However there is currently
+an issue which prevents this being done for sparse \strong{DelayedArray} matrices.
+}
+
+\subsection{Known conversion issues}{
+\subsection{Coercion to factors}{
 
 The \strong{anndata} package automatically converts some character vectors to
 factors when saving \code{.h5ad} files. This can effect columns of \code{rowData(sce)}
 and \code{colData(sce)} which may change type when the \code{.h5ad} file is read back
 into R.
+}
+
+}
 }
 \examples{
 # Using the Zeisel brain dataset

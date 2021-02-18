@@ -10,15 +10,31 @@
 #' be ignored when writing to `file`.
 #'
 #' @details
+#'
+#' ## Environment
+#'
+#' When first run, this function will instantiate a conda environment
+#' containing all of the necessary dependencies. This will not be performed on
+#' any subsequent run or if any other **zellkonverter** function has been run
+#' prior to this one.
+#'
+#' ## Skipping assays
+#'
 #' Setting `skip_assays=TRUE` can occasionally be useful if the matrices in
 #' `sce` are stored in a format that is not amenable for efficient conversion
 #' to a **numpy**-compatible format. In such cases, it can be better to create
 #' an empty placeholder dataset in `file` and fill it in R afterwards.
 #'
-#' When first run, this function will instantiate a conda environment
-#' containing all of the necessary dependencies. This will not be performed on
-#' any subsequent run or if any other
-#' **zellkonverter** function has been run prior to this one.
+#' ## **DelayedArray** assays
+#'
+#' If `sce` contains any **DelayedArray** matrices as assays `writeH5AD()` will
+#' write them to disk using the **rhdf5** package directly rather than via
+#' Python to avoid instantiating them in memory. However there is currently
+#' an issue which prevents this being done for sparse **DelayedArray** matrices.
+#'
+#' ## Known conversion issues
+#'
+#' ### Coercion to factors
 #'
 #' The **anndata** package automatically converts some character vectors to
 #' factors when saving `.h5ad` files. This can effect columns of `rowData(sce)`
