@@ -4,12 +4,15 @@
 \alias{writeH5AD}
 \title{Write H5AD}
 \usage{
-writeH5AD(sce, file, skip_assays = FALSE)
+writeH5AD(sce, file, X_name = NULL, skip_assays = FALSE)
 }
 \arguments{
 \item{sce}{A \linkS4class{SingleCellExperiment} object.}
 
 \item{file}{String containing a path to write the new \code{.h5ad} file.}
+
+\item{X_name}{Name of the assay to use as the primary matrix (\code{X}) of the
+AnnData object. If \code{NULL}, the first assay of \code{sce} will be used by default.}
 
 \item{skip_assays}{Logical scalar indicating whether assay matrices should
 be ignored when writing to \code{file}.}
@@ -30,6 +33,11 @@ When first run, this function will instantiate a conda environment
 containing all of the necessary dependencies. This will not be performed on
 any subsequent run or if any other
 \strong{zellkonverter} function has been run prior to this one.
+
+The \strong{anndata} package automatically converts some character vectors to
+factors when saving \code{.h5ad} files. This can effect columns of \code{rowData(sce)}
+and \code{colData(sce)} which may change type when the \code{.h5ad} file is read back
+into R.
 }
 \examples{
 # Using the Zeisel brain dataset
@@ -38,7 +46,7 @@ if (requireNamespace("scRNAseq", quietly = TRUE)) {
     sce <- ZeiselBrainData()
 
     # Writing to a H5AD file
-    temp <- tempfile(fileext = '.h5ad')
+    temp <- tempfile(fileext = ".h5ad")
     writeH5AD(sce, temp)
 }
 

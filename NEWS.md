@@ -1,6 +1,49 @@
-# zellkonverter 1.0
+# zellkonverter 1.2.0
+
+* Bioconductor 3.13, April 2021
+
+## zellkonverter 1.1.3 (2021-01-22)
+
+* Adjust `SCE2AnnData()` example (Fixes #31)
+
+## zellkonverter 1.1.2 (2020-12-19)
+
+* Improved support for HDF5 backed conversion (PR #29, fixes #13)
+
+## zellkonverter 1.1.1 (2020-12-03)
+
+* Add example_anndata.h5ad file to `inst/extdata/` and creation script to `inst/scripts/`
+* Improve conversion checks when converting `.uns` to `metadata`
+* Avoid converting `obsp` and `varp` to dense matrices
+
+## zellkonverter 1.1.0 (2020-10-28)
+
+* Bioconductor 3.13 devel
+
+# zellkonverter 1.0.0 (2020-10-28)
 
 * Bioconductor 3.12, October 2020
+
+## zellkonverter 1.0.2 (2021-01-28)
+
+* Merge remaining commits for HDF5 conversion (fixes #33)
+
+## zellkonverter 1.0.1 (2021-01-26)
+
+* Improved support for HDF5 backed conversion (PR #29, fixes #13, fixes #33)
+
+## zellkonverter 0.99.7 (2020-10-16)
+
+* Update Python dependencies
+  * **numpy** 1.18.5 -> 1.19.1
+  * **pandas** 1.0.4 -> 1.1.2
+  * **scipy** 1.4.1 -> 1.5.2
+  * **sqlite** 3.30.1 -> 3.33.0
+
+## zellkonverter 0.99.6 (2020-10-12)
+
+* Document character to factor coercion in `writeH5ad()` (Fixes #6)
+* Add `X_name` argument to `writeH5AD()` (Fixes #23)
 
 ## zellkonverter 0.99.5 (2020-09-28)
 
