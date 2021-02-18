@@ -91,8 +91,7 @@ jobs:
           echo "::set-output name=rversion::${rversion}"
 
   R-CMD-check-docker:
-    ## Run checks in the Bioconductor Docker container. This job also runs
-    ## covr (if on the master branch).
+    ## Run checks in the Bioconductor Docker container. This job also runs covr
     name: ubuntu-latest (r-biocdocker bioc-${{ needs.get-bioc-version.outputs.biocversion }})
     needs: [get-bioc-release, get-bioc-version]
     runs-on: ubuntu-latest
@@ -178,7 +177,6 @@ jobs:
         shell: Rscript {0}
 
       - name: Run covr
-        if: github.ref == 'refs/heads/master'
         run: |
           remotes::install_cran("covr")
           covr::codecov()
@@ -199,6 +197,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        experimental: [true]
         config:
           - {os: windows-latest}
           - {os: macOS-latest}
