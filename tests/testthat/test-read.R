@@ -20,8 +20,11 @@ test_that("Reading H5AD works with HDF5Arrays", {
     ref <- readH5AD(file)
     expect_identical(as.matrix(assay(ref)), as.matrix(assay(sce)))
 
-    # Properly sleeps to wait for the process to shut down. 
-    expect_s4_class(sce <- readH5AD(file, use_hdf5 = TRUE), "SingleCellExperiment")
+    # Properly sleeps to wait for the process to shut down.
+    expect_s4_class(
+        sce <- readH5AD(file, use_hdf5 = TRUE),
+        "SingleCellExperiment"
+    )
 })
 
 test_that("Reading H5AD works with a mixture of sparse and HDF5Arrays", {

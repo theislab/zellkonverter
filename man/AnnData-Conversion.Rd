@@ -59,6 +59,7 @@ for a matrix in the AnnData object, and an empty sparse matrix is created
 instead as a placeholder. If \code{skip_assays = NA}, no warning is emitted
 but variables are created in the \code{\link[=int_metadata]{int_metadata()}} of the output to specify
 which assays were skipped.
+
 If \code{skip_assays = TRUE}, empty sparse matrices are created for all assays,
 regardless of whether they might be convertible to an R format or not.
 In both cases, the user is expected to fill in the assays on the R side,

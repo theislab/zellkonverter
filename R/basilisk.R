@@ -36,7 +36,7 @@
 )
 
 anndata_env <- basilisk::BasiliskEnvironment(
-    envname = "anndata_env",
-    pkgname = "zellkonverter",
+    envname  = "anndata_env",
+    pkgname  = "zellkonverter",
     packages = .AnnDataDependencies
 )

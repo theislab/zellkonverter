@@ -7,7 +7,7 @@ sce <- ZeiselBrainData()
 reducedDim(sce, "WHEE") <- matrix(runif(ncol(sce) * 10), ncol = 10)
 
 test_that("writeH5AD works as expected", {
-    temp <- tempfile(fileext = '.h5ad')
+    temp <- tempfile(fileext = ".h5ad")
     writeH5AD(sce, temp)
     expect_true(file.exists(temp))
 
@@ -42,7 +42,7 @@ test_that("writeH5AD works as expected with sparse matrices", {
     logcounts(sce) <- counts(sce) * 10
     assay(sce, "random") <- mat # throwing in a dense matrix in a mixture.
 
-    temp <- tempfile(fileext = '.h5ad')
+    temp <- tempfile(fileext = ".h5ad")
     writeH5AD(sce, temp)
     expect_true(file.exists(temp))
 
@@ -56,7 +56,7 @@ test_that("writeH5AD works as expected with sparse matrices", {
 })
 
 test_that("writeH5AD works with assay skipping", {
-    temp <- tempfile(fileext = '.h5ad')
+    temp <- tempfile(fileext = ".h5ad")
     writeH5AD(sce, temp, skip_assays = TRUE)
     expect_true(file.exists(temp))
 
@@ -65,7 +65,7 @@ test_that("writeH5AD works with assay skipping", {
 })
 
 test_that("writeH5AD works with X_name", {
-    temp <- tempfile(fileext = '.h5ad')
+    temp <- tempfile(fileext = ".h5ad")
     writeH5AD(sce, temp, X_name = "counts")
     expect_true(file.exists(temp))
 
@@ -79,7 +79,7 @@ test_that("writeH5AD works in a separate process", {
     oldfork <- basilisk::getBasiliskFork()
     basilisk::setBasiliskFork(FALSE)
 
-    temp <- tempfile(fileext = '.h5ad')
+    temp <- tempfile(fileext = ".h5ad")
     writeH5AD(sce, temp)
     expect_true(file.exists(temp))
 
@@ -92,7 +92,7 @@ test_that("writeH5AD DelayedArray X works", {
     delayed_sce <- sce
     counts(delayed_sce) <- DelayedArray::DelayedArray(counts(delayed_sce))
 
-    temp <- tempfile(fileext = '.h5ad')
+    temp <- tempfile(fileext = ".h5ad")
 
     writeH5AD(delayed_sce, temp, X_name = "counts")
     expect_true(file.exists(temp))
@@ -108,7 +108,7 @@ test_that("writeH5AD sparse DelayedArray X works", {
     sparse_counts <- as(counts(delayed_sce), "dgCMatrix")
     counts(delayed_sce) <- DelayedArray::DelayedArray(sparse_counts)
 
-    temp <- tempfile(fileext = '.h5ad')
+    temp <- tempfile(fileext = ".h5ad")
 
     writeH5AD(delayed_sce, temp, X_name = "counts")
     expect_true(file.exists(temp))
@@ -127,7 +127,7 @@ test_that("writeH5AD DelayedArray layer works", {
         counts(delayed_sce)
     )
 
-    temp <- tempfile(fileext = '.h5ad')
+    temp <- tempfile(fileext = ".h5ad")
 
     writeH5AD(delayed_sce, temp)
     expect_true(file.exists(temp))

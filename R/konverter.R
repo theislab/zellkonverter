@@ -25,6 +25,7 @@
 #' instead as a placeholder. If `skip_assays = NA`, no warning is emitted
 #' but variables are created in the [`int_metadata()`] of the output to specify
 #' which assays were skipped.
+#'
 #' If `skip_assays = TRUE`, empty sparse matrices are created for all assays,
 #' regardless of whether they might be convertible to an R format or not.
 #' In both cases, the user is expected to fill in the assays on the R side,
@@ -205,7 +206,10 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
             mat <- try(t(mat), silent=TRUE)
             if (is(mat, "try-error")) {
                 if (isFALSE(skip_assays)) {
-                    warning(name, " does not support transposition and has been skipped")
+                    warning(
+                        name,
+                        " does not support transposition and has been skipped"
+                    )
                 }
                 mat <- .make_fake_mat(dims)
                 skipped <- TRUE
@@ -213,7 +217,7 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
         }
     }
 
-    list(mat=mat, skipped=skipped)
+    list(mat = mat, skipped = skipped)
 }
 
 #' @importFrom Matrix sparseMatrix
@@ -298,7 +302,7 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     }
 
     red_dims <- as.list(reducedDims(sce))
-    red_dims <- lapply(red_dims, .makeNumpyFriendly, transpose=FALSE)
+    red_dims <- lapply(red_dims, .makeNumpyFriendly, transpose = FALSE)
     adata$obsm <- red_dims
 
     meta_list <- metadata(sce)
@@ -311,15 +315,17 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
             capture.output(r_to_py(item))
             uns_list[[item_name]] <- item
         }, error = function(err) {
-            warning("the '", item_name, "' item in 'metadata' cannot be ",
-                    "converted to a Python type and has been skipped")
+            warning(
+                "the '", item_name, "' item in 'metadata' cannot be ",
+                "converted to a Python type and has been skipped"
+            )
         })
     }
 
     adata$uns$data <- uns_list
 
-    adata$varp <- as.list(rowPairs(sce, asSparse=TRUE))
-    adata$obsp <- as.list(colPairs(sce, asSparse=TRUE))
+    adata$varp <- as.list(rowPairs(sce, asSparse = TRUE))
+    adata$obsp <- as.list(colPairs(sce, asSparse = TRUE))
 
     if (!is.null(colnames(sce))) {
         adata$obs_names <- colnames(sce)
@@ -336,7 +342,7 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
 #' @importClassesFrom Matrix dgCMatrix
 #' @importFrom DelayedArray is_sparse
 #' @importFrom Matrix t
-.makeNumpyFriendly <- function(x, transpose=TRUE) {
+.makeNumpyFriendly <- function(x, transpose = TRUE) {
     if (transpose) {
         x <- t(x)
     }

@@ -34,7 +34,7 @@ prior to this one.
 
 \subsection{Skipping assays}{
 
-Setting \code{skip_assays=TRUE} can occasionally be useful if the matrices in
+Setting \code{skip_assays = TRUE} can occasionally be useful if the matrices in
 \code{sce} are stored in a format that is not amenable for efficient conversion
 to a \strong{numpy}-compatible format. In such cases, it can be better to create
 an empty placeholder dataset in \code{file} and fill it in R afterwards.
