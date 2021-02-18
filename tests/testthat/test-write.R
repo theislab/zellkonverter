@@ -2,6 +2,7 @@
 # library(testthat); library(zellkonverter); source("test-write.R")
 
 library(scRNAseq)
+
 sce <- ZeiselBrainData()
 reducedDim(sce, "WHEE") <- matrix(runif(ncol(sce) * 10), ncol = 10)
 
@@ -84,4 +85,54 @@ test_that("writeH5AD works in a separate process", {
 
     basilisk::setBasiliskShared(oldshare)
     basilisk::setBasiliskFork(oldfork)
+})
+
+test_that("writeH5AD DelayedArray X works", {
+
+    delayed_sce <- sce
+    counts(delayed_sce) <- DelayedArray::DelayedArray(counts(delayed_sce))
+
+    temp <- tempfile(fileext = '.h5ad')
+
+    writeH5AD(delayed_sce, temp, X_name = "counts")
+    expect_true(file.exists(temp))
+
+    out <- readH5AD(temp)
+
+    expect_identical(counts(sce), assay(out, "X"))
+})
+
+test_that("writeH5AD sparse DelayedArray X works", {
+
+    delayed_sce <- sce
+    sparse_counts <- as(counts(delayed_sce), "dgCMatrix")
+    counts(delayed_sce) <- DelayedArray::DelayedArray(sparse_counts)
+
+    temp <- tempfile(fileext = '.h5ad')
+
+    writeH5AD(delayed_sce, temp, X_name = "counts")
+    expect_true(file.exists(temp))
+
+    out <- readH5AD(temp)
+
+    # Sparse DelayedArrays are currently coerced into memory
+    # This expectation will need to be changed once that is fixed
+    expect_identical(sparse_counts, assay(out, "X"))
+})
+
+test_that("writeH5AD DelayedArray layer works", {
+
+    delayed_sce <- sce
+    assay(delayed_sce, "layer") <- DelayedArray::DelayedArray(
+        counts(delayed_sce)
+    )
+
+    temp <- tempfile(fileext = '.h5ad')
+
+    writeH5AD(delayed_sce, temp)
+    expect_true(file.exists(temp))
+
+    out <- readH5AD(temp)
+
+    expect_identical(counts(sce), assay(out, "layer"))
 })
