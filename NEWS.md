@@ -2,6 +2,11 @@
 
 * Bioconductor 3.13, April 2021
 
+## zellkonverter 1.1.4 (2021-02-18)
+
+* Handle writing **DelayedArray** assays on the R side in `writeH5AD()`
+  (PR #35, Fixes #32)
+
 ## zellkonverter 1.1.3 (2021-01-22)
 
 * Adjust `SCE2AnnData()` example (Fixes #31)
