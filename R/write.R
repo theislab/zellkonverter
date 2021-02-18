@@ -101,6 +101,11 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
     adata$write_h5ad(file)
 }
 
+# nocov start
+
+# Skipping code coverage on these function because they aren't used until the
+# sparse DelayedArray rhdf5 issue mentioned above is addressed
+
 #' @importFrom DelayedArray blockApply rowAutoGrid type
 .write_CSR_matrix <- function(file, name, mat, chunk_dim=10000) {
     handle <- rhdf5::H5Fopen(file)
@@ -155,3 +160,5 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
     env$last <- last + length(j)
     tabulate(i, nrow(block))
 }
+
+# nocov end
