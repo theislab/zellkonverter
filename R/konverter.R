@@ -202,6 +202,11 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
             file <- as.character(mat$file$id$name)
             name <- as.character(mat$name)
             mat <- HDF5Array::HDF5Array(file, name)
+        } else if (hdf5_backed && any(grepl("^anndata\\..*\\.SparseDataset", class(mat)))) {
+            # It's H5AD's custom format, so let's handle it with the H5ADMatrix object.
+            file <- as.character(mat$file$id$name)
+            name <- as.character(mat$name)
+            mat <- HDF5Array::H5ADMatrix(file, name)
         } else {
             mat <- try(t(mat), silent=TRUE)
             if (is(mat, "try-error")) {
