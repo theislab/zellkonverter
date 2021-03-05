@@ -303,6 +303,7 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     adata$obsm <- red_dims
 
     meta_list <- metadata(sce)
+    meta_list <- .addListNames(meta_list)
     uns_list <- list()
     for (item_name in names(meta_list)) {
         item <- meta_list[[item_name]]
@@ -319,7 +320,7 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
         })
     }
 
-    adata$uns$data <- uns_list
+    adata$uns <- reticulate::dict(uns_list)
 
     adata$varp <- as.list(rowPairs(sce, asSparse = TRUE))
     adata$obsp <- as.list(colPairs(sce, asSparse = TRUE))
@@ -350,4 +351,25 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     } else {
         as.matrix(x)
     }
+}
+
+.addListNames <- function(x) {
+
+    if (length(x) == 0) {
+        return(x)
+    }
+
+    if (is.null(names(x))) {
+        names(x) <- paste0("item", seq_along(x))
+        return(x)
+    }
+
+    list_names <- names(x)
+    is_empty <- list_names == ""
+    list_names[is_empty] <- paste0("item", seq_along(x)[is_empty])
+    list_names <- make.names(list_names, unique = TRUE)
+
+    names(x) <- list_names
+
+    return(x)
 }

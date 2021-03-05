@@ -1,9 +1,11 @@
 # zellkonverter 1.2.0
 
+* Bioconductor 3.13, April 2021
+
 * Better support for **anndata** `SparseDataset` arrays (PR #41, Fixes #37,
   Fixes #42)
-
-* Bioconductor 3.13, April 2021
+* More consistent conversion of `metadata` to `uns` in `SCE2AnnData()`
+  (Fixes #40)
 
 ## zellkonverter 1.1.4 (2021-02-18)
 
@@ -20,7 +22,7 @@
 
 ## zellkonverter 1.1.1 (2020-12-03)
 
-* Add example_anndata.h5ad file to `inst/extdata/` and creation script to `inst/scripts/`
+* Add `example_anndata.h5ad` file to `inst/extdata/` and creation script to `inst/scripts/`
 * Improve conversion checks when converting `.uns` to `metadata`
 * Avoid converting `obsp` and `varp` to dense matrices
 
