@@ -1,5 +1,8 @@
 # zellkonverter 1.2.0
 
+* Better support for **anndata** `SparseDataset` arrays (PR #41, Fixes #37,
+  Fixes #42)
+
 * Bioconductor 3.13, April 2021
 
 ## zellkonverter 1.1.4 (2021-02-18)

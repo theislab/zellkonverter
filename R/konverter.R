@@ -195,15 +195,12 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
         # skip_assays=TRUE avoids any actual transfer of content from Python.
         mat <- .make_fake_mat(dims)
     } else {
-        if (hdf5_backed && any(grepl("^h5py\\..*\\.Dataset", class(mat)))) {
-            # It's a HDF5 file, so let's treat it as such. Happily enough, H5AD
-            # stores it in a transposed format that is correctly understood by
-            # HDF5Array and untransposed automatically; no need for extra work here.
+        if (hdf5_backed && is(mat, "python.builtin.object")) {
             file <- as.character(mat$file$id$name)
             name <- as.character(mat$name)
-            mat <- HDF5Array::HDF5Array(file, name)
+            mat <- HDF5Array::H5ADMatrix(file, name)
         } else {
-            mat <- try(t(mat), silent=TRUE)
+            mat <- try(t(mat), silent = TRUE)
             if (is(mat, "try-error")) {
                 if (isFALSE(skip_assays)) {
                     warning(

@@ -31,7 +31,7 @@ test_that("Reading H5AD works with a mixture of sparse and HDF5Arrays", {
     sce <- readH5AD(file)
     assay(sce, "more") <- as(assay(sce, "X"), "dgCMatrix")
 
-    temp <- tempfile(fileext=".h5ad")
+    temp <- tempfile(fileext = ".h5ad")
     writeH5AD(sce, temp)
 
     backed <- readH5AD(temp, use_hdf5 = TRUE)
