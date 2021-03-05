@@ -2,13 +2,15 @@
 
 * Bioconductor 3.13, April 2021
 
+## zellkonverter 1.1.5 (2021-03-05)
+
 * Better support for **anndata** `SparseDataset` arrays (PR #41, Fixes #37,
   Fixes #42)
 * More consistent conversion of `metadata` to `uns` in `SCE2AnnData()`
   (Fixes #40)
 * Add handling of list columns in `colData` and `rowData` in `SCE2AnnData()`
   (Fixes #26)
-* Export `zellkonverterAnnDataEnv`
+* Export `zellkonverterAnnDataEnv` (Fixes #38)
 
 ## zellkonverter 1.1.4 (2021-02-18)
 
