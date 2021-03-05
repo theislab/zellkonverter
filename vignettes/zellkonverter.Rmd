@@ -86,7 +86,7 @@ roundtrip <- basiliskRun(fun = function(sce) {
 
      # Convert back to an SCE:
      AnnData2SCE(adata)
-}, env = zellkonverter:::anndata_env, sce = seger)
+}, env = zellkonverterAnnDataEnv, sce = seger)
 ```
 
 Package developers can guarantee that they are using the same versions of Python

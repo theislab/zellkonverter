@@ -39,12 +39,12 @@
 #' \linkS4class{SingleCellExperiment}.
 #'
 #' @export
-#' @importFrom basilisk basiliskRun 
+#' @importFrom basilisk basiliskRun
 readH5AD <- function(file, use_hdf5 = FALSE) {
     file <- path.expand(file)
 
     basiliskRun(
-        env    = anndata_env,
+        env    = zellkonverterAnnDataEnv,
         fun    = .H5ADreader,
         file   = file,
         backed = use_hdf5

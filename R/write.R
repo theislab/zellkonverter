@@ -83,7 +83,7 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
 
     file <- path.expand(file)
     basiliskRun(
-        env         = anndata_env,
+        env         = zellkonverterAnnDataEnv,
         fun         = .H5ADwriter,
         sce         = sce,
         file        = file,

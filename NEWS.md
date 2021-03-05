@@ -8,6 +8,7 @@
   (Fixes #40)
 * Add handling of list columns in `colData` and `rowData` in `SCE2AnnData()`
   (Fixes #26)
+* Export `zellkonverterAnnDataEnv`
 
 ## zellkonverter 1.1.4 (2021-02-18)
 
