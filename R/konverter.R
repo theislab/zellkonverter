@@ -258,6 +258,30 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     adata <- anndata$AnnData(X = X)
 
     col_data <- colData(sce)
+    is_atomic <- vapply(col_data, is.atomic, NA)
+    if (any(!is_atomic)) {
+        non_atomic_cols <- colnames(col_data)[!is_atomic]
+        warning(
+            "The following colData columns are not atomic and will be stored ",
+            "in metadata(sce)$.colData before conversion: ",
+            paste(non_atomic_cols, collapse = ", ")
+        )
+
+        if (".colData" %in% names(metadata(sce))) {
+            meta_list <- metadata(sce)$.colData
+        } else {
+            meta_list <- list()
+        }
+
+        for (col in non_atomic_cols) {
+            store_name <- make.names(c(col, names(meta_list)), unique = TRUE)[1]
+            meta_list[[store_name]] <- col_data[[col]]
+        }
+
+        col_data[non_atomic_cols] <- NULL
+        metadata(sce)$.colData <- meta_list
+    }
+
     if (ncol(col_data) > 0) {
         # Manually construct the data.frame to avoid mangling column names
         obs <- do.call(
@@ -272,6 +296,30 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     }
 
     row_data <- rowData(sce)
+    is_atomic <- vapply(row_data, is.atomic, NA)
+    if (any(!is_atomic)) {
+        non_atomic_cols <- colnames(row_data)[!is_atomic]
+        warning(
+            "The following rowData columns are not atomic and will be stored ",
+            "in metadata(sce)$.rowData before conversion: ",
+            paste(non_atomic_cols, collapse = ", ")
+        )
+
+        if (".rowData" %in% names(metadata(sce))) {
+            meta_list <- metadata(sce)$.rowData
+        } else {
+            meta_list <- list()
+        }
+
+        for (col in non_atomic_cols) {
+            store_name <- make.names(c(col, names(meta_list)), unique = TRUE)[1]
+            meta_list[[store_name]] <- row_data[[col]]
+        }
+
+        row_data[non_atomic_cols] <- NULL
+        metadata(sce)$.rowData <- meta_list
+    }
+
     if (ncol(row_data) > 0) {
         # Manually construct the data.frame to avoid mangling column names
         var <- do.call(

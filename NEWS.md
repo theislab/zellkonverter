@@ -6,6 +6,8 @@
   Fixes #42)
 * More consistent conversion of `metadata` to `uns` in `SCE2AnnData()`
   (Fixes #40)
+* Add handling of list columns in `colData` and `rowData` in `SCE2AnnData()`
+  (Fixes #26)
 
 ## zellkonverter 1.1.4 (2021-02-18)
 
