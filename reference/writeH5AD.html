@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.5</span>
       </span>
     </div>
 
@@ -156,7 +156,7 @@ be ignored when writing to <code>file</code>.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     
-<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Environment</h3>
+<h3 class='hasAnchor' id='environment'><a class='anchor' href='#environment'></a>Environment</h3>
 
 
 <p>When first run, this function will instantiate a conda environment
@@ -164,7 +164,7 @@ containing all of the necessary dependencies. This will not be performed on
 any subsequent run or if any other <strong>zellkonverter</strong> function has been run
 prior to this one.</p>
 
-<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Skipping assays</h3>
+<h3 class='hasAnchor' id='skipping-assays'><a class='anchor' href='#skipping-assays'></a>Skipping assays</h3>
 
 
 <p>Setting <code>skip_assays = TRUE</code> can occasionally be useful if the matrices in
@@ -172,7 +172,13 @@ prior to this one.</p>
 to a <strong>numpy</strong>-compatible format. In such cases, it can be better to create
 an empty placeholder dataset in <code>file</code> and fill it in R afterwards.</p>
 
-<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a><strong>DelayedArray</strong> assays</h3>
+<h3 class='hasAnchor' id='list-delayedarray-'><a class='anchor' href='#list-delayedarray-'></a><strong>DelayedArray</strong> assays</h3>
+
+
+<p>If <code>sce</code> contains any <strong>DelayedArray</strong> matrices as assays <code>writeH5AD()</code> will
+write them to disk using the <strong>rhdf5</strong> package directly rather than via
+Python to avoid instantiating them in memory. However there is currently
+an issue which prevents this being done for sparse <strong>DelayedArray</strong> matrices.</p><h3 class='hasAnchor' id='-assays'><a class='anchor' href='#-assays'></a><strong>DelayedArray</strong> assays</h3>
 
 
 <p>If <code>sce</code> contains any <strong>DelayedArray</strong> matrices as assays <code>writeH5AD()</code> will
@@ -180,9 +186,9 @@ write them to disk using the <strong>rhdf5</strong> package directly rather than
 Python to avoid instantiating them in memory. However there is currently
 an issue which prevents this being done for sparse <strong>DelayedArray</strong> matrices.</p>
 
-<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Known conversion issues</h3>
+<h3 class='hasAnchor' id='known-conversion-issues'><a class='anchor' href='#known-conversion-issues'></a>Known conversion issues</h3>
 
-<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Coercion to factors</h4>
+<h4 class='hasAnchor' id='coercion-to-factors'><a class='anchor' href='#coercion-to-factors'></a>Coercion to factors</h4>
 
 
 <p>The <strong>anndata</strong> package automatically converts some character vectors to
@@ -213,7 +219,7 @@ SingleCellExperiment.</p></div>
     <span class='va'>temp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".h5ad"</span><span class='op'>)</span>
     <span class='fu'>writeH5AD</span><span class='op'>(</span><span class='va'>sce</span>, <span class='va'>temp</span><span class='op'>)</span>
 <span class='op'>}</span>
-</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2021-02-11</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2021-02-11</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>Note: using the 'counts' assay as the X matrix</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2021-03-04</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2021-03-04</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>Note: using the 'counts' assay as the X matrix</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -226,11 +232,11 @@ SingleCellExperiment.</p></div>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Luke Zappia, Aaron Lun.</p>
+  <p><p>Developed by Luke Zappia, Aaron Lun.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
