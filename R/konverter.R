@@ -74,7 +74,6 @@
 #'         zellkonverter::AnnData2SCE(adata)
 #'     }, env = zellkonverterAnnDataEnv, sce = seger)
 #' }
-#'
 #' @name AnnData-Conversion
 #' @rdname AnnData-Conversion
 NULL
@@ -102,9 +101,9 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
     x_out <- .extract_or_skip_assay(
         skip_assays = skip_assays,
         hdf5_backed = hdf5_backed,
-        dims        = dims,
-        mat         = adata$X,
-        name        = "'X' matrix"
+        dims = dims,
+        mat = adata$X,
+        name = "'X' matrix"
     )
 
     x_mat <- x_out$mat
@@ -120,9 +119,9 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
         layer_out <- .extract_or_skip_assay(
             skip_assays = skip_assays,
             hdf5_backed = hdf5_backed,
-            dims        = dims,
-            mat         = adata$layers$get(layer_name),
-            name        = sprintf("'%s' layer matrix", layer_name)
+            dims = dims,
+            mat = adata$layers$get(layer_name),
+            name = sprintf("'%s' layer matrix", layer_name)
         )
         if (layer_out$skipped) {
             skipped_layers <- c(skipped_layers, layer_name)
@@ -134,25 +133,34 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
 
     meta_list <- list()
     for (key in uns_keys) {
-        tryCatch({
-            item <- adata$uns[[key]]
+        tryCatch(
+            {
+                item <- adata$uns[[key]]
 
-            item_type <- py_builtins$str(py_builtins$type(item))
-            if (grepl("OverloadedDict", item_type)) {
-                item <- py_builtins$dict(item)
-            }
+                item_type <- py_builtins$str(py_builtins$type(item))
+                if (grepl("OverloadedDict", item_type)) {
+                    item <- py_builtins$dict(item)
+                }
 
-            if (!is(item, "python.builtin.object")) {
-                meta_list[[key]] <- item
-            } else {
-                warning("the '", key, "' item in 'uns' cannot be converted ",
-                        "to an R object and has been skipped", call. = FALSE)
-            }
-        }, error = function(err) {
-            warning("conversion failed for the item '", key, "' in 'uns' with ",
+                if (!is(item, "python.builtin.object")) {
+                    meta_list[[key]] <- item
+                } else {
+                    warning(
+                        "the '", key, "' item in 'uns' cannot be converted ",
+                        "to an R object and has been skipped",
+                        call. = FALSE
+                    )
+                }
+            },
+            error = function(err) {
+                warning(
+                    "conversion failed for the item '", key, "' in 'uns' with ",
                     "the following error and has been skipped\n",
-                    "Error message: ", err, call. = FALSE)
-        })
+                    "Error message: ", err,
+                    call. = FALSE
+                )
+            }
+        )
     }
 
     varp_list <- lapply(py_builtins$dict(adata$varp), reticulate::py_to_r)
@@ -170,13 +178,13 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
     }
 
     output <- SingleCellExperiment(
-        assays      = assays_list,
-        rowData     = row_data,
-        colData     = adata$obs,
+        assays = assays_list,
+        rowData = row_data,
+        colData = adata$obs,
         reducedDims = py_builtins$dict(adata$obsm),
-        metadata    = meta_list,
-        rowPairs    = varp_list,
-        colPairs    = obsp_list
+        metadata = meta_list,
+        rowPairs = varp_list,
+        colPairs = obsp_list
     )
 
     # Specifying which assays got skipped, if the skipping was variable.
@@ -226,9 +234,9 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
 #' @importFrom Matrix sparseMatrix
 .make_fake_mat <- function(dims) {
     sparseMatrix(
-        i    = integer(0),
-        j    = integer(0),
-        x    = numeric(0),
+        i = integer(0),
+        j = integer(0),
+        x = numeric(0),
         dims = dims
     )
 }
@@ -258,7 +266,6 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
 #' @importFrom S4Vectors metadata
 #' @importFrom reticulate import r_to_py
 SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
-
     anndata <- import("anndata")
 
     if (is.null(X_name)) {
@@ -375,17 +382,20 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     uns_list <- list()
     for (item_name in names(meta_list)) {
         item <- meta_list[[item_name]]
-        tryCatch({
-            # Try to convert the item using reticulate, skip if it fails
-            # Capture the object output printed by reticulate
-            capture.output(r_to_py(item))
-            uns_list[[item_name]] <- item
-        }, error = function(err) {
-            warning(
-                "the '", item_name, "' item in 'metadata' cannot be ",
-                "converted to a Python type and has been skipped"
-            )
-        })
+        tryCatch(
+            {
+                # Try to convert the item using reticulate, skip if it fails
+                # Capture the object output printed by reticulate
+                capture.output(r_to_py(item))
+                uns_list[[item_name]] <- item
+            },
+            error = function(err) {
+                warning(
+                    "the '", item_name, "' item in 'metadata' cannot be ",
+                    "converted to a Python type and has been skipped"
+                )
+            }
+        )
     }
 
     adata$uns <- reticulate::dict(uns_list)
@@ -422,7 +432,6 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
 }
 
 .addListNames <- function(x) {
-
     if (length(x) == 0) {
         return(x)
     }

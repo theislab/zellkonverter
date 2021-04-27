@@ -37,7 +37,6 @@ class(assay(sce))
 
 sce2 <- readH5AD(file, use_hdf5 = TRUE)
 class(assay(sce2))
-
 }
 \seealso{
 \code{\link[=writeH5AD]{writeH5AD()}}, to write a \linkS4class{SingleCellExperiment} object to a

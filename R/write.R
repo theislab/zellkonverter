@@ -63,7 +63,6 @@
 #'     temp <- tempfile(fileext = ".h5ad")
 #'     writeH5AD(sce, temp)
 #' }
-#'
 #' @export
 #' @importFrom basilisk basiliskRun
 #' @importFrom Matrix sparseMatrix
@@ -83,11 +82,11 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
 
     file <- path.expand(file)
     basiliskRun(
-        env         = zellkonverterAnnDataEnv,
-        fun         = .H5ADwriter,
-        sce         = sce,
-        file        = file,
-        X_name      = X_name,
+        env = zellkonverterAnnDataEnv,
+        fun = .H5ADwriter,
+        sce = sce,
+        file = file,
+        X_name = X_name,
         skip_assays = skip_assays
     )
 
@@ -141,14 +140,14 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
     rhdf5::h5createDataset(
         handle,
         file.path(name, "data"),
-        dims    = 0,
+        dims = 0,
         maxdims = rhdf5::H5Sunlimited(),
-        H5type  = if (type(mat) == "integer") {
+        H5type = if (type(mat) == "integer") {
             "H5T_NATIVE_INT32"
         } else {
             "H5T_NATIVE_DOUBLE"
         },
-        chunk   = chunk_dim
+        chunk = chunk_dim
     )
 
     rhdf5::h5createDataset(

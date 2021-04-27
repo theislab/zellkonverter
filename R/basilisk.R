@@ -28,7 +28,6 @@
 #' cl <- basilisk::basiliskStart(zellkonverterAnnDataEnv)
 #' anndata <- reticulate::import("anndata")
 #' basilisk::basiliskStop(cl)
-#'
 #' @name AnnData-Environment
 #' @rdname AnnData-Environment
 NULL
@@ -60,7 +59,7 @@ NULL
 #'
 #' @export
 zellkonverterAnnDataEnv <- basilisk::BasiliskEnvironment(
-    envname  = "zellkonverterAnnDataEnv",
-    pkgname  = "zellkonverter",
+    envname = "zellkonverterAnnDataEnv",
+    pkgname = "zellkonverter",
     packages = .AnnDataDependencies
 )

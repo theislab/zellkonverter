@@ -69,7 +69,6 @@ if (requireNamespace("scRNAseq", quietly = TRUE)) {
     temp <- tempfile(fileext = ".h5ad")
     writeH5AD(sce, temp)
 }
-
 }
 \seealso{
 \code{\link[=readH5AD]{readH5AD()}}, to read a \linkS4class{SingleCellExperiment} file from a H5AD

@@ -86,7 +86,6 @@ test_that("writeH5AD works in a separate process", {
 })
 
 test_that("writeH5AD DelayedArray X works", {
-
     delayed_sce <- sce
     counts(delayed_sce) <- DelayedArray::DelayedArray(counts(delayed_sce))
 
@@ -101,7 +100,6 @@ test_that("writeH5AD DelayedArray X works", {
 })
 
 test_that("writeH5AD sparse DelayedArray X works", {
-
     delayed_sce <- sce
     sparse_counts <- as(counts(delayed_sce), "dgCMatrix")
     counts(delayed_sce) <- DelayedArray::DelayedArray(sparse_counts)
@@ -119,7 +117,6 @@ test_that("writeH5AD sparse DelayedArray X works", {
 })
 
 test_that("writeH5AD DelayedArray layer works", {
-
     delayed_sce <- sce
     assay(delayed_sce, "layer") <- DelayedArray::DelayedArray(
         counts(delayed_sce)
@@ -136,7 +133,6 @@ test_that("writeH5AD DelayedArray layer works", {
 })
 
 test_that("writeH5AD works with colData list columns", {
-
     list_sce <- sce
     colData(list_sce)$ListCol <- lapply(seq_len(ncol(list_sce)), function(x) {
         sample(LETTERS, 2)
@@ -153,7 +149,6 @@ test_that("writeH5AD works with colData list columns", {
 })
 
 test_that("writeH5AD works with rowData list columns", {
-
     list_sce <- sce
     rowData(list_sce)$ListCol <- lapply(seq_len(nrow(list_sce)), function(x) {
         sample(LETTERS, 2)

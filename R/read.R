@@ -27,7 +27,6 @@
 #'
 #' sce2 <- readH5AD(file, use_hdf5 = TRUE)
 #' class(assay(sce2))
-#'
 #' @author Luke Zappia
 #' @author Aaron Lun
 #'
@@ -44,9 +43,9 @@ readH5AD <- function(file, use_hdf5 = FALSE) {
     file <- path.expand(file)
 
     basiliskRun(
-        env    = zellkonverterAnnDataEnv,
-        fun    = .H5ADreader,
-        file   = file,
+        env = zellkonverterAnnDataEnv,
+        fun = .H5ADreader,
+        file = file,
         backed = use_hdf5
     )
 }

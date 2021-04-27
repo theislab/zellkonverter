@@ -96,7 +96,6 @@ if (requireNamespace("scRNAseq", quietly = TRUE)) {
         zellkonverter::AnnData2SCE(adata)
     }, env = zellkonverterAnnDataEnv, sce = seger)
 }
-
 }
 \seealso{
 \code{\link[=writeH5AD]{writeH5AD()}} and \code{\link[=readH5AD]{readH5AD()}} for dealing directly with H5AD files.

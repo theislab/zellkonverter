@@ -44,7 +44,6 @@ environments.
 cl <- basilisk::basiliskStart(zellkonverterAnnDataEnv)
 anndata <- reticulate::import("anndata")
 basilisk::basiliskStop(cl)
-
 }
 \author{
 Luke Zappia
