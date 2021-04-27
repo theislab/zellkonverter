@@ -35,7 +35,7 @@ Python package versions that are consistent with those in \strong{zellkonverter}
 If you want to run code in the exact environment used by \strong{zellkonverter}
 this can be done using \code{zellkonverterAnnDataEnv} in combination with
 \code{\link[basilisk:basiliskStart]{basilisk::basiliskStart()}} and/or \code{\link[basilisk:basiliskStart]{basilisk::basiliskRun()}}. Please refer to
-the \strong{basilisk} docmentation for more information on using these
+the \strong{basilisk} documentation for more information on using these
 environments.
 }
 \examples{

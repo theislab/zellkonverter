@@ -16,7 +16,7 @@
 #' If you want to run code in the exact environment used by **zellkonverter**
 #' this can be done using `zellkonverterAnnDataEnv` in combination with
 #' [basilisk::basiliskStart()] and/or [basilisk::basiliskRun()]. Please refer to
-#' the **basilisk** docmentation for more information on using these
+#' the **basilisk** documentation for more information on using these
 #' environments.
 #'
 #' @author Luke Zappia
