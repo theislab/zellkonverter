@@ -68,11 +68,11 @@ readH5AD <- function(file, use_hdf5 = FALSE) {
     if (!"X" %in% names(contents)) {
         stop("missing an 'X' entry in '", file, "'")
     }
-    all.assays <- list(X = .read_matrix(file, "X", backed=backed))
+    all.assays <- list(X = .read_matrix(file, "X", contents[["X"]], backed=backed))
 
     for (l in names(contents[["layers"]])) {
         tryCatch({
-            all.assays[[l]] <- .read_matrix(file, file.path("layers", l), backed=backed)
+            all.assays[[l]] <- .read_matrix(file, file.path("layers", l), contents[["layers"]][[l]], backed=backed)
         }, error=function(e) {
             warning(wmsg("setting additional assays from 'layers' failed for '", file, "':\n  ", conditionMessage(e)))
         })
@@ -129,6 +129,14 @@ readH5AD <- function(file, use_hdf5 = FALSE) {
         warning(wmsg("setting 'colPairs' failed for '", file, "':\n  ", conditionMessage(e)))
     })
 
+    if ("uns" %in% names(contents)) {
+        tryCatch({
+            metadata(sce) <- rhdf5::h5read(file, "uns")
+        }, error=function(e) {
+            warning(wmsg("setting 'metadata' failed for '", file, "':\n  ", conditionMessage(e)))
+        })
+    }
+
     sce
 }
 
@@ -163,8 +171,12 @@ readH5AD <- function(file, use_hdf5 = FALSE) {
     contents
 }
 
-.read_matrix <- function(file, path, is.group, backed) {
-    mat <- HDF5Array::H5ADMatrix(file, path)
+.read_matrix <- function(file, path, fields, backed) {
+    if (is.data.frame(fields)) {
+        mat <- HDF5Array::HDF5Array(file, path)
+    } else {
+        mat <- HDF5Array::H5SparseMatrix(file, path)
+    }
     if (!backed) {
          if (DelayedArray::is_sparse(mat)) {
              mat <- as(mat, "sparseMatrix")
@@ -219,7 +231,7 @@ readH5AD <- function(file, use_hdf5 = FALSE) {
 .read_dim_pairs <- function(file, path, fields) {
     all.pairs <- list()
     for (i in names(fields)) {
-        mat <- HDF5Array::H5ADMatrix(file, file.path(path, i))
+        mat <- HDF5Array::H5SparseMatrix(file, file.path(path, i))
         all.pairs[[i]] <- as(mat, "sparseMatrix")
     }
     all.pairs
