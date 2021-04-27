@@ -198,7 +198,11 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
         if (hdf5_backed && is(mat, "python.builtin.object")) {
             file <- as.character(mat$file$id$name)
             name <- as.character(mat$name)
-            mat <- HDF5Array::H5ADMatrix(file, name)
+            if (.h5isgroup(file, name)) {
+                mat <- HDF5Array::H5SparseMatrix(file, name)
+            } else {
+                mat <- HDF5Array::HDF5Array(file, name)
+            }
         } else {
             mat <- try(t(mat), silent = TRUE)
             if (is(mat, "try-error")) {
@@ -225,6 +229,20 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
         x    = numeric(0),
         dims = dims
     )
+}
+
+# Borrowed from HDF4Array
+# https://github.com/Bioconductor/HDF5Array/blob/fb015cf1c789bbb905a6bf8af2c7b50a24a60795/R/h5utils.R#L66-L75
+.h5isgroup <- function(filepath, name) {
+    fid <- rhdf5::H5Fopen(filepath, flags = "H5F_ACC_RDONLY")
+    on.exit(rhdf5::H5Fclose(fid))
+    gid <- try(rhdf5::H5Gopen(fid, name), silent = TRUE)
+    ans <- !inherits(gid, "try-error")
+    if (ans) {
+        rhdf5::H5Gclose(gid)
+    }
+
+    return(ans)
 }
 
 #' @rdname AnnData-Conversion

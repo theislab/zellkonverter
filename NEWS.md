@@ -1,6 +1,10 @@
 # zellkonverter 1.2.0
 
-* Bioconductor 3.13, April 2021
+* Bioconductor 3.13, May 2021
+
+## zellkonverter 1.1.6 (2021-04-27)
+
+* Adapt to changes in `HDF5Array::HDF5Array()`
 
 ## zellkonverter 1.1.5 (2021-03-05)
 
