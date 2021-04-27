@@ -1,6 +1,4 @@
 # This tests the readH5AD function (and by implication, SCE2AnnData).
-# library(testthat); library(zellkonverter); source("test-read.R")
-
 library(SummarizedExperiment)
 file <- system.file("extdata", "krumsiek11.h5ad", package = "zellkonverter")
 

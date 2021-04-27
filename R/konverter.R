@@ -11,7 +11,9 @@
 #' The conversion is not entirely lossless. The current mapping is shown below
 #' (also at <https://tinyurl.com/AnnData2SCE>):
 #'
-#' \if{html}{\figure{AnnData2SCE.png}{options: width=800, alt="SCE-AnnData map"}}
+#' \if{html}{
+#'     \figure{AnnData2SCE.png}{options: width=800, alt="SCE-AnnData map"}
+#' }
 #' \if{latex}{\figure{AnnData2SCE.png}{options: width=5in}}
 #'
 #' In `SCE2AnnData()`, matrices are converted to a **numpy**-friendly format.
@@ -20,11 +22,11 @@
 #' empty sparse matrices are created instead and the user is expected to fill in
 #' the assays on the Python side.
 #'
-#' For `AnnData2SCE()`, a warning is raised if there is no corresponding R format
-#' for a matrix in the AnnData object, and an empty sparse matrix is created
-#' instead as a placeholder. If `skip_assays = NA`, no warning is emitted
-#' but variables are created in the [`int_metadata()`] of the output to specify
-#' which assays were skipped.
+#' For `AnnData2SCE()`, a warning is raised if there is no corresponding R
+#' format for a matrix in the AnnData object, and an empty sparse matrix is
+#' created instead as a placeholder. If `skip_assays = NA`, no warning is
+#' emitted but variables are created in the [`int_metadata()`] of the output to
+#' specify which assays were skipped.
 #'
 #' If `skip_assays = TRUE`, empty sparse matrices are created for all assays,
 #' regardless of whether they might be convertible to an R format or not.

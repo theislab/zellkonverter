@@ -1,6 +1,4 @@
 # This tests the writeH5AD function (and by implication, AnnData2SCE).
-# library(testthat); library(zellkonverter); source("test-write.R")
-
 library(scRNAseq)
 
 sce <- ZeiselBrainData()

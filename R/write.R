@@ -143,7 +143,7 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
         file.path(name, "data"),
         dims    = 0,
         maxdims = rhdf5::H5Sunlimited(),
-        H5type  = if (type(mat)=="integer") {
+        H5type  = if (type(mat) == "integer") {
             "H5T_NATIVE_INT32"
         } else {
             "H5T_NATIVE_DOUBLE"
@@ -188,8 +188,8 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
 #' @importFrom DelayedArray nzdata nzindex
 .blockwise_sparse_writer <- function(block, env, file, name) {
     nzdex <- nzindex(block)
-    i <- nzdex[,1]
-    j <- nzdex[,2]
+    i <- nzdex[, 1]
+    j <- nzdex[, 2]
     v <- nzdata(block)
 
     o <- order(i)
