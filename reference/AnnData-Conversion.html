@@ -59,6 +59,9 @@ SingleCellExperiment objects." />
 
 
 
+<!-- dependencies from examples -->
+
+
   
 
   
@@ -81,7 +84,7 @@ SingleCellExperiment objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.6</span>
       </span>
     </div>
 
@@ -180,11 +183,11 @@ Sparse matrices are converted to dgCMatrix objects while all
 other matrices are converted into ordinary matrices. If <code>skip_assays = TRUE</code>,
 empty sparse matrices are created instead and the user is expected to fill in
 the assays on the Python side.</p>
-<p>For <code>AnnData2SCE()</code>, a warning is raised if there is no corresponding R format
-for a matrix in the AnnData object, and an empty sparse matrix is created
-instead as a placeholder. If <code>skip_assays = NA</code>, no warning is emitted
-but variables are created in the <code>int_metadata()</code> of the output to specify
-which assays were skipped.</p>
+<p>For <code>AnnData2SCE()</code>, a warning is raised if there is no corresponding R
+format for a matrix in the AnnData object, and an empty sparse matrix is
+created instead as a placeholder. If <code>skip_assays = NA</code>, no warning is
+emitted but variables are created in the <code>int_metadata()</code> of the output to
+specify which assays were skipped.</p>
 <p>If <code>skip_assays = TRUE</code>, empty sparse matrices are created for all assays,
 regardless of whether they might be convertible to an R format or not.
 In both cases, the user is expected to fill in the assays on the R side,
@@ -267,8 +270,7 @@ information when converting from SingleCellExperiment to
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    rowMedians</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:matrixStats':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    anyMissing, rowMedians</span></div><div class='output co'>#&gt; <span class='message'>using temporary cache /tmp/RtmpiORLv8/BiocFileCache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2021-03-04</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2021-03-04</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>Note: using the 'counts' assay as the X matrix</span></div><div class='output co'>#&gt; <span class='warning'>Warning: index contains duplicated values: row names not set</span></div><div class='input'>
-</div></pre>
+#&gt; <span class='message'>    anyMissing, rowMedians</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2021-04-27</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2021-04-27</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>Note: using the 'counts' assay as the X matrix</span></div><div class='output co'>#&gt; <span class='warning'>Warning: index contains duplicated values: row names not set</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -284,7 +286,7 @@ information when converting from SingleCellExperiment to
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>

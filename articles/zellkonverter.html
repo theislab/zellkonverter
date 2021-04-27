@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.6</span>
       </span>
     </div>
 
@@ -88,12 +88,12 @@
     
 <div id="overview" class="section level1">
 <h1 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h1>
+<a href="#overview" class="anchor" aria-hidden="true"></a>Overview</h1>
 <p>This package provides a lightweight interface between the Bioconductor <code>SingleCellExperiment</code> data structure and the Python <code>AnnData</code>-based single-cell analysis environment. The idea is to enable users and developers to easily move data between these frameworks to construct a multi-language analysis pipeline across R/Bioconductor and Python.</p>
 </div>
 <div id="reading-and-writing-h5ad-files" class="section level1">
 <h1 class="hasAnchor">
-<a href="#reading-and-writing-h5ad-files" class="anchor"></a>Reading and writing H5AD files</h1>
+<a href="#reading-and-writing-h5ad-files" class="anchor" aria-hidden="true"></a>Reading and writing H5AD files</h1>
 <p>The <code><a href="../reference/readH5AD.html">readH5AD()</a></code> function can be used to read a <code>SingleCellExperiment</code> from a H5AD file. This can be manipulated in the usual way as described in the <em><a href="https://bioconductor.org/packages/3.13/SingleCellExperiment" class="external-link">SingleCellExperiment</a></em> documentation.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/theislab/zellkonverter" class="external-link">zellkonverter</a></span><span class="op">)</span>
@@ -123,7 +123,7 @@
 </div>
 <div id="converting-between-singlecellexperiment-and-anndata-objects" class="section level1">
 <h1 class="hasAnchor">
-<a href="#converting-between-singlecellexperiment-and-anndata-objects" class="anchor"></a>Converting between <code>SingleCellExperiment</code> and <code>AnnData</code> objects</h1>
+<a href="#converting-between-singlecellexperiment-and-anndata-objects" class="anchor" aria-hidden="true"></a>Converting between <code>SingleCellExperiment</code> and <code>AnnData</code> objects</h1>
 <p>Developers and power users who control their Python environments can directly convert between <code>SingleCellExperiment</code> and <a href="https://anndata.readthedocs.io/en/stable/" class="external-link"><code>AnnData</code> objects</a> using the <code><a href="../reference/AnnData-Conversion.html">SCE2AnnData()</a></code> and <code><a href="../reference/AnnData-Conversion.html">AnnData2SCE()</a></code> utilities. These functions expect that <em><a href="https://CRAN.R-project.org/package=reticulate" class="external-link">reticulate</a></em> has already been loaded along with an appropriate version of the <a href="https://pypi.org/project/anndata/" class="external-link"><em>anndata</em></a> package. We suggest using the <em><a href="https://bioconductor.org/packages/3.13/basilisk" class="external-link">basilisk</a></em> package to set up the Python environment before using these functions.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">basilisk</span><span class="op">)</span>
@@ -149,10 +149,10 @@
 </div>
 <div id="session-information" class="section level1">
 <h1 class="hasAnchor">
-<a href="#session-information" class="anchor"></a>Session information</h1>
+<a href="#session-information" class="anchor" aria-hidden="true"></a>Session information</h1>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## R Under development (unstable) (2021-03-04 r80066)
+<pre><code>## R Under development (unstable) (2021-04-15 r80175)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.2 LTS
 ## 
@@ -171,68 +171,67 @@
 ## [1] parallel stats    graphics utils    stats4   methods  base    
 ## 
 ## other attached packages:
-##  [1] basilisk_1.3.6               scRNAseq_2.5.7              
-##  [3] SingleCellExperiment_1.13.12 SummarizedExperiment_1.21.1 
-##  [5] Biobase_2.51.0               GenomicRanges_1.43.3        
-##  [7] GenomeInfoDb_1.27.6          IRanges_2.25.6              
-##  [9] S4Vectors_0.29.7             BiocGenerics_0.37.1         
+##  [1] basilisk_1.3.7               scRNAseq_2.5.8              
+##  [3] SingleCellExperiment_1.13.14 SummarizedExperiment_1.21.3 
+##  [5] Biobase_2.51.0               GenomicRanges_1.43.4        
+##  [7] GenomeInfoDb_1.27.11         IRanges_2.25.10             
+##  [9] S4Vectors_0.29.17            BiocGenerics_0.37.4         
 ## [11] MatrixGenerics_1.3.1         matrixStats_0.58.0          
-## [13] zellkonverter_1.1.5          knitr_1.31                  
-## [15] BiocStyle_2.19.1            
+## [13] zellkonverter_1.1.6          knitr_1.33                  
+## [15] BiocStyle_2.19.2            
 ## 
 ## loaded via a namespace (and not attached):
 ##   [1] rjson_0.2.20                  ellipsis_0.3.1               
 ##   [3] rprojroot_2.0.2               XVector_0.31.1               
 ##   [5] fs_1.5.0                      bit64_4.0.5                  
 ##   [7] interactiveDisplayBase_1.29.0 AnnotationDbi_1.53.1         
-##   [9] fansi_0.4.2                   xml2_1.3.2                   
-##  [11] cachem_1.0.4                  jsonlite_1.7.2               
-##  [13] Rsamtools_2.7.1               dbplyr_2.1.0                 
-##  [15] png_0.1-7                     shiny_1.6.0                  
-##  [17] BiocManager_1.30.10           compiler_4.1.0               
-##  [19] httr_1.4.2                    lazyeval_0.2.2               
-##  [21] assertthat_0.2.1              Matrix_1.3-2                 
-##  [23] fastmap_1.1.0                 later_1.1.0.1                
-##  [25] htmltools_0.5.1.1             prettyunits_1.1.1            
-##  [27] tools_4.1.0                   glue_1.4.2                   
-##  [29] GenomeInfoDbData_1.2.4        dplyr_1.0.5                  
-##  [31] grDevices_4.1.0               rappdirs_0.3.3               
-##  [33] Rcpp_1.0.6                    jquerylib_0.1.3              
-##  [35] pkgdown_1.6.1.9000            vctrs_0.3.6                  
-##  [37] Biostrings_2.59.2             ExperimentHub_1.17.1         
-##  [39] rtracklayer_1.51.5            xfun_0.21                    
-##  [41] stringr_1.4.0                 mime_0.10                    
-##  [43] lifecycle_1.0.0               restfulr_0.0.13              
-##  [45] ensembldb_2.15.2              XML_3.99-0.5                 
-##  [47] AnnotationHub_2.23.2          zlibbioc_1.37.0              
-##  [49] basilisk.utils_1.3.7          ProtGenerics_1.23.7          
-##  [51] ragg_1.1.1                    hms_1.0.0                    
-##  [53] promises_1.2.0.1              AnnotationFilter_1.15.0      
-##  [55] yaml_2.2.1                    curl_4.3                     
-##  [57] memoise_2.0.0                 reticulate_1.18              
-##  [59] sass_0.3.1                    datasets_4.1.0               
-##  [61] biomaRt_2.47.5                stringi_1.5.3                
-##  [63] RSQLite_2.2.3                 BiocVersion_3.13.1           
-##  [65] BiocIO_1.1.2                  desc_1.3.0                   
-##  [67] GenomicFeatures_1.43.4        filelock_1.0.2               
-##  [69] BiocParallel_1.25.4           rlang_0.4.10                 
-##  [71] pkgconfig_2.0.3               systemfonts_1.0.1            
-##  [73] bitops_1.0-6                  evaluate_0.14                
-##  [75] lattice_0.20-41               purrr_0.3.4                  
-##  [77] GenomicAlignments_1.27.2      bit_4.0.4                    
-##  [79] tidyselect_1.1.0              magrittr_2.0.1               
-##  [81] bookdown_0.21                 R6_2.5.0                     
-##  [83] generics_0.1.0                DelayedArray_0.17.9          
-##  [85] DBI_1.1.1                     withr_2.4.1                  
-##  [87] pillar_1.5.1                  KEGGREST_1.31.1              
-##  [89] RCurl_1.98-1.2                tibble_3.1.0                 
-##  [91] crayon_1.4.1                  utf8_1.1.4                   
-##  [93] BiocFileCache_1.15.1          rmarkdown_2.7                
+##   [9] fansi_0.4.2                   cachem_1.0.4                 
+##  [11] jsonlite_1.7.2                Rsamtools_2.7.2              
+##  [13] dbplyr_2.1.1                  png_0.1-7                    
+##  [15] shiny_1.6.0                   BiocManager_1.30.12          
+##  [17] compiler_4.1.0                httr_1.4.2                   
+##  [19] assertthat_0.2.1              Matrix_1.3-2                 
+##  [21] fastmap_1.1.0                 lazyeval_0.2.2               
+##  [23] later_1.2.0                   htmltools_0.5.1.1            
+##  [25] prettyunits_1.1.1             tools_4.1.0                  
+##  [27] glue_1.4.2                    GenomeInfoDbData_1.2.4       
+##  [29] dplyr_1.0.5                   grDevices_4.1.0              
+##  [31] rappdirs_0.3.3                Rcpp_1.0.6                   
+##  [33] jquerylib_0.1.4               pkgdown_1.6.1.9001           
+##  [35] vctrs_0.3.7                   Biostrings_2.59.2            
+##  [37] ExperimentHub_1.99.5          rtracklayer_1.51.5           
+##  [39] xfun_0.22                     stringr_1.4.0                
+##  [41] mime_0.10                     lifecycle_1.0.0              
+##  [43] restfulr_0.0.13               ensembldb_2.15.3             
+##  [45] XML_3.99-0.6                  AnnotationHub_2.99.5         
+##  [47] zlibbioc_1.37.0               basilisk.utils_1.3.9         
+##  [49] ragg_1.1.2                    hms_1.0.0                    
+##  [51] promises_1.2.0.1              ProtGenerics_1.23.9          
+##  [53] AnnotationFilter_1.15.0       yaml_2.2.1                   
+##  [55] curl_4.3                      memoise_2.0.0                
+##  [57] reticulate_1.19               sass_0.3.1                   
+##  [59] datasets_4.1.0                biomaRt_2.47.7               
+##  [61] stringi_1.5.3                 RSQLite_2.2.7                
+##  [63] BiocVersion_3.13.1            BiocIO_1.1.2                 
+##  [65] desc_1.3.0                    GenomicFeatures_1.43.8       
+##  [67] filelock_1.0.2                BiocParallel_1.25.5          
+##  [69] rlang_0.4.10                  pkgconfig_2.0.3              
+##  [71] systemfonts_1.0.1             bitops_1.0-7                 
+##  [73] evaluate_0.14                 lattice_0.20-41              
+##  [75] purrr_0.3.4                   GenomicAlignments_1.27.2     
+##  [77] bit_4.0.4                     tidyselect_1.1.0             
+##  [79] magrittr_2.0.1                bookdown_0.22                
+##  [81] R6_2.5.0                      generics_0.1.0               
+##  [83] DelayedArray_0.17.10          DBI_1.1.1                    
+##  [85] withr_2.4.2                   pillar_1.6.0                 
+##  [87] KEGGREST_1.31.1               RCurl_1.98-1.3               
+##  [89] tibble_3.1.1                  dir.expiry_0.99.4            
+##  [91] crayon_1.4.1                  utf8_1.2.1                   
+##  [93] BiocFileCache_1.99.6          rmarkdown_2.7                
 ##  [95] progress_1.2.2                grid_4.1.0                   
 ##  [97] blob_1.2.1                    digest_0.6.27                
-##  [99] xtable_1.8-4                  httpuv_1.5.5                 
-## [101] textshaping_0.3.1             openssl_1.4.3                
-## [103] bslib_0.2.4                   askpass_1.1</code></pre>
+##  [99] xtable_1.8-4                  httpuv_1.6.0                 
+## [101] textshaping_0.3.3             bslib_0.2.4</code></pre>
 </div>
   </div>
 
@@ -253,7 +252,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>
