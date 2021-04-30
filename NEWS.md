@@ -2,6 +2,9 @@
 
 * Bioconductor 3.13, May 2021
 
+* Add `compression` argument to `writeH5AD()` (Fixes #49)
+* Update **anndata** Python dependencies, now using **anndata** v0.7.6
+
 ## zellkonverter 1.1.6 (2021-04-27)
 
 * Adapt to changes in `HDF5Array::HDF5Array()`
