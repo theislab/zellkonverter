@@ -2,6 +2,8 @@
 
 * Bioconductor 3.13, May 2021
 
+## zellkonverter 1.1.7 (2021-04-30)
+
 * Add `compression` argument to `writeH5AD()` (Fixes #49)
 * Update **anndata** Python dependencies, now using **anndata** v0.7.6
 
