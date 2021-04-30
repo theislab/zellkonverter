@@ -84,7 +84,7 @@ SingleCellExperiment objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.7</span>
       </span>
     </div>
 
@@ -166,7 +166,7 @@ AnnData object. If <code>NULL</code>, the first assay of <code>sce</code> will b
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>AnnData2SCE()</code> will return a SingleCellExperiment
+    <p><code>AnnData2SCE()</code> will return a <a href='https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html'>SingleCellExperiment</a>
 containing the equivalent data from <code>adata</code>.</p>
 <p><code>SCE2AnnData()</code> will return a <strong>reticulate</strong> reference to an AnnData object
 containing the content of <code>sce</code>.</p>
@@ -186,19 +186,19 @@ the assays on the Python side.</p>
 <p>For <code>AnnData2SCE()</code>, a warning is raised if there is no corresponding R
 format for a matrix in the AnnData object, and an empty sparse matrix is
 created instead as a placeholder. If <code>skip_assays = NA</code>, no warning is
-emitted but variables are created in the <code>int_metadata()</code> of the output to
+emitted but variables are created in the <code><a href='https://rdrr.io/pkg/SingleCellExperiment/man/internals.html'>int_metadata()</a></code> of the output to
 specify which assays were skipped.</p>
 <p>If <code>skip_assays = TRUE</code>, empty sparse matrices are created for all assays,
 regardless of whether they might be convertible to an R format or not.
 In both cases, the user is expected to fill in the assays on the R side,
 see <code><a href='readH5AD.html'>readH5AD()</a></code> for an example.</p>
-<p>We attempt to convert between items in the SingleCellExperiment
+<p>We attempt to convert between items in the <a href='https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html'>SingleCellExperiment</a>
 <code>metadata()</code> slot and the <code>AnnData</code> <code>uns</code> slot. If an item cannot be
 converted a warning will be raised.</p>
 <p>Values stored in the <code>varm</code> slot of an <code>AnnData</code> object are stored in a
-column of <code>rowData()</code> in a SingleCellExperiment
+column of <code>rowData()</code> in a <a href='https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html'>SingleCellExperiment</a>
 as a DataFrame of matrices. No attempt is made to transfer this
-information when converting from SingleCellExperiment to
+information when converting from <a href='https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html'>SingleCellExperiment</a> to
 <code>AnnData</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -227,50 +227,50 @@ information when converting from SingleCellExperiment to
         <span class='fu'>zellkonverter</span><span class='fu'>::</span><span class='fu'>AnnData2SCE</span><span class='op'>(</span><span class='va'>adata</span><span class='op'>)</span>
     <span class='op'>}</span>, env <span class='op'>=</span> <span class='va'>zellkonverterAnnDataEnv</span>, sce <span class='op'>=</span> <span class='va'>seger</span><span class='op'>)</span>
 <span class='op'>}</span>
-</div><div class='output co'>#&gt; <span class='message'>Loading required package: SingleCellExperiment</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: SummarizedExperiment</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: MatrixGenerics</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: matrixStats</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: 'MatrixGenerics'</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:matrixStats':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,</span>
-#&gt; <span class='message'>    colCounts, colCummaxs, colCummins, colCumprods, colCumsums,</span>
-#&gt; <span class='message'>    colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,</span>
-#&gt; <span class='message'>    colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,</span>
-#&gt; <span class='message'>    colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,</span>
-#&gt; <span class='message'>    colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,</span>
-#&gt; <span class='message'>    colWeightedMeans, colWeightedMedians, colWeightedSds,</span>
-#&gt; <span class='message'>    colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,</span>
-#&gt; <span class='message'>    rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,</span>
-#&gt; <span class='message'>    rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,</span>
-#&gt; <span class='message'>    rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,</span>
-#&gt; <span class='message'>    rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,</span>
-#&gt; <span class='message'>    rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,</span>
-#&gt; <span class='message'>    rowWeightedMads, rowWeightedMeans, rowWeightedMedians,</span>
-#&gt; <span class='message'>    rowWeightedSds, rowWeightedVars</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomicRanges</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: stats4</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: BiocGenerics</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: parallel</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: 'BiocGenerics'</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:parallel':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,</span>
-#&gt; <span class='message'>    clusterExport, clusterMap, parApply, parCapply, parLapply,</span>
-#&gt; <span class='message'>    parLapplyLB, parRapply, parSapply, parSapplyLB</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:stats':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    IQR, mad, sd, var, xtabs</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:base':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    anyDuplicated, append, as.data.frame, basename, cbind, colnames,</span>
-#&gt; <span class='message'>    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,</span>
-#&gt; <span class='message'>    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,</span>
-#&gt; <span class='message'>    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,</span>
-#&gt; <span class='message'>    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,</span>
-#&gt; <span class='message'>    union, unique, unsplit, which.max, which.min</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: S4Vectors</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: 'S4Vectors'</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:base':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    expand.grid, I, unname</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: IRanges</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomeInfoDb</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: Biobase</span></div><div class='output co'>#&gt; <span class='message'>Welcome to Bioconductor</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    Vignettes contain introductory material; view with</span>
-#&gt; <span class='message'>    'browseVignettes()'. To cite Bioconductor, see</span>
-#&gt; <span class='message'>    'citation("Biobase")', and for packages 'citation("pkgname")'.</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: 'Biobase'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:MatrixGenerics':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    rowMedians</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:matrixStats':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    anyMissing, rowMedians</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2021-04-27</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2021-04-27</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>Note: using the 'counts' assay as the X matrix</span></div><div class='output co'>#&gt; <span class='warning'>Warning: index contains duplicated values: row names not set</span></div></pre>
+</div><div class='co'>#&gt; Loading required package: SingleCellExperiment</div><div class='co'>#&gt; Loading required package: SummarizedExperiment</div><div class='co'>#&gt; Loading required package: MatrixGenerics</div><div class='co'>#&gt; Loading required package: matrixStats</div><div class='co'>#&gt; 
+#&gt; Attaching package: 'MatrixGenerics'</div><div class='co'>#&gt; The following objects are masked from 'package:matrixStats':
+#&gt; 
+#&gt;     colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
+#&gt;     colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
+#&gt;     colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
+#&gt;     colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
+#&gt;     colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
+#&gt;     colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
+#&gt;     colWeightedMeans, colWeightedMedians, colWeightedSds,
+#&gt;     colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
+#&gt;     rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
+#&gt;     rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
+#&gt;     rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
+#&gt;     rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
+#&gt;     rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
+#&gt;     rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
+#&gt;     rowWeightedSds, rowWeightedVars</div><div class='co'>#&gt; Loading required package: GenomicRanges</div><div class='co'>#&gt; Loading required package: stats4</div><div class='co'>#&gt; Loading required package: BiocGenerics</div><div class='co'>#&gt; Loading required package: parallel</div><div class='co'>#&gt; 
+#&gt; Attaching package: 'BiocGenerics'</div><div class='co'>#&gt; The following objects are masked from 'package:parallel':
+#&gt; 
+#&gt;     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+#&gt;     clusterExport, clusterMap, parApply, parCapply, parLapply,
+#&gt;     parLapplyLB, parRapply, parSapply, parSapplyLB</div><div class='co'>#&gt; The following objects are masked from 'package:stats':
+#&gt; 
+#&gt;     IQR, mad, sd, var, xtabs</div><div class='co'>#&gt; The following objects are masked from 'package:base':
+#&gt; 
+#&gt;     anyDuplicated, append, as.data.frame, basename, cbind, colnames,
+#&gt;     dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+#&gt;     grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
+#&gt;     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+#&gt;     rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
+#&gt;     union, unique, unsplit, which.max, which.min</div><div class='co'>#&gt; Loading required package: S4Vectors</div><div class='co'>#&gt; 
+#&gt; Attaching package: 'S4Vectors'</div><div class='co'>#&gt; The following objects are masked from 'package:base':
+#&gt; 
+#&gt;     expand.grid, I, unname</div><div class='co'>#&gt; Loading required package: IRanges</div><div class='co'>#&gt; Loading required package: GenomeInfoDb</div><div class='co'>#&gt; Loading required package: Biobase</div><div class='co'>#&gt; Welcome to Bioconductor
+#&gt; 
+#&gt;     Vignettes contain introductory material; view with
+#&gt;     'browseVignettes()'. To cite Bioconductor, see
+#&gt;     'citation("Biobase")', and for packages 'citation("pkgname")'.</div><div class='co'>#&gt; 
+#&gt; Attaching package: 'Biobase'</div><div class='co'>#&gt; The following object is masked from 'package:MatrixGenerics':
+#&gt; 
+#&gt;     rowMedians</div><div class='co'>#&gt; The following objects are masked from 'package:matrixStats':
+#&gt; 
+#&gt;     anyMissing, rowMedians</div><div class='co'>#&gt; snapshotDate(): 2021-04-27</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; snapshotDate(): 2021-04-27</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; Note: using the 'counts' assay as the X matrix</div><div class='co'>#&gt; <span class='warning'>Warning: </span>index contains duplicated values: row names not set</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

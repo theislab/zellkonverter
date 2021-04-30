@@ -83,7 +83,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.7</span>
       </span>
     </div>
 
@@ -125,17 +125,23 @@
     </div>
 
     <div class="ref-description">
-    <p>Write a H5AD file from a SingleCellExperiment object.</p>
+    <p>Write a H5AD file from a <a href='https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html'>SingleCellExperiment</a> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>writeH5AD</span><span class='op'>(</span><span class='va'>sce</span>, <span class='va'>file</span>, X_name <span class='op'>=</span> <span class='cn'>NULL</span>, skip_assays <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>writeH5AD</span><span class='op'>(</span>
+  <span class='va'>sce</span>,
+  <span class='va'>file</span>,
+  X_name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  skip_assays <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  compression <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"gzip"</span>, <span class='st'>"lzf"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>sce</th>
-      <td><p>A SingleCellExperiment object.</p></td>
+      <td><p>A <a href='https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html'>SingleCellExperiment</a> object.</p></td>
     </tr>
     <tr>
       <th>file</th>
@@ -150,6 +156,10 @@ AnnData object. If <code>NULL</code>, the first assay of <code>sce</code> will b
       <th>skip_assays</th>
       <td><p>Logical scalar indicating whether assay matrices should
 be ignored when writing to <code>file</code>.</p></td>
+    </tr>
+    <tr>
+      <th>compression</th>
+      <td><p>Type of compression when writing the new <code>.h5ad</code> file.</p></td>
     </tr>
     </table>
 
@@ -195,18 +205,18 @@ an issue which prevents this being done for sparse <strong>DelayedArray</strong>
 
 
 <p>The <strong>anndata</strong> package automatically converts some character vectors to
-factors when saving <code>.h5ad</code> files. This can effect columns of <code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>rowData(sce)</a></code>
-and <code><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>colData(sce)</a></code> which may change type when the <code>.h5ad</code> file is read back
+factors when saving <code>.h5ad</code> files. This can effect columns of <code>rowData(sce)</code>
+and <code>colData(sce)</code> which may change type when the <code>.h5ad</code> file is read back
 into R.</p>
 
 
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='readH5AD.html'>readH5AD()</a></code>, to read a SingleCellExperiment file from a H5AD
+    <div class='dont-index'><p><code><a href='readH5AD.html'>readH5AD()</a></code>, to read a <a href='https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html'>SingleCellExperiment</a> file from a H5AD
 file.</p>
 <p><code><a href='AnnData-Conversion.html'>SCE2AnnData()</a></code>, for developers to create an AnnData object from a
-SingleCellExperiment.</p></div>
+<a href='https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html'>SingleCellExperiment</a>.</p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Luke Zappia</p>
@@ -222,7 +232,7 @@ SingleCellExperiment.</p></div>
     <span class='va'>temp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".h5ad"</span><span class='op'>)</span>
     <span class='fu'>writeH5AD</span><span class='op'>(</span><span class='va'>sce</span>, <span class='va'>temp</span><span class='op'>)</span>
 <span class='op'>}</span>
-</div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2021-04-27</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>downloading 1 resources</span></div><div class='output co'>#&gt; <span class='message'>retrieving 1 resource</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>snapshotDate(): 2021-04-27</span></div><div class='output co'>#&gt; <span class='message'>see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span></div><div class='output co'>#&gt; <span class='message'>loading from cache</span></div><div class='output co'>#&gt; <span class='message'>Note: using the 'counts' assay as the X matrix</span></div></pre>
+</div><div class='co'>#&gt; snapshotDate(): 2021-04-27</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; snapshotDate(): 2021-04-27</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; Note: using the 'counts' assay as the X matrix</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
