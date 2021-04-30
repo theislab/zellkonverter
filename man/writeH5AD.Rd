@@ -4,7 +4,13 @@
 \alias{writeH5AD}
 \title{Write H5AD}
 \usage{
-writeH5AD(sce, file, X_name = NULL, skip_assays = FALSE)
+writeH5AD(
+  sce,
+  file,
+  X_name = NULL,
+  skip_assays = FALSE,
+  compression = c("none", "gzip", "lzf")
+)
 }
 \arguments{
 \item{sce}{A \linkS4class{SingleCellExperiment} object.}
@@ -16,6 +22,8 @@ AnnData object. If \code{NULL}, the first assay of \code{sce} will be used by de
 
 \item{skip_assays}{Logical scalar indicating whether assay matrices should
 be ignored when writing to \code{file}.}
+
+\item{compression}{Type of compression when writing the new \code{.h5ad} file.}
 }
 \value{
 A \code{NULL} is invisibly returned.

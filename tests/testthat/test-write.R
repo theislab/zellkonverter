@@ -163,3 +163,21 @@ test_that("writeH5AD works with rowData list columns", {
     out <- readH5AD(temp)
     expect_true("ListCol" %in% names(metadata(out)$.rowData))
 })
+
+test_that("writeH5AD works with gzip compression", {
+    temp <- tempfile(fileext = ".h5ad")
+    writeH5AD(sce, temp, X_name = "counts", compression = "gzip")
+    expect_true(file.exists(temp))
+
+    out <- readH5AD(temp)
+    expect_equal(assay(out, "X"), assay(sce, "counts"))
+})
+
+test_that("writeH5AD works with lzf compression", {
+    temp <- tempfile(fileext = ".h5ad")
+    writeH5AD(sce, temp, X_name = "counts", compression = "lzf")
+    expect_true(file.exists(temp))
+
+    out <- readH5AD(temp)
+    expect_equal(assay(out, "X"), assay(sce, "counts"))
+})

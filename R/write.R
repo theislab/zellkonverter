@@ -8,6 +8,7 @@
 #' AnnData object. If `NULL`, the first assay of `sce` will be used by default.
 #' @param skip_assays Logical scalar indicating whether assay matrices should
 #' be ignored when writing to `file`.
+#' @param compression Type of compression when writing the new `.h5ad` file.
 #'
 #' @details
 #'
@@ -67,7 +68,14 @@
 #' @importFrom basilisk basiliskRun
 #' @importFrom Matrix sparseMatrix
 #' @importFrom DelayedArray is_sparse
-writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
+writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
+                      compression = c("none", "gzip", "lzf")) {
+    compression <- match.arg(compression)
+
+    if (compression == "none") {
+        compression <- NULL
+    }
+
     # Loop over and replace DelayedArrays.
     ass_list <- assays(sce)
     is_da <- logical(length(ass_list))
@@ -87,7 +95,8 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
         sce = sce,
         file = file,
         X_name = X_name,
-        skip_assays = skip_assays
+        skip_assays = skip_assays,
+        compression = compression
     )
 
     # Going back out and replacing each of them.
@@ -102,7 +111,7 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
             mat <- ass_list[[p]]
 
             if (!is_sparse(mat)) {
-                HDF5Array::writeHDF5Array(mat, file = file, name = curp)
+                HDF5Array::writeHDF5Array(mat, filepath = file, name = curp)
             } else {
                 .write_CSR_matrix(file, name = curp, mat = mat)
             }
@@ -113,10 +122,10 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE) {
 }
 
 #' @importFrom reticulate import
-.H5ADwriter <- function(sce, file, X_name, skip_assays) {
+.H5ADwriter <- function(sce, file, X_name, skip_assays, compression) {
     anndata <- import("anndata")
     adata <- SCE2AnnData(sce, X_name = X_name, skip_assays = skip_assays)
-    adata$write_h5ad(file)
+    adata$write_h5ad(file, compression = compression)
 }
 
 # nocov start
