@@ -129,45 +129,22 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
         assays_list[[layer_name]] <- layer_out$mat
     }
 
-    uns_keys <- py_builtins$list(adata$uns$keys())
+    meta_list <- .convert_anndata_slot(
+        adata, "uns", py_builtins$list(adata$uns$keys())
+    )
 
-    meta_list <- list()
-    for (key in uns_keys) {
-        tryCatch(
-            {
-                item <- adata$uns[[key]]
+    varp_list <- .convert_anndata_slot(
+        adata, "varp", py_builtins$list(adata$varp$keys())
+    )
 
-                item_type <- py_builtins$str(py_builtins$type(item))
-                if (grepl("OverloadedDict", item_type)) {
-                    item <- py_builtins$dict(item)
-                }
-
-                if (!is(item, "python.builtin.object")) {
-                    meta_list[[key]] <- item
-                } else {
-                    warning(
-                        "the '", key, "' item in 'uns' cannot be converted ",
-                        "to an R object and has been skipped",
-                        call. = FALSE
-                    )
-                }
-            },
-            error = function(err) {
-                warning(
-                    "conversion failed for the item '", key, "' in 'uns' with ",
-                    "the following error and has been skipped\n",
-                    "Error message: ", err,
-                    call. = FALSE
-                )
-            }
-        )
-    }
-
-    varp_list <- lapply(py_builtins$dict(adata$varp), reticulate::py_to_r)
-    obsp_list <- lapply(py_builtins$dict(adata$obsp), reticulate::py_to_r)
+    obsp_list <- .convert_anndata_slot(
+        adata, "obsp", py_builtins$list(adata$obsp$keys())
+    )
 
     row_data <- DataFrame(adata$var)
-    varm_list <- py_builtins$dict(adata$varm)
+
+    varm_list <- .convert_anndata_slot(adata, "varm", adata$varm_keys())
+
     if (length(varm_list) > 0) {
         # Create an empty DataFrame with the correct number of rows
         varm_df <- make_zero_col_DFrame(adata$n_vars)
@@ -253,6 +230,44 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
     }
 
     return(ans)
+}
+
+.convert_anndata_slot <- function(adata, slot_name, slot_keys) {
+
+    py_builtins <- import_builtins()
+
+    converted_list <- list()
+
+    for (key in slot_keys) {
+
+        tryCatch(
+            {
+                item <- adata[slot_name][[key]]
+
+                item_type <- py_builtins$str(py_builtins$type(item))
+                if (grepl("OverloadedDict", item_type)) {
+                    item <- py_builtins$dict(item)
+                }
+
+                if (is(item, "python.builtin.object")) {
+                    item <- reticulate::py_to_r(item)
+                }
+
+                converted_list[[key]] <- item
+            },
+            error = function(err) {
+                warning(
+                    "conversion failed for the item '",
+                    key, "' in '", slot_name, "' with ",
+                    "the following error and has been skipped\n",
+                    "Conversion error message: ", err,
+                    call. = FALSE
+                )
+            }
+        )
+    }
+
+    return(converted_list)
 }
 
 #' @rdname AnnData-Conversion

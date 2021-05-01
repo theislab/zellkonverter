@@ -2,6 +2,8 @@
 
 * Bioconductor 3.13, May 2021
 
+* Add conversion checks to all slots in `AnnData2SCE()` (See #45)
+
 ## zellkonverter 1.1.7 (2021-04-30)
 
 * Add `compression` argument to `writeH5AD()` (Fixes #49)
