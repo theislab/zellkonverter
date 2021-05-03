@@ -83,7 +83,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.8</span>
       </span>
     </div>
 
@@ -128,7 +128,7 @@
     <p>Reads a H5AD file and returns a <a href='https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html'>SingleCellExperiment</a> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>readH5AD</span><span class='op'>(</span><span class='va'>file</span>, use_hdf5 <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>readH5AD</span><span class='op'>(</span><span class='va'>file</span>, X_name <span class='op'>=</span> <span class='cn'>NULL</span>, use_hdf5 <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -136,6 +136,11 @@
     <tr>
       <th>file</th>
       <td><p>String containing a path to a <code>.h5ad</code> file.</p></td>
+    </tr>
+    <tr>
+      <th>X_name</th>
+      <td><p>Name used when saving <code>X</code> as an assay. If <code>NULL</code> looks for an
+<code>X_name</code> value in <code>uns</code>, otherwise uses <code>"X"</code>.</p></td>
     </tr>
     <tr>
       <th>use_hdf5</th>

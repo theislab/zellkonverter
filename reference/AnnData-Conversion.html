@@ -84,7 +84,7 @@ SingleCellExperiment objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.8</span>
       </span>
     </div>
 
@@ -130,7 +130,7 @@ SingleCellExperiment objects." />
 SingleCellExperiment objects.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>AnnData2SCE</span><span class='op'>(</span><span class='va'>adata</span>, skip_assays <span class='op'>=</span> <span class='cn'>FALSE</span>, hdf5_backed <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>AnnData2SCE</span><span class='op'>(</span><span class='va'>adata</span>, X_name <span class='op'>=</span> <span class='cn'>NULL</span>, skip_assays <span class='op'>=</span> <span class='cn'>FALSE</span>, hdf5_backed <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 <span class='fu'>SCE2AnnData</span><span class='op'>(</span><span class='va'>sce</span>, X_name <span class='op'>=</span> <span class='cn'>NULL</span>, skip_assays <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
@@ -140,6 +140,13 @@ SingleCellExperiment objects.</p>
     <tr>
       <th>adata</th>
       <td><p>A <strong>reticulate</strong> reference to a Python AnnData object.</p></td>
+    </tr>
+    <tr>
+      <th>X_name</th>
+      <td><p>For <code>SCE2AnnData()</code> name of the assay to use as the primary
+matrix (<code>X</code>) of the AnnData object. If <code>NULL</code>, the first assay of <code>sce</code> will
+be used by default. For <code>AnnData2SCE()</code> name used when saving <code>X</code> as an
+assay. If <code>NULL</code> looks for an <code>X_name</code> value in <code>uns</code>, otherwise uses <code>"X"</code>.</p></td>
     </tr>
     <tr>
       <th>skip_assays</th>
@@ -156,11 +163,6 @@ in <code>adata</code> should be represented as HDF5Array objects. This assumes t
     <tr>
       <th>sce</th>
       <td><p>A SingleCellExperiment object.</p></td>
-    </tr>
-    <tr>
-      <th>X_name</th>
-      <td><p>Name of the assay to use as the primary matrix (<code>X</code>) of the
-AnnData object. If <code>NULL</code>, the first assay of <code>sce</code> will be used by default.</p></td>
     </tr>
     </table>
 
@@ -197,9 +199,9 @@ see <code><a href='readH5AD.html'>readH5AD()</a></code> for an example.</p>
 converted a warning will be raised.</p>
 <p>Values stored in the <code>varm</code> slot of an <code>AnnData</code> object are stored in a
 column of <code>rowData()</code> in a <a href='https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html'>SingleCellExperiment</a>
-as a DataFrame of matrices. No attempt is made to transfer this
-information when converting from <a href='https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html'>SingleCellExperiment</a> to
-<code>AnnData</code>.</p>
+as a DataFrame of matrices. If this column is pressent an
+attempt is made to transfer this information when converting from
+<a href='https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html'>SingleCellExperiment</a> to <code>AnnData</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='writeH5AD.html'>writeH5AD()</a></code> and <code><a href='readH5AD.html'>readH5AD()</a></code> for dealing directly with H5AD files.</p></div>
@@ -270,7 +272,7 @@ information when converting from <a href='https://rdrr.io/pkg/SingleCellExperime
 #&gt; 
 #&gt;     rowMedians</div><div class='co'>#&gt; The following objects are masked from 'package:matrixStats':
 #&gt; 
-#&gt;     anyMissing, rowMedians</div><div class='co'>#&gt; snapshotDate(): 2021-04-27</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; snapshotDate(): 2021-04-27</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; Note: using the 'counts' assay as the X matrix</div><div class='co'>#&gt; <span class='warning'>Warning: </span>index contains duplicated values: row names not set</div></pre>
+#&gt;     anyMissing, rowMedians</div><div class='co'>#&gt; snapshotDate(): 2021-04-27</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; snapshotDate(): 2021-04-27</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; Note: using the 'counts' assay as the X matrix</div><div class='co'>#&gt; Note: Using stored X_name value 'counts'</div><div class='co'>#&gt; <span class='warning'>Warning: </span>index contains duplicated values: row names not set</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
