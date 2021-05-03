@@ -45,7 +45,7 @@ test_that("writeH5AD works as expected with sparse matrices", {
     expect_true(file.exists(temp))
 
     # Reading it back out again. Hopefully we didn't lose anything important.
-    out <- readH5AD(temp)
+    out <- readH5AD(temp, X_name = "X")
 
     expect_identical(counts(sce), assay(out, "X"))
     expect_identical(logcounts(sce), logcounts(out))
@@ -67,7 +67,7 @@ test_that("writeH5AD works with X_name", {
     writeH5AD(sce, temp, X_name = "counts")
     expect_true(file.exists(temp))
 
-    out <- readH5AD(temp)
+    out <- readH5AD(temp, X_name = "X")
     expect_equal(assay(out, "X"), assay(sce, "counts"))
 })
 
@@ -94,7 +94,7 @@ test_that("writeH5AD DelayedArray X works", {
     writeH5AD(delayed_sce, temp, X_name = "counts")
     expect_true(file.exists(temp))
 
-    out <- readH5AD(temp)
+    out <- readH5AD(temp, X_name = "X")
 
     expect_identical(counts(sce), assay(out, "X"))
 })
@@ -109,7 +109,7 @@ test_that("writeH5AD sparse DelayedArray X works", {
     writeH5AD(delayed_sce, temp, X_name = "counts")
     expect_true(file.exists(temp))
 
-    out <- readH5AD(temp)
+    out <- readH5AD(temp, X_name = "X")
 
     # Sparse DelayedArrays are currently coerced into memory
     # This expectation will need to be changed once that is fixed
@@ -127,7 +127,7 @@ test_that("writeH5AD DelayedArray layer works", {
     writeH5AD(delayed_sce, temp)
     expect_true(file.exists(temp))
 
-    out <- readH5AD(temp)
+    out <- readH5AD(temp, X_name = "X")
 
     expect_identical(counts(sce), assay(out, "layer"))
 })
@@ -144,7 +144,7 @@ test_that("writeH5AD works with colData list columns", {
     expect_true(file.exists(temp))
 
     # Knowing what comes back is hard so just check there is something
-    out <- readH5AD(temp)
+    out <- readH5AD(temp, X_name = "X")
     expect_true("ListCol" %in% names(metadata(out)$.colData))
 })
 
@@ -160,7 +160,7 @@ test_that("writeH5AD works with rowData list columns", {
     expect_true(file.exists(temp))
 
     # Knowing what comes back is hard so just check there is something
-    out <- readH5AD(temp)
+    out <- readH5AD(temp, X_name = "X")
     expect_true("ListCol" %in% names(metadata(out)$.rowData))
 })
 
@@ -169,7 +169,7 @@ test_that("writeH5AD works with gzip compression", {
     writeH5AD(sce, temp, X_name = "counts", compression = "gzip")
     expect_true(file.exists(temp))
 
-    out <- readH5AD(temp)
+    out <- readH5AD(temp, X_name = "X")
     expect_equal(assay(out, "X"), assay(sce, "counts"))
 })
 
@@ -178,6 +178,6 @@ test_that("writeH5AD works with lzf compression", {
     writeH5AD(sce, temp, X_name = "counts", compression = "lzf")
     expect_true(file.exists(temp))
 
-    out <- readH5AD(temp)
+    out <- readH5AD(temp, X_name = "X")
     expect_equal(assay(out, "X"), assay(sce, "counts"))
 })

@@ -6,12 +6,17 @@
 \alias{SCE2AnnData}
 \title{Convert AnnData between and SingleCellExperiment}
 \usage{
-AnnData2SCE(adata, skip_assays = FALSE, hdf5_backed = TRUE)
+AnnData2SCE(adata, X_name = NULL, skip_assays = FALSE, hdf5_backed = TRUE)
 
 SCE2AnnData(sce, X_name = NULL, skip_assays = FALSE)
 }
 \arguments{
 \item{adata}{A \strong{reticulate} reference to a Python AnnData object.}
+
+\item{X_name}{For \code{SCE2AnnData()} name of the assay to use as the primary
+matrix (\code{X}) of the AnnData object. If \code{NULL}, the first assay of \code{sce} will
+be used by default. For \code{AnnData2SCE()} name used when saving \code{X} as an
+assay. If \code{NULL} looks for an \code{X_name} value in \code{uns}, otherwise uses \code{"X"}.}
 
 \item{skip_assays}{Logical scalar indicating whether to skip conversion of
 any assays in \code{sce} or \code{adata}, replacing them with empty sparse matrices
@@ -22,9 +27,6 @@ in \code{adata} should be represented as HDF5Array objects. This assumes that
 \code{adata} is created with \code{backed="r"}.}
 
 \item{sce}{A \linkS4class{SingleCellExperiment} object.}
-
-\item{X_name}{Name of the assay to use as the primary matrix (\code{X}) of the
-AnnData object. If \code{NULL}, the first assay of \code{sce} will be used by default.}
 }
 \value{
 \code{AnnData2SCE()} will return a \linkS4class{SingleCellExperiment}

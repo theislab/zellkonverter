@@ -92,7 +92,8 @@ NULL
 #' @importFrom methods selectMethod is
 #' @importFrom S4Vectors DataFrame make_zero_col_DFrame
 #' @importFrom reticulate import_builtins
-AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
+AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
+                        hdf5_backed = TRUE) {
     py_builtins <- import_builtins()
 
     dims <- unlist(adata$shape)
@@ -106,15 +107,30 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
         name = "'X' matrix"
     )
 
+    meta_list <- .convert_anndata_slot(
+        adata, "uns", py_builtins$list(adata$uns$keys())
+    )
+
     x_mat <- x_out$mat
     colnames(x_mat) <- adata$obs_names$to_list()
     rownames(x_mat) <- adata$var_names$to_list()
     skipped_x <- x_out$skipped
 
-    assays_list <- list(X = x_mat)
+    if (is.null(X_name)) {
+        if ("X_name" %in% names(meta_list)) {
+            X_name <- meta_list[["X_name"]]
+            message("Note: Using stored X_name value '", X_name, "'")
+            meta_list[["X_name"]] <- NULL
+        } else {
+            X_name <- "X"
+        }
+    }
+
+    assays_list <- list()
+    assays_list[[X_name]] <- x_mat
+
     layer_names <- names(py_builtins$dict(adata$layers))
     skipped_layers <- character(0)
-
     for (layer_name in layer_names) {
         layer_out <- .extract_or_skip_assay(
             skip_assays = skip_assays,
@@ -128,10 +144,6 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
         }
         assays_list[[layer_name]] <- layer_out$mat
     }
-
-    meta_list <- .convert_anndata_slot(
-        adata, "uns", py_builtins$list(adata$uns$keys())
-    )
 
     varp_list <- .convert_anndata_slot(
         adata, "varp", py_builtins$list(adata$varp$keys())
@@ -277,8 +289,10 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
 #' @rdname AnnData-Conversion
 #'
 #' @param sce A \linkS4class{SingleCellExperiment} object.
-#' @param X_name Name of the assay to use as the primary matrix (`X`) of the
-#' AnnData object. If `NULL`, the first assay of `sce` will be used by default.
+#' @param X_name For `SCE2AnnData()` name of the assay to use as the primary
+#' matrix (`X`) of the AnnData object. If `NULL`, the first assay of `sce` will
+#' be used by default. For `AnnData2SCE()` name used when saving `X` as an
+#' assay. If `NULL` looks for an `X_name` value in `uns`, otherwise uses `"X"`.
 #'
 #' @export
 #' @importFrom utils capture.output
@@ -421,6 +435,7 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
             }
         )
     }
+    uns_list[["X_name"]] <- X_name
 
     adata$uns <- reticulate::dict(uns_list)
 
