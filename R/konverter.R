@@ -39,9 +39,9 @@
 #'
 #' Values stored in the `varm` slot of an `AnnData` object are stored in a
 #' column of [`rowData()`] in a \linkS4class{SingleCellExperiment}
-#' as a \linkS4class{DataFrame} of matrices. No attempt is made to transfer this
-#' information when converting from \linkS4class{SingleCellExperiment} to
-#' `AnnData`.
+#' as a \linkS4class{DataFrame} of matrices. If this column is pressent an
+#' attempt is made to transfer this information when converting from
+#' \linkS4class{SingleCellExperiment} to `AnnData`.
 #'
 #' @author Luke Zappia
 #' @author Aaron Lun
@@ -168,6 +168,10 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
     if (is.na(skip_assays)) {
         int_metadata(output)$skipped_x <- skipped_x
         int_metadata(output)$skipped_layers <- skipped_layers
+    }
+
+    if (length(varm_list) > 0) {
+        int_metadata(output)$has_varm <- names(varm_list)
     }
 
     output
@@ -338,6 +342,11 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     }
 
     row_data <- rowData(sce)
+    if (!is.null(int_metadata(sce)$has_varm)) {
+        varm <- as.list(row_data[["varm"]])
+        row_data[["varm"]] <- NULL
+    }
+
     is_atomic <- vapply(row_data, is.atomic, NA)
     if (any(!is_atomic)) {
         non_atomic_cols <- colnames(row_data)[!is_atomic]
@@ -417,6 +426,10 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
 
     adata$varp <- as.list(rowPairs(sce, asSparse = TRUE))
     adata$obsp <- as.list(colPairs(sce, asSparse = TRUE))
+
+    if (!is.null(int_metadata(sce)$has_varm)) {
+        adata$varm <- varm
+    }
 
     if (!is.null(colnames(sce))) {
         adata$obs_names <- colnames(sce)

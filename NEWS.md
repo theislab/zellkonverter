@@ -3,6 +3,7 @@
 * Bioconductor 3.13, May 2021
 
 * Add conversion checks to all slots in `AnnData2SCE()` (See #45)
+* Enable return conversion of `varm` in `SCE2AnnData()` (Fixes #43)
 
 ## zellkonverter 1.1.7 (2021-04-30)
 
