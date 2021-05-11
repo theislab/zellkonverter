@@ -123,118 +123,88 @@
     <div id="zellkonverter-120" class="section level1">
 <h1 class="page-header" data-toc-text="1.2.0">
 <a href="#zellkonverter-120" class="anchor" aria-hidden="true"></a>zellkonverter 1.2.0</h1>
-<ul>
-<li>Bioconductor 3.13, May 2021</li>
-</ul>
-<div id="zellkonverter-118-2021-05-03" class="section level2">
+<ul><li>Bioconductor 3.13, May 2021</li>
+</ul><div id="zellkonverter-118-2021-05-03" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-118-2021-05-03" class="anchor" aria-hidden="true"></a>zellkonverter 1.1.8 (2021-05-03)</h2>
-<ul>
-<li>Add conversion checks to all slots in <code><a href="../reference/AnnData-Conversion.html">AnnData2SCE()</a></code> (See <a href='https://github.com/theislab/zellkonverter/issues/45'>#45</a>)</li>
+<ul><li>Add conversion checks to all slots in <code><a href="../reference/AnnData-Conversion.html">AnnData2SCE()</a></code> (See <a href='https://github.com/theislab/zellkonverter/issues/45'>#45</a>)</li>
 <li>Enable return conversion of <code>varm</code> in <code><a href="../reference/AnnData-Conversion.html">SCE2AnnData()</a></code> (Fixes <a href='https://github.com/theislab/zellkonverter/issues/43'>#43</a>)</li>
 <li>Store <code>X_name</code> in <code><a href="../reference/AnnData-Conversion.html">AnnData2SCE()</a></code> for use by <code><a href="../reference/AnnData-Conversion.html">SCE2AnnData()</a></code> and add an <code>X_name</code> argument to <code><a href="../reference/AnnData-Conversion.html">AnnData2SCE()</a></code> and <code><a href="../reference/readH5AD.html">readH5AD()</a></code> (Fixes <a href='https://github.com/theislab/zellkonverter/issues/7'>#7</a>)</li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-117-2021-04-30" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-117-2021-04-30" class="anchor" aria-hidden="true"></a>zellkonverter 1.1.7 (2021-04-30)</h2>
-<ul>
-<li>Add <code>compression</code> argument to <code><a href="../reference/writeH5AD.html">writeH5AD()</a></code> (Fixes <a href='https://github.com/theislab/zellkonverter/issues/49'>#49</a>)</li>
+<ul><li>Add <code>compression</code> argument to <code><a href="../reference/writeH5AD.html">writeH5AD()</a></code> (Fixes <a href='https://github.com/theislab/zellkonverter/issues/49'>#49</a>)</li>
 <li>Update <strong>anndata</strong> Python dependencies, now using <strong>anndata</strong> v0.7.6</li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-116-2021-04-27" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-116-2021-04-27" class="anchor" aria-hidden="true"></a>zellkonverter 1.1.6 (2021-04-27)</h2>
-<ul>
-<li>Adapt to changes in <code><a href="https://rdrr.io/pkg/HDF5Array/man/HDF5Array-class.html" class="external-link">HDF5Array::HDF5Array()</a></code>
+<ul><li>Adapt to changes in <code><a href="https://rdrr.io/pkg/HDF5Array/man/HDF5Array-class.html" class="external-link">HDF5Array::HDF5Array()</a></code>
 </li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-115-2021-03-05" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-115-2021-03-05" class="anchor" aria-hidden="true"></a>zellkonverter 1.1.5 (2021-03-05)</h2>
-<ul>
-<li>Better support for <strong>anndata</strong> <code>SparseDataset</code> arrays (PR <a href='https://github.com/theislab/zellkonverter/issues/41'>#41</a>, Fixes <a href='https://github.com/theislab/zellkonverter/issues/37'>#37</a>, Fixes <a href='https://github.com/theislab/zellkonverter/issues/42'>#42</a>)</li>
+<ul><li>Better support for <strong>anndata</strong> <code>SparseDataset</code> arrays (PR <a href='https://github.com/theislab/zellkonverter/issues/41'>#41</a>, Fixes <a href='https://github.com/theislab/zellkonverter/issues/37'>#37</a>, Fixes <a href='https://github.com/theislab/zellkonverter/issues/42'>#42</a>)</li>
 <li>More consistent conversion of <code>metadata</code> to <code>uns</code> in <code><a href="../reference/AnnData-Conversion.html">SCE2AnnData()</a></code> (Fixes <a href='https://github.com/theislab/zellkonverter/issues/40'>#40</a>)</li>
 <li>Add handling of list columns in <code>colData</code> and <code>rowData</code> in <code><a href="../reference/AnnData-Conversion.html">SCE2AnnData()</a></code> (Fixes <a href='https://github.com/theislab/zellkonverter/issues/26'>#26</a>)</li>
 <li>Export <code>zellkonverterAnnDataEnv</code> (Fixes <a href='https://github.com/theislab/zellkonverter/issues/38'>#38</a>)</li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-114-2021-02-18" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-114-2021-02-18" class="anchor" aria-hidden="true"></a>zellkonverter 1.1.4 (2021-02-18)</h2>
-<ul>
-<li>Handle writing <strong>DelayedArray</strong> assays on the R side in <code><a href="../reference/writeH5AD.html">writeH5AD()</a></code> (PR <a href='https://github.com/theislab/zellkonverter/issues/35'>#35</a>, Fixes <a href='https://github.com/theislab/zellkonverter/issues/32'>#32</a>)</li>
-</ul>
-</div>
+<ul><li>Handle writing <strong>DelayedArray</strong> assays on the R side in <code><a href="../reference/writeH5AD.html">writeH5AD()</a></code> (PR <a href='https://github.com/theislab/zellkonverter/issues/35'>#35</a>, Fixes <a href='https://github.com/theislab/zellkonverter/issues/32'>#32</a>)</li>
+</ul></div>
 <div id="zellkonverter-113-2021-01-22" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-113-2021-01-22" class="anchor" aria-hidden="true"></a>zellkonverter 1.1.3 (2021-01-22)</h2>
-<ul>
-<li>Adjust <code><a href="../reference/AnnData-Conversion.html">SCE2AnnData()</a></code> example (Fixes <a href='https://github.com/theislab/zellkonverter/issues/31'>#31</a>)</li>
-</ul>
-</div>
+<ul><li>Adjust <code><a href="../reference/AnnData-Conversion.html">SCE2AnnData()</a></code> example (Fixes <a href='https://github.com/theislab/zellkonverter/issues/31'>#31</a>)</li>
+</ul></div>
 <div id="zellkonverter-112-2020-12-19" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-112-2020-12-19" class="anchor" aria-hidden="true"></a>zellkonverter 1.1.2 (2020-12-19)</h2>
-<ul>
-<li>Improved support for HDF5 backed conversion (PR <a href='https://github.com/theislab/zellkonverter/issues/29'>#29</a>, fixes <a href='https://github.com/theislab/zellkonverter/issues/13'>#13</a>)</li>
-</ul>
-</div>
+<ul><li>Improved support for HDF5 backed conversion (PR <a href='https://github.com/theislab/zellkonverter/issues/29'>#29</a>, fixes <a href='https://github.com/theislab/zellkonverter/issues/13'>#13</a>)</li>
+</ul></div>
 <div id="zellkonverter-111-2020-12-03" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-111-2020-12-03" class="anchor" aria-hidden="true"></a>zellkonverter 1.1.1 (2020-12-03)</h2>
-<ul>
-<li>Add <code>example_anndata.h5ad</code> file to <code>inst/extdata/</code> and creation script to <code>inst/scripts/</code>
+<ul><li>Add <code>example_anndata.h5ad</code> file to <code>inst/extdata/</code> and creation script to <code>inst/scripts/</code>
 </li>
 <li>Improve conversion checks when converting <code>.uns</code> to <code>metadata</code>
 </li>
 <li>Avoid converting <code>obsp</code> and <code>varp</code> to dense matrices</li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-110-2020-10-28" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-110-2020-10-28" class="anchor" aria-hidden="true"></a>zellkonverter 1.1.0 (2020-10-28)</h2>
-<ul>
-<li>Bioconductor 3.13 devel</li>
-</ul>
-</div>
+<ul><li>Bioconductor 3.13 devel</li>
+</ul></div>
 </div>
     <div id="zellkonverter-100-2020-10-28" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.0">
 <a href="#zellkonverter-100-2020-10-28" class="anchor" aria-hidden="true"></a>zellkonverter 1.0.0 (2020-10-28)</h1>
-<ul>
-<li>Bioconductor 3.12, October 2020</li>
-</ul>
-<div id="zellkonverter-103-2021-03-08" class="section level2">
+<ul><li>Bioconductor 3.12, October 2020</li>
+</ul><div id="zellkonverter-103-2021-03-08" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-103-2021-03-08" class="anchor" aria-hidden="true"></a>zellkonverter 1.0.3 (2021-03-08)</h2>
-<ul>
-<li>Avoid converting <code>obsp</code> and <code>varp</code> to dense matrices</li>
-</ul>
-</div>
+<ul><li>Avoid converting <code>obsp</code> and <code>varp</code> to dense matrices</li>
+</ul></div>
 <div id="zellkonverter-102-2021-01-28" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-102-2021-01-28" class="anchor" aria-hidden="true"></a>zellkonverter 1.0.2 (2021-01-28)</h2>
-<ul>
-<li>Merge remaining commits for HDF5 conversion (fixes <a href='https://github.com/theislab/zellkonverter/issues/33'>#33</a>)</li>
-</ul>
-</div>
+<ul><li>Merge remaining commits for HDF5 conversion (fixes <a href='https://github.com/theislab/zellkonverter/issues/33'>#33</a>)</li>
+</ul></div>
 <div id="zellkonverter-101-2021-01-26" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-101-2021-01-26" class="anchor" aria-hidden="true"></a>zellkonverter 1.0.1 (2021-01-26)</h2>
-<ul>
-<li>Improved support for HDF5 backed conversion (PR <a href='https://github.com/theislab/zellkonverter/issues/29'>#29</a>, fixes <a href='https://github.com/theislab/zellkonverter/issues/13'>#13</a>, fixes <a href='https://github.com/theislab/zellkonverter/issues/33'>#33</a>)</li>
-</ul>
-</div>
+<ul><li>Improved support for HDF5 backed conversion (PR <a href='https://github.com/theislab/zellkonverter/issues/29'>#29</a>, fixes <a href='https://github.com/theislab/zellkonverter/issues/13'>#13</a>, fixes <a href='https://github.com/theislab/zellkonverter/issues/33'>#33</a>)</li>
+</ul></div>
 <div id="zellkonverter-0997-2020-10-16" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0997-2020-10-16" class="anchor" aria-hidden="true"></a>zellkonverter 0.99.7 (2020-10-16)</h2>
-<ul>
-<li>Update Python dependencies
-<ul>
-<li>
+<ul><li>Update Python dependencies
+<ul><li>
 <strong>numpy</strong> 1.18.5 -&gt; 1.19.1</li>
 <li>
 <strong>pandas</strong> 1.0.4 -&gt; 1.1.2</li>
@@ -242,64 +212,48 @@
 <strong>scipy</strong> 1.4.1 -&gt; 1.5.2</li>
 <li>
 <strong>sqlite</strong> 3.30.1 -&gt; 3.33.0</li>
-</ul>
-</li>
-</ul>
-</div>
+</ul></li>
+</ul></div>
 <div id="zellkonverter-0996-2020-10-12" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0996-2020-10-12" class="anchor" aria-hidden="true"></a>zellkonverter 0.99.6 (2020-10-12)</h2>
-<ul>
-<li>Document character to factor coercion in <code>writeH5ad()</code> (Fixes <a href='https://github.com/theislab/zellkonverter/issues/6'>#6</a>)</li>
+<ul><li>Document character to factor coercion in <code>writeH5ad()</code> (Fixes <a href='https://github.com/theislab/zellkonverter/issues/6'>#6</a>)</li>
 <li>Add <code>X_name</code> argument to <code><a href="../reference/writeH5AD.html">writeH5AD()</a></code> (Fixes <a href='https://github.com/theislab/zellkonverter/issues/23'>#23</a>)</li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-0995-2020-09-28" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0995-2020-09-28" class="anchor" aria-hidden="true"></a>zellkonverter 0.99.5 (2020-09-28)</h2>
-<ul>
-<li>Tidy NEWS files for Bioconductor release</li>
-</ul>
-</div>
+<ul><li>Tidy NEWS files for Bioconductor release</li>
+</ul></div>
 <div id="zellkonverter-0994-2020-08-28" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0994-2020-08-28" class="anchor" aria-hidden="true"></a>zellkonverter 0.99.4 (2020-08-28)</h2>
-<ul>
-<li>Bump anndata version to 0.7.4</li>
-</ul>
-</div>
+<ul><li>Bump anndata version to 0.7.4</li>
+</ul></div>
 <div id="zellkonverter-0993-2020-08-21" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0993-2020-08-21" class="anchor" aria-hidden="true"></a>zellkonverter 0.99.3 (2020-08-21)</h2>
-<ul>
-<li>Document the <code>krumsiek11.h5ad</code> file</li>
+<ul><li>Document the <code>krumsiek11.h5ad</code> file</li>
 <li>Remove the <code>internal</code> keyword from the <code>zellkonverter-package</code> documentation</li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-0992-2020-08-21" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0992-2020-08-21" class="anchor" aria-hidden="true"></a>zellkonverter 0.99.2 (2020-08-21)</h2>
-<ul>
-<li>Update <code>.gitignore</code>
+<ul><li>Update <code>.gitignore</code>
 </li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-0991-2020-07-15" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0991-2020-07-15" class="anchor" aria-hidden="true"></a>zellkonverter 0.99.1 (2020-07-15)</h2>
-<ul>
-<li>Fix SCE to AnnData map figure in PDF manual</li>
+<ul><li>Fix SCE to AnnData map figure in PDF manual</li>
 <li>Use <code>expect_equal()</code> instead of <code>expect_identical()</code> in <code><a href="../reference/writeH5AD.html">writeH5AD()</a></code> sparse matrices test</li>
 <li>Edit package title and description</li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-0990-2020-07-10" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0990-2020-07-10" class="anchor" aria-hidden="true"></a>zellkonverter 0.99.0 (2020-07-10)</h2>
-<ul>
-<li>Initial Bioconductor submission</li>
-</ul>
-</div>
+<ul><li>Initial Bioconductor submission</li>
+</ul></div>
 </div>
     <div id="zellkonverter-000-early-development-version" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.0">
@@ -307,168 +261,128 @@
 <div id="zellkonverter-0009017-2020-07-10" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009017-2020-07-10" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9017 (2020-07-10)</h2>
-<ul>
-<li>Add biocViews to DESCRIPTION</li>
+<ul><li>Add biocViews to DESCRIPTION</li>
 <li>Edit package description</li>
 <li>Tidy code</li>
 <li>Replace 1:… with <code><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len()</a></code>
 </li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-0009016-2020-07-10" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009016-2020-07-10" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9016 (2020-07-10)</h2>
-<ul>
-<li>Add check for <strong>scRNAseq</strong> in examples (Fixes <a href='https://github.com/theislab/zellkonverter/issues/18'>#18</a>)</li>
-</ul>
-</div>
+<ul><li>Add check for <strong>scRNAseq</strong> in examples (Fixes <a href='https://github.com/theislab/zellkonverter/issues/18'>#18</a>)</li>
+</ul></div>
 <div id="zellkonverter-0009015-2020-07-02" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009015-2020-07-02" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9015 (2020-07-02)</h2>
-<ul>
-<li>Skip <code>AnnData</code> matrices without a transposable R counterpart</li>
+<ul><li>Skip <code>AnnData</code> matrices without a transposable R counterpart</li>
 <li>Only replace skipped matrices when <code>use_hdf5 = TRUE</code> in <code><a href="../reference/readH5AD.html">readH5AD()</a></code> (Fixes <a href='https://github.com/theislab/zellkonverter/issues/12'>#12</a>)</li>
 <li>Additional tests for sparse matrices</li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-0009014-2020-06-30" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009014-2020-06-30" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9014 (2020-06-30)</h2>
-<ul>
-<li>Allow assay skipping when converting from <code>SingleCellExperiment</code> to <code>AnnData</code>
+<ul><li>Allow assay skipping when converting from <code>SingleCellExperiment</code> to <code>AnnData</code>
 </li>
 <li>Allow skipping of assays that aren’t <strong>numpy</strong> friendly in <code><a href="../reference/writeH5AD.html">writeH5AD()</a></code>
 </li>
 <li>Wait for <strong>basilisk</strong> process shutdown to release <code>.h5ad</code> file</li>
 <li>Updates to documentation and tests</li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-0009013-2020-06-25" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009013-2020-06-25" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9013 (2020-06-25)</h2>
-<ul>
-<li>Improve conversion between <code>SingleCellExperiment</code> and <code>AnnData</code> (See <a href='https://github.com/theislab/zellkonverter/issues/8'>#8</a>)
-<ul>
-<li>Convert between <code>metadata</code> and <code>uns</code> (where objects are compatible)</li>
+<ul><li>Improve conversion between <code>SingleCellExperiment</code> and <code>AnnData</code> (See <a href='https://github.com/theislab/zellkonverter/issues/8'>#8</a>)
+<ul><li>Convert between <code>metadata</code> and <code>uns</code> (where objects are compatible)</li>
 <li>Convert between <code>rowPairs</code> and <code>varp</code>
 </li>
 <li>Convert between <code>colPairs</code> and <code>obsp</code>
 </li>
 <li>Convert from <code>varm</code> to <code>rowData</code> (but not in reverse)</li>
-</ul>
-</li>
+</ul></li>
 <li>Add mapping table to docs</li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-0009012-2020-06-19" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009012-2020-06-19" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9012 (2020-06-19)</h2>
-<ul>
-<li>Tidy documentation and code</li>
+<ul><li>Tidy documentation and code</li>
 <li>Tidy vignette</li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-0009011-2020-06-18" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009011-2020-06-18" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9011 (2020-06-18)</h2>
-<ul>
-<li>Support for HDF5Array outputs in <code><a href="../reference/readH5AD.html">readH5AD()</a></code> (Fixes <a href='https://github.com/theislab/zellkonverter/issues/4'>#4</a>)</li>
-</ul>
-</div>
+<ul><li>Support for HDF5Array outputs in <code><a href="../reference/readH5AD.html">readH5AD()</a></code> (Fixes <a href='https://github.com/theislab/zellkonverter/issues/4'>#4</a>)</li>
+</ul></div>
 <div id="zellkonverter-0009010-2020-06-17" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009010-2020-06-17" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9010 (2020-06-17)</h2>
-<ul>
-<li>Avoid checking column names for <code>colData</code> and <code>rowData</code> in <code><a href="../reference/AnnData-Conversion.html">SCE2AnnData()</a></code>
+<ul><li>Avoid checking column names for <code>colData</code> and <code>rowData</code> in <code><a href="../reference/AnnData-Conversion.html">SCE2AnnData()</a></code>
 </li>
 <li>Make sure that all matrices passes to <strong>{reticulate}</strong> are <strong>numpy</strong> friendly</li>
 <li>Add more tests</li>
 <li>Update vignette front matter</li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-0009009-2020-06-15" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009009-2020-06-15" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9009 (2020-06-15)</h2>
-<ul>
-<li>Add vignette</li>
-</ul>
-</div>
+<ul><li>Add vignette</li>
+</ul></div>
 <div id="zellkonverter-0009008-2020-06-12" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009008-2020-06-12" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9008 (2020-06-12)</h2>
-<ul>
-<li>Add examples and improve documentation</li>
+<ul><li>Add examples and improve documentation</li>
 <li>Export <code>.AnnDataDependencies</code> for external use</li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-0009007-2020-06-11" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009007-2020-06-11" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9007 (2020-06-11)</h2>
-<ul>
-<li>Add <code><a href="../reference/AnnData-Conversion.html">SCE2AnnData()</a></code> function</li>
+<ul><li>Add <code><a href="../reference/AnnData-Conversion.html">SCE2AnnData()</a></code> function</li>
 <li>Add <code><a href="../reference/writeH5AD.html">writeH5AD()</a></code> function</li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-0009006-2020-06-11" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009006-2020-06-11" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9006 (2020-06-11)</h2>
-<ul>
-<li>Use internal function in <code><a href="../reference/readH5AD.html">readH5AD()</a></code>
+<ul><li>Use internal function in <code><a href="../reference/readH5AD.html">readH5AD()</a></code>
 </li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-0009005-2020-06-09" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009005-2020-06-09" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9005 (2020-06-09)</h2>
-<ul>
-<li>Rename <code>adata2SCE()</code> to <code><a href="../reference/AnnData-Conversion.html">AnnData2SCE()</a></code>
+<ul><li>Rename <code>adata2SCE()</code> to <code><a href="../reference/AnnData-Conversion.html">AnnData2SCE()</a></code>
 </li>
 <li>Remove <strong>{basilisk}</strong> context from <code><a href="../reference/AnnData-Conversion.html">AnnData2SCE()</a></code> (See <a href='https://github.com/theislab/zellkonverter/issues/1'>#1</a>)
-<ul>
-<li>Now uses the calling context</li>
-</ul>
-</li>
-</ul>
-</div>
+<ul><li>Now uses the calling context</li>
+</ul></li>
+</ul></div>
 <div id="zellkonverter-0009004-2020-06-09" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009004-2020-06-09" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9004 (2020-06-09)</h2>
-<ul>
-<li>Pin more <strong>AnnData</strong> dependencies (See <a href='https://github.com/theislab/zellkonverter/issues/1'>#1</a>)</li>
-</ul>
-</div>
+<ul><li>Pin more <strong>AnnData</strong> dependencies (See <a href='https://github.com/theislab/zellkonverter/issues/1'>#1</a>)</li>
+</ul></div>
 <div id="zellkonverter-0009003-2020-06-08" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009003-2020-06-08" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9003 (2020-06-08)</h2>
-<ul>
-<li>Add test <code>.h5ad</code> file</li>
+<ul><li>Add test <code>.h5ad</code> file</li>
 <li>Add test for <code><a href="../reference/readH5AD.html">readH5AD()</a></code>
 </li>
 <li>Add package man page</li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-0009002-2020-06-08" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009002-2020-06-08" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9002 (2020-06-08)</h2>
-<ul>
-<li>Add <code>adata2SCE()</code> function</li>
+<ul><li>Add <code>adata2SCE()</code> function</li>
 <li>Add <code><a href="../reference/readH5AD.html">readH5AD()</a></code> function</li>
-</ul>
-</div>
+</ul></div>
 <div id="zellkonverter-0009001-2020-06-08" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009001-2020-06-08" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9001 (2020-06-08)</h2>
-<ul>
-<li>Add <strong>{basilisk}</strong> infrastructure</li>
-</ul>
-</div>
+<ul><li>Add <strong>{basilisk}</strong> infrastructure</li>
+</ul></div>
 <div id="zellkonverter-0009000-2020-06-08" class="section level2">
 <h2 class="hasAnchor">
 <a href="#zellkonverter-0009000-2020-06-08" class="anchor" aria-hidden="true"></a>zellkonverter 0.0.0.9000 (2020-06-08)</h2>
-<ul>
-<li>Set up package</li>
-</ul>
-</div>
+<ul><li>Set up package</li>
+</ul></div>
 </div>
   </div>
 

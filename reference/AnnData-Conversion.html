@@ -211,68 +211,113 @@ attempt is made to transfer this information when converting from
 <p>Aaron Lun</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"scRNAseq"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>basilisk</span><span class='op'>)</span>
-    <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scRNAseq</span><span class='op'>)</span>
-    <span class='va'>seger</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scRNAseq/man/SegerstolpePancreasData.html'>SegerstolpePancreasData</a></span><span class='op'>(</span><span class='op'>)</span>
-
-    <span class='co'># These functions are designed to be run inside</span>
-    <span class='co'># a specified Python environment</span>
-    <span class='va'>roundtrip</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/basilisk/man/basiliskStart.html'>basiliskRun</a></span><span class='op'>(</span>fun <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>sce</span><span class='op'>)</span> <span class='op'>{</span>
-        <span class='co'># Convert SCE to AnnData:</span>
-        <span class='va'>adata</span> <span class='op'>&lt;-</span> <span class='fu'>zellkonverter</span><span class='fu'>::</span><span class='fu'>SCE2AnnData</span><span class='op'>(</span><span class='va'>sce</span><span class='op'>)</span>
-
-        <span class='co'># Maybe do some work in Python on 'adata':</span>
-        <span class='co'># BLAH BLAH BLAH</span>
-
-        <span class='co'># Convert back to an SCE:</span>
-        <span class='fu'>zellkonverter</span><span class='fu'>::</span><span class='fu'>AnnData2SCE</span><span class='op'>(</span><span class='va'>adata</span><span class='op'>)</span>
-    <span class='op'>}</span>, env <span class='op'>=</span> <span class='va'>zellkonverterAnnDataEnv</span>, sce <span class='op'>=</span> <span class='va'>seger</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div><div class='co'>#&gt; Loading required package: SingleCellExperiment</div><div class='co'>#&gt; Loading required package: SummarizedExperiment</div><div class='co'>#&gt; Loading required package: MatrixGenerics</div><div class='co'>#&gt; Loading required package: matrixStats</div><div class='co'>#&gt; 
-#&gt; Attaching package: 'MatrixGenerics'</div><div class='co'>#&gt; The following objects are masked from 'package:matrixStats':
-#&gt; 
-#&gt;     colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
-#&gt;     colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
-#&gt;     colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
-#&gt;     colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
-#&gt;     colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
-#&gt;     colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
-#&gt;     colWeightedMeans, colWeightedMedians, colWeightedSds,
-#&gt;     colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
-#&gt;     rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
-#&gt;     rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
-#&gt;     rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
-#&gt;     rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
-#&gt;     rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
-#&gt;     rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
-#&gt;     rowWeightedSds, rowWeightedVars</div><div class='co'>#&gt; Loading required package: GenomicRanges</div><div class='co'>#&gt; Loading required package: stats4</div><div class='co'>#&gt; Loading required package: BiocGenerics</div><div class='co'>#&gt; Loading required package: parallel</div><div class='co'>#&gt; 
-#&gt; Attaching package: 'BiocGenerics'</div><div class='co'>#&gt; The following objects are masked from 'package:parallel':
-#&gt; 
-#&gt;     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-#&gt;     clusterExport, clusterMap, parApply, parCapply, parLapply,
-#&gt;     parLapplyLB, parRapply, parSapply, parSapplyLB</div><div class='co'>#&gt; The following objects are masked from 'package:stats':
-#&gt; 
-#&gt;     IQR, mad, sd, var, xtabs</div><div class='co'>#&gt; The following objects are masked from 'package:base':
-#&gt; 
-#&gt;     anyDuplicated, append, as.data.frame, basename, cbind, colnames,
-#&gt;     dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
-#&gt;     grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
-#&gt;     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-#&gt;     rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
-#&gt;     union, unique, unsplit, which.max, which.min</div><div class='co'>#&gt; Loading required package: S4Vectors</div><div class='co'>#&gt; 
-#&gt; Attaching package: 'S4Vectors'</div><div class='co'>#&gt; The following objects are masked from 'package:base':
-#&gt; 
-#&gt;     expand.grid, I, unname</div><div class='co'>#&gt; Loading required package: IRanges</div><div class='co'>#&gt; Loading required package: GenomeInfoDb</div><div class='co'>#&gt; Loading required package: Biobase</div><div class='co'>#&gt; Welcome to Bioconductor
-#&gt; 
-#&gt;     Vignettes contain introductory material; view with
-#&gt;     'browseVignettes()'. To cite Bioconductor, see
-#&gt;     'citation("Biobase")', and for packages 'citation("pkgname")'.</div><div class='co'>#&gt; 
-#&gt; Attaching package: 'Biobase'</div><div class='co'>#&gt; The following object is masked from 'package:MatrixGenerics':
-#&gt; 
-#&gt;     rowMedians</div><div class='co'>#&gt; The following objects are masked from 'package:matrixStats':
-#&gt; 
-#&gt;     anyMissing, rowMedians</div><div class='co'>#&gt; snapshotDate(): 2021-04-27</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; snapshotDate(): 2021-04-27</div><div class='co'>#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</div><div class='co'>#&gt; downloading 1 resources</div><div class='co'>#&gt; retrieving 1 resource</div><div class='co'>#&gt; loading from cache</div><div class='co'>#&gt; Note: using the 'counts' assay as the X matrix</div><div class='co'>#&gt; Note: Using stored X_name value 'counts'</div><div class='co'>#&gt; <span class='warning'>Warning: </span>index contains duplicated values: row names not set</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"scRNAseq"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>    <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>basilisk</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scRNAseq</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='va'>seger</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scRNAseq/man/SegerstolpePancreasData.html'>SegerstolpePancreasData</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>    <span class='co'># These functions are designed to be run inside</span></span>
+<span class='r-in'>    <span class='co'># a specified Python environment</span></span>
+<span class='r-in'>    <span class='va'>roundtrip</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/basilisk/man/basiliskStart.html'>basiliskRun</a></span><span class='op'>(</span>fun <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>sce</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>        <span class='co'># Convert SCE to AnnData:</span></span>
+<span class='r-in'>        <span class='va'>adata</span> <span class='op'>&lt;-</span> <span class='fu'>zellkonverter</span><span class='fu'>::</span><span class='fu'>SCE2AnnData</span><span class='op'>(</span><span class='va'>sce</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'>        <span class='co'># Maybe do some work in Python on 'adata':</span></span>
+<span class='r-in'>        <span class='co'># BLAH BLAH BLAH</span></span>
+<span class='r-in'></span>
+<span class='r-in'>        <span class='co'># Convert back to an SCE:</span></span>
+<span class='r-in'>        <span class='fu'>zellkonverter</span><span class='fu'>::</span><span class='fu'>AnnData2SCE</span><span class='op'>(</span><span class='va'>adata</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='op'>}</span>, env <span class='op'>=</span> <span class='va'>zellkonverterAnnDataEnv</span>, sce <span class='op'>=</span> <span class='va'>seger</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: SingleCellExperiment</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: SummarizedExperiment</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: MatrixGenerics</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: matrixStats</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Attaching package: 'MatrixGenerics'</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from 'package:matrixStats':</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     colCounts, colCummaxs, colCummins, colCumprods, colCumsums,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     colWeightedMeans, colWeightedMedians, colWeightedSds,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rowWeightedMads, rowWeightedMeans, rowWeightedMedians,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rowWeightedSds, rowWeightedVars</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: GenomicRanges</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: stats4</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: BiocGenerics</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: parallel</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Attaching package: 'BiocGenerics'</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from 'package:parallel':</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     clusterExport, clusterMap, parApply, parCapply, parLapply,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     parLapplyLB, parRapply, parSapply, parSapplyLB</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from 'package:stats':</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     IQR, mad, sd, var, xtabs</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from 'package:base':</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     anyDuplicated, append, as.data.frame, basename, cbind, colnames,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     union, unique, unsplit, which.max, which.min</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: S4Vectors</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Attaching package: 'S4Vectors'</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from 'package:base':</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     expand.grid, I, unname</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: IRanges</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: GenomeInfoDb</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: Biobase</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Welcome to Bioconductor</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     Vignettes contain introductory material; view with</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     'browseVignettes()'. To cite Bioconductor, see</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     'citation("Biobase")', and for packages 'citation("pkgname")'.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Attaching package: 'Biobase'</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following object is masked from 'package:MatrixGenerics':</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rowMedians</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from 'package:matrixStats':</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     anyMissing, rowMedians</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> snapshotDate(): 2021-05-05</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> downloading 1 resources</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> retrieving 1 resource</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> loading from cache</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> downloading 1 resources</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> retrieving 1 resource</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> loading from cache</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> downloading 1 resources</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> retrieving 1 resource</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> loading from cache</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> snapshotDate(): 2021-05-05</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> downloading 1 resources</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> retrieving 1 resource</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> loading from cache</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Note: using the 'counts' assay as the X matrix</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Note: Using stored X_name value 'counts'</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>index contains duplicated values: row names not set</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

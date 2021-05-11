@@ -173,17 +173,19 @@ H5AD file.</p>
 <p>Aaron Lun</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://bioconductor.org/packages/SummarizedExperiment'>SummarizedExperiment</a></span><span class='op'>)</span>
-
-<span class='va'>file</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"krumsiek11.h5ad"</span>, package <span class='op'>=</span> <span class='st'>"zellkonverter"</span><span class='op'>)</span>
-<span class='va'>sce</span> <span class='op'>&lt;-</span> <span class='fu'>readH5AD</span><span class='op'>(</span><span class='va'>file</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a></span><span class='op'>(</span><span class='va'>sce</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] "matrix" "array" </div><div class='input'>
-<span class='va'>sce2</span> <span class='op'>&lt;-</span> <span class='fu'>readH5AD</span><span class='op'>(</span><span class='va'>file</span>, use_hdf5 <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a></span><span class='op'>(</span><span class='va'>sce2</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] "DelayedMatrix"
-#&gt; attr(,"package")
-#&gt; [1] "DelayedArray"</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://bioconductor.org/packages/SummarizedExperiment'>SummarizedExperiment</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>file</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"krumsiek11.h5ad"</span>, package <span class='op'>=</span> <span class='st'>"zellkonverter"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>sce</span> <span class='op'>&lt;-</span> <span class='fu'>readH5AD</span><span class='op'>(</span><span class='va'>file</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a></span><span class='op'>(</span><span class='va'>sce</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "matrix" "array" </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>sce2</span> <span class='op'>&lt;-</span> <span class='fu'>readH5AD</span><span class='op'>(</span><span class='va'>file</span>, use_hdf5 <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html'>assay</a></span><span class='op'>(</span><span class='va'>sce2</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "DelayedMatrix"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"package")</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "DelayedArray"</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
