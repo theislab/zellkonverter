@@ -1,1 +1,2 @@
 UnsupportedPlatforms: win32
+RunLongTests: TRUE
