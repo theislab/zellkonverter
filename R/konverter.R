@@ -221,6 +221,10 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
         }
     }
 
+    if (is(mat, "dgRMatrix")) {
+        mat <- as(mat, "dgCMatrix")
+    }
+
     list(mat = mat, skipped = skipped)
 }
 

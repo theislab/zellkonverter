@@ -35,22 +35,23 @@ test_that("writeH5AD works as expected", {
 })
 
 test_that("writeH5AD works as expected with sparse matrices", {
-    mat <- assay(sce)
-    counts(sce) <- as(mat, "dgCMatrix")
-    logcounts(sce) <- counts(sce) * 10
-    assay(sce, "random") <- mat # throwing in a dense matrix in a mixture.
+    sparse_sce <- sce
+    mat <- assay(sparse_sce)
+    counts(sparse_sce) <- as(mat, "dgCMatrix")
+    logcounts(sparse_sce) <- counts(sparse_sce) * 10
+    assay(sparse_sce, "random") <- mat # throwing in a dense matrix in a mixture.
 
     temp <- tempfile(fileext = ".h5ad")
-    writeH5AD(sce, temp)
+    writeH5AD(sparse_sce, temp)
     expect_true(file.exists(temp))
 
     # Reading it back out again. Hopefully we didn't lose anything important.
     out <- readH5AD(temp, X_name = "X")
 
-    expect_identical(counts(sce), assay(out, "X"))
-    expect_identical(logcounts(sce), logcounts(out))
+    expect_identical(counts(sparse_sce), assay(out, "X"))
+    expect_identical(logcounts(sparse_sce), logcounts(out))
     # expect_identical() was failing on Windows for some reason...
-    expect_equal(assay(sce, "random"), assay(out, "random"))
+    expect_equal(assay(sparse_sce, "random"), assay(out, "random"))
 })
 
 test_that("writeH5AD works with assay skipping", {
