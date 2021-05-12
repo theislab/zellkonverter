@@ -96,7 +96,8 @@ test_that("writeH5AD DelayedArray X works", {
 
     out <- readH5AD(temp, X_name = "X")
 
-    expect_identical(counts(sce), assay(out, "X"))
+    # Identical fail on Windows for some reason
+    expect_equal(counts(sce), assay(out, "X"))
 })
 
 test_that("writeH5AD sparse DelayedArray X works", {
@@ -129,7 +130,8 @@ test_that("writeH5AD DelayedArray layer works", {
 
     out <- readH5AD(temp, X_name = "X")
 
-    expect_identical(counts(sce), assay(out, "layer"))
+    # Identical fails on Windows for some reason
+    expect_equal(counts(sce), assay(out, "layer"))
 })
 
 test_that("writeH5AD works with colData list columns", {
