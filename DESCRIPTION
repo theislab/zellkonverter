@@ -41,7 +41,8 @@ Suggests:
     BiocStyle,
     scRNAseq,
     HDF5Array,
-    rhdf5
+    rhdf5,
+    BiocFileCache
 URL: https://github.com/theislab/zellkonverter
 BugReports: https://github.com/theislab/zellkonverter/issues
 Encoding: UTF-8
