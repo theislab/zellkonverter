@@ -2,6 +2,10 @@
 
 * Bioconductor 3.13, May 2021
 
+## zellkonverter 1.1.9 (2021-05-12)
+
+* `AnnData2SCE()` no longer returns `dgRMatrix` sparse matrices (Fixes #34)
+
 ## zellkonverter 1.1.8 (2021-05-03)
 
 * Add conversion checks to all slots in `AnnData2SCE()` (See #45)
