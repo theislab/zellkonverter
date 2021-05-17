@@ -11,7 +11,9 @@
 #' The conversion is not entirely lossless. The current mapping is shown below
 #' (also at <https://tinyurl.com/AnnData2SCE>):
 #'
-#' \if{html}{\figure{AnnData2SCE.png}{options: width=800, alt="SCE-AnnData map"}}
+#' \if{html}{
+#'     \figure{AnnData2SCE.png}{options: width=800, alt="SCE-AnnData map"}
+#' }
 #' \if{latex}{\figure{AnnData2SCE.png}{options: width=5in}}
 #'
 #' In `SCE2AnnData()`, matrices are converted to a **numpy**-friendly format.
@@ -20,11 +22,11 @@
 #' empty sparse matrices are created instead and the user is expected to fill in
 #' the assays on the Python side.
 #'
-#' For `AnnData2SCE()`, a warning is raised if there is no corresponding R format
-#' for a matrix in the AnnData object, and an empty sparse matrix is created
-#' instead as a placeholder. If `skip_assays = NA`, no warning is emitted
-#' but variables are created in the [`int_metadata()`] of the output to specify
-#' which assays were skipped.
+#' For `AnnData2SCE()`, a warning is raised if there is no corresponding R
+#' format for a matrix in the AnnData object, and an empty sparse matrix is
+#' created instead as a placeholder. If `skip_assays = NA`, no warning is
+#' emitted but variables are created in the [`int_metadata()`] of the output to
+#' specify which assays were skipped.
 #'
 #' If `skip_assays = TRUE`, empty sparse matrices are created for all assays,
 #' regardless of whether they might be convertible to an R format or not.
@@ -37,9 +39,9 @@
 #'
 #' Values stored in the `varm` slot of an `AnnData` object are stored in a
 #' column of [`rowData()`] in a \linkS4class{SingleCellExperiment}
-#' as a \linkS4class{DataFrame} of matrices. No attempt is made to transfer this
-#' information when converting from \linkS4class{SingleCellExperiment} to
-#' `AnnData`.
+#' as a \linkS4class{DataFrame} of matrices. If this column is pressent an
+#' attempt is made to transfer this information when converting from
+#' \linkS4class{SingleCellExperiment} to `AnnData`.
 #'
 #' @author Luke Zappia
 #' @author Aaron Lun
@@ -72,7 +74,6 @@
 #'         zellkonverter::AnnData2SCE(adata)
 #'     }, env = zellkonverterAnnDataEnv, sce = seger)
 #' }
-#'
 #' @name AnnData-Conversion
 #' @rdname AnnData-Conversion
 NULL
@@ -91,7 +92,8 @@ NULL
 #' @importFrom methods selectMethod is
 #' @importFrom S4Vectors DataFrame make_zero_col_DFrame
 #' @importFrom reticulate import_builtins
-AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
+AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
+                        hdf5_backed = TRUE) {
     py_builtins <- import_builtins()
 
     dims <- unlist(adata$shape)
@@ -100,9 +102,13 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
     x_out <- .extract_or_skip_assay(
         skip_assays = skip_assays,
         hdf5_backed = hdf5_backed,
-        dims        = dims,
-        mat         = adata$X,
-        name        = "'X' matrix"
+        dims = dims,
+        mat = adata$X,
+        name = "'X' matrix"
+    )
+
+    meta_list <- .convert_anndata_slot(
+        adata, "uns", py_builtins$list(adata$uns$keys())
     )
 
     x_mat <- x_out$mat
@@ -110,17 +116,28 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
     rownames(x_mat) <- adata$var_names$to_list()
     skipped_x <- x_out$skipped
 
-    assays_list <- list(X = x_mat)
+    if (is.null(X_name)) {
+        if ("X_name" %in% names(meta_list)) {
+            X_name <- meta_list[["X_name"]]
+            message("Note: Using stored X_name value '", X_name, "'")
+            meta_list[["X_name"]] <- NULL
+        } else {
+            X_name <- "X"
+        }
+    }
+
+    assays_list <- list()
+    assays_list[[X_name]] <- x_mat
+
     layer_names <- names(py_builtins$dict(adata$layers))
     skipped_layers <- character(0)
-
     for (layer_name in layer_names) {
         layer_out <- .extract_or_skip_assay(
             skip_assays = skip_assays,
             hdf5_backed = hdf5_backed,
-            dims        = dims,
-            mat         = adata$layers$get(layer_name),
-            name        = sprintf("'%s' layer matrix", layer_name)
+            dims = dims,
+            mat = adata$layers$get(layer_name),
+            name = sprintf("'%s' layer matrix", layer_name)
         )
         if (layer_out$skipped) {
             skipped_layers <- c(skipped_layers, layer_name)
@@ -128,36 +145,18 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
         assays_list[[layer_name]] <- layer_out$mat
     }
 
-    uns_keys <- py_builtins$list(adata$uns$keys())
+    varp_list <- .convert_anndata_slot(
+        adata, "varp", py_builtins$list(adata$varp$keys())
+    )
 
-    meta_list <- list()
-    for (key in uns_keys) {
-        tryCatch({
-            item <- adata$uns[[key]]
-
-            item_type <- py_builtins$str(py_builtins$type(item))
-            if (grepl("OverloadedDict", item_type)) {
-                item <- py_builtins$dict(item)
-            }
-
-            if (!is(item, "python.builtin.object")) {
-                meta_list[[key]] <- item
-            } else {
-                warning("the '", key, "' item in 'uns' cannot be converted ",
-                        "to an R object and has been skipped", call. = FALSE)
-            }
-        }, error = function(err) {
-            warning("conversion failed for the item '", key, "' in 'uns' with ",
-                    "the following error and has been skipped\n",
-                    "Error message: ", err, call. = FALSE)
-        })
-    }
-
-    varp_list <- lapply(py_builtins$dict(adata$varp), reticulate::py_to_r)
-    obsp_list <- lapply(py_builtins$dict(adata$obsp), reticulate::py_to_r)
+    obsp_list <- .convert_anndata_slot(
+        adata, "obsp", py_builtins$list(adata$obsp$keys())
+    )
 
     row_data <- DataFrame(adata$var)
-    varm_list <- py_builtins$dict(adata$varm)
+
+    varm_list <- .convert_anndata_slot(adata, "varm", adata$varm_keys())
+
     if (length(varm_list) > 0) {
         # Create an empty DataFrame with the correct number of rows
         varm_df <- make_zero_col_DFrame(adata$n_vars)
@@ -168,19 +167,23 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
     }
 
     output <- SingleCellExperiment(
-        assays      = assays_list,
-        rowData     = row_data,
-        colData     = adata$obs,
+        assays = assays_list,
+        rowData = row_data,
+        colData = adata$obs,
         reducedDims = py_builtins$dict(adata$obsm),
-        metadata    = meta_list,
-        rowPairs    = varp_list,
-        colPairs    = obsp_list
+        metadata = meta_list,
+        rowPairs = varp_list,
+        colPairs = obsp_list
     )
 
     # Specifying which assays got skipped, if the skipping was variable.
     if (is.na(skip_assays)) {
         int_metadata(output)$skipped_x <- skipped_x
         int_metadata(output)$skipped_layers <- skipped_layers
+    }
+
+    if (length(varm_list) > 0) {
+        int_metadata(output)$has_varm <- names(varm_list)
     }
 
     output
@@ -198,7 +201,11 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
         if (hdf5_backed && is(mat, "python.builtin.object")) {
             file <- as.character(mat$file$id$name)
             name <- as.character(mat$name)
-            mat <- HDF5Array::H5ADMatrix(file, name)
+            if (.h5isgroup(file, name)) {
+                mat <- HDF5Array::H5SparseMatrix(file, name)
+            } else {
+                mat <- HDF5Array::HDF5Array(file, name)
+            }
         } else {
             mat <- try(t(mat), silent = TRUE)
             if (is(mat, "try-error")) {
@@ -214,31 +221,88 @@ AnnData2SCE <- function(adata, skip_assays = FALSE, hdf5_backed = TRUE) {
         }
     }
 
+    if (is(mat, "dgRMatrix")) {
+        mat <- as(mat, "dgCMatrix")
+    }
+
     list(mat = mat, skipped = skipped)
 }
 
 #' @importFrom Matrix sparseMatrix
 .make_fake_mat <- function(dims) {
     sparseMatrix(
-        i    = integer(0),
-        j    = integer(0),
-        x    = numeric(0),
+        i = integer(0),
+        j = integer(0),
+        x = numeric(0),
         dims = dims
     )
+}
+
+# Borrowed from HDF4Array
+# https://github.com/Bioconductor/HDF5Array/blob/fb015cf1c789bbb905a6bf8af2c7b50a24a60795/R/h5utils.R#L66-L75
+.h5isgroup <- function(filepath, name) {
+    fid <- rhdf5::H5Fopen(filepath, flags = "H5F_ACC_RDONLY")
+    on.exit(rhdf5::H5Fclose(fid))
+    gid <- try(rhdf5::H5Gopen(fid, name), silent = TRUE)
+    ans <- !inherits(gid, "try-error")
+    if (ans) {
+        rhdf5::H5Gclose(gid)
+    }
+
+    return(ans)
+}
+
+.convert_anndata_slot <- function(adata, slot_name, slot_keys) {
+
+    py_builtins <- import_builtins()
+
+    converted_list <- list()
+
+    for (key in slot_keys) {
+
+        tryCatch(
+            {
+                item <- adata[slot_name][[key]]
+
+                item_type <- py_builtins$str(py_builtins$type(item))
+                if (grepl("OverloadedDict", item_type)) {
+                    item <- py_builtins$dict(item)
+                }
+
+                if (is(item, "python.builtin.object")) {
+                    item <- reticulate::py_to_r(item)
+                }
+
+                converted_list[[key]] <- item
+            },
+            error = function(err) {
+                warning(
+                    "conversion failed for the item '",
+                    key, "' in '", slot_name, "' with ",
+                    "the following error and has been skipped\n",
+                    "Conversion error message: ", err,
+                    call. = FALSE
+                )
+            }
+        )
+    }
+
+    return(converted_list)
 }
 
 #' @rdname AnnData-Conversion
 #'
 #' @param sce A \linkS4class{SingleCellExperiment} object.
-#' @param X_name Name of the assay to use as the primary matrix (`X`) of the
-#' AnnData object. If `NULL`, the first assay of `sce` will be used by default.
+#' @param X_name For `SCE2AnnData()` name of the assay to use as the primary
+#' matrix (`X`) of the AnnData object. If `NULL`, the first assay of `sce` will
+#' be used by default. For `AnnData2SCE()` name used when saving `X` as an
+#' assay. If `NULL` looks for an `X_name` value in `uns`, otherwise uses `"X"`.
 #'
 #' @export
 #' @importFrom utils capture.output
 #' @importFrom S4Vectors metadata
 #' @importFrom reticulate import r_to_py
 SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
-
     anndata <- import("anndata")
 
     if (is.null(X_name)) {
@@ -296,6 +360,11 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     }
 
     row_data <- rowData(sce)
+    if (!is.null(int_metadata(sce)$has_varm)) {
+        varm <- as.list(row_data[["varm"]])
+        row_data[["varm"]] <- NULL
+    }
+
     is_atomic <- vapply(row_data, is.atomic, NA)
     if (any(!is_atomic)) {
         non_atomic_cols <- colnames(row_data)[!is_atomic]
@@ -355,23 +424,31 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     uns_list <- list()
     for (item_name in names(meta_list)) {
         item <- meta_list[[item_name]]
-        tryCatch({
-            # Try to convert the item using reticulate, skip if it fails
-            # Capture the object output printed by reticulate
-            capture.output(r_to_py(item))
-            uns_list[[item_name]] <- item
-        }, error = function(err) {
-            warning(
-                "the '", item_name, "' item in 'metadata' cannot be ",
-                "converted to a Python type and has been skipped"
-            )
-        })
+        tryCatch(
+            {
+                # Try to convert the item using reticulate, skip if it fails
+                # Capture the object output printed by reticulate
+                capture.output(r_to_py(item))
+                uns_list[[item_name]] <- item
+            },
+            error = function(err) {
+                warning(
+                    "the '", item_name, "' item in 'metadata' cannot be ",
+                    "converted to a Python type and has been skipped"
+                )
+            }
+        )
     }
+    uns_list[["X_name"]] <- X_name
 
     adata$uns <- reticulate::dict(uns_list)
 
     adata$varp <- as.list(rowPairs(sce, asSparse = TRUE))
     adata$obsp <- as.list(colPairs(sce, asSparse = TRUE))
+
+    if (!is.null(int_metadata(sce)$has_varm)) {
+        adata$varm <- varm
+    }
 
     if (!is.null(colnames(sce))) {
         adata$obs_names <- colnames(sce)
@@ -402,7 +479,6 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
 }
 
 .addListNames <- function(x) {
-
     if (length(x) == 0) {
         return(x)
     }

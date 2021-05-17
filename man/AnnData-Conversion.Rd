@@ -6,12 +6,17 @@
 \alias{SCE2AnnData}
 \title{Convert AnnData between and SingleCellExperiment}
 \usage{
-AnnData2SCE(adata, skip_assays = FALSE, hdf5_backed = TRUE)
+AnnData2SCE(adata, X_name = NULL, skip_assays = FALSE, hdf5_backed = TRUE)
 
 SCE2AnnData(sce, X_name = NULL, skip_assays = FALSE)
 }
 \arguments{
 \item{adata}{A \strong{reticulate} reference to a Python AnnData object.}
+
+\item{X_name}{For \code{SCE2AnnData()} name of the assay to use as the primary
+matrix (\code{X}) of the AnnData object. If \code{NULL}, the first assay of \code{sce} will
+be used by default. For \code{AnnData2SCE()} name used when saving \code{X} as an
+assay. If \code{NULL} looks for an \code{X_name} value in \code{uns}, otherwise uses \code{"X"}.}
 
 \item{skip_assays}{Logical scalar indicating whether to skip conversion of
 any assays in \code{sce} or \code{adata}, replacing them with empty sparse matrices
@@ -22,9 +27,6 @@ in \code{adata} should be represented as HDF5Array objects. This assumes that
 \code{adata} is created with \code{backed="r"}.}
 
 \item{sce}{A \linkS4class{SingleCellExperiment} object.}
-
-\item{X_name}{Name of the assay to use as the primary matrix (\code{X}) of the
-AnnData object. If \code{NULL}, the first assay of \code{sce} will be used by default.}
 }
 \value{
 \code{AnnData2SCE()} will return a \linkS4class{SingleCellExperiment}
@@ -45,7 +47,9 @@ typically inside a \strong{basilisk} context.
 The conversion is not entirely lossless. The current mapping is shown below
 (also at \url{https://tinyurl.com/AnnData2SCE}):
 
-\if{html}{\figure{AnnData2SCE.png}{options: width=800, alt="SCE-AnnData map"}}
+\if{html}{
+    \figure{AnnData2SCE.png}{options: width=800, alt="SCE-AnnData map"}
+}
 \if{latex}{\figure{AnnData2SCE.png}{options: width=5in}}
 
 In \code{SCE2AnnData()}, matrices are converted to a \strong{numpy}-friendly format.
@@ -54,11 +58,11 @@ other matrices are converted into ordinary matrices. If \code{skip_assays = TRUE
 empty sparse matrices are created instead and the user is expected to fill in
 the assays on the Python side.
 
-For \code{AnnData2SCE()}, a warning is raised if there is no corresponding R format
-for a matrix in the AnnData object, and an empty sparse matrix is created
-instead as a placeholder. If \code{skip_assays = NA}, no warning is emitted
-but variables are created in the \code{\link[=int_metadata]{int_metadata()}} of the output to specify
-which assays were skipped.
+For \code{AnnData2SCE()}, a warning is raised if there is no corresponding R
+format for a matrix in the AnnData object, and an empty sparse matrix is
+created instead as a placeholder. If \code{skip_assays = NA}, no warning is
+emitted but variables are created in the \code{\link[=int_metadata]{int_metadata()}} of the output to
+specify which assays were skipped.
 
 If \code{skip_assays = TRUE}, empty sparse matrices are created for all assays,
 regardless of whether they might be convertible to an R format or not.
@@ -71,9 +75,9 @@ converted a warning will be raised.
 
 Values stored in the \code{varm} slot of an \code{AnnData} object are stored in a
 column of \code{\link[=rowData]{rowData()}} in a \linkS4class{SingleCellExperiment}
-as a \linkS4class{DataFrame} of matrices. No attempt is made to transfer this
-information when converting from \linkS4class{SingleCellExperiment} to
-\code{AnnData}.
+as a \linkS4class{DataFrame} of matrices. If this column is pressent an
+attempt is made to transfer this information when converting from
+\linkS4class{SingleCellExperiment} to \code{AnnData}.
 }
 \examples{
 if (requireNamespace("scRNAseq", quietly = TRUE)) {
@@ -94,7 +98,6 @@ if (requireNamespace("scRNAseq", quietly = TRUE)) {
         zellkonverter::AnnData2SCE(adata)
     }, env = zellkonverterAnnDataEnv, sce = seger)
 }
-
 }
 \seealso{
 \code{\link[=writeH5AD]{writeH5AD()}} and \code{\link[=readH5AD]{readH5AD()}} for dealing directly with H5AD files.

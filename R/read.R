@@ -3,6 +3,8 @@
 #' Reads a H5AD file and returns a \linkS4class{SingleCellExperiment} object.
 #'
 #' @param file String containing a path to a `.h5ad` file.
+#' @param X_name Name used when saving `X` as an assay. If `NULL` looks for an
+#' `X_name` value in `uns`, otherwise uses `"X"`.
 #' @param use_hdf5 Logical scalar indicating whether assays should be
 #' loaded as HDF5-based matrices from the **HDF5Array** package.
 #'
@@ -27,7 +29,6 @@
 #'
 #' sce2 <- readH5AD(file, use_hdf5 = TRUE)
 #' class(assay(sce2))
-#'
 #' @author Luke Zappia
 #' @author Aaron Lun
 #'
@@ -40,22 +41,23 @@
 #'
 #' @export
 #' @importFrom basilisk basiliskRun
-readH5AD <- function(file, use_hdf5 = FALSE) {
+readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE) {
     file <- path.expand(file)
 
     basiliskRun(
-        env    = zellkonverterAnnDataEnv,
-        fun    = .H5ADreader,
-        file   = file,
+        env = zellkonverterAnnDataEnv,
+        fun = .H5ADreader,
+        file = file,
+        X_name = X_name,
         backed = use_hdf5
     )
 }
 
 #' @importFrom reticulate import
-.H5ADreader <- function(file, backed = FALSE) {
+.H5ADreader <- function(file, X_name = NULL, backed = FALSE) {
     anndata <- import("anndata")
     adata <- anndata$read_h5ad(file, backed = if (backed) "r" else FALSE)
-    AnnData2SCE(adata, hdf5_backed = backed)
+    AnnData2SCE(adata, X_name = X_name, hdf5_backed = backed)
 }
 
 #' @importFrom S4Vectors I DataFrame wmsg

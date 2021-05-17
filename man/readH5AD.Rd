@@ -4,10 +4,13 @@
 \alias{readH5AD}
 \title{Read H5AD}
 \usage{
-readH5AD(file, use_hdf5 = FALSE)
+readH5AD(file, X_name = NULL, use_hdf5 = FALSE)
 }
 \arguments{
 \item{file}{String containing a path to a \code{.h5ad} file.}
+
+\item{X_name}{Name used when saving \code{X} as an assay. If \code{NULL} looks for an
+\code{X_name} value in \code{uns}, otherwise uses \code{"X"}.}
 
 \item{use_hdf5}{Logical scalar indicating whether assays should be
 loaded as HDF5-based matrices from the \strong{HDF5Array} package.}
@@ -37,7 +40,6 @@ class(assay(sce))
 
 sce2 <- readH5AD(file, use_hdf5 = TRUE)
 class(assay(sce2))
-
 }
 \seealso{
 \code{\link[=writeH5AD]{writeH5AD()}}, to write a \linkS4class{SingleCellExperiment} object to a

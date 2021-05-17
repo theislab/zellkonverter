@@ -16,7 +16,7 @@
 #' If you want to run code in the exact environment used by **zellkonverter**
 #' this can be done using `zellkonverterAnnDataEnv` in combination with
 #' [basilisk::basiliskStart()] and/or [basilisk::basiliskRun()]. Please refer to
-#' the **basilisk** docmentation for more information on using these
+#' the **basilisk** documentation for more information on using these
 #' environments.
 #'
 #' @author Luke Zappia
@@ -28,7 +28,6 @@
 #' cl <- basilisk::basiliskStart(zellkonverterAnnDataEnv)
 #' anndata <- reticulate::import("anndata")
 #' basilisk::basiliskStop(cl)
-#'
 #' @name AnnData-Environment
 #' @rdname AnnData-Environment
 NULL
@@ -41,15 +40,15 @@ NULL
 #'
 #' @export
 .AnnDataDependencies <- c(
-    "anndata==0.7.4",
-    "h5py==2.10.0",
-    "hdf5==1.10.5",
-    "natsort==7.0.1",
-    "numpy==1.19.1",
-    "packaging==20.4",
-    "pandas==1.1.2",
-    "scipy==1.5.2",
-    "sqlite==3.33.0"
+    "anndata==0.7.6",
+    "h5py==3.2.1",
+    "hdf5==1.10.6",
+    "natsort==7.1.1",
+    "numpy==1.20.2",
+    "packaging==20.9",
+    "pandas==1.2.4",
+    "scipy==1.6.3",
+    "sqlite==3.35.5"
 )
 
 #' @rdname AnnData-Environment
@@ -60,7 +59,7 @@ NULL
 #'
 #' @export
 zellkonverterAnnDataEnv <- basilisk::BasiliskEnvironment(
-    envname  = "zellkonverterAnnDataEnv",
-    pkgname  = "zellkonverter",
+    envname = "zellkonverterAnnDataEnv",
+    pkgname = "zellkonverter",
     packages = .AnnDataDependencies
 )

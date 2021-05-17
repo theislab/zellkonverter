@@ -1,6 +1,26 @@
 # zellkonverter 1.2.0
 
-* Bioconductor 3.13, April 2021
+* Bioconductor 3.13, May 2021
+
+## zellkonverter 1.1.9 (2021-05-12)
+
+* `AnnData2SCE()` no longer returns `dgRMatrix` sparse matrices (Fixes #34)
+
+## zellkonverter 1.1.8 (2021-05-03)
+
+* Add conversion checks to all slots in `AnnData2SCE()` (See #45)
+* Enable return conversion of `varm` in `SCE2AnnData()` (Fixes #43)
+* Store `X_name` in `AnnData2SCE()` for use by `SCE2AnnData()` and add an
+  `X_name` argument to `AnnData2SCE()` and `readH5AD()` (Fixes #7)
+
+## zellkonverter 1.1.7 (2021-04-30)
+
+* Add `compression` argument to `writeH5AD()` (Fixes #49)
+* Update **anndata** Python dependencies, now using **anndata** v0.7.6
+
+## zellkonverter 1.1.6 (2021-04-27)
+
+* Adapt to changes in `HDF5Array::HDF5Array()`
 
 ## zellkonverter 1.1.5 (2021-03-05)
 

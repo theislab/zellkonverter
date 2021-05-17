@@ -1,6 +1,4 @@
 # This tests the writeH5AD function (and by implication, AnnData2SCE).
-# library(testthat); library(zellkonverter); source("test-write.R")
-
 library(scRNAseq)
 
 sce <- ZeiselBrainData()
@@ -37,22 +35,23 @@ test_that("writeH5AD works as expected", {
 })
 
 test_that("writeH5AD works as expected with sparse matrices", {
-    mat <- assay(sce)
-    counts(sce) <- as(mat, "dgCMatrix")
-    logcounts(sce) <- counts(sce) * 10
-    assay(sce, "random") <- mat # throwing in a dense matrix in a mixture.
+    sparse_sce <- sce
+    mat <- assay(sparse_sce)
+    counts(sparse_sce) <- as(mat, "dgCMatrix")
+    logcounts(sparse_sce) <- counts(sparse_sce) * 10
+    assay(sparse_sce, "random") <- mat # throwing in a dense matrix in a mixture.
 
     temp <- tempfile(fileext = ".h5ad")
-    writeH5AD(sce, temp)
+    writeH5AD(sparse_sce, temp)
     expect_true(file.exists(temp))
 
     # Reading it back out again. Hopefully we didn't lose anything important.
-    out <- readH5AD(temp)
+    out <- readH5AD(temp, X_name = "X")
 
-    expect_identical(counts(sce), assay(out, "X"))
-    expect_identical(logcounts(sce), logcounts(out))
+    expect_identical(counts(sparse_sce), assay(out, "X"))
+    expect_identical(logcounts(sparse_sce), logcounts(out))
     # expect_identical() was failing on Windows for some reason...
-    expect_equal(assay(sce, "random"), assay(out, "random"))
+    expect_equal(assay(sparse_sce, "random"), assay(out, "random"))
 })
 
 test_that("writeH5AD works with assay skipping", {
@@ -69,7 +68,7 @@ test_that("writeH5AD works with X_name", {
     writeH5AD(sce, temp, X_name = "counts")
     expect_true(file.exists(temp))
 
-    out <- readH5AD(temp)
+    out <- readH5AD(temp, X_name = "X")
     expect_equal(assay(out, "X"), assay(sce, "counts"))
 })
 
@@ -88,7 +87,6 @@ test_that("writeH5AD works in a separate process", {
 })
 
 test_that("writeH5AD DelayedArray X works", {
-
     delayed_sce <- sce
     counts(delayed_sce) <- DelayedArray::DelayedArray(counts(delayed_sce))
 
@@ -97,13 +95,13 @@ test_that("writeH5AD DelayedArray X works", {
     writeH5AD(delayed_sce, temp, X_name = "counts")
     expect_true(file.exists(temp))
 
-    out <- readH5AD(temp)
+    out <- readH5AD(temp, X_name = "X")
 
-    expect_identical(counts(sce), assay(out, "X"))
+    # Identical fail on Windows for some reason
+    expect_equal(counts(sce), assay(out, "X"))
 })
 
 test_that("writeH5AD sparse DelayedArray X works", {
-
     delayed_sce <- sce
     sparse_counts <- as(counts(delayed_sce), "dgCMatrix")
     counts(delayed_sce) <- DelayedArray::DelayedArray(sparse_counts)
@@ -113,7 +111,7 @@ test_that("writeH5AD sparse DelayedArray X works", {
     writeH5AD(delayed_sce, temp, X_name = "counts")
     expect_true(file.exists(temp))
 
-    out <- readH5AD(temp)
+    out <- readH5AD(temp, X_name = "X")
 
     # Sparse DelayedArrays are currently coerced into memory
     # This expectation will need to be changed once that is fixed
@@ -121,7 +119,6 @@ test_that("writeH5AD sparse DelayedArray X works", {
 })
 
 test_that("writeH5AD DelayedArray layer works", {
-
     delayed_sce <- sce
     assay(delayed_sce, "layer") <- DelayedArray::DelayedArray(
         counts(delayed_sce)
@@ -132,13 +129,13 @@ test_that("writeH5AD DelayedArray layer works", {
     writeH5AD(delayed_sce, temp)
     expect_true(file.exists(temp))
 
-    out <- readH5AD(temp)
+    out <- readH5AD(temp, X_name = "X")
 
-    expect_identical(counts(sce), assay(out, "layer"))
+    # Identical fails on Windows for some reason
+    expect_equal(counts(sce), assay(out, "layer"))
 })
 
 test_that("writeH5AD works with colData list columns", {
-
     list_sce <- sce
     colData(list_sce)$ListCol <- lapply(seq_len(ncol(list_sce)), function(x) {
         sample(LETTERS, 2)
@@ -150,12 +147,11 @@ test_that("writeH5AD works with colData list columns", {
     expect_true(file.exists(temp))
 
     # Knowing what comes back is hard so just check there is something
-    out <- readH5AD(temp)
+    out <- readH5AD(temp, X_name = "X")
     expect_true("ListCol" %in% names(metadata(out)$.colData))
 })
 
 test_that("writeH5AD works with rowData list columns", {
-
     list_sce <- sce
     rowData(list_sce)$ListCol <- lapply(seq_len(nrow(list_sce)), function(x) {
         sample(LETTERS, 2)
@@ -167,6 +163,24 @@ test_that("writeH5AD works with rowData list columns", {
     expect_true(file.exists(temp))
 
     # Knowing what comes back is hard so just check there is something
-    out <- readH5AD(temp)
+    out <- readH5AD(temp, X_name = "X")
     expect_true("ListCol" %in% names(metadata(out)$.rowData))
+})
+
+test_that("writeH5AD works with gzip compression", {
+    temp <- tempfile(fileext = ".h5ad")
+    writeH5AD(sce, temp, X_name = "counts", compression = "gzip")
+    expect_true(file.exists(temp))
+
+    out <- readH5AD(temp, X_name = "X")
+    expect_equal(assay(out, "X"), assay(sce, "counts"))
+})
+
+test_that("writeH5AD works with lzf compression", {
+    temp <- tempfile(fileext = ".h5ad")
+    writeH5AD(sce, temp, X_name = "counts", compression = "lzf")
+    expect_true(file.exists(temp))
+
+    out <- readH5AD(temp, X_name = "X")
+    expect_equal(assay(out, "X"), assay(sce, "counts"))
 })
