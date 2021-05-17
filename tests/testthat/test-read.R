@@ -49,3 +49,11 @@ test_that("readH5AD works in a separate process", {
     basilisk::setBasiliskShared(oldshare)
     basilisk::setBasiliskFork(oldfork)
 })
+
+test_that("Reading H5AD works with native reader", {
+    sce <- readH5AD(file, reader = "R")
+    expect_s4_class(sce, "SingleCellExperiment")
+
+    expect_identical(assayNames(sce), "X")
+    expect_identical(colnames(colData(sce)), "cell_type")
+})
