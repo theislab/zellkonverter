@@ -1,6 +1,7 @@
 library(SingleCellExperiment)
 
 file <- system.file("extdata", "example_anndata.h5ad", package = "zellkonverter")
+outfile <- tempfile(fileext = ".h5ad")
 
 test_that("Reading H5AD works", {
     sce <- readH5AD(file)
@@ -24,13 +25,13 @@ test_that("Reading H5AD works", {
 })
 
 test_that("Writing H5AD works", {
-    temp <- tempfile(fileext = ".h5ad")
-    writeH5AD(sce, temp)
-    expect_true(file.exists(temp))
+    sce <- readH5AD(file)
+    writeH5AD(sce, outfile)
+    expect_true(file.exists(outfile))
 })
 
 test_that("Round trip is as expected", {
-    out <- readH5AD(temp)
+    out <- readH5AD(outfile)
 
     expect_identical(dimnames(out), dimnames(sce))
     expect_identical(metadata(out), metadata(sce))
