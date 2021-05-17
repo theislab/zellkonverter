@@ -61,8 +61,6 @@ basilisk::BasiliskEnvironment() used by zellkonverter." />
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -134,9 +132,9 @@ in <code>.AnnDataDependencies</code>. The <code>zellkonverterAnnDataEnv</code> v
 <code><a href='https://rdrr.io/pkg/basilisk/man/BasiliskEnvironment-class.html'>basilisk::BasiliskEnvironment()</a></code> used by <strong>zellkonverter</strong>.</p>
     </div>
 
-    <pre class="usage"><span class='va'>.AnnDataDependencies</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='va'>.AnnDataDependencies</span>
 
-<span class='va'>zellkonverterAnnDataEnv</span></pre>
+<span class='va'>zellkonverterAnnDataEnv</span></code></pre></div>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -164,7 +162,7 @@ environments.</p>
 <p>Aaron Lun</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='va'>.AnnDataDependencies</span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>.AnnDataDependencies</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "anndata==0.7.6"  "h5py==3.2.1"     "hdf5==1.10.6"    "natsort==7.1.1" </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [5] "numpy==1.20.2"   "packaging==20.9" "pandas==1.2.4"   "scipy==1.6.3"   </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [9] "sqlite==3.35.5" </span>
@@ -172,7 +170,7 @@ environments.</p>
 <span class='r-in'><span class='va'>cl</span> <span class='op'>&lt;-</span> <span class='fu'>basilisk</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/basilisk/man/basiliskStart.html'>basiliskStart</a></span><span class='op'>(</span><span class='va'>zellkonverterAnnDataEnv</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>anndata</span> <span class='op'>&lt;-</span> <span class='fu'>reticulate</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/reticulate/man/import.html'>import</a></span><span class='op'>(</span><span class='st'>"anndata"</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'>basilisk</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/basilisk/man/basiliskStart.html'>basiliskStop</a></span><span class='op'>(</span><span class='va'>cl</span><span class='op'>)</span></span>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

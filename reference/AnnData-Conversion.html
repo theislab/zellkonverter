@@ -59,8 +59,6 @@ SingleCellExperiment objects." />
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -130,9 +128,9 @@ SingleCellExperiment objects." />
 SingleCellExperiment objects.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>AnnData2SCE</span><span class='op'>(</span><span class='va'>adata</span>, X_name <span class='op'>=</span> <span class='cn'>NULL</span>, skip_assays <span class='op'>=</span> <span class='cn'>FALSE</span>, hdf5_backed <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>AnnData2SCE</span><span class='op'>(</span><span class='va'>adata</span>, X_name <span class='op'>=</span> <span class='cn'>NULL</span>, skip_assays <span class='op'>=</span> <span class='cn'>FALSE</span>, hdf5_backed <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='fu'>SCE2AnnData</span><span class='op'>(</span><span class='va'>sce</span>, X_name <span class='op'>=</span> <span class='cn'>NULL</span>, skip_assays <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+<span class='fu'>SCE2AnnData</span><span class='op'>(</span><span class='va'>sce</span>, X_name <span class='op'>=</span> <span class='cn'>NULL</span>, skip_assays <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -211,7 +209,7 @@ attempt is made to transfer this information when converting from
 <p>Aaron Lun</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"scRNAseq"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"scRNAseq"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
 <span class='r-in'>    <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>basilisk</span><span class='op'>)</span></span>
 <span class='r-in'>    <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>scRNAseq</span><span class='op'>)</span></span>
 <span class='r-in'>    <span class='va'>seger</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/scRNAseq/man/SegerstolpePancreasData.html'>SegerstolpePancreasData</a></span><span class='op'>(</span><span class='op'>)</span></span>
@@ -317,7 +315,7 @@ attempt is made to transfer this information when converting from
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Note: using the 'counts' assay as the X matrix</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> Note: Using stored X_name value 'counts'</span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>index contains duplicated values: row names not set</span>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
