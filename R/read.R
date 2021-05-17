@@ -7,6 +7,9 @@
 #' `X_name` value in `uns`, otherwise uses `"X"`.
 #' @param use_hdf5 Logical scalar indicating whether assays should be
 #' loaded as HDF5-based matrices from the **HDF5Array** package.
+#' @param reader Which HDF5 reader to use. Either `"python"` for reading with
+#' the **anndata** Python package via **reticulate** or `"R"` for
+#' **zellkonverter**'s native R reader.
 #'
 #' @details
 #' Setting `use_hdf5 = TRUE` allows for very large datasets to be efficiently
@@ -29,6 +32,8 @@
 #'
 #' sce2 <- readH5AD(file, use_hdf5 = TRUE)
 #' class(assay(sce2))
+#'
+#' sce3 <- readH5AD(file, reader = "R")
 #' @author Luke Zappia
 #' @author Aaron Lun
 #'
@@ -41,15 +46,22 @@
 #'
 #' @export
 #' @importFrom basilisk basiliskRun
-readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE) {
-    file <- path.expand(file)
+readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
+                     reader = c("python", "R")) {
 
-    basiliskRun(
-        env = zellkonverterAnnDataEnv,
-        fun = .H5ADreader,
-        file = file,
-        X_name = X_name,
-        backed = use_hdf5
+    file <- path.expand(file)
+    reader <- match.arg(reader)
+
+
+    switch (reader,
+        python = basiliskRun(
+            env = zellkonverterAnnDataEnv,
+            fun = .H5ADreader,
+            file = file,
+            X_name = X_name,
+            backed = use_hdf5
+        ),
+        R = .native_reader(file, backed = use_hdf5)
     )
 }
 
@@ -103,7 +115,7 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE) {
 
     # Adding the reduced dimensions and other bits and pieces.
     tryCatch({
-        reducedDims(sce) <- .read_dim_mats(file, "obsm", contents[["obsm"]]) 
+        reducedDims(sce) <- .read_dim_mats(file, "obsm", contents[["obsm"]])
     }, error=function(e) {
         warning(wmsg("setting 'reducedDims' failed for '", file, "':\n  ", conditionMessage(e)))
     })

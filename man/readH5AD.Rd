@@ -4,7 +4,7 @@
 \alias{readH5AD}
 \title{Read H5AD}
 \usage{
-readH5AD(file, X_name = NULL, use_hdf5 = FALSE)
+readH5AD(file, X_name = NULL, use_hdf5 = FALSE, reader = c("python", "R"))
 }
 \arguments{
 \item{file}{String containing a path to a \code{.h5ad} file.}
@@ -14,6 +14,10 @@ readH5AD(file, X_name = NULL, use_hdf5 = FALSE)
 
 \item{use_hdf5}{Logical scalar indicating whether assays should be
 loaded as HDF5-based matrices from the \strong{HDF5Array} package.}
+
+\item{reader}{Which HDF5 reader to use. Either \code{"python"} for reading with
+the \strong{anndata} Python package via \strong{reticulate} or \code{"R"} for
+\strong{zellkonverter}'s native R reader.}
 }
 \value{
 A \linkS4class{SingleCellExperiment} object is returned.
@@ -40,6 +44,8 @@ class(assay(sce))
 
 sce2 <- readH5AD(file, use_hdf5 = TRUE)
 class(assay(sce2))
+
+sce3 <- readH5AD(file, reader = "R")
 }
 \seealso{
 \code{\link[=writeH5AD]{writeH5AD()}}, to write a \linkS4class{SingleCellExperiment} object to a
