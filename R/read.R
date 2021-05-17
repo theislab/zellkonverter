@@ -52,7 +52,6 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
     file <- path.expand(file)
     reader <- match.arg(reader)
 
-
     switch (reader,
         python = basiliskRun(
             env = zellkonverterAnnDataEnv,
@@ -212,7 +211,8 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
     cat.names <- names(fields[["__categories"]])
     for (i in cat.names) {
         levels <- as.vector(rhdf5::h5read(file, file.path(path, "__categories", i)))
-        out.cols[[i]] <- factor(out.cols[[i]], levels)
+        out.cols[[i]] <- factor(out.cols[[i]])
+        levels(out.cols[[i]]) <- levels
     }
 
     if (!is.null(fields[["_index"]])) {
