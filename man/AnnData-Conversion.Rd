@@ -75,7 +75,7 @@ converted a warning will be raised.
 
 Values stored in the \code{varm} slot of an \code{AnnData} object are stored in a
 column of \code{\link[=rowData]{rowData()}} in a \linkS4class{SingleCellExperiment}
-as a \linkS4class{DataFrame} of matrices. If this column is pressent an
+as a \linkS4class{DataFrame} of matrices. If this column is present an
 attempt is made to transfer this information when converting from
 \linkS4class{SingleCellExperiment} to \code{AnnData}.
 }

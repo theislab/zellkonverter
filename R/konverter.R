@@ -39,7 +39,7 @@
 #'
 #' Values stored in the `varm` slot of an `AnnData` object are stored in a
 #' column of [`rowData()`] in a \linkS4class{SingleCellExperiment}
-#' as a \linkS4class{DataFrame} of matrices. If this column is pressent an
+#' as a \linkS4class{DataFrame} of matrices. If this column is present an
 #' attempt is made to transfer this information when converting from
 #' \linkS4class{SingleCellExperiment} to `AnnData`.
 #'
