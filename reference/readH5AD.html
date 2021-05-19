@@ -126,7 +126,7 @@
     <p>Reads a H5AD file and returns a <a href='https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html'>SingleCellExperiment</a> object.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>readH5AD</span><span class='op'>(</span><span class='va'>file</span>, X_name <span class='op'>=</span> <span class='cn'>NULL</span>, use_hdf5 <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></code></pre></div>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>readH5AD</span><span class='op'>(</span><span class='va'>file</span>, X_name <span class='op'>=</span> <span class='cn'>NULL</span>, use_hdf5 <span class='op'>=</span> <span class='cn'>FALSE</span>, reader <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"python"</span>, <span class='st'>"R"</span><span class='op'>)</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,6 +145,12 @@
       <td><p>Logical scalar indicating whether assays should be
 loaded as HDF5-based matrices from the <strong>HDF5Array</strong> package.</p></td>
     </tr>
+    <tr>
+      <th>reader</th>
+      <td><p>Which HDF5 reader to use. Either <code>"python"</code> for reading with
+the <strong>anndata</strong> Python package via <strong>reticulate</strong> or <code>"R"</code> for
+<strong>zellkonverter</strong>'s native R reader.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -159,6 +165,10 @@ of access speed as data needs to be fetched from the HDF5 file upon request.</p>
 containing all of the necessary dependencies. This will not be performed on
 any subsequent run or if any other <strong>zellkonverter</strong> function has been run
 prior to this one.</p>
+<p>Setting <code>reader = "R"</code> will use an experimental native R reader instead of
+reading the file into Python and converting the result. This avoids the need
+for a Python environment and some of the issues with conversion but is still
+under development and is likely to return slightly different output.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='writeH5AD.html'>writeH5AD()</a></code>, to write a <a href='https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html'>SingleCellExperiment</a> object to a
@@ -183,6 +193,8 @@ H5AD file.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "DelayedMatrix"</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"package")</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "DelayedArray"</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>sce3</span> <span class='op'>&lt;-</span> <span class='fu'>readH5AD</span><span class='op'>(</span><span class='va'>file</span>, reader <span class='op'>=</span> <span class='st'>"R"</span><span class='op'>)</span></span>
 </code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
