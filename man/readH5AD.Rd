@@ -4,7 +4,7 @@
 \alias{readH5AD}
 \title{Read H5AD}
 \usage{
-readH5AD(file, X_name = NULL, use_hdf5 = FALSE)
+readH5AD(file, X_name = NULL, use_hdf5 = FALSE, reader = c("python", "R"))
 }
 \arguments{
 \item{file}{String containing a path to a \code{.h5ad} file.}
@@ -14,6 +14,10 @@ readH5AD(file, X_name = NULL, use_hdf5 = FALSE)
 
 \item{use_hdf5}{Logical scalar indicating whether assays should be
 loaded as HDF5-based matrices from the \strong{HDF5Array} package.}
+
+\item{reader}{Which HDF5 reader to use. Either \code{"python"} for reading with
+the \strong{anndata} Python package via \strong{reticulate} or \code{"R"} for
+\strong{zellkonverter}'s native R reader.}
 }
 \value{
 A \linkS4class{SingleCellExperiment} object is returned.
@@ -30,6 +34,11 @@ When first run, this function will instantiate a conda environment
 containing all of the necessary dependencies. This will not be performed on
 any subsequent run or if any other \strong{zellkonverter} function has been run
 prior to this one.
+
+Setting \code{reader = "R"} will use an experimental native R reader instead of
+reading the file into Python and converting the result. This avoids the need
+for a Python environment and some of the issues with conversion but is still
+under development and is likely to return slightly different output.
 }
 \examples{
 library(SummarizedExperiment)
@@ -40,6 +49,8 @@ class(assay(sce))
 
 sce2 <- readH5AD(file, use_hdf5 = TRUE)
 class(assay(sce2))
+
+sce3 <- readH5AD(file, reader = "R")
 }
 \seealso{
 \code{\link[=writeH5AD]{writeH5AD()}}, to write a \linkS4class{SingleCellExperiment} object to a
