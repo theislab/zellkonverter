@@ -34,6 +34,11 @@ When first run, this function will instantiate a conda environment
 containing all of the necessary dependencies. This will not be performed on
 any subsequent run or if any other \strong{zellkonverter} function has been run
 prior to this one.
+
+Setting \code{reader = "R"} will use an experimental native R reader instead of
+reading the file into Python and converting the result. This avoids the need
+for a Python environment and some of the issues with conversion but is still
+under development and is likely to return slightly different output.
 }
 \examples{
 library(SummarizedExperiment)
