@@ -253,13 +253,11 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
 }
 
 .convert_anndata_slot <- function(adata, slot_name, slot_keys) {
-
     py_builtins <- import_builtins()
 
     converted_list <- list()
 
     for (key in slot_keys) {
-
         tryCatch(
             {
                 item <- adata[slot_name][[key]]

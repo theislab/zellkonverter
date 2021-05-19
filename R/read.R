@@ -53,11 +53,10 @@
 #' @importFrom basilisk basiliskRun
 readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
                      reader = c("python", "R")) {
-
     file <- path.expand(file)
     reader <- match.arg(reader)
 
-    switch (reader,
+    switch(reader,
         python = basiliskRun(
             env = zellkonverterAnnDataEnv,
             fun = .H5ADreader,
@@ -79,80 +78,135 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
 #' @importFrom S4Vectors I DataFrame wmsg
 #' @importFrom SummarizedExperiment rowData colData rowData<- colData<-
 #' @importFrom SingleCellExperiment SingleCellExperiment reducedDims<- colPairs<- rowPairs<-
-.native_reader <- function(file, backed=FALSE) {
+.native_reader <- function(file, backed = FALSE) {
     contents <- .list_contents(file)
 
     # Let's read in the X matrix first... if it's there.
     if (!"X" %in% names(contents)) {
         stop("missing an 'X' entry in '", file, "'")
     }
-    all.assays <- list(X = .read_matrix(file, "X", contents[["X"]], backed=backed))
+    all.assays <- list(
+        X = .read_matrix(file, "X", contents[["X"]], backed = backed)
+    )
 
-    for (l in names(contents[["layers"]])) {
-        tryCatch({
-            all.assays[[l]] <- .read_matrix(file, file.path("layers", l), contents[["layers"]][[l]], backed=backed)
-        }, error=function(e) {
-            warning(wmsg("setting additional assays from 'layers' failed for '", file, "':\n  ", conditionMessage(e)))
-        })
+    for (layer in names(contents[["layers"]])) {
+        tryCatch(
+            {
+                all.assays[[layer]] <- .read_matrix(
+                    file,
+                    file.path("layers", layer),
+                    contents[["layers"]][[layer]],
+                    backed = backed
+                )
+            },
+            error = function(e) {
+                warning(wmsg(
+                    "setting additional assays from 'layers' failed for '",
+                    file, "':\n  ", conditionMessage(e)
+                ))
+            }
+        )
     }
 
     sce <- SingleCellExperiment(all.assays)
 
     # Adding the various pieces of data.
-    tryCatch({
-        cd <- .read_dim_data(file, "obs", contents[["obs"]])
-        if (!is.null(cd)) {
-            colData(sce) <- cd
+    tryCatch(
+        {
+            col_data <- .read_dim_data(file, "obs", contents[["obs"]])
+            if (!is.null(col_data)) {
+                colData(sce) <- col_data
+            }
+        },
+        error = function(e) {
+            warning(wmsg(
+                "setting 'colData' failed for '", file, "':\n  ",
+                conditionMessage(e)
+            ))
         }
-    }, error=function(e) {
-        warning(wmsg("setting 'colData' failed for '", file, "':\n  ", conditionMessage(e)))
-    })
+    )
 
-    tryCatch({
-        rd <- .read_dim_data(file, "var", contents[["var"]])
-        if (!is.null(rd)) {
-            rowData(sce) <- rd
+    tryCatch(
+        {
+            row_data <- .read_dim_data(file, "var", contents[["var"]])
+            if (!is.null(row_data)) {
+                rowData(sce) <- row_data
+            }
+        },
+        error = function(e) {
+            warning(wmsg(
+                "setting 'rowData' failed for '", file, "':\n  ",
+                conditionMessage(e)
+            ))
         }
-    }, error=function(e) {
-        warning(wmsg("setting 'rowData' failed for '", file, "':\n  ", conditionMessage(e)))
-    })
+    )
 
     # Adding the reduced dimensions and other bits and pieces.
-    tryCatch({
-        reducedDims(sce) <- .read_dim_mats(file, "obsm", contents[["obsm"]])
-    }, error=function(e) {
-        warning(wmsg("setting 'reducedDims' failed for '", file, "':\n  ", conditionMessage(e)))
-    })
-
-    tryCatch({
-        row.mat <- .read_dim_mats(file, "varm", contents[["varm"]])
-        if (length(row.mat)) {
-            row.mat.df <- do.call(DataFrame, lapply(row.mat, I))
-            rowData(sce) <- cbind(rowData(sce), row.mat.df)
+    tryCatch(
+        {
+            reducedDims(sce) <- .read_dim_mats(file, "obsm", contents[["obsm"]])
+        },
+        error = function(e) {
+            warning(wmsg(
+                "setting 'reducedDims' failed for '", file, "':\n  ",
+                conditionMessage(e)
+            ))
         }
-    }, error=function(e) {
-        warning(wmsg("extracting 'varm' failed for '", file, "':\n  ", conditionMessage(e)))
-    })
+    )
+
+    tryCatch(
+        {
+            row_mat <- .read_dim_mats(file, "varm", contents[["varm"]])
+            if (length(row_mat)) {
+                row_mat_df <- do.call(DataFrame, lapply(row_mat, I))
+                rowData(sce) <- cbind(rowData(sce), row_mat_df)
+            }
+        },
+        error = function(e) {
+            warning(wmsg(
+                "extracting 'varm' failed for '", file, "':\n  ",
+                conditionMessage(e)
+            ))
+        }
+    )
 
     # Adding pairings, if any exist.
-    tryCatch({
-        rowPairs(sce) <- .read_dim_pairs(file, "varp", contents[["varp"]])
-    }, error=function(e) {
-        warning(wmsg("setting 'rowPairs' failed for '", file, "':\n  ", conditionMessage(e)))
-    })
+    tryCatch(
+        {
+            rowPairs(sce) <- .read_dim_pairs(file, "varp", contents[["varp"]])
+        },
+        error = function(e) {
+            warning(wmsg(
+                "setting 'rowPairs' failed for '", file, "':\n  ",
+                conditionMessage(e)
+            ))
+        }
+    )
 
-    tryCatch({
-        colPairs(sce) <- .read_dim_pairs(file, "obsp", contents[["obsp"]])
-    }, error=function(e) {
-        warning(wmsg("setting 'colPairs' failed for '", file, "':\n  ", conditionMessage(e)))
-    })
+    tryCatch(
+        {
+            colPairs(sce) <- .read_dim_pairs(file, "obsp", contents[["obsp"]])
+        },
+        error = function(e) {
+            warning(wmsg(
+                "setting 'colPairs' failed for '", file, "':\n  ",
+                conditionMessage(e)
+            ))
+        }
+    )
 
     if ("uns" %in% names(contents)) {
-        tryCatch({
-            metadata(sce) <- rhdf5::h5read(file, "uns")
-        }, error=function(e) {
-            warning(wmsg("setting 'metadata' failed for '", file, "':\n  ", conditionMessage(e)))
-        })
+        tryCatch(
+            {
+                metadata(sce) <- rhdf5::h5read(file, "uns")
+            },
+            error = function(e) {
+                warning(wmsg(
+                    "setting 'metadata' failed for '", file, "':\n  ",
+                    conditionMessage(e)
+                ))
+            }
+        )
     }
 
     sce
@@ -162,7 +216,7 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
     manifest <- rhdf5::h5ls(file)
 
     set_myself <- function(x, series, value) {
-        if (length(series)!=1) {
+        if (length(series) != 1) {
             value <- set_myself(x[[series[1]]], series[-1], value)
         }
         if (is.null(x)) {
@@ -174,13 +228,16 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
 
     contents <- list()
     for (i in seq_len(nrow(manifest))) {
-        components <- c(strsplit(manifest[i, "group"], "/")[[1]], manifest[i, "name"])
+        components <- c(
+            strsplit(manifest[i, "group"], "/")[[1]],
+            manifest[i, "name"]
+        )
         if (components[1] == "") {
             components <- components[-1]
         }
 
-        info <- manifest[i, c('otype', 'dclass', 'dim')]
-        if (info$otype=="H5I_GROUP") {
+        info <- manifest[i, c("otype", "dclass", "dim")]
+        if (info$otype == "H5I_GROUP") {
             info <- list()
         }
         contents <- set_myself(contents, components, info)
@@ -196,28 +253,32 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
         mat <- HDF5Array::H5SparseMatrix(file, path)
     }
     if (!backed) {
-         if (DelayedArray::is_sparse(mat)) {
-             mat <- as(mat, "sparseMatrix")
-         } else {
-             mat <- as.matrix(mat)
-         }
+        if (DelayedArray::is_sparse(mat)) {
+            mat <- as(mat, "sparseMatrix")
+        } else {
+            mat <- as.matrix(mat)
+        }
     }
     mat
 }
 
 #' @importFrom S4Vectors DataFrame
 .read_dim_data <- function(file, path, fields) {
-    col.names <- setdiff(names(fields), c("__categories", "_index"))
-    out.cols <- list()
-    for (i in col.names) {
-        out.cols[[i]] <- as.vector(rhdf5::h5read(file, file.path(path, i)))
+    col_names <- setdiff(names(fields), c("__categories", "_index"))
+    out_cols <- list()
+    for (col_name in col_names) {
+        out_cols[[col_name]] <- as.vector(
+            rhdf5::h5read(file, file.path(path, col_name))
+        )
     }
 
-    cat.names <- names(fields[["__categories"]])
-    for (i in cat.names) {
-        levels <- as.vector(rhdf5::h5read(file, file.path(path, "__categories", i)))
-        out.cols[[i]] <- factor(out.cols[[i]])
-        levels(out.cols[[i]]) <- levels
+    cat_names <- names(fields[["__categories"]])
+    for (cat_name in cat_names) {
+        levels <- as.vector(
+            rhdf5::h5read(file, file.path(path, "__categories", cat_name))
+        )
+        out_cols[[cat_name]] <- factor(out_cols[[cat_name]])
+        levels(out_cols[[cat_name]]) <- levels
     }
 
     if (!is.null(fields[["_index"]])) {
@@ -226,11 +287,11 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
         indices <- NULL
     }
 
-    if (length(out.cols)) {
-        df <- do.call(DataFrame, out.cols)
+    if (length(out_cols)) {
+        df <- do.call(DataFrame, out_cols)
         rownames(df) <- indices
     } else if (!is.null(indices)) {
-        df <- DataFrame(row.names=indices)
+        df <- DataFrame(row_names = indices)
     } else {
         df <- NULL
     }
@@ -240,18 +301,18 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
 
 .read_dim_mats <- function(file, path, fields) {
     all.contents <- list()
-    for (i in names(fields)) {
+    for (field in names(fields)) {
         # because everything's transposed.
-        all.contents[[i]] <- t(rhdf5::h5read(file, file.path(path, i)))
+        all.contents[[field]] <- t(rhdf5::h5read(file, file.path(path, field)))
     }
     all.contents
 }
 
 .read_dim_pairs <- function(file, path, fields) {
     all.pairs <- list()
-    for (i in names(fields)) {
-        mat <- HDF5Array::H5SparseMatrix(file, file.path(path, i))
-        all.pairs[[i]] <- as(mat, "sparseMatrix")
+    for (field in names(fields)) {
+        mat <- HDF5Array::H5SparseMatrix(file, file.path(path, field))
+        all.pairs[[field]] <- as(mat, "sparseMatrix")
     }
     all.pairs
 }
