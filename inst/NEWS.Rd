@@ -48,6 +48,9 @@
       Add a \code{compression} argument to \code{writeH5AD()}
     }
     \item{
+      Add an experimental native R reader to \code{readH5AD()}
+    }
+    \item{
       Export \code{zellkonverterAnnDataEnv} for use by other packages
     }
   }
