@@ -2,6 +2,10 @@
 
 * Bioconductor 3.14, October 2021
 
+## zellkonverter 1.3.1 (2021-06-22)
+
+* Fix bug in converting `dgRMatrix` sparse matrices (Fixes #55)
+
 ## zellkonverter 1.3.0 (2021-05-20)
 
 * Bioconductor 3.14 devel
@@ -9,6 +13,10 @@
 # zellkonverter 1.2.0 (2021-05-20)
 
 * Bioconductor 3.13, May 2021
+
+## zellkonverter 1.2.1 (2021-06-22)
+
+* Fix bug in converting `dgRMatrix` sparse matrices (Fixes #55)
 
 ## zellkonverter 1.1.11 (2021-05-19)
 
