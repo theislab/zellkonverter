@@ -2,6 +2,10 @@
 
 * Bioconductor 3.13, May 2021
 
+## zellkonverter 1.2.1 (2021-06-22)
+
+* Fix bug in converting `dgRMatrix` sparse matrices (Fixes #55)
+
 ## zellkonverter 1.1.11 (2021-05-19)
 
 * Add experimental native R reader to `readH5AD()`

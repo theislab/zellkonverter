@@ -222,7 +222,7 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
     }
 
     if (is(mat, "dgRMatrix")) {
-        mat <- as(mat, "dgCMatrix")
+        mat <- as(mat, "CsparseMatrix")
     }
 
     list(mat = mat, skipped = skipped)
