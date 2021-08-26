@@ -1,6 +1,7 @@
 library(SingleCellExperiment)
 
-file <- system.file("extdata", "example_anndata.h5ad", package = "zellkonverter")
+file <- system.file("extdata", "example_anndata.h5ad",
+                    package = "zellkonverter")
 outfile <- tempfile(fileext = ".h5ad")
 
 test_that("Reading H5AD works", {
