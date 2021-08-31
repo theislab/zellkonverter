@@ -2,16 +2,16 @@ library(SingleCellExperiment)
 library(BiocFileCache)
 
 cache <- BiocFileCache(ask = FALSE)
-file <- bfcrpath(cache, "https://figshare.com/ndownloader/files/30578574")
+file <- bfcrpath(cache, "https://figshare.com/ndownloader/files/30594477")
 outfile <- tempfile(fileext = ".h5ad")
 
 names <- list(
     assays = c("X"),
-    colData = c("paul15_clusters", "n_counts_all", "louvain"),
+    colData = c("paul15_clusters", "n_counts_all", "louvain", "dpt_pseudotime"),
     rowData = c("n_counts", "mean", "std"),
-    metadata = c("draw_graph", "iroot", "louvain", "louvain_sizes", "neighbors",
-                 "paga", "pca"),
-    redDim = c("X_draw_graph_fa", "X_pca"),
+    metadata = c("diffmap_evals", "draw_graph", "iroot", "louvain",
+                 "louvain_sizes", "neighbors", "paga", "pca"),
+    redDim = c("X_diffmap", "X_draw_graph_fa", "X_pca"),
     varm = c("PCs"),
     colPairs = c("connectivities", "distances")
 )
