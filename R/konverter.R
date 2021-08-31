@@ -271,6 +271,12 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
                     item <- reticulate::py_to_r(item)
                 }
 
+                if (inherits(item, "list")) {
+                    item <- .convert_anndata_list(
+                        item, paste(slot_name, key, sep = "$")
+                    )
+                }
+
                 converted_list[[key]] <- item
             },
             error = function(err) {
@@ -287,6 +293,49 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
 
     return(converted_list)
 }
+
+.convert_anndata_list <- function(adata_list, parent) {
+    py_builtins <- import_builtins()
+
+    converted_list <- list()
+
+    for (key in names(adata_list)) {
+        tryCatch(
+            {
+                item <- adata_list[[key]]
+
+                item_type <- py_builtins$str(py_builtins$type(item))
+                if (grepl("OverloadedDict", item_type)) {
+                    item <- py_builtins$dict(item)
+                }
+
+                if (is(item, "python.builtin.object")) {
+                    item <- reticulate::py_to_r(item)
+                }
+
+                if (inherits(item, "list")) {
+                    item <- .convert_anndata_list(
+                        item, paste(parent, key, sep = "$")
+                    )
+                }
+
+                converted_list[[key]] <- item
+            },
+            error = function(err) {
+                warning(
+                    "conversion failed for the item '",
+                    key, "' in '", parent, "' with ",
+                    "the following error and has been skipped\n",
+                    "Conversion error message: ", err,
+                    call. = FALSE
+                )
+            }
+        )
+    }
+
+    return(converted_list)
+}
+
 
 #' @rdname AnnData-Conversion
 #'
