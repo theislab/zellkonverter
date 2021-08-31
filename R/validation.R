@@ -154,21 +154,45 @@ validateH5ADSCE <- function(sce, names, missing) {
 #' sce1 <- readH5AD(file)
 #' sce2 <- readH5AD(file)
 #'
-#' expectSCE(sce1, sce2))
+#' expectSCE(sce1, sce2)
 expectSCE <- function(sce, expected) {
-    expect_identical(dimnames(sce), dimnames(expected))
+    testthat::expect_identical(dimnames(sce), dimnames(expected))
     if (length(metadata(expected)) > 0) {
-        expect_identical(metadata(sce), metadata(expected))
+        testthat::expect_identical(
+            S4Vectors::metadata(sce),
+            S4Vectors::metadata(expected)
+        )
     }
-    expect_identical(assayNames(sce), assayNames(expected))
-    for (assay in assayNames(expected)) {
-        expect_equal(assay(sce, assay), assay(expected, assay))
+    testthat::expect_identical(
+        SummarizedExperiment::assayNames(sce),
+        SummarizedExperiment::assayNames(expected)
+    )
+    for (assay in SummarizedExperiment::assayNames(expected)) {
+        testthat::expect_equal(
+            SummarizedExperiment::assay(sce, assay),
+            SummarizedExperiment::assay(expected, assay)
+        )
     }
-    expect_identical(reducedDims(sce), reducedDims(expected))
-    expect_identical(rowData(sce), rowData(expected))
-    expect_identical(colData(sce), colData(expected))
-    expect_identical(rowPairs(sce), rowPairs(expected))
-    expect_identical(colPairs(sce), colPairs(expected))
+    testthat::expect_identical(
+        SingleCellExperiment::reducedDims(sce),
+        SingleCellExperiment::reducedDims(expected)
+    )
+    testthat::expect_identical(
+        SummarizedExperiment::rowData(sce),
+        SummarizedExperiment::rowData(expected)
+    )
+    testthat::expect_identical(
+        SummarizedExperiment::colData(sce),
+        SummarizedExperiment::colData(expected)
+    )
+    testthat::expect_identical(
+        SingleCellExperiment::rowPairs(sce),
+        SingleCellExperiment::rowPairs(expected)
+    )
+    testthat::expect_identical(
+        SingleCellExperiment::colPairs(sce),
+        SingleCellExperiment::colPairs(expected)
+    )
 
     invisible(TRUE)
 }
