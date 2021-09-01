@@ -16,9 +16,7 @@ names <- list(
     colPairs = c("connectivities", "distances")
 )
 
-missing <- list(
-    metadata = c("rank_genes_groups")
-)
+missing <- list()
 
 test_that("Reading H5AD works", {
     sce <- readH5AD(file)
