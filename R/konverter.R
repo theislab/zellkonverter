@@ -166,11 +166,14 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
         row_data$varm <- varm_df
     }
 
+    reddim_list <- .convert_anndata_slot(adata, "obsm", adata$obsm_keys())
+    reddim_list <- lapply(reddim_list, as.matrix)
+
     output <- SingleCellExperiment(
         assays = assays_list,
         rowData = row_data,
         colData = adata$obs,
-        reducedDims = py_builtins$dict(adata$obsm),
+        reducedDims = reddim_list,
         metadata = meta_list,
         rowPairs = varp_list,
         colPairs = obsp_list
