@@ -24,7 +24,7 @@ file <- system.file("extdata", "krumsiek11.h5ad", package = "zellkonverter")
 sce1 <- readH5AD(file)
 sce2 <- readH5AD(file)
 
-expectSCE(sce1, sce2))
+expectSCE(sce1, sce2)
 }
 \author{
 Luke Zappia

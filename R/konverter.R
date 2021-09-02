@@ -467,6 +467,14 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
 
     red_dims <- as.list(reducedDims(sce))
     red_dims <- lapply(red_dims, .makeNumpyFriendly, transpose = FALSE)
+    red_dims <- lapply(red_dims, function(rd) {
+        if (!is.null(colnames(rd))) {
+            rd <- r_to_py(as.data.frame(rd))
+            rd <- rd$set_index(adata$obs_names)
+        }
+
+        rd
+    })
     adata$obsm <- red_dims
 
     meta_list <- metadata(sce)
