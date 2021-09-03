@@ -45,19 +45,6 @@ items in \code{missing} are checked that they explicitly do not exist. This is
 mostly for record keeping when something is known to not be converted but can
 also be useful when the corresponding \code{names} item is \code{NULL}.
 }
-\examples{
-file <- system.file("extdata", "krumsiek11.h5ad", package = "zellkonverter")
-sce <- readH5AD(file)
-
-names <- list(
-    assays = "X",
-    colData = "cell_type",
-    metadata = c("highlights", "iroot"),
-)
-missing <- list(metadata = "something missing")
-
-validateH5ADSCE(sce, names, missing)
-}
 \author{
 Luke Zappia
 }

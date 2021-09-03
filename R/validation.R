@@ -34,19 +34,6 @@
 #' depending on the context
 #'
 #' @author Luke Zappia
-#'
-#' @examples
-#' file <- system.file("extdata", "krumsiek11.h5ad", package = "zellkonverter")
-#' sce <- readH5AD(file)
-#'
-#' names <- list(
-#'     assays = "X",
-#'     colData = "cell_type",
-#'     metadata = c("highlights", "iroot"),
-#' )
-#' missing <- list(metadata = "something missing")
-#'
-#' validateH5ADSCE(sce, names, missing)
 validateH5ADSCE <- function(sce, names, missing) {
 
     if ("varm" %in% colnames(SummarizedExperiment::rowData(sce))) {
@@ -148,13 +135,6 @@ validateH5ADSCE <- function(sce, names, missing) {
 #' @return `TRUE` invisibly if checks pass
 #'
 #' @author Luke Zappia
-#'
-#' @examples
-#' file <- system.file("extdata", "krumsiek11.h5ad", package = "zellkonverter")
-#' sce1 <- readH5AD(file)
-#' sce2 <- readH5AD(file)
-#'
-#' expectSCE(sce1, sce2)
 expectSCE <- function(sce, expected) {
     testthat::expect_identical(dimnames(sce), dimnames(expected))
     if (length(metadata(expected)) > 0) {

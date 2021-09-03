@@ -19,13 +19,6 @@ compare to.}
 Test that a SingleCellExperiment matches an expected object. Designed to be
 used inside \code{testhat::test_that()} during package testing.
 }
-\examples{
-file <- system.file("extdata", "krumsiek11.h5ad", package = "zellkonverter")
-sce1 <- readH5AD(file)
-sce2 <- readH5AD(file)
-
-expectSCE(sce1, sce2)
-}
 \author{
 Luke Zappia
 }
