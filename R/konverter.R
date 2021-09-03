@@ -289,6 +289,13 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
                     )
                 }
 
+                if (is.data.frame(item)) {
+                    # Remove pandas index stored by reticulate which (should)
+                    # be redundant with rownames as H5AD doesn't support
+                    # multiple indexes (yet)
+                    attr(item, "pandas.index") <- NULL
+                }
+
                 converted_list[[key]] <- item
             },
             error = function(err) {
