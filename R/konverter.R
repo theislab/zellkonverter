@@ -166,11 +166,14 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
         row_data$varm <- varm_df
     }
 
+    reddim_list <- .convert_anndata_slot(adata, "obsm", adata$obsm_keys())
+    reddim_list <- lapply(reddim_list, as.matrix)
+
     output <- SingleCellExperiment(
         assays = assays_list,
         rowData = row_data,
         colData = adata$obs,
-        reducedDims = py_builtins$dict(adata$obsm),
+        reducedDims = reddim_list,
         metadata = meta_list,
         rowPairs = varp_list,
         colPairs = obsp_list
@@ -253,14 +256,23 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
 }
 
 .convert_anndata_slot <- function(adata, slot_name, slot_keys) {
+    .convert_anndata_list(
+        adata[slot_name],
+        parent = slot_name,
+        keys = slot_keys
+    )
+}
+
+.convert_anndata_list <- function(adata_list, parent,
+                                  keys = names(adata_list)) {
     py_builtins <- import_builtins()
 
     converted_list <- list()
 
-    for (key in slot_keys) {
+    for (key in keys) {
         tryCatch(
             {
-                item <- adata[slot_name][[key]]
+                item <- adata_list[[key]]
 
                 item_type <- py_builtins$str(py_builtins$type(item))
                 if (grepl("OverloadedDict", item_type)) {
@@ -271,12 +283,25 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
                     item <- reticulate::py_to_r(item)
                 }
 
+                if (inherits(item, "list")) {
+                    item <- .convert_anndata_list(
+                        item, paste(parent, key, sep = "$")
+                    )
+                }
+
+                if (is.data.frame(item)) {
+                    # Remove pandas index stored by reticulate which (should)
+                    # be redundant with rownames as H5AD doesn't support
+                    # multiple indexes (yet)
+                    attr(item, "pandas.index") <- NULL
+                }
+
                 converted_list[[key]] <- item
             },
             error = function(err) {
                 warning(
                     "conversion failed for the item '",
-                    key, "' in '", slot_name, "' with ",
+                    key, "' in '", parent, "' with ",
                     "the following error and has been skipped\n",
                     "Conversion error message: ", err,
                     call. = FALSE
@@ -287,6 +312,7 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
 
     return(converted_list)
 }
+
 
 #' @rdname AnnData-Conversion
 #'
@@ -415,6 +441,14 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
 
     red_dims <- as.list(reducedDims(sce))
     red_dims <- lapply(red_dims, .makeNumpyFriendly, transpose = FALSE)
+    red_dims <- lapply(red_dims, function(rd) {
+        if (!is.null(colnames(rd))) {
+            rd <- r_to_py(as.data.frame(rd))
+            rd <- rd$set_index(adata$obs_names)
+        }
+
+        rd
+    })
     adata$obsm <- red_dims
 
     meta_list <- metadata(sce)

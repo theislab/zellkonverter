@@ -2,6 +2,16 @@
 
 * Bioconductor 3.14, October 2021
 
+* Add recursive conversion of lists in `AnnData2SCE()`
+* Correctly handle `DataFrame` objects stored in `adata.obsm`
+* Remove **pandas** indexes from converted `DataFrame` objects
+* Add functions for validating `SingleCellExperiment` objects (for testing)
+* Add long tests for various public datasets
+
+## zellkonverter 1.3.2 (2021-09-09)
+
+* Fix bug in converting `dgRMatrix` sparse matrices (Fixes #55)
+
 ## zellkonverter 1.3.1 (2021-06-22)
 
 * Fix bug in converting `dgRMatrix` sparse matrices (Fixes #55)
