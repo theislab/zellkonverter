@@ -34,10 +34,16 @@
     <loc>/reference/AnnData-Environment.html</loc>
   </url>
   <url>
+    <loc>/reference/expectSCE.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
     <loc>/reference/readH5AD.html</loc>
+  </url>
+  <url>
+    <loc>/reference/validateH5ADSCE.html</loc>
   </url>
   <url>
     <loc>/reference/writeH5AD.html</loc>

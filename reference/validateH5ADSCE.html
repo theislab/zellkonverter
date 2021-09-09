@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>AnnData environment — AnnData-Environment • zellkonverter</title>
+<title>Validate H5AD SCE — validateH5ADSCE • zellkonverter</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,9 @@
 
 
 
-<meta property="og:title" content="AnnData environment — AnnData-Environment" />
-<meta property="og:description" content="The Python environment used by zellkonverter for interfacing with the
-anndata Python library (and H5AD files) is described by the dependencies
-in .AnnDataDependencies. The zellkonverterAnnDataEnv variable is the
-basilisk::BasiliskEnvironment() used by zellkonverter." />
+<meta property="og:title" content="Validate H5AD SCE — validateH5ADSCE" />
+<meta property="og:description" content="Validate a SingleCellExperiment created by readH5AD(). Designed to be used
+inside testhat::test_that() during package testing." />
 
 
 
@@ -119,57 +117,66 @@ basilisk::BasiliskEnvironment() used by zellkonverter." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>AnnData environment</h1>
-    <small class="dont-index">Source: <a href='https://github.com/theislab/zellkonverter/blob/master/R/basilisk.R'><code>R/basilisk.R</code></a></small>
-    <div class="hidden name"><code>AnnData-Environment.Rd</code></div>
+    <h1>Validate H5AD SCE</h1>
+    <small class="dont-index">Source: <a href='https://github.com/theislab/zellkonverter/blob/master/R/validation.R'><code>R/validation.R</code></a></small>
+    <div class="hidden name"><code>validateH5ADSCE.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The Python environment used by <strong>zellkonverter</strong> for interfacing with the
-<strong>anndata</strong> Python library (and H5AD files) is described by the dependencies
-in <code>.AnnDataDependencies</code>. The <code>zellkonverterAnnDataEnv</code> variable is the
-<code><a href='https://rdrr.io/pkg/basilisk/man/BasiliskEnvironment-class.html'>basilisk::BasiliskEnvironment()</a></code> used by <strong>zellkonverter</strong>.</p>
+    <p>Validate a SingleCellExperiment created by <code><a href='readH5AD.html'>readH5AD()</a></code>. Designed to be used
+inside <code>testhat::test_that()</code> during package testing.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='va'>.AnnDataDependencies</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>validateH5ADSCE</span><span class='op'>(</span><span class='va'>sce</span>, <span class='va'>names</span>, <span class='va'>missing</span><span class='op'>)</span></code></pre></div>
 
-<span class='va'>zellkonverterAnnDataEnv</span></code></pre></div>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>sce</th>
+      <td><p>A <a href='https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html'>SingleCellExperiment</a> object.</p></td>
+    </tr>
+    <tr>
+      <th>names</th>
+      <td><p>Named list of expected names. Names are slots and values are
+vectors of names that are expected to exist in that slot.</p></td>
+    </tr>
+    <tr>
+      <th>missing</th>
+      <td><p>Named list of known missing names. Names are slots and values
+are vectors of names that are expected to not exist in that slot.</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>A character vector containing the pinned versions of all Python packages in
-<code>zellkonverterAnnDataEnv</code>.</p>
-<p>A <code><a href='https://rdrr.io/pkg/basilisk/man/BasiliskEnvironment-class.html'>basilisk::BasiliskEnvironment()</a></code> containing <strong>zellkonverter</strong>'s AnnData
-Python environment.</p>
+    <p>If checks are successful <code>TRUE</code> invisibly, if not other output
+depending on the context</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The <code>.AnnDataDependencies</code> variable is exposed for use by other package
-developers who want an easy way to define the dependencies required for
-creating a Python environment to work with AnnData objects, most typically
-within a <strong>basilisk</strong> context. For example, we can simply combine this
-vector with additional dependencies to create a <strong>basilisk</strong> environment with
-Python package versions that are consistent with those in <strong>zellkonverter</strong>.</p>
-<p>If you want to run code in the exact environment used by <strong>zellkonverter</strong>
-this can be done using <code>zellkonverterAnnDataEnv</code> in combination with
-<code><a href='https://rdrr.io/pkg/basilisk/man/basiliskStart.html'>basilisk::basiliskStart()</a></code> and/or <code><a href='https://rdrr.io/pkg/basilisk/man/basiliskStart.html'>basilisk::basiliskRun()</a></code>. Please refer to
-the <strong>basilisk</strong> documentation for more information on using these
-environments.</p>
+    <p>This function checks that a SingleCellExperiment contains the expected items
+in each slot. The main reason for this function is avoid repeating code when
+testing multiple <code>.h5ad</code> files. The following items in <code>names</code> and <code>missing</code>
+are recognised:</p><ul>
+<li><p><code>assays</code> - Assay names</p></li>
+<li><p><code>colData</code> - colData column names</p></li>
+<li><p><code>rowData</code> - rowData column names</p></li>
+<li><p><code>metadata</code> - metadata names</p></li>
+<li><p><code>redDim</code> - Reduced dimension names</p></li>
+<li><p><code>varm</code> - Column names of the <code>varm</code> rowData column (from the AnnData varm
+slot)</p></li>
+<li><p><code>colPairs</code> - Column pair names</p></li>
+<li><p><code>rowPairs</code> - rowData pair names</p></li>
+</ul>
+
+<p>If an item in <code>names</code> or <code>missing</code> is <code>NULL</code> then it won't be checked. The
+items in <code>missing</code> are checked that they explicitly do not exist. This is
+mostly for record keeping when something is known to not be converted but can
+also be useful when the corresponding <code>names</code> item is <code>NULL</code>.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Luke Zappia</p>
-<p>Aaron Lun</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>.AnnDataDependencies</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "anndata==0.7.6"  "h5py==3.2.1"     "hdf5==1.10.6"    "natsort==7.1.1" </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [5] "numpy==1.20.2"   "packaging==20.9" "pandas==1.2.4"   "scipy==1.6.3"   </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [9] "sqlite==3.35.5" </span>
-<span class='r-in'></span>
-<span class='r-in'><span class='va'>cl</span> <span class='op'>&lt;-</span> <span class='fu'>basilisk</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/basilisk/man/basiliskStart.html'>basiliskStart</a></span><span class='op'>(</span><span class='va'>zellkonverterAnnDataEnv</span><span class='op'>)</span></span>
-<span class='r-in'><span class='va'>anndata</span> <span class='op'>&lt;-</span> <span class='fu'>reticulate</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/reticulate/man/import.html'>import</a></span><span class='op'>(</span><span class='st'>"anndata"</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'>basilisk</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/basilisk/man/basiliskStart.html'>basiliskStop</a></span><span class='op'>(</span><span class='va'>cl</span><span class='op'>)</span></span>
-</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
