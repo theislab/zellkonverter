@@ -4,7 +4,13 @@
 \alias{readH5AD}
 \title{Read H5AD}
 \usage{
-readH5AD(file, X_name = NULL, use_hdf5 = FALSE, reader = c("python", "R"))
+readH5AD(
+  file,
+  X_name = NULL,
+  use_hdf5 = FALSE,
+  reader = c("python", "R"),
+  verbose = getOption("zellkonverter.verbose")
+)
 }
 \arguments{
 \item{file}{String containing a path to a \code{.h5ad} file.}

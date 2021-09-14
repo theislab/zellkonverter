@@ -52,7 +52,8 @@
 #' @export
 #' @importFrom basilisk basiliskRun
 readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
-                     reader = c("python", "R")) {
+                     reader = c("python", "R"),
+                     verbose = getOption("zellkonverter.verbose")) {
     file <- path.expand(file)
     reader <- match.arg(reader)
 
@@ -62,23 +63,34 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
             fun = .H5ADreader,
             file = file,
             X_name = X_name,
-            backed = use_hdf5
+            backed = use_hdf5,
+            verbose = verbose
         ),
-        R = .native_reader(file, backed = use_hdf5)
+        R = .native_reader(file, backed = use_hdf5, verbose = verbose)
     )
 }
 
 #' @importFrom reticulate import
-.H5ADreader <- function(file, X_name = NULL, backed = FALSE) {
+.H5ADreader <- function(file, X_name = NULL, backed = FALSE, verbose = FALSE) {
+    .ui_info("Using the {.field Python} reader")
     anndata <- import("anndata")
+    .ui_step(
+        "Reading {.file {.trim_path(file)}}",
+        msg_done = "Read {.file {.trim_path(file)}}",
+        spinner = TRUE
+    )
     adata <- anndata$read_h5ad(file, backed = if (backed) "r" else FALSE)
-    AnnData2SCE(adata, X_name = X_name, hdf5_backed = backed)
+    cli::cli_progress_done()
+    AnnData2SCE(adata, X_name = X_name, hdf5_backed = backed, verbose = verbose)
 }
 
 #' @importFrom S4Vectors I DataFrame wmsg
 #' @importFrom SummarizedExperiment rowData colData rowData<- colData<-
 #' @importFrom SingleCellExperiment SingleCellExperiment reducedDims<- colPairs<- rowPairs<-
-.native_reader <- function(file, backed = FALSE) {
+.native_reader <- function(file, backed = FALSE, verbose = FALSE) {
+    .ui_info("Using the {.field R} reader")
+    .ui_step("Reading {.file {file}}", spinner = TRUE)
+
     contents <- .list_contents(file)
 
     # Let's read in the X matrix first... if it's there.

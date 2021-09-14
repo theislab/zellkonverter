@@ -6,7 +6,13 @@
 \alias{SCE2AnnData}
 \title{Convert AnnData between and SingleCellExperiment}
 \usage{
-AnnData2SCE(adata, X_name = NULL, skip_assays = FALSE, hdf5_backed = TRUE)
+AnnData2SCE(
+  adata,
+  X_name = NULL,
+  skip_assays = FALSE,
+  hdf5_backed = TRUE,
+  verbose = NULL
+)
 
 SCE2AnnData(sce, X_name = NULL, skip_assays = FALSE)
 }
