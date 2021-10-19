@@ -9,7 +9,8 @@ writeH5AD(
   file,
   X_name = NULL,
   skip_assays = FALSE,
-  compression = c("none", "gzip", "lzf")
+  compression = c("none", "gzip", "lzf"),
+  verbose = NULL
 )
 }
 \arguments{
@@ -24,6 +25,9 @@ AnnData object. If \code{NULL}, the first assay of \code{sce} will be used by de
 be ignored when writing to \code{file}.}
 
 \item{compression}{Type of compression when writing the new \code{.h5ad} file.}
+
+\item{verbose}{Logical scalar indicating whether to print progress messages.
+If \code{NULL} uses \code{getOption("zellkonverter.verbose")}.}
 }
 \value{
 A \code{NULL} is invisibly returned.

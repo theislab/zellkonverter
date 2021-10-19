@@ -31,7 +31,8 @@ Imports:
     DelayedArray,
     methods,
     S4Vectors,
-    utils
+    utils,
+    cli
 Suggests: 
     covr,
     spelling,

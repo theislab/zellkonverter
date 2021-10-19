@@ -1,5 +1,29 @@
+#' Set zellkonverter verbose
+#'
+#' Set the zellkonverter verbosity option
+#'
+#' @param verbose Logical value for the verbosity option.
+#'
+#' @details
+#' Running `setZellkonverterVerbose(TRUE)` will turn on **zellkonverter**
+#' progress messages by default without having to set `verbose = TRUE` in each
+#' function call. This is done by setting the `"zellkonverter.verbose"` option.
+#' Running `setZellkonverterVerbose(FALSE)` will turn default verbosity off.
+#'
+#' @return The value of getOption("zellkonverter.verbose") invisibly
+#' @export
+#'
+#' @examples
+#' current <- getOption("zellkonverter.verbose")
+#' setZellkonverterVerbose(TRUE)
+#' getOption("zellkonverter.verbose")
+#' setZellkonverterVerbose(FALSE)
+#' getOption("zellkonverter.verbose")
+#' setZellkonverterVerbose(current)
+#' getOption("zellkonverter.verbose")
 setZellkonverterVerbose <- function(verbose = TRUE) {
     options(zellkonverter.verbose = isTRUE(verbose))
+    invisible(getOption("zellkonverter.verbose"))
 }
 
 .get_verbose <- function(envir) {

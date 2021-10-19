@@ -10,6 +10,8 @@
 #' @param reader Which HDF5 reader to use. Either `"python"` for reading with
 #' the **anndata** Python package via **reticulate** or `"R"` for
 #' **zellkonverter**'s native R reader.
+#' @param verbose Logical scalar indicating whether to print progress messages.
+#' If `NULL` uses `getOption("zellkonverter.verbose")`.
 #'
 #' @details
 #' Setting `use_hdf5 = TRUE` allows for very large datasets to be efficiently
@@ -52,8 +54,7 @@
 #' @export
 #' @importFrom basilisk basiliskRun
 readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
-                     reader = c("python", "R"),
-                     verbose = getOption("zellkonverter.verbose")) {
+                     reader = c("python", "R"), verbose = NULL) {
     file <- path.expand(file)
     reader <- match.arg(reader)
 
@@ -71,7 +72,7 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
 }
 
 #' @importFrom reticulate import
-.H5ADreader <- function(file, X_name = NULL, backed = FALSE, verbose = FALSE) {
+.H5ADreader <- function(file, X_name = NULL, backed = FALSE, verbose = NULL) {
     .ui_info("Using the {.field Python} reader")
     anndata <- import("anndata")
     .ui_step(
