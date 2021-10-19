@@ -6,9 +6,15 @@
 \alias{SCE2AnnData}
 \title{Convert AnnData between and SingleCellExperiment}
 \usage{
-AnnData2SCE(adata, X_name = NULL, skip_assays = FALSE, hdf5_backed = TRUE)
+AnnData2SCE(
+  adata,
+  X_name = NULL,
+  skip_assays = FALSE,
+  hdf5_backed = TRUE,
+  verbose = NULL
+)
 
-SCE2AnnData(sce, X_name = NULL, skip_assays = FALSE)
+SCE2AnnData(sce, X_name = NULL, skip_assays = FALSE, verbose = NULL)
 }
 \arguments{
 \item{adata}{A \strong{reticulate} reference to a Python AnnData object.}
@@ -25,6 +31,9 @@ instead.}
 \item{hdf5_backed}{Logical scalar indicating whether HDF5-backed matrices
 in \code{adata} should be represented as HDF5Array objects. This assumes that
 \code{adata} is created with \code{backed="r"}.}
+
+\item{verbose}{Logical scalar indicating whether to print progress messages.
+If \code{NULL} uses \code{getOption("zellkonverter.verbose")}.}
 
 \item{sce}{A \linkS4class{SingleCellExperiment} object.}
 }

@@ -4,7 +4,13 @@
 \alias{readH5AD}
 \title{Read H5AD}
 \usage{
-readH5AD(file, X_name = NULL, use_hdf5 = FALSE, reader = c("python", "R"))
+readH5AD(
+  file,
+  X_name = NULL,
+  use_hdf5 = FALSE,
+  reader = c("python", "R"),
+  verbose = NULL
+)
 }
 \arguments{
 \item{file}{String containing a path to a \code{.h5ad} file.}
@@ -18,6 +24,9 @@ loaded as HDF5-based matrices from the \strong{HDF5Array} package.}
 \item{reader}{Which HDF5 reader to use. Either \code{"python"} for reading with
 the \strong{anndata} Python package via \strong{reticulate} or \code{"R"} for
 \strong{zellkonverter}'s native R reader.}
+
+\item{verbose}{Logical scalar indicating whether to print progress messages.
+If \code{NULL} uses \code{getOption("zellkonverter.verbose")}.}
 }
 \value{
 A \linkS4class{SingleCellExperiment} object is returned.

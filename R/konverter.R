@@ -87,28 +87,44 @@ NULL
 #' @param hdf5_backed Logical scalar indicating whether HDF5-backed matrices
 #' in `adata` should be represented as HDF5Array objects. This assumes that
 #' `adata` is created with `backed="r"`.
+#' @param verbose Logical scalar indicating whether to print progress messages.
+#' If `NULL` uses `getOption("zellkonverter.verbose")`.
 #'
 #' @export
 #' @importFrom methods selectMethod is
 #' @importFrom S4Vectors DataFrame make_zero_col_DFrame
 #' @importFrom reticulate import_builtins
 AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
-                        hdf5_backed = TRUE) {
+                        hdf5_backed = TRUE, verbose = NULL) {
+
+    .ui_process(
+        "Converting {.field AnnData} to {.field SingleCellExperiment}"
+    )
+
     py_builtins <- import_builtins()
 
     dims <- unlist(adata$shape)
     dims <- rev(dims)
 
+    meta_list <- .convert_anndata_slot(
+        adata, "uns", py_builtins$list(adata$uns$keys()), "metadata"
+    )
+
+    .ui_step(
+        "Converting {.field X matrix} to {.field assay}",
+        msg_done = "{.field X matrix} converted to {.field assay}"
+    )
+    if (skip_assays) {
+        cli::cli_alert_warning(
+            "{.field skip_assays} is {.field TRUE} so assays will be empty"
+        )
+    }
     x_out <- .extract_or_skip_assay(
         skip_assays = skip_assays,
         hdf5_backed = hdf5_backed,
         dims = dims,
         mat = adata$X,
         name = "'X' matrix"
-    )
-
-    meta_list <- .convert_anndata_slot(
-        adata, "uns", py_builtins$list(adata$uns$keys())
     )
 
     x_mat <- x_out$mat
@@ -119,43 +135,61 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
     if (is.null(X_name)) {
         if ("X_name" %in% names(meta_list)) {
             X_name <- meta_list[["X_name"]]
-            message("Note: Using stored X_name value '", X_name, "'")
+            cli::cli_alert_info("Using stored X_name value {.field '{X_name}'}")
             meta_list[["X_name"]] <- NULL
         } else {
             X_name <- "X"
         }
     }
+    cli::cli_progress_done()
 
     assays_list <- list()
     assays_list[[X_name]] <- x_mat
 
     layer_names <- names(py_builtins$dict(adata$layers))
     skipped_layers <- character(0)
-    for (layer_name in layer_names) {
-        layer_out <- .extract_or_skip_assay(
-            skip_assays = skip_assays,
-            hdf5_backed = hdf5_backed,
-            dims = dims,
-            mat = adata$layers$get(layer_name),
-            name = sprintf("'%s' layer matrix", layer_name)
-        )
-        if (layer_out$skipped) {
-            skipped_layers <- c(skipped_layers, layer_name)
+    if (length(layer_names) == 0) {
+        .ui_info("{.field layers} is empty and was skipped")
+    } else {
+        .ui_process("Converting {.field layers} to {.field assays}")
+        for (layer_name in layer_names) {
+            .ui_step(
+                "Converting {.field layers${layer_name}}",
+                msg_done = "{.field layers${layer_name}} converted"
+            )
+            layer_out <- .extract_or_skip_assay(
+                skip_assays = skip_assays,
+                hdf5_backed = hdf5_backed,
+                dims = dims,
+                mat = adata$layers$get(layer_name),
+                name = sprintf("'%s' layer matrix", layer_name)
+            )
+            if (layer_out$skipped) {
+                skipped_layers <- c(skipped_layers, layer_name)
+            }
+            assays_list[[layer_name]] <- layer_out$mat
+            cli::cli_progress_done()
         }
-        assays_list[[layer_name]] <- layer_out$mat
+        .ui_process_done()
     }
 
-    varp_list <- .convert_anndata_slot(
-        adata, "varp", py_builtins$list(adata$varp$keys())
+    .ui_step(
+        "Converting {.field var} to {.field rowData}",
+        msg_done = "{.field var} converted to {.field rowData}"
     )
-
-    obsp_list <- .convert_anndata_slot(
-        adata, "obsp", py_builtins$list(adata$obsp$keys())
-    )
-
     row_data <- DataFrame(adata$var)
+    cli::cli_progress_done()
 
-    varm_list <- .convert_anndata_slot(adata, "varm", adata$varm_keys())
+    .ui_step(
+        "Converting {.field obs} to {.field colData}",
+        msg_done = "{.field obs} converted to {.field colData}"
+    )
+    col_data <- DataFrame(adata$obs)
+    cli::cli_progress_done()
+
+    varm_list <- .convert_anndata_slot(
+        adata, "varm", adata$varm_keys(), "rowData$varm"
+    )
 
     if (length(varm_list) > 0) {
         # Create an empty DataFrame with the correct number of rows
@@ -166,13 +200,27 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
         row_data$varm <- varm_df
     }
 
-    reddim_list <- .convert_anndata_slot(adata, "obsm", adata$obsm_keys())
+    reddim_list <- .convert_anndata_slot(
+        adata, "obsm", adata$obsm_keys(), "reducedDims"
+    )
     reddim_list <- lapply(reddim_list, as.matrix)
 
+    varp_list <- .convert_anndata_slot(
+        adata, "varp", py_builtins$list(adata$varp$keys()), "rowPairs"
+    )
+
+    obsp_list <- .convert_anndata_slot(
+        adata, "obsp", py_builtins$list(adata$obsp$keys()), "colPairs"
+    )
+
+    .ui_step(
+        "Constructing {.field SingleCellExperiment}",
+        msg_done = "{.field SingleCellExperiment} constructed"
+    )
     output <- SingleCellExperiment(
         assays = assays_list,
         rowData = row_data,
-        colData = adata$obs,
+        colData = col_data,
         reducedDims = reddim_list,
         metadata = meta_list,
         rowPairs = varp_list,
@@ -188,6 +236,7 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
     if (length(varm_list) > 0) {
         int_metadata(output)$has_varm <- names(varm_list)
     }
+    cli::cli_progress_done()
 
     output
 }
@@ -255,12 +304,28 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
     return(ans)
 }
 
-.convert_anndata_slot <- function(adata, slot_name, slot_keys) {
-    .convert_anndata_list(
+.convert_anndata_slot <- function(adata, slot_name, slot_keys, to_name = "MISSING") {
+
+    verbose <- parent.frame()$verbose
+
+    if (length(slot_keys) == 0) {
+        .ui_info("{.field {slot_name}} is empty and was skipped")
+        return(list())
+    }
+
+    .ui_process("Converting {.field {slot_name}} to {.field {to_name}}")
+    .ui_step(
+        "Converting {.field {slot_name}}",
+        msg_done = "{.field {slot_name}} converted"
+    )
+    converted <- .convert_anndata_list(
         adata[slot_name],
         parent = slot_name,
         keys = slot_keys
     )
+    cli::cli_progress_done()
+
+    return(converted)
 }
 
 .convert_anndata_list <- function(adata_list, parent,
@@ -269,8 +334,14 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
 
     converted_list <- list()
 
+    verbose <- parent.frame()$verbose
+
     for (key in keys) {
-        tryCatch(
+        .ui_step(
+            "Converting {.field {parent}${key}}",
+            msg_done = "{.field {parent}${key}} converted"
+        )
+        status <- tryCatch(
             {
                 item <- adata_list[[key]]
 
@@ -297,6 +368,8 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
                 }
 
                 converted_list[[key]] <- item
+
+                "done"
             },
             error = function(err) {
                 warning(
@@ -306,8 +379,11 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
                     "Conversion error message: ", err,
                     call. = FALSE
                 )
+
+                "failed"
             }
         )
+        cli::cli_progress_done(result = status)
     }
 
     return(converted_list)
@@ -321,29 +397,72 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
 #' matrix (`X`) of the AnnData object. If `NULL`, the first assay of `sce` will
 #' be used by default. For `AnnData2SCE()` name used when saving `X` as an
 #' assay. If `NULL` looks for an `X_name` value in `uns`, otherwise uses `"X"`.
+#' @param verbose Logical scalar indicating whether to print progress messages.
+#' If `NULL` uses `getOption("zellkonverter.verbose")`.
 #'
 #' @export
 #' @importFrom utils capture.output
 #' @importFrom S4Vectors metadata
 #' @importFrom reticulate import r_to_py
-SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
+SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE,
+                        verbose = NULL) {
     anndata <- import("anndata")
 
+    .ui_process(
+        "Converting {.field AnnData} to {.field SingleCellExperiment}"
+    )
+
     if (is.null(X_name)) {
+        .ui_step(
+            "Selecting {.field X matrix}",
+            msg_done = "Selected {.field X matrix}"
+        )
         if (length(assays(sce)) == 0) {
             stop("'sce' does not contain any assays")
         }
         X_name <- assayNames(sce)[1]
-        message("Note: using the '", X_name, "' assay as the X matrix")
+        cli::cli_alert_info(
+            "Using the {.field '{X_name}'} assay as the {.field X matrix}"
+        )
+        cli::cli_progress_done()
     }
 
+    .ui_step(
+        "Converting {.field assays${X_name}} to {.field X matrix}",
+        msg_done = "{.field assays${X_name}} converted to {.field X matrix}"
+    )
     if (!skip_assays) {
         X <- assay(sce, X_name)
         X <- .makeNumpyFriendly(X)
     } else {
+        cli::cli_alert_warning(paste(
+            "{.field skip_assays} is {.field TRUE}",
+            "so {.field X/layers} will be empty"
+        ))
         X <- fake_mat <- .make_fake_mat(rev(dim(sce)))
     }
     adata <- anndata$AnnData(X = X)
+    cli::cli_progress_done()
+
+    assay_names <- assayNames(sce)
+    assay_names <- assay_names[!assay_names == X_name]
+    if (length(assay_names) > 0) {
+        .ui_step(
+            "Converting {.field additional assays} to {.field layers}",
+            msg_done = "{.field additional assays} converted to {.field layers}"
+        )
+        if (!skip_assays) {
+            assays_list <- assays(sce, withDimnames = FALSE)
+            assays_list <- lapply(assays_list[assay_names], .makeNumpyFriendly)
+        } else {
+            assays_list <- rep(list(fake_mat), length(assay_names))
+            names(assays_list) <- assay_names
+        }
+        adata$layers <- assays_list
+        cli::cli_progress_done()
+    } else {
+        .ui_info("No {.field additional assays} present")
+    }
 
     col_data <- colData(sce)
     is_atomic <- vapply(col_data, is.atomic, NA)
@@ -371,6 +490,10 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     }
 
     if (ncol(col_data) > 0) {
+        .ui_step(
+            "Converting {.field colData} to {.field obs}",
+            msg_done = "{.field colData} converted to {.field obs}"
+        )
         # Manually construct the data.frame to avoid mangling column names
         obs <- do.call(
             data.frame,
@@ -381,12 +504,23 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
             )
         )
         adata$obs <- obs
+        cli::cli_progress_done()
+    } else {
+        .ui_info("{.field colData} is empty and was skipped")
     }
 
     row_data <- rowData(sce)
     if (!is.null(int_metadata(sce)$has_varm)) {
+        .ui_step(
+            "Converting {.field rowData$varm} to {.field varm}",
+            msg_done = "{.field rowData$varm} converted to {.field varm}"
+        )
         varm <- as.list(row_data[["varm"]])
         row_data[["varm"]] <- NULL
+        adata$varm <- varm
+        cli::cli_progress_done()
+    } else {
+        .ui_info("{.field rowData$varm} is empty and was skipped")
     }
 
     is_atomic <- vapply(row_data, is.atomic, NA)
@@ -414,6 +548,10 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
     }
 
     if (ncol(row_data) > 0) {
+        .ui_step(
+            "Converting {.field rowData} to {.field var}",
+            msg_done = "{.field rowData} converted to {.field var}"
+        )
         # Manually construct the data.frame to avoid mangling column names
         var <- do.call(
             data.frame,
@@ -424,62 +562,84 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE) {
             )
         )
         adata$var <- var
-    }
-
-    assay_names <- assayNames(sce)
-    assay_names <- assay_names[!assay_names == X_name]
-    if (length(assay_names) > 0) {
-        if (!skip_assays) {
-            assays_list <- assays(sce, withDimnames = FALSE)
-            assays_list <- lapply(assays_list[assay_names], .makeNumpyFriendly)
-        } else {
-            assays_list <- rep(list(fake_mat), length(assay_names))
-            names(assays_list) <- assay_names
-        }
-        adata$layers <- assays_list
+        cli::cli_progress_done()
+    } else {
+        .ui_info("{.field rowData} is empty and was skipped")
     }
 
     red_dims <- as.list(reducedDims(sce))
-    red_dims <- lapply(red_dims, .makeNumpyFriendly, transpose = FALSE)
-    red_dims <- lapply(red_dims, function(rd) {
-        if (!is.null(colnames(rd))) {
-            rd <- r_to_py(as.data.frame(rd))
-            rd <- rd$set_index(adata$obs_names)
-        }
+    if (length(red_dims) > 0) {
+        .ui_step(
+            "Converting {.field reducedDims} to {.field obsm}",
+            msg_done = "{.field reducedDims} converted to {.field obsm}"
+        )
+        red_dims <- lapply(red_dims, .makeNumpyFriendly, transpose = FALSE)
+        red_dims <- lapply(red_dims, function(rd) {
+            if (!is.null(colnames(rd))) {
+                rd <- r_to_py(as.data.frame(rd))
+                rd <- rd$set_index(adata$obs_names)
+            }
 
-        rd
-    })
-    adata$obsm <- red_dims
+            rd
+        })
+        adata$obsm <- red_dims
+        cli::cli_progress_done()
+    } else {
+        .ui_info("{.field reducedDims} is empty and was skipped")
+    }
 
     meta_list <- metadata(sce)
-    meta_list <- .addListNames(meta_list)
-    uns_list <- list()
-    for (item_name in names(meta_list)) {
-        item <- meta_list[[item_name]]
-        tryCatch(
-            {
-                # Try to convert the item using reticulate, skip if it fails
-                # Capture the object output printed by reticulate
-                capture.output(r_to_py(item))
-                uns_list[[item_name]] <- item
-            },
-            error = function(err) {
-                warning(
-                    "the '", item_name, "' item in 'metadata' cannot be ",
-                    "converted to a Python type and has been skipped"
-                )
-            }
+    if (length(meta_list) > 0) {
+        .ui_step(
+            "Converting {.field metadata} to {.field uns}",
+            msg_done = "{.field metadata} converted to {.field uns}"
         )
+        meta_list <- .addListNames(meta_list)
+        uns_list <- list()
+        for (item_name in names(meta_list)) {
+            item <- meta_list[[item_name]]
+            tryCatch(
+                {
+                    # Try to convert the item using reticulate, skip if it fails
+                    # Capture the object output printed by reticulate
+                    capture.output(r_to_py(item))
+                    uns_list[[item_name]] <- item
+                },
+                error = function(err) {
+                    warning(
+                        "the '", item_name, "' item in 'metadata' cannot be ",
+                        "converted to a Python type and has been skipped"
+                    )
+                }
+            )
+        }
+        uns_list[["X_name"]] <- X_name
+        adata$uns <- reticulate::dict(uns_list)
+        cli::cli_progress_done()
+    } else {
+        .ui_info("{.field metadata} is empty and was skipped")
     }
-    uns_list[["X_name"]] <- X_name
 
-    adata$uns <- reticulate::dict(uns_list)
+    if (length(rowPairs(sce)) > 0) {
+        .ui_step(
+            "Converting {.field rowPairs} to {.field varp}",
+            msg_done = "{.field rowPairs} converted to {.field varp}"
+        )
+        adata$varp <- as.list(rowPairs(sce, asSparse = TRUE))
+        cli::cli_progress_done()
+    } else {
+        .ui_info("{.field rowPairs} is empty and was skipped")
+    }
 
-    adata$varp <- as.list(rowPairs(sce, asSparse = TRUE))
-    adata$obsp <- as.list(colPairs(sce, asSparse = TRUE))
-
-    if (!is.null(int_metadata(sce)$has_varm)) {
-        adata$varm <- varm
+    if (length(colPairs(sce)) > 0) {
+        .ui_step(
+            "Converting {.field colPairs} to {.field obsp}",
+            msg_done = "{.field colPairs} converted to {.field obsp}"
+        )
+        adata$obsp <- as.list(colPairs(sce, asSparse = TRUE))
+        cli::cli_progress_done()
+    } else {
+        .ui_info("{.field colPairs} is empty and was skipped")
     }
 
     if (!is.null(colnames(sce))) {
