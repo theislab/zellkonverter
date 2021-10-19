@@ -9,7 +9,8 @@ readH5AD(
   X_name = NULL,
   use_hdf5 = FALSE,
   reader = c("python", "R"),
-  verbose = NULL
+  verbose = NULL,
+  ...
 )
 }
 \arguments{
@@ -27,6 +28,9 @@ the \strong{anndata} Python package via \strong{reticulate} or \code{"R"} for
 
 \item{verbose}{Logical scalar indicating whether to print progress messages.
 If \code{NULL} uses \code{getOption("zellkonverter.verbose")}.}
+
+\item{...}{Additional arguments passed to the reader (currently only used
+by the Python reader).}
 }
 \value{
 A \linkS4class{SingleCellExperiment} object is returned.

@@ -12,6 +12,8 @@
 #' **zellkonverter**'s native R reader.
 #' @param verbose Logical scalar indicating whether to print progress messages.
 #' If `NULL` uses `getOption("zellkonverter.verbose")`.
+#' @param ... Additional arguments passed to the reader (currently only used
+#' by the Python reader).
 #'
 #' @details
 #' Setting `use_hdf5 = TRUE` allows for very large datasets to be efficiently
@@ -54,7 +56,7 @@
 #' @export
 #' @importFrom basilisk basiliskRun
 readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
-                     reader = c("python", "R"), verbose = NULL) {
+                     reader = c("python", "R"), verbose = NULL, ...) {
     file <- path.expand(file)
     reader <- match.arg(reader)
 
@@ -65,14 +67,15 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
             file = file,
             X_name = X_name,
             backed = use_hdf5,
-            verbose = verbose
+            verbose = verbose,
+            ...
         ),
         R = .native_reader(file, backed = use_hdf5, verbose = verbose)
     )
 }
 
 #' @importFrom reticulate import
-.H5ADreader <- function(file, X_name = NULL, backed = FALSE, verbose = NULL) {
+.H5ADreader <- function(file, X_name = NULL, backed = FALSE, verbose = NULL, ...) {
     .ui_info("Using the {.field Python} reader")
     anndata <- import("anndata")
     .ui_step(
@@ -82,7 +85,8 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
     )
     adata <- anndata$read_h5ad(file, backed = if (backed) "r" else FALSE)
     cli::cli_progress_done()
-    AnnData2SCE(adata, X_name = X_name, hdf5_backed = backed, verbose = verbose)
+    AnnData2SCE(adata, X_name = X_name, hdf5_backed = backed, verbose = verbose,
+                ...)
 }
 
 #' @importFrom S4Vectors I DataFrame wmsg

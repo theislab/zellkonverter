@@ -81,6 +81,10 @@ NULL
 #' @rdname AnnData-Conversion
 #'
 #' @param adata A **reticulate** reference to a Python AnnData object.
+#' @param layers,var,obs,varm,obsm,varp,obsp Arguments specifying how these
+#' slots are converted. If `TRUE` everything in that slot is converted, if
+#' `FALSE` nothing is converted and if a character vector only those items or
+#' columns are converted.
 #' @param skip_assays Logical scalar indicating whether to skip conversion of
 #' any assays in `sce` or `adata`, replacing them with empty sparse matrices
 #' instead.
@@ -94,7 +98,9 @@ NULL
 #' @importFrom methods selectMethod is
 #' @importFrom S4Vectors DataFrame make_zero_col_DFrame
 #' @importFrom reticulate import_builtins
-AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
+AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
+                        var = TRUE, obs = TRUE, varm = TRUE, obsm = TRUE,
+                        varp = TRUE, obsp = TRUE, skip_assays = FALSE,
                         hdf5_backed = TRUE, verbose = NULL) {
 
     .ui_process(
@@ -107,7 +113,8 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
     dims <- rev(dims)
 
     meta_list <- .convert_anndata_slot(
-        adata, "uns", py_builtins$list(adata$uns$keys()), "metadata"
+        adata, "uns", py_builtins$list(adata$uns$keys()), "metadata",
+        select = uns
     )
 
     .ui_step(
@@ -148,10 +155,26 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
 
     layer_names <- names(py_builtins$dict(adata$layers))
     skipped_layers <- character(0)
-    if (length(layer_names) == 0) {
+    if (isFALSE(layers)) {
+        .ui_info("Skipping conversion of {.field layers}")
+    } else if (length(layer_names) == 0) {
         .ui_info("{.field layers} is empty and was skipped")
     } else {
         .ui_process("Converting {.field layers} to {.field assays}")
+        if (is.character(layers)) {
+            if (!all(layers %in% layer_names)) {
+                missing <- layers[!c(layers %in% layer_names)]
+                .ui_warn(
+                    "These selected layers are not in the object: {.field {missing}}"
+                )
+                warning(
+                    "These selected layers are not in the object: ",
+                    paste(missing, collapse = ", "),
+                    call. = FALSE
+                )
+            }
+            layer_names <- layer_names[layer_names %in% layers]
+        }
         for (layer_name in layer_names) {
             .ui_step(
                 "Converting {.field layers${layer_name}}",
@@ -173,22 +196,12 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
         .ui_process_done()
     }
 
-    .ui_step(
-        "Converting {.field var} to {.field rowData}",
-        msg_done = "{.field var} converted to {.field rowData}"
-    )
-    row_data <- DataFrame(adata$var)
-    cli::cli_progress_done()
+    row_data <- .convert_anndata_df(adata$var, "var", "rowData", select = var)
 
-    .ui_step(
-        "Converting {.field obs} to {.field colData}",
-        msg_done = "{.field obs} converted to {.field colData}"
-    )
-    col_data <- DataFrame(adata$obs)
-    cli::cli_progress_done()
+    col_data <- .convert_anndata_df(adata$obs, "obs", "colData", select = obs)
 
     varm_list <- .convert_anndata_slot(
-        adata, "varm", adata$varm_keys(), "rowData$varm"
+        adata, "varm", adata$varm_keys(), "rowData$varm", select = varm
     )
 
     if (length(varm_list) > 0) {
@@ -201,16 +214,18 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
     }
 
     reddim_list <- .convert_anndata_slot(
-        adata, "obsm", adata$obsm_keys(), "reducedDims"
+        adata, "obsm", adata$obsm_keys(), "reducedDims", select = obsm
     )
     reddim_list <- lapply(reddim_list, as.matrix)
 
     varp_list <- .convert_anndata_slot(
-        adata, "varp", py_builtins$list(adata$varp$keys()), "rowPairs"
+        adata, "varp", py_builtins$list(adata$varp$keys()), "rowPairs",
+        select = varp
     )
 
     obsp_list <- .convert_anndata_slot(
-        adata, "obsp", py_builtins$list(adata$obsp$keys()), "colPairs"
+        adata, "obsp", py_builtins$list(adata$obsp$keys()), "colPairs",
+        select = obsp
     )
 
     .ui_step(
@@ -304,9 +319,15 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
     return(ans)
 }
 
-.convert_anndata_slot <- function(adata, slot_name, slot_keys, to_name = "MISSING") {
+.convert_anndata_slot <- function(adata, slot_name, slot_keys, to_name,
+                                  select = TRUE) {
 
     verbose <- parent.frame()$verbose
+
+    if (isFALSE(select)) {
+        .ui_info("Skipping conversion of {.field {slot_name}}")
+        return(list())
+    }
 
     if (length(slot_keys) == 0) {
         .ui_info("{.field {slot_name}} is empty and was skipped")
@@ -318,6 +339,21 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
         "Converting {.field {slot_name}}",
         msg_done = "{.field {slot_name}} converted"
     )
+    if (is.character(select)) {
+        if (!all(select %in% slot_keys)) {
+            missing <- select[!c(select %in% slot_keys)]
+            .ui_warn(paste(
+                "These selected {.field {slot_name}} items are not in the ",
+                "object: {.field {missing}}"
+            ))
+            warning(
+                "These selected ", slot_name, " items are not in the object: ",
+                paste(missing, collapse = ", "),
+                call. = FALSE
+            )
+        }
+        slot_keys <- slot_keys[slot_keys %in% select]
+    }
     converted <- .convert_anndata_list(
         adata[slot_name],
         parent = slot_name,
@@ -387,4 +423,40 @@ AnnData2SCE <- function(adata, X_name = NULL, skip_assays = FALSE,
     }
 
     return(converted_list)
+}
+
+.convert_anndata_df <- function(adata_df, slot_name, to_name, select = TRUE) {
+
+    if (isFALSE(select)) {
+        .ui_info("Skipping conversion of {.field {slot_name}}")
+        return(make_zero_col_DFrame(nrow(adata_df)))
+    }
+
+    .ui_step(
+        "Converting {.field {slot_name}} to {.field {to_name}}",
+        msg_done = "{.field {slot_name}} converted to {.field {to_name}}"
+    )
+    if (is.character(select)) {
+        if (!all(select %in% colnames(adata_df))) {
+            missing <- select[!c(select %in% colnames(adata_df))]
+            .ui_warn(paste(
+                "These selected {.field {slot_name}} columns are not in the ",
+                "object: {.field {missing}}"
+            ))
+            warning(
+                "These selected ", slot_name, " colnames are not in the ",
+                "object: ", paste(missing, collapse = ", "),
+                call. = FALSE
+            )
+        }
+        df <- make_zero_col_DFrame(nrow(adata_df))
+        for (col in select) {
+            df[[col]] <- adata_df[[col]]
+        }
+    } else {
+        df <- DataFrame(adata_df)
+    }
+    cli::cli_progress_done()
+
+    return(df)
 }
