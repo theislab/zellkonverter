@@ -5,7 +5,7 @@ author:
   email: luke@lazappi.id.au
 - name: Aaron Lun
   email: infinite.monkeys.with.keyboards@gmail.com
-date: "Revised: 19 June 2020"
+date: "Revised: 19 October 2021"
 output:
   BiocStyle::html_document:
     toc_float: true
@@ -95,6 +95,25 @@ variable to set up their Python environments.
 
 ```{r anndata-deps}
 .AnnDataDependencies
+```
+
+Progress messages
+=================
+
+By default the functions in `r Biocpkg("zellkonverter")` don't display any
+information about their progress but this can be turned on by setting the
+`verbose = TRUE` argument.
+
+```{r verbose}
+readH5AD(example_h5ad, verbose = TRUE)
+```
+
+If you would like to see progress messages for all functions by default you can
+turn this on using the `setZellkonverterVerbose()` function.
+
+```{r verbose-set, eval = FALSE}
+# This is not run here 
+setZellkonverterVerbose(TRUE)
 ```
 
 Session information
