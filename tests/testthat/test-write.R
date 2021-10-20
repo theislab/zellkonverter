@@ -185,3 +185,29 @@ test_that("writeH5AD works with lzf compression", {
     out <- readH5AD(temp, X_name = "X")
     expect_equal(assay(out, "X"), assay(sce, "counts"))
 })
+
+test_that("Skipping slot conversion works", {
+    temp <- tempfile(fileext = ".h5ad")
+    writeH5AD(sce, temp, assays = FALSE, colData = FALSE, rowData = FALSE,
+              varm = FALSE, reducedDims = FALSE, metadata = FALSE,
+              colPairs = FALSE, rowPairs = FALSE)
+
+    out <- readH5AD(temp, X_name = "X")
+
+    expect_identical(assayNames(out), "X")
+    expect_identical(metadata(out), list(X_name = "counts"))
+    expect_equal(ncol(rowData(out)), 0)
+    expect_equal(ncol(colData(out)), 0)
+    expect_equal(length(reducedDims(out)), 0)
+    expect_equal(length(rowPairs(out)), 0)
+    expect_equal(length(colPairs(out)), 0)
+})
+
+test_that("Selective DF conversion works", {
+    temp <- tempfile(fileext = ".h5ad")
+    writeH5AD(sce, temp, assays = FALSE, colData = "tissue")
+
+    out <- readH5AD(temp, X_name = "X")
+
+    expect_identical(names(colData(out)), "tissue")
+})
