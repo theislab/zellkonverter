@@ -57,3 +57,28 @@ test_that("Reading H5AD works with native reader", {
     expect_identical(assayNames(sce), "X")
     expect_identical(colnames(colData(sce)), "cell_type")
 })
+
+test_that("Skipping slot conversion works", {
+    sce <- readH5AD(file, layers = FALSE, uns = FALSE, var = FALSE, obs = FALSE,
+                    varm = FALSE, obsm = FALSE, varp = FALSE, obsp = FALSE)
+
+    expect_identical(assayNames(sce), "X")
+    expect_identical(metadata(sce), list())
+    expect_equal(ncol(rowData(sce)), 0)
+    expect_equal(ncol(colData(sce)), 0)
+    expect_equal(length(reducedDims(sce)), 0)
+    expect_equal(length(rowPairs(sce)), 0)
+    expect_equal(length(colPairs(sce)), 0)
+})
+
+test_that("Selective slot conversion works", {
+    sce <- readH5AD(file, uns = "iroot")
+
+    expect_identical(names(metadata(sce)), "iroot")
+})
+
+test_that("Selective DF conversion works", {
+    sce <- readH5AD(file, obs = "cell_type")
+
+    expect_identical(names(colData(sce)), "cell_type")
+})

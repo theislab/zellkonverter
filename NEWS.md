@@ -5,6 +5,10 @@
 * Add progress messages to various functions
     * Can be controlled by function arguments or a global variable
 * Split `konverter.R` into two files (`AnnData2SCE.R` and `SCE2AnnData.R`)
+* Add arguments to control how slots are converted in `AnnData2SCE()` and
+  `SCE2AnnData()` (Fixes #47)
+  * Each slot can now be fully converted, skipped entirely or only selected
+    items converted.
 
 ## zellkonverter 1.3.2 (2021-09-09)
 

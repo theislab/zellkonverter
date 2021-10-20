@@ -11,6 +11,7 @@
 #' @param compression Type of compression when writing the new `.h5ad` file.
 #' @param verbose Logical scalar indicating whether to print progress messages.
 #' If `NULL` uses `getOption("zellkonverter.verbose")`.
+#' @inheritDotParams SCE2AnnData
 #'
 #' @details
 #'
@@ -71,7 +72,8 @@
 #' @importFrom Matrix sparseMatrix
 #' @importFrom DelayedArray is_sparse
 writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
-                      compression = c("none", "gzip", "lzf"), verbose = NULL) {
+                      compression = c("none", "gzip", "lzf"), verbose = NULL,
+                      ...) {
     compression <- match.arg(compression)
 
     if (compression == "none") {
@@ -99,7 +101,8 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
         X_name = X_name,
         skip_assays = skip_assays,
         compression = compression,
-        verbose = verbose
+        verbose = verbose,
+        ...
     )
 
     # Going back out and replacing each of them.
@@ -126,9 +129,9 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
 
 #' @importFrom reticulate import
 .H5ADwriter <- function(sce, file, X_name, skip_assays, compression,
-                        verbose = NULL) {
+                        verbose = NULL, ...) {
     adata <- SCE2AnnData(sce, X_name = X_name, skip_assays = skip_assays,
-                         verbose = verbose)
+                         verbose = verbose, ...)
     .ui_step(
         "Writing {.file {.trim_path(file)}}",
         msg_done = "Wrote {.file {.trim_path(file)}}",
