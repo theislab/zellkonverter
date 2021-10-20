@@ -5,7 +5,7 @@
 #' matrix (`X`) of the AnnData object. If `NULL`, the first assay of `sce` will
 #' be used by default. For `AnnData2SCE()` name used when saving `X` as an
 #' assay. If `NULL` looks for an `X_name` value in `uns`, otherwise uses `"X"`.
-#' @param assays,colData,rowData,varm,reducedDims,metadata,colParis,rowPairs
+#' @param assays,colData,rowData,reducedDims,metadata,colPairs,rowPairs
 #' Arguments specifying how these slots are converted. If `TRUE` everything in
 #' that slot is converted, if `FALSE` nothing is converted and if a character
 #' vector only those items or columns are converted.

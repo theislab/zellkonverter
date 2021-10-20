@@ -63,7 +63,7 @@ If \code{NULL} uses \code{getOption("zellkonverter.verbose")}.}
 
 \item{sce}{A \linkS4class{SingleCellExperiment} object.}
 
-\item{assays, colData, rowData, varm, reducedDims, metadata, colParis, rowPairs}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
+\item{assays, colData, rowData, reducedDims, metadata, colPairs, rowPairs}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
 that slot is converted, if \code{FALSE} nothing is converted and if a character
 vector only those items or columns are converted.}
 }

@@ -52,6 +52,9 @@ vector only those items or columns are converted.}
     \item{\code{metadata}}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
 that slot is converted, if \code{FALSE} nothing is converted and if a character
 vector only those items or columns are converted.}
+    \item{\code{colPairs}}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
+that slot is converted, if \code{FALSE} nothing is converted and if a character
+vector only those items or columns are converted.}
     \item{\code{rowPairs}}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
 that slot is converted, if \code{FALSE} nothing is converted and if a character
 vector only those items or columns are converted.}
