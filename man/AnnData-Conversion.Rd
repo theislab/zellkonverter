@@ -22,7 +22,20 @@ AnnData2SCE(
   verbose = NULL
 )
 
-SCE2AnnData(sce, X_name = NULL, skip_assays = FALSE, verbose = NULL)
+SCE2AnnData(
+  sce,
+  X_name = NULL,
+  assays = TRUE,
+  colData = TRUE,
+  rowData = TRUE,
+  varm = TRUE,
+  reducedDims = TRUE,
+  metadata = TRUE,
+  colPairs = TRUE,
+  rowPairs = TRUE,
+  skip_assays = FALSE,
+  verbose = NULL
+)
 }
 \arguments{
 \item{adata}{A \strong{reticulate} reference to a Python AnnData object.}
@@ -49,6 +62,10 @@ in \code{adata} should be represented as HDF5Array objects. This assumes that
 If \code{NULL} uses \code{getOption("zellkonverter.verbose")}.}
 
 \item{sce}{A \linkS4class{SingleCellExperiment} object.}
+
+\item{assays, colData, rowData, varm, reducedDims, metadata, colParis, rowPairs}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
+that slot is converted, if \code{FALSE} nothing is converted and if a character
+vector only those items or columns are converted.}
 }
 \value{
 \code{AnnData2SCE()} will return a \linkS4class{SingleCellExperiment}

@@ -440,7 +440,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         if (!all(select %in% colnames(adata_df))) {
             missing <- select[!c(select %in% colnames(adata_df))]
             .ui_warn(paste(
-                "These selected {.field {slot_name}} columns are not in the ",
+                "These selected {.field {slot_name}} columns are not in the",
                 "object: {.field {missing}}"
             ))
             warning(

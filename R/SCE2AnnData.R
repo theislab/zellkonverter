@@ -5,6 +5,10 @@
 #' matrix (`X`) of the AnnData object. If `NULL`, the first assay of `sce` will
 #' be used by default. For `AnnData2SCE()` name used when saving `X` as an
 #' assay. If `NULL` looks for an `X_name` value in `uns`, otherwise uses `"X"`.
+#' @param assays,colData,rowData,varm,reducedDims,metadata,colParis,rowPairs
+#' Arguments specifying how these slots are converted. If `TRUE` everything in
+#' that slot is converted, if `FALSE` nothing is converted and if a character
+#' vector only those items or columns are converted.
 #' @param verbose Logical scalar indicating whether to print progress messages.
 #' If `NULL` uses `getOption("zellkonverter.verbose")`.
 #'
@@ -12,8 +16,10 @@
 #' @importFrom utils capture.output
 #' @importFrom S4Vectors metadata
 #' @importFrom reticulate import r_to_py
-SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE,
-                        verbose = NULL) {
+SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
+                        rowData = TRUE, varm = TRUE, reducedDims = TRUE,
+                        metadata = TRUE, colPairs = TRUE, rowPairs = TRUE,
+                        skip_assays = FALSE, verbose = NULL) {
     anndata <- import("anndata")
 
     .ui_process(
@@ -54,11 +60,29 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE,
 
     assay_names <- assayNames(sce)
     assay_names <- assay_names[!assay_names == X_name]
-    if (length(assay_names) > 0) {
+    if (isFALSE(assays)) {
+        .ui_info("Skipping conversion of {.field assays}")
+    } else if (length(assay_names) == 0) {
+        .ui_info("No {.field additional assays} present, assays were skipped")
+    } else {
         .ui_step(
             "Converting {.field additional assays} to {.field layers}",
             msg_done = "{.field additional assays} converted to {.field layers}"
         )
+        if (is.character(assays)) {
+            if (!all(assays %in% assay_names)) {
+                missing <- assays[!c(assays %in% assay_names)]
+                .ui_warn(
+                    "These selected assays are not in the object: {.field {missing}}"
+                )
+                warning(
+                    "These selected assays are not in the object: ",
+                    paste(missing, collapse = ", "),
+                    call. = FALSE
+                )
+            }
+            assay_names <- assay_names[assay_names %in% assays]
+        }
         if (!skip_assays) {
             assays_list <- assays(sce, withDimnames = FALSE)
             assays_list <- lapply(assays_list[assay_names], .makeNumpyFriendly)
@@ -68,119 +92,68 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE,
         }
         adata$layers <- assays_list
         cli::cli_progress_done()
+    }
+
+    if (isFALSE(colData)) {
+        .ui_info("Skipping conversion of {.field colData}")
     } else {
-        .ui_info("No {.field additional assays} present")
-    }
-
-    col_data <- colData(sce)
-    is_atomic <- vapply(col_data, is.atomic, NA)
-    if (any(!is_atomic)) {
-        non_atomic_cols <- colnames(col_data)[!is_atomic]
-        warning(
-            "The following colData columns are not atomic and will be stored ",
-            "in metadata(sce)$.colData before conversion: ",
-            paste(non_atomic_cols, collapse = ", ")
-        )
-
-        if (".colData" %in% names(metadata(sce))) {
-            meta_list <- metadata(sce)$.colData
-        } else {
-            meta_list <- list()
+        sce <- .store_non_atomic(sce, "colData")
+        obs <- .convert_sce_df(colData(sce), "colData", "obs", select = colData)
+        if (!is.null(obs)) {
+            adata$obs <- obs
         }
-
-        for (col in non_atomic_cols) {
-            store_name <- make.names(c(col, names(meta_list)), unique = TRUE)[1]
-            meta_list[[store_name]] <- col_data[[col]]
-        }
-
-        col_data[non_atomic_cols] <- NULL
-        metadata(sce)$.colData <- meta_list
     }
 
-    if (ncol(col_data) > 0) {
-        .ui_step(
-            "Converting {.field colData} to {.field obs}",
-            msg_done = "{.field colData} converted to {.field obs}"
-        )
-        # Manually construct the data.frame to avoid mangling column names
-        obs <- do.call(
-            data.frame,
-            c(
-                as.list(col_data),
-                check.names      = FALSE,
-                stringsAsFactors = FALSE
-            )
-        )
-        adata$obs <- obs
-        cli::cli_progress_done()
-    } else {
-        .ui_info("{.field colData} is empty and was skipped")
-    }
-
-    row_data <- rowData(sce)
     if (!is.null(int_metadata(sce)$has_varm)) {
-        .ui_step(
-            "Converting {.field rowData$varm} to {.field varm}",
-            msg_done = "{.field rowData$varm} converted to {.field varm}"
-        )
-        varm <- as.list(row_data[["varm"]])
-        row_data[["varm"]] <- NULL
-        adata$varm <- varm
-        cli::cli_progress_done()
+        varm_list <- as.list(rowData(sce)[["varm"]])
+        rowData(sce)[["varm"]] <- NULL
+
+        if (isFALSE(varm)) {
+            .ui_info("Skipping conversion of {.field rowData$varm}")
+        } else {
+            .ui_step(
+                "Converting {.field rowData$varm} to {.field varm}",
+                msg_done = "{.field rowData$varm} converted to {.field varm}"
+            )
+
+            if (is.character(varm)) {
+                varm <- .check_select(varm, "rowData$varm", names(varm_list))
+                varm_list <- varm_list[varm]
+            }
+
+            adata$varm <- varm_list
+            cli::cli_progress_done()
+        }
+
     } else {
         .ui_info("{.field rowData$varm} is empty and was skipped")
     }
 
-    is_atomic <- vapply(row_data, is.atomic, NA)
-    if (any(!is_atomic)) {
-        non_atomic_cols <- colnames(row_data)[!is_atomic]
-        warning(
-            "The following rowData columns are not atomic and will be stored ",
-            "in metadata(sce)$.rowData before conversion: ",
-            paste(non_atomic_cols, collapse = ", ")
-        )
-
-        if (".rowData" %in% names(metadata(sce))) {
-            meta_list <- metadata(sce)$.rowData
-        } else {
-            meta_list <- list()
-        }
-
-        for (col in non_atomic_cols) {
-            store_name <- make.names(c(col, names(meta_list)), unique = TRUE)[1]
-            meta_list[[store_name]] <- row_data[[col]]
-        }
-
-        row_data[non_atomic_cols] <- NULL
-        metadata(sce)$.rowData <- meta_list
-    }
-
-    if (ncol(row_data) > 0) {
-        .ui_step(
-            "Converting {.field rowData} to {.field var}",
-            msg_done = "{.field rowData} converted to {.field var}"
-        )
-        # Manually construct the data.frame to avoid mangling column names
-        var <- do.call(
-            data.frame,
-            c(
-                as.list(row_data),
-                check.names      = FALSE,
-                stringsAsFactors = FALSE
-            )
-        )
-        adata$var <- var
-        cli::cli_progress_done()
+    if (isFALSE(rowData)) {
+        .ui_info("Skipping conversion of {.field rowData}")
     } else {
-        .ui_info("{.field rowData} is empty and was skipped")
+        sce <- .store_non_atomic(sce, "rowData")
+        var <- .convert_sce_df(rowData(sce), "rowData", "var", select = rowData)
+        if (!is.null(var)) {
+            adata$var <- var
+        }
     }
 
-    red_dims <- as.list(reducedDims(sce))
-    if (length(red_dims) > 0) {
+    if (isFALSE(reducedDims)) {
+        .ui_info("Skipping conversion of {.field reducedDims}")
+    } else if (length(reducedDims(sce)) == 0) {
+        .ui_info("{.field reducedDims} is empty and was skipped")
+    } else {
         .ui_step(
             "Converting {.field reducedDims} to {.field obsm}",
             msg_done = "{.field reducedDims} converted to {.field obsm}"
         )
+        red_dims <- as.list(reducedDims(sce))
+        if (is.character(reducedDims)) {
+            reducedDims <- .check_select(reducedDims, "reducedDims",
+                                         names(red_dims))
+            red_dims <- red_dims[reducedDims]
+        }
         red_dims <- lapply(red_dims, .makeNumpyFriendly, transpose = FALSE)
         red_dims <- lapply(red_dims, function(rd) {
             if (!is.null(colnames(rd))) {
@@ -192,18 +165,24 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE,
         })
         adata$obsm <- red_dims
         cli::cli_progress_done()
-    } else {
-        .ui_info("{.field reducedDims} is empty and was skipped")
     }
 
-    meta_list <- metadata(sce)
-    if (length(meta_list) > 0) {
+    uns_list <- list()
+    uns_list[["X_name"]] <- X_name
+    if (isFALSE(metadata)) {
+        .ui_info("Skipping conversion of {.field metadata}")
+    } else if (length(metadata(sce)) == 0) {
+        .ui_info("{.field metadata} is empty and was skipped")
+    } else {
         .ui_step(
             "Converting {.field metadata} to {.field uns}",
             msg_done = "{.field metadata} converted to {.field uns}"
         )
-        meta_list <- .addListNames(meta_list)
-        uns_list <- list()
+        meta_list <- .addListNames(metadata(sce))
+        if (is.character(metadata)) {
+            metadata <- .check_select(metadata, "metadata", names(meta_list))
+            meta_list <- meta_list[metadata]
+        }
         for (item_name in names(meta_list)) {
             item <- meta_list[[item_name]]
             tryCatch(
@@ -221,12 +200,9 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE,
                 }
             )
         }
-        uns_list[["X_name"]] <- X_name
-        adata$uns <- reticulate::dict(uns_list)
         cli::cli_progress_done()
-    } else {
-        .ui_info("{.field metadata} is empty and was skipped")
     }
+    adata$uns <- reticulate::dict(uns_list)
 
     if (length(rowPairs(sce)) > 0) {
         .ui_step(
@@ -239,16 +215,9 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE,
         .ui_info("{.field rowPairs} is empty and was skipped")
     }
 
-    if (length(colPairs(sce)) > 0) {
-        .ui_step(
-            "Converting {.field colPairs} to {.field obsp}",
-            msg_done = "{.field colPairs} converted to {.field obsp}"
-        )
-        adata$obsp <- as.list(colPairs(sce, asSparse = TRUE))
-        cli::cli_progress_done()
-    } else {
-        .ui_info("{.field colPairs} is empty and was skipped")
-    }
+    adata$obsp <- .convert_sce_pairs(sce, "colPairs", "obsp", colPairs)
+
+    adata$varp <- .convert_sce_pairs(sce, "rowPairs", "varp", rowPairs)
 
     if (!is.null(colnames(sce))) {
         adata$obs_names <- colnames(sce)
@@ -296,4 +265,144 @@ SCE2AnnData <- function(sce, X_name = NULL, skip_assays = FALSE,
     names(x) <- list_names
 
     return(x)
+}
+
+.store_non_atomic <- function(sce, slot = c("rowData", "colData")) {
+
+    slot <- match.arg(slot)
+
+    df <- switch (slot,
+        rowData = rowData(sce),
+        colData = colData(sce)
+    )
+
+    is_atomic <- vapply(df, is.atomic, NA)
+
+    if (all(is_atomic)) {
+        return(sce)
+    }
+
+    non_atomic_cols <- colnames(df)[!is_atomic]
+    warning(
+        "The following ", slot, " columns are not atomic and will be ",
+        "stored in metadata(sce)$.colData before conversion: ",
+        paste(non_atomic_cols, collapse = ", ")
+    )
+
+    meta_slot <- paste0(".", slot)
+    if (meta_slot %in% names(metadata(sce))) {
+        meta_list <- metadata(sce)[[meta_slot]]
+    } else {
+        meta_list <- list()
+    }
+
+    for (col in non_atomic_cols) {
+        store_name <- make.names(c(col, names(meta_list)), unique = TRUE)[1]
+        meta_list[[store_name]] <- df[[col]]
+    }
+
+    df[non_atomic_cols] <- NULL
+    metadata(sce)[[meta_slot]] <- meta_list
+
+    if (slot == "rowData") {
+        rowData(sce) <- df
+    } else (
+        colData(sce) <- df
+    )
+
+    return(sce)
+}
+
+.check_select <- function(select, slot_name, options) {
+
+    verbose <- parent.frame()$verbose
+
+    if (!all(select %in% options)) {
+        missing <- select[!c(select %in% options)]
+        .ui_warn(paste(
+            "These selected {.field {slot_name}} items are not in the",
+            "object: {.field {missing}}"
+        ))
+        warning(
+            "These selected ", slot_name, " items are not in the ",
+            "object: ", paste(missing, collapse = ", "),
+            call. = FALSE
+        )
+    }
+
+    select <- select[select %in% options]
+
+    return(select)
+}
+
+.convert_sce_df <- function(sce_df, slot_name, to_name, select = TRUE) {
+
+    if (ncol(sce_df) == 0) {
+        .ui_info("{.field {slot_name}} is empty and was skipped")
+        return(NULL)
+    }
+
+    .ui_step(
+        "Converting {.field {slot_name}} to {.field {to_name}}",
+        msg_done = "{.field {slot_name}} converted to {.field {to_name}}"
+    )
+    if (is.character(select)) {
+
+        select <- .check_select(select, slot_name, colnames(sce_df))
+
+        if (length(select) == 0) {
+            return(NULL)
+        }
+
+        df <- sce_df[, select, drop = FALSE]
+    } else {
+        df <- sce_df
+    }
+
+    df <- do.call(
+        data.frame,
+        c(
+            as.list(df),
+            check.names      = FALSE,
+            stringsAsFactors = FALSE
+        )
+    )
+    cli::cli_progress_done()
+
+    return(df)
+}
+
+.convert_sce_pairs <- function(sce, slot_name = c("rowPairs", "colPairs"),
+                               to_name, select) {
+
+    slot_name <- match.arg(slot_name)
+
+
+    if (isFALSE(select)) {
+        .ui_info("Skipping conversion of {.field {slot_name}}")
+        return(list())
+    }
+
+    pairs <- switch (slot_name,
+        rowPairs = as.list(rowPairs(sce, asSparse = TRUE)),
+        colPairs = as.list(colPairs(sce, asSparse = TRUE))
+    )
+
+    if (length(pairs) == 0) {
+        .ui_info("{.field {slot_name}} is empty and was skipped")
+        return(list())
+    }
+
+    .ui_step(
+        "Converting {.field {slot_name}} to {.field {to_name}}",
+        msg_done = "{.field {slot_name}} converted to {.field {to_name}}"
+    )
+
+    if (is.character(select)) {
+        select <- .check_select(select, slot_name, names(pairs))
+        pairs <- pairs[select]
+    }
+    cli::cli_progress_done()
+
+    return(pairs)
 }
