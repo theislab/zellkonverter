@@ -1,6 +1,37 @@
 \name{NEWS}
 \title{News for Package \pkg{zellkonverter}}
 
+\section{Version 1.4.0, Bioconductor 3.14 Release (October 2021)}{
+  \itemize{
+    \item{
+      Add arguments to control how slots are converted in \code{AnnData2SCE()}
+      and \code{SCE2AnnData()}. Each slot can now be fully converted, skipped
+      entirely or only selected items converted.
+    }
+    \item{
+      Add support for converting the \code{raw} slot to an \code{altExp} in
+      \code{AnnData2SCE()}
+    }
+    \item{
+      Add recursive conversion of lists in \code{AnnData2SCE()}
+    }
+    \item{
+      Add progress messages to various functions. These can be controlled by
+      function arguments or a global variable.
+    }
+    \item{
+      Add long tests for various public datasets. This should help to make the
+      package more robust
+    }
+    \item{
+      Fix bug in converting \code{dgRMatrix} sparse matrices
+    }
+    \item{
+      Correctly handle \code{DataFrame} objects stored in \code{adata.obsm}
+    }
+  }
+}
+
 \section{Version 1.2.0, Bioconductor 3.13 Release (May 2021)}{
   \itemize{
     \item{

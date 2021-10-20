@@ -16,7 +16,6 @@
 
 ## zellkonverter 1.3.2 (2021-09-09)
 
-* Fix bug in converting `dgRMatrix` sparse matrices (Fixes #55)
 * Add recursive conversion of lists in `AnnData2SCE()`
 * Correctly handle `DataFrame` objects stored in `adata.obsm`
 * Remove **pandas** indexes from converted `DataFrame` objects
