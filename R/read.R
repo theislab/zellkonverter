@@ -12,8 +12,7 @@
 #' **zellkonverter**'s native R reader.
 #' @param verbose Logical scalar indicating whether to print progress messages.
 #' If `NULL` uses `getOption("zellkonverter.verbose")`.
-#' @param ... Additional arguments passed to the reader (currently only used
-#' by the Python reader).
+#' @inheritDotParams AnnData2SCE -adata -hdf5_backed
 #'
 #' @details
 #' Setting `use_hdf5 = TRUE` allows for very large datasets to be efficiently

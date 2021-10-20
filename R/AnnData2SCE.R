@@ -81,7 +81,7 @@ NULL
 #' @rdname AnnData-Conversion
 #'
 #' @param adata A **reticulate** reference to a Python AnnData object.
-#' @param layers,var,obs,varm,obsm,varp,obsp Arguments specifying how these
+#' @param layers,uns,var,obs,varm,obsm,varp,obsp Arguments specifying how these
 #' slots are converted. If `TRUE` everything in that slot is converted, if
 #' `FALSE` nothing is converted and if a character vector only those items or
 #' columns are converted.

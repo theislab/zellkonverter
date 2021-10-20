@@ -32,7 +32,7 @@ matrix (\code{X}) of the AnnData object. If \code{NULL}, the first assay of \cod
 be used by default. For \code{AnnData2SCE()} name used when saving \code{X} as an
 assay. If \code{NULL} looks for an \code{X_name} value in \code{uns}, otherwise uses \code{"X"}.}
 
-\item{layers, var, obs, varm, obsm, varp, obsp}{Arguments specifying how these
+\item{layers, uns, var, obs, varm, obsm, varp, obsp}{Arguments specifying how these
 slots are converted. If \code{TRUE} everything in that slot is converted, if
 \code{FALSE} nothing is converted and if a character vector only those items or
 columns are converted.}
