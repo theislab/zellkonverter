@@ -32,36 +32,40 @@ If \code{NULL} uses \code{getOption("zellkonverter.verbose")}.}
 \item{...}{
   Arguments passed on to \code{\link[=AnnData2SCE]{AnnData2SCE}}
   \describe{
-    \item{\code{layers}}{Arguments specifying how these
-slots are converted. If \code{TRUE} everything in that slot is converted, if
+    \item{\code{layers}}{Arguments specifying how
+these slots are converted. If \code{TRUE} everything in that slot is converted, if
 \code{FALSE} nothing is converted and if a character vector only those items or
 columns are converted.}
-    \item{\code{uns}}{Arguments specifying how these
-slots are converted. If \code{TRUE} everything in that slot is converted, if
+    \item{\code{uns}}{Arguments specifying how
+these slots are converted. If \code{TRUE} everything in that slot is converted, if
 \code{FALSE} nothing is converted and if a character vector only those items or
 columns are converted.}
-    \item{\code{var}}{Arguments specifying how these
-slots are converted. If \code{TRUE} everything in that slot is converted, if
+    \item{\code{var}}{Arguments specifying how
+these slots are converted. If \code{TRUE} everything in that slot is converted, if
 \code{FALSE} nothing is converted and if a character vector only those items or
 columns are converted.}
-    \item{\code{obs}}{Arguments specifying how these
-slots are converted. If \code{TRUE} everything in that slot is converted, if
+    \item{\code{obs}}{Arguments specifying how
+these slots are converted. If \code{TRUE} everything in that slot is converted, if
 \code{FALSE} nothing is converted and if a character vector only those items or
 columns are converted.}
-    \item{\code{varm}}{Arguments specifying how these
-slots are converted. If \code{TRUE} everything in that slot is converted, if
+    \item{\code{varm}}{Arguments specifying how
+these slots are converted. If \code{TRUE} everything in that slot is converted, if
 \code{FALSE} nothing is converted and if a character vector only those items or
 columns are converted.}
-    \item{\code{obsm}}{Arguments specifying how these
-slots are converted. If \code{TRUE} everything in that slot is converted, if
+    \item{\code{obsm}}{Arguments specifying how
+these slots are converted. If \code{TRUE} everything in that slot is converted, if
 \code{FALSE} nothing is converted and if a character vector only those items or
 columns are converted.}
-    \item{\code{varp}}{Arguments specifying how these
-slots are converted. If \code{TRUE} everything in that slot is converted, if
+    \item{\code{varp}}{Arguments specifying how
+these slots are converted. If \code{TRUE} everything in that slot is converted, if
 \code{FALSE} nothing is converted and if a character vector only those items or
 columns are converted.}
-    \item{\code{obsp}}{Arguments specifying how these
-slots are converted. If \code{TRUE} everything in that slot is converted, if
+    \item{\code{obsp}}{Arguments specifying how
+these slots are converted. If \code{TRUE} everything in that slot is converted, if
+\code{FALSE} nothing is converted and if a character vector only those items or
+columns are converted.}
+    \item{\code{raw}}{Arguments specifying how
+these slots are converted. If \code{TRUE} everything in that slot is converted, if
 \code{FALSE} nothing is converted and if a character vector only those items or
 columns are converted.}
     \item{\code{skip_assays}}{Logical scalar indicating whether to skip conversion of

@@ -33,8 +33,8 @@ If \code{NULL} uses \code{getOption("zellkonverter.verbose")}.}
 \item{...}{
   Arguments passed on to \code{\link[=SCE2AnnData]{SCE2AnnData}}
   \describe{
-    \item{\code{varm}}{Arguments specifying how these
-slots are converted. If \code{TRUE} everything in that slot is converted, if
+    \item{\code{varm}}{Arguments specifying how
+these slots are converted. If \code{TRUE} everything in that slot is converted, if
 \code{FALSE} nothing is converted and if a character vector only those items or
 columns are converted.}
     \item{\code{assays}}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
