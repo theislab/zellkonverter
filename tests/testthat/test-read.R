@@ -82,3 +82,38 @@ test_that("Selective DF conversion works", {
 
     expect_identical(names(colData(sce)), "cell_type")
 })
+
+test_that("Conversion of raw works", {
+    skip_if_offline()
+
+    cache <- BiocFileCache::BiocFileCache(ask = FALSE)
+    example_file <- BiocFileCache::bfcrpath(
+        cache, "https://ndownloader.figshare.com/files/30462915"
+    )
+
+    sce <- readH5AD(example_file, raw = TRUE)
+
+    names <- list(
+        assays = c("X"),
+        colData = c("n_genes", "n_genes_by_counts", "total_counts",
+                    "total_counts_mt", "pct_counts_mt", "leiden"),
+        rowData = c("gene_ids", "n_cells", "mt", "n_cells_by_counts",
+                    "mean_counts", "pct_dropout_by_counts", "total_counts",
+                    "highly_variable", "means", "dispersions",
+                    "dispersions_norm", "mean", "std"),
+        metadata = c("hvg", "leiden", "neighbors", "pca", "umap"),
+        redDim = c("X_pca", "X_umap"),
+        varm = c("PCs"),
+        colPairs = c("connectivities", "distances"),
+        raw_rowData = c("gene_ids", "n_cells", "mt", "n_cells_by_counts",
+                        "mean_counts", "pct_dropout_by_counts", "total_counts",
+                        "highly_variable", "means", "dispersions",
+                        "dispersions_norm")
+    )
+
+    missing <- list(
+        metadata = c("rank_genes_groups")
+    )
+
+    validateH5ADSCE(sce, names, missing)
+})

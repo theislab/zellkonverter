@@ -24,6 +24,9 @@
 #'    slot)
 #' * `colPairs` - Column pair names
 #' * `rowPairs` - rowData pair names
+#' * `raw_rowData` - rowData columns names in the `raw` altExp
+#' * `raw_varm` - Column names of the raw `varm` rowData column (from the
+#'   AnnData varm slot)
 #'
 #' If an item in `names` or `missing` is `NULL` then it won't be checked. The
 #' items in `missing` are checked that they explicitly do not exist. This is
@@ -98,6 +101,31 @@ validateH5ADSCE <- function(sce, names, missing) {
         names$rowPairs,
         missing$rowPairs
     )
+
+    if ("raw" %in% altExpNames(sce)) {
+        raw_rowData <- SummarizedExperiment::rowData(altExp(sce, "raw"))
+
+        if ("varm" %in% colnames(raw_rowData)) {
+            raw_varm <- raw_rowData$varm
+            raw_rowData$varm <- NULL
+        } else {
+            varm <- NULL
+        }
+
+        .names_validator(
+            "raw rowData names",
+            colnames(raw_rowData),
+            names$raw_rowData,
+            missing$raw_rowData
+        )
+
+        .names_validator(
+            "varm names",
+            colnames(raw_varm),
+            names$raw_varm,
+            missing$raw_varm
+        )
+    }
 
     invisible(TRUE)
 }

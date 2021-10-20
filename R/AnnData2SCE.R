@@ -81,8 +81,8 @@ NULL
 #' @rdname AnnData-Conversion
 #'
 #' @param adata A **reticulate** reference to a Python AnnData object.
-#' @param layers,uns,var,obs,varm,obsm,varp,obsp Arguments specifying how these
-#' slots are converted. If `TRUE` everything in that slot is converted, if
+#' @param layers,uns,var,obs,varm,obsm,varp,obsp,raw Arguments specifying how
+#' these slots are converted. If `TRUE` everything in that slot is converted, if
 #' `FALSE` nothing is converted and if a character vector only those items or
 #' columns are converted.
 #' @param skip_assays Logical scalar indicating whether to skip conversion of
@@ -100,8 +100,9 @@ NULL
 #' @importFrom reticulate import_builtins
 AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                         var = TRUE, obs = TRUE, varm = TRUE, obsm = TRUE,
-                        varp = TRUE, obsp = TRUE, skip_assays = FALSE,
-                        hdf5_backed = TRUE, verbose = NULL) {
+                        varp = TRUE, obsp = TRUE, raw = FALSE,
+                        skip_assays = FALSE, hdf5_backed = TRUE,
+                        verbose = NULL) {
 
     .ui_process(
         "Converting {.field AnnData} to {.field SingleCellExperiment}"
@@ -253,6 +254,47 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     }
     cli::cli_progress_done()
 
+    if (isFALSE(raw)) {
+        .ui_info("Skipping conversion of {.field raw}")
+    } else if (is.null(adata$raw)) {
+        .ui_info("{.field raw} is empty and was skipped")
+    } else {
+        .ui_process("Converting {.field raw} to {.field altExp}")
+
+        raw_x <- .extract_or_skip_assay(
+            skip_assays = skip_assays,
+            hdf5_backed = hdf5_backed,
+            dims = dims,
+            mat = adata$raw$X,
+            name = "raw 'X' matrix"
+        )
+        colnames(raw_x$mat) <- colnames(output)
+
+        raw_rowData <- .convert_anndata_df(adata$raw$var, "raw var",
+                                           "raw rowData", select = TRUE)
+
+        raw_varm_list <- .convert_anndata_slot(
+            adata, "varm", py_builtins$list(adata$raw$varm$keys()),
+            "raw rowData$varm", select = TRUE, raw = TRUE
+        )
+
+        if (length(raw_varm_list) > 0) {
+            # Create an empty DataFrame with the correct number of rows
+            raw_varm_df <- make_zero_col_DFrame(nrow(raw_x))
+            for (varm_name in names(raw_varm_list)) {
+                raw_varm_df[[varm_name]] <- raw_varm_list[[varm_name]]
+            }
+            raw_rowData$varm <- raw_varm_df
+        }
+
+        altExp(output, "raw") <- SummarizedExperiment(
+            assays = list(X = raw_x$mat),
+            rowData = raw_rowData
+        )
+
+        .ui_process_done()
+    }
+
     output
 }
 
@@ -320,7 +362,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
 }
 
 .convert_anndata_slot <- function(adata, slot_name, slot_keys, to_name,
-                                  select = TRUE) {
+                                  select = TRUE, raw = FALSE) {
 
     verbose <- parent.frame()$verbose
 
@@ -353,6 +395,10 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
             )
         }
         slot_keys <- slot_keys[slot_keys %in% select]
+    }
+
+    if (raw) {
+        adata <- adata$raw
     }
     converted <- .convert_anndata_list(
         adata[slot_name],
