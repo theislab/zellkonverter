@@ -1,7 +1,7 @@
-pandoc: 2.11.4
-pkgdown: 1.6.1.9001
-pkgdown_sha: 705ff7c650bb1c7d46d35e72f27ad093689e2f29
+pandoc: 2.14.0.3
+pkgdown: 1.9000.9000.9000
+pkgdown_sha: 0968c03d4665294ac0d21a7b255e77cb5ea20929
 articles:
   zellkonverter: zellkonverter.html
-last_built: 2021-09-09T15:04Z
+last_built: 2021-10-20T20:37Z
 
