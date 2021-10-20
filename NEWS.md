@@ -9,6 +9,8 @@
   `SCE2AnnData()` (Fixes #47)
   * Each slot can now be fully converted, skipped entirely or only selected
     items converted.
+* Add support for converting the `raw` slot to an `altExp` in `AnnData2SCE()` 
+  (Fixes #53, fixes #57)
 
 ## zellkonverter 1.3.2 (2021-09-09)
 

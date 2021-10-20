@@ -38,6 +38,9 @@ are recognised:
 slot)
 \item \code{colPairs} - Column pair names
 \item \code{rowPairs} - rowData pair names
+\item \code{raw_rowData} - rowData columns names in the \code{raw} altExp
+\item \code{raw_varm} - Column names of the raw \code{varm} rowData column (from the
+AnnData varm slot)
 }
 
 If an item in \code{names} or \code{missing} is \code{NULL} then it won't be checked. The
