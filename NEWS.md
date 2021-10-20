@@ -2,8 +2,10 @@
 
 * Bioconductor 3.14, October 2021
 
+## zellkonverter 1.3.3 (2021-10-20)
+
 * Add progress messages to various functions
-    * Can be controlled by function arguments or a global variable
+  * Can be controlled by function arguments or a global variable
 * Split `konverter.R` into two files (`AnnData2SCE.R` and `SCE2AnnData.R`)
 * Add arguments to control how slots are converted in `AnnData2SCE()` and
   `SCE2AnnData()` (Fixes #47)
