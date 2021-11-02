@@ -18,7 +18,7 @@ used inside testhat::test_that() during package testing."><!-- mathjax --><scrip
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.0</span>
       </span>
     </div>
 
@@ -48,7 +48,7 @@ used inside testhat::test_that() during package testing."><!-- mathjax --><scrip
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Expect SCE</h1>
-    <small class="dont-index">Source: <a href="https://github.com/theislab/zellkonverter/blob/master/R/validation.R" class="external-link"><code>R/validation.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/theislab/zellkonverter/blob/HEAD/R/validation.R" class="external-link"><code>R/validation.R</code></a></small>
     <div class="hidden name"><code>expectSCE.Rd</code></div>
     </div>
 
@@ -57,19 +57,17 @@ used inside testhat::test_that() during package testing."><!-- mathjax --><scrip
 used inside <code>testhat::test_that()</code> during package testing.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/expectSCE.html">expectSCE</a></span><span class="op">(</span><span class="va">sce</span>, <span class="va">expected</span><span class="op">)</span></code></pre></div>
-
-    <div id="arguments">
-    <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>sce</th>
-      <td><p>A <a href="https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html" class="external-link">SingleCellExperiment</a> object.</p></td>
-    </tr><tr><th>expected</th>
-      <td><p>A template <a href="https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html" class="external-link">SingleCellExperiment</a> object to
-compare to.</p></td>
-    </tr></table></div>
+    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">expectSCE</span><span class="op">(</span><span class="va">sce</span>, <span class="va">expected</span><span class="op">)</span></code></pre></div>
 
     <div id="ref-sections">
+    <div id="arguments">
+    <h2>Arguments</h2>
+    <dl><dt>sce</dt>
+<dd><p>A <a href="https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html" class="external-link">SingleCellExperiment</a> object.</p></dd>
+<dt>expected</dt>
+<dd><p>A template <a href="https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html" class="external-link">SingleCellExperiment</a> object to
+compare to.</p></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p><code>TRUE</code> invisibly if checks pass</p>

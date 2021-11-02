@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.0</span>
       </span>
     </div>
 
@@ -47,7 +47,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Write H5AD</h1>
-    <small class="dont-index">Source: <a href="https://github.com/theislab/zellkonverter/blob/master/R/write.R" class="external-link"><code>R/write.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/theislab/zellkonverter/blob/HEAD/R/write.R" class="external-link"><code>R/write.R</code></a></small>
     <div class="hidden name"><code>writeH5AD.Rd</code></div>
     </div>
 
@@ -55,8 +55,7 @@
     <p>Write a H5AD file from a <a href="https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html" class="external-link">SingleCellExperiment</a> object.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/writeH5AD.html">writeH5AD</a></span><span class="op">(</span>
+    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">writeH5AD</span><span class="op">(</span>
   <span class="va">sce</span>,
   <span class="va">file</span>,
   X_name <span class="op">=</span> <span class="cn">NULL</span>,
@@ -66,54 +65,69 @@
   <span class="va">...</span>
 <span class="op">)</span></code></pre></div>
 
+    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>sce</th>
-      <td><p>A <a href="https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html" class="external-link">SingleCellExperiment</a> object.</p></td>
-    </tr><tr><th>file</th>
-      <td><p>String containing a path to write the new <code>.h5ad</code> file.</p></td>
-    </tr><tr><th>X_name</th>
-      <td><p>Name of the assay to use as the primary matrix (<code>X</code>) of the
-AnnData object. If <code>NULL</code>, the first assay of <code>sce</code> will be used by default.</p></td>
-    </tr><tr><th>skip_assays</th>
-      <td><p>Logical scalar indicating whether assay matrices should
-be ignored when writing to <code>file</code>.</p></td>
-    </tr><tr><th>compression</th>
-      <td><p>Type of compression when writing the new <code>.h5ad</code> file.</p></td>
-    </tr><tr><th>verbose</th>
-      <td><p>Logical scalar indicating whether to print progress messages.
-If <code>NULL</code> uses <code>getOption("zellkonverter.verbose")</code>.</p></td>
-    </tr><tr><th>...</th>
-      <td><p>Arguments passed on to <code><a href="AnnData-Conversion.html">SCE2AnnData</a></code></p><dl><dt><code>varm</code></dt><dd><p>Arguments specifying how
+    <dl><dt>sce</dt>
+<dd><p>A <a href="https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html" class="external-link">SingleCellExperiment</a> object.</p></dd>
+<dt>file</dt>
+<dd><p>String containing a path to write the new <code>.h5ad</code> file.</p></dd>
+<dt>X_name</dt>
+<dd><p>Name of the assay to use as the primary matrix (<code>X</code>) of the
+AnnData object. If <code>NULL</code>, the first assay of <code>sce</code> will be used by default.</p></dd>
+<dt>skip_assays</dt>
+<dd><p>Logical scalar indicating whether assay matrices should
+be ignored when writing to <code>file</code>.</p></dd>
+<dt>compression</dt>
+<dd><p>Type of compression when writing the new <code>.h5ad</code> file.</p></dd>
+<dt>verbose</dt>
+<dd><p>Logical scalar indicating whether to print progress messages.
+If <code>NULL</code> uses <code>getOption("zellkonverter.verbose")</code>.</p></dd>
+<dt>...</dt>
+<dd><p>Arguments passed on to <code><a href="AnnData-Conversion.html">SCE2AnnData</a></code></p><dl><dt><code>varm</code></dt>
+<dd><p>Arguments specifying how
 these slots are converted. If <code>TRUE</code> everything in that slot is converted, if
 <code>FALSE</code> nothing is converted and if a character vector only those items or
 columns are converted.</p></dd>
-    <dt><code>assays</code></dt><dd><p>Arguments specifying how these slots are converted. If <code>TRUE</code> everything in
-that slot is converted, if <code>FALSE</code> nothing is converted and if a character
-vector only those items or columns are converted.</p></dd>
-    <dt><code>colData</code></dt><dd><p>Arguments specifying how these slots are converted. If <code>TRUE</code> everything in
-that slot is converted, if <code>FALSE</code> nothing is converted and if a character
-vector only those items or columns are converted.</p></dd>
-    <dt><code>rowData</code></dt><dd><p>Arguments specifying how these slots are converted. If <code>TRUE</code> everything in
-that slot is converted, if <code>FALSE</code> nothing is converted and if a character
-vector only those items or columns are converted.</p></dd>
-    <dt><code>reducedDims</code></dt><dd><p>Arguments specifying how these slots are converted. If <code>TRUE</code> everything in
-that slot is converted, if <code>FALSE</code> nothing is converted and if a character
-vector only those items or columns are converted.</p></dd>
-    <dt><code>metadata</code></dt><dd><p>Arguments specifying how these slots are converted. If <code>TRUE</code> everything in
-that slot is converted, if <code>FALSE</code> nothing is converted and if a character
-vector only those items or columns are converted.</p></dd>
-    <dt><code>colPairs</code></dt><dd><p>Arguments specifying how these slots are converted. If <code>TRUE</code> everything in
-that slot is converted, if <code>FALSE</code> nothing is converted and if a character
-vector only those items or columns are converted.</p></dd>
-    <dt><code>rowPairs</code></dt><dd><p>Arguments specifying how these slots are converted. If <code>TRUE</code> everything in
-that slot is converted, if <code>FALSE</code> nothing is converted and if a character
-vector only those items or columns are converted.</p></dd>
-  
-</dl></td>
-    </tr></table></div>
 
-    <div id="ref-sections">
+    <dt><code>assays</code></dt>
+<dd><p>Arguments specifying how these slots are converted. If <code>TRUE</code> everything in
+that slot is converted, if <code>FALSE</code> nothing is converted and if a character
+vector only those items or columns are converted.</p></dd>
+
+    <dt><code>colData</code></dt>
+<dd><p>Arguments specifying how these slots are converted. If <code>TRUE</code> everything in
+that slot is converted, if <code>FALSE</code> nothing is converted and if a character
+vector only those items or columns are converted.</p></dd>
+
+    <dt><code>rowData</code></dt>
+<dd><p>Arguments specifying how these slots are converted. If <code>TRUE</code> everything in
+that slot is converted, if <code>FALSE</code> nothing is converted and if a character
+vector only those items or columns are converted.</p></dd>
+
+    <dt><code>reducedDims</code></dt>
+<dd><p>Arguments specifying how these slots are converted. If <code>TRUE</code> everything in
+that slot is converted, if <code>FALSE</code> nothing is converted and if a character
+vector only those items or columns are converted.</p></dd>
+
+    <dt><code>metadata</code></dt>
+<dd><p>Arguments specifying how these slots are converted. If <code>TRUE</code> everything in
+that slot is converted, if <code>FALSE</code> nothing is converted and if a character
+vector only those items or columns are converted.</p></dd>
+
+    <dt><code>colPairs</code></dt>
+<dd><p>Arguments specifying how these slots are converted. If <code>TRUE</code> everything in
+that slot is converted, if <code>FALSE</code> nothing is converted and if a character
+vector only those items or columns are converted.</p></dd>
+
+    <dt><code>rowPairs</code></dt>
+<dd><p>Arguments specifying how these slots are converted. If <code>TRUE</code> everything in
+that slot is converted, if <code>FALSE</code> nothing is converted and if a character
+vector only those items or columns are converted.</p></dd>
+
+  
+</dl></dd>
+</dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>A <code>NULL</code> is invisibly returned.</p>
@@ -145,7 +159,7 @@ an empty placeholder dataset in <code>file</code> and fill it in R afterwards.</
 <h3 id="delayedarray-assays"><strong>DelayedArray</strong> assays<a class="anchor" aria-label="anchor" href="#delayedarray-assays"></a></h3>
 
 
-<p>If <code>sce</code> contains any <strong>DelayedArray</strong> matrices as assays <code><a href="../reference/writeH5AD.html">writeH5AD()</a></code> will
+<p>If <code>sce</code> contains any <strong>DelayedArray</strong> matrices as assays <code>writeH5AD()</code> will
 write them to disk using the <strong>rhdf5</strong> package directly rather than via
 Python to avoid instantiating them in memory. However there is currently
 an issue which prevents this being done for sparse <strong>DelayedArray</strong> matrices.</p>
@@ -184,33 +198,32 @@ file.</p>
 
     <div id="examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Using the Zeisel brain dataset</span>
-<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"scRNAseq"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scRNAseq</span><span class="op">)</span>
-    <span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scRNAseq/man/ZeiselBrainData.html" class="external-link">ZeiselBrainData</a></span><span class="op">(</span><span class="op">)</span>
-
-    <span class="co"># Writing to a H5AD file</span>
-    <span class="va">temp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".h5ad"</span><span class="op">)</span>
-    <span class="fu"><a href="../reference/writeH5AD.html">writeH5AD</a></span><span class="op">(</span><span class="va">sce</span>, <span class="va">temp</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="co">#&gt; snapshotDate(): 2021-10-18</span>
-<span class="co">#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span>
-<span class="co">#&gt; downloading 1 resources</span>
-<span class="co">#&gt; retrieving 1 resource</span>
-<span class="co">#&gt; loading from cache</span>
-<span class="co">#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span>
-<span class="co">#&gt; downloading 1 resources</span>
-<span class="co">#&gt; retrieving 1 resource</span>
-<span class="co">#&gt; loading from cache</span>
-<span class="co">#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span>
-<span class="co">#&gt; downloading 1 resources</span>
-<span class="co">#&gt; retrieving 1 resource</span>
-<span class="co">#&gt; loading from cache</span>
-<span class="co">#&gt; snapshotDate(): 2021-10-18</span>
-<span class="co">#&gt; see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span>
-<span class="co">#&gt; loading from cache</span>
-<span class="co">#&gt; ℹ Using the 'counts' assay as the X matrix</span>
+    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Using the Zeisel brain dataset</span></span>
+<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"scRNAseq"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in">    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">scRNAseq</span><span class="op">)</span></span>
+<span class="r-in">    <span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/scRNAseq/man/ZeiselBrainData.html" class="external-link">ZeiselBrainData</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in">    <span class="co"># Writing to a H5AD file</span></span>
+<span class="r-in">    <span class="va">temp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".h5ad"</span><span class="op">)</span></span>
+<span class="r-in">    <span class="fu">writeH5AD</span><span class="op">(</span><span class="va">sce</span>, <span class="va">temp</span><span class="op">)</span></span>
+<span class="r-in"><span class="op">}</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> snapshotDate(): 2021-10-18</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> downloading 1 resources</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> retrieving 1 resource</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> loading from cache</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> downloading 1 resources</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> retrieving 1 resource</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> loading from cache</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> downloading 1 resources</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> retrieving 1 resource</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> loading from cache</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> snapshotDate(): 2021-10-18</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> see ?scRNAseq and browseVignettes('scRNAseq') for documentation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> loading from cache</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using the <span style="color: #00BB00;">'counts'</span> assay as the <span style="color: #00BB00;">X matrix</span></span>
 </code></pre></div>
     </div>
   </div>
