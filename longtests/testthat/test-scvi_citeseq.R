@@ -7,8 +7,8 @@ outfile <- tempfile(fileext = ".h5ad")
 
 names <- list(
     assays = c("X", "counts", "denoised_rna"),
-    colData = c("n_genes", "percent_mito", "n_counts", "batch", "_scvi_batch",
-                "_scvi_labels", "_scvi_local_l_mean", "_scvi_local_l_var",
+    colData = c("n_genes", "percent_mito", "n_counts", "batch", "X_scvi_batch",
+                "X_scvi_labels", "X_scvi_local_l_mean", "X_scvi_local_l_var",
                 "leiden_totalVI"),
     rowData = c("highly_variable", "highly_variable_rank", "means", "variances",
                 "variances_norm", "highly_variable_nbatches"),

@@ -2,6 +2,12 @@
 
 * Bioconductor 3.15, April 2022
 
+## zellkonverter 1.5.1 (2022-03-21)
+
+* Modify how Pandas DataFrames are converted to R
+  * Columns should now use R approved names with a warning when changes are
+    made
+
 ## zellkonverter 1.5.0 (2021-10-27)
 
 * Bioconductor 3.15 devel

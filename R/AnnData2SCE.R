@@ -494,14 +494,33 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                 "object: ", paste(missing, collapse = ", "),
                 call. = FALSE
             )
-        }
-        df <- make_zero_col_DFrame(nrow(adata_df))
-        for (col in select) {
-            df[[col]] <- adata_df[[col]]
+            select <- setdiff(select, missing)
         }
     } else {
-        df <- DataFrame(adata_df)
+       select <- colnames(adata_df)
     }
+
+    df <- DataFrame(adata_df[, select, drop = FALSE])
+
+    is_modified <- colnames(df) != select
+    if (any(is_modified)) {
+        modifications <- paste(
+            select[is_modified],
+            "->",
+            colnames(df)[is_modified]
+        )
+        .ui_warn(paste(
+            "The names of these selected {.field {slot_name}} columns have",
+            "been modified to match R conventions: {.field {modifications}}"
+        ))
+        warning(
+            "The names of these selected ", slot_name, " colnames have been ",
+            "modified to match R conventions: ",
+            paste(modifications, collapse = ", "),
+            call. = FALSE
+        )
+    }
+
     cli::cli_progress_done()
 
     return(df)
