@@ -2,6 +2,27 @@
 
 * Bioconductor 3.15, April 2022
 
+## zellkonverter 1.5.2 (2022-04-17)
+
+* Update the default Python environment to use **anndata** v0.8.0
+    * **anndata** 0.8.0
+    * **h5py** 3.6.0
+    * **hdf5** 1.12.1
+    * **natsort** 8.1.0
+    * **numpy** 1.22.3
+    * **packaging** 21.3
+    * **pandas** 1.4.2
+    * **python** 3.8.13
+    * **scipy** 1.8.0
+    * **sqlite** 3.38.2
+* Add options to choose Python environments with different versions of
+  **anndata**
+  * To facilitate this `zellkonverterAnnDataEnv()` and `AnnDataDependencies()`
+    are new functions rather than variables
+  * Added a new `.AnnDataVersions` variable which stores the available
+    **anndata** versions
+  * Updates to the vignette and function documentation explainging this option
+
 ## zellkonverter 1.5.1 (2022-03-21)
 
 * Modify how Pandas DataFrames are converted to R

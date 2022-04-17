@@ -10,6 +10,7 @@ writeH5AD(
   X_name = NULL,
   skip_assays = FALSE,
   compression = c("none", "gzip", "lzf"),
+  version = NULL,
   verbose = NULL,
   ...
 )
@@ -26,6 +27,10 @@ AnnData object. If \code{NULL}, the first assay of \code{sce} will be used by de
 be ignored when writing to \code{file}.}
 
 \item{compression}{Type of compression when writing the new \code{.h5ad} file.}
+
+\item{version}{A string giving the version of the \strong{anndata} Python library
+to use. Allowed values are available in \code{.AnnDataVersions}. By default the
+latest version is used.}
 
 \item{verbose}{Logical scalar indicating whether to print progress messages.
 If \code{NULL} uses \code{getOption("zellkonverter.verbose")}.}
@@ -67,14 +72,6 @@ A \code{NULL} is invisibly returned.
 Write a H5AD file from a \linkS4class{SingleCellExperiment} object.
 }
 \details{
-\subsection{Environment}{
-
-When first run, this function will instantiate a conda environment
-containing all of the necessary dependencies. This will not be performed on
-any subsequent run or if any other \strong{zellkonverter} function has been run
-prior to this one.
-}
-
 \subsection{Skipping assays}{
 
 Setting \code{skip_assays = TRUE} can occasionally be useful if the matrices in
@@ -100,6 +97,12 @@ and \code{colData(sce)} which may change type when the \code{.h5ad} file is read
 into R.
 }
 
+}
+
+\subsection{Environment}{
+
+See \link{AnnData-Environment} for more details on \strong{zellkonverter} Python
+environments.
 }
 }
 \examples{

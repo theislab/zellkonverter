@@ -9,18 +9,14 @@
 #' @param skip_assays Logical scalar indicating whether assay matrices should
 #' be ignored when writing to `file`.
 #' @param compression Type of compression when writing the new `.h5ad` file.
+#' @param version A string giving the version of the **anndata** Python library
+#' to use. Allowed values are available in `.AnnDataVersions`. By default the
+#' latest version is used.
 #' @param verbose Logical scalar indicating whether to print progress messages.
 #' If `NULL` uses `getOption("zellkonverter.verbose")`.
 #' @inheritDotParams SCE2AnnData
 #'
 #' @details
-#'
-#' ## Environment
-#'
-#' When first run, this function will instantiate a conda environment
-#' containing all of the necessary dependencies. This will not be performed on
-#' any subsequent run or if any other **zellkonverter** function has been run
-#' prior to this one.
 #'
 #' ## Skipping assays
 #'
@@ -44,6 +40,11 @@
 #' factors when saving `.h5ad` files. This can effect columns of `rowData(sce)`
 #' and `colData(sce)` which may change type when the `.h5ad` file is read back
 #' into R.
+#'
+#' ## Environment
+#'
+#' See [AnnData-Environment] for more details on **zellkonverter** Python
+#' environments.
 #'
 #' @return A `NULL` is invisibly returned.
 #'
@@ -72,8 +73,9 @@
 #' @importFrom Matrix sparseMatrix
 #' @importFrom DelayedArray is_sparse
 writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
-                      compression = c("none", "gzip", "lzf"), verbose = NULL,
-                      ...) {
+                      compression = c("none", "gzip", "lzf"), version = NULL,
+                      verbose = NULL,...) {
+
     compression <- match.arg(compression)
 
     if (compression == "none") {
@@ -92,9 +94,11 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
         }
     }
 
+    env <- zellkonverterAnnDataEnv(version)
+
     file <- path.expand(file)
     basiliskRun(
-        env = zellkonverterAnnDataEnv,
+        env = env,
         fun = .H5ADwriter,
         sce = sce,
         file = file,

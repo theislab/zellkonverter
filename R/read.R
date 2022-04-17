@@ -10,6 +10,9 @@
 #' @param reader Which HDF5 reader to use. Either `"python"` for reading with
 #' the **anndata** Python package via **reticulate** or `"R"` for
 #' **zellkonverter**'s native R reader.
+#' @param version A string giving the version of the **anndata** Python library
+#' to use. Allowed values are available in `.AnnDataVersions`. By default the
+#' latest version is used.
 #' @param verbose Logical scalar indicating whether to print progress messages.
 #' If `NULL` uses `getOption("zellkonverter.verbose")`.
 #' @inheritDotParams AnnData2SCE -adata -hdf5_backed
@@ -19,15 +22,13 @@
 #' represented on machines with little memory. However, this comes at the cost
 #' of access speed as data needs to be fetched from the HDF5 file upon request.
 #'
-#' When first run, this function will instantiate a conda environment
-#' containing all of the necessary dependencies. This will not be performed on
-#' any subsequent run or if any other **zellkonverter** function has been run
-#' prior to this one.
-#'
 #' Setting `reader = "R"` will use an experimental native R reader instead of
 #' reading the file into Python and converting the result. This avoids the need
 #' for a Python environment and some of the issues with conversion but is still
 #' under development and is likely to return slightly different output.
+#'
+#' See [AnnData-Environment] for more details on **zellkonverter** Python
+#' environments.
 #'
 #' @return A \linkS4class{SingleCellExperiment} object is returned.
 #'
@@ -55,22 +56,29 @@
 #' @export
 #' @importFrom basilisk basiliskRun
 readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
-                     reader = c("python", "R"), verbose = NULL, ...) {
+                     reader = c("python", "R"), version = NULL, verbose = NULL,
+                     ...) {
     file <- path.expand(file)
     reader <- match.arg(reader)
 
-    switch(reader,
-        python = basiliskRun(
-            env = zellkonverterAnnDataEnv,
+    if (reader == "python") {
+        env <- zellkonverterAnnDataEnv(version)
+
+        sce <- basiliskRun(
+            env = env,
             fun = .H5ADreader,
             file = file,
             X_name = X_name,
             backed = use_hdf5,
             verbose = verbose,
             ...
-        ),
-        R = .native_reader(file, backed = use_hdf5, verbose = verbose)
-    )
+        )
+
+    } else if (reader == "R") {
+        sce <- .native_reader(file, backed = use_hdf5, verbose = verbose)
+    }
+
+    return(sce)
 }
 
 #' @importFrom reticulate import

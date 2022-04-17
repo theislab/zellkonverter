@@ -55,7 +55,8 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         ))
         X <- fake_mat <- .make_fake_mat(rev(dim(sce)))
     }
-    adata <- anndata$AnnData(X = X)
+    X <- reticulate::r_to_py(X)
+    adata <- anndata$AnnData(X = X, dtype = X$dtype)
     cli::cli_progress_done()
 
     assay_names <- assayNames(sce)

@@ -72,7 +72,7 @@
 #'
 #'         # Convert back to an SCE:
 #'         zellkonverter::AnnData2SCE(adata)
-#'     }, env = zellkonverterAnnDataEnv, sce = seger)
+#'     }, env = zellkonverterAnnDataEnv(), sce = seger)
 #' }
 #' @name AnnData-Conversion
 #' @rdname AnnData-Conversion

@@ -5,7 +5,7 @@ author:
   email: luke@lazappi.id.au
 - name: Aaron Lun
   email: infinite.monkeys.with.keyboards@gmail.com
-date: "Revised: 19 October 2021"
+date: "Revised: 17 April 2022"
 output:
   BiocStyle::html_document:
     toc_float: true
@@ -86,15 +86,22 @@ roundtrip <- basiliskRun(fun = function(sce) {
 
      # Convert back to an SCE:
      AnnData2SCE(adata)
-}, env = zellkonverterAnnDataEnv, sce = seger)
+}, env = zellkonverterAnnDataEnv(), sce = seger)
 ```
 
 Package developers can guarantee that they are using the same versions of Python
-packages as `r Biocpkg("zellkonverter")` by using the `.AnnDataDependencies`
-variable to set up their Python environments.
+packages as `r Biocpkg("zellkonverter")` by using the `AnnDataDependencies()`
+function to set up their Python environments.
 
 ```{r anndata-deps}
-.AnnDataDependencies
+AnnDataDependencies()
+```
+
+This function can also be used to return dependencies for environments using
+older versions of _anndata_.
+
+```{r anndata-deps-old}
+AnnDataDependencies(version = "0.7.6")
 ```
 
 Progress messages

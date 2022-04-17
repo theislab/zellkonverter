@@ -3,29 +3,60 @@
 \docType{data}
 \name{AnnData-Environment}
 \alias{AnnData-Environment}
-\alias{.AnnDataDependencies}
+\alias{.AnnDataVersions}
+\alias{AnnDataDependencies}
 \alias{zellkonverterAnnDataEnv}
 \title{AnnData environment}
 \format{
-A character vector containing the pinned versions of all Python packages in
-\code{zellkonverterAnnDataEnv}.
-
-A \code{\link[basilisk:BasiliskEnvironment-class]{basilisk::BasiliskEnvironment()}} containing \strong{zellkonverter}'s AnnData
-Python environment.
+For \code{.AnnDataVersions} a character vector containing allowed \strong{anndata}
+version strings.
 }
 \usage{
-.AnnDataDependencies
+.AnnDataVersions
 
-zellkonverterAnnDataEnv
+AnnDataDependencies(version = .AnnDataVersions)
+
+zellkonverterAnnDataEnv(version = .AnnDataVersions)
+}
+\arguments{
+\item{version}{A string giving the version of the \strong{anndata} Python library
+to use. Allowed values are available in \code{.AnnDataVersions}. By default the
+latest version is used.}
+}
+\value{
+For \code{AnnDataDependencies} a character vector containing the pinned versions
+of all Python packages to be used by \code{zellkonverterAnnDataEnv()}.
+
+For \code{zellkonverterAnnDataEnv} a \code{\link[basilisk:BasiliskEnvironment-class]{basilisk::BasiliskEnvironment()}} containing
+\strong{zellkonverter}'s AnnData Python environment.
 }
 \description{
 The Python environment used by \strong{zellkonverter} for interfacing with the
 \strong{anndata} Python library (and H5AD files) is described by the dependencies
-in \code{.AnnDataDependencies}. The \code{zellkonverterAnnDataEnv} variable is the
-\code{\link[basilisk:BasiliskEnvironment-class]{basilisk::BasiliskEnvironment()}} used by \strong{zellkonverter}.
+in returned by \code{AnnDataDependencies()}. The \code{zellkonverterAnnDataEnv()}
+functions returns the \code{\link[basilisk:BasiliskEnvironment-class]{basilisk::BasiliskEnvironment()}} containing these
+dependencies used by \strong{zellkonverter}. Allowed versions of \strong{anndata} are
+available in \code{.AnnDataVersions}.
 }
 \details{
-The \code{.AnnDataDependencies} variable is exposed for use by other package
+\subsection{Using Python environments}{
+
+When a \strong{zellkonverter} is first run a conda environment containing all of
+the necessary dependencies for that version with be instantiated. This will
+not be performed on any subsequent run or if any other \strong{zellkonverter}
+function has been run prior with the same environment version.
+
+By default the \strong{zellkonverter} conda environment will become the shared R
+Python environment if one does not already exist. When one does exist (for
+example when a \strong{zellkonverter} function has already been run using a
+a different environment version) then a separate environment will be used.
+See \code{\link[basilisk:basiliskOptions]{basilisk::setBasiliskShared()}} for more information on this behaviour.
+Note the when the environment is not shared progress messages are lost.
+}
+
+\subsection{Development}{
+
+The \code{AnnDataDependencies()} function is exposed for use by other package
 developers who want an easy way to define the dependencies required for
 creating a Python environment to work with AnnData objects, most typically
 within a \strong{basilisk} context. For example, we can simply combine this
@@ -33,15 +64,19 @@ vector with additional dependencies to create a \strong{basilisk} environment wi
 Python package versions that are consistent with those in \strong{zellkonverter}.
 
 If you want to run code in the exact environment used by \strong{zellkonverter}
-this can be done using \code{zellkonverterAnnDataEnv} in combination with
+this can be done using \code{zellkonverterAnnDataEnv()} in combination with
 \code{\link[basilisk:basiliskStart]{basilisk::basiliskStart()}} and/or \code{\link[basilisk:basiliskStart]{basilisk::basiliskRun()}}. Please refer to
 the \strong{basilisk} documentation for more information on using these
 environments.
 }
+}
 \examples{
-.AnnDataDependencies
+.AnnDataVersions
 
-cl <- basilisk::basiliskStart(zellkonverterAnnDataEnv)
+AnnDataDependencies()
+AnnDataDependencies(version = "0.7.6")
+
+cl <- basilisk::basiliskStart(zellkonverterAnnDataEnv())
 anndata <- reticulate::import("anndata")
 basilisk::basiliskStop(cl)
 }

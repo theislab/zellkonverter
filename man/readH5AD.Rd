@@ -9,6 +9,7 @@ readH5AD(
   X_name = NULL,
   use_hdf5 = FALSE,
   reader = c("python", "R"),
+  version = NULL,
   verbose = NULL,
   ...
 )
@@ -25,6 +26,10 @@ loaded as HDF5-based matrices from the \strong{HDF5Array} package.}
 \item{reader}{Which HDF5 reader to use. Either \code{"python"} for reading with
 the \strong{anndata} Python package via \strong{reticulate} or \code{"R"} for
 \strong{zellkonverter}'s native R reader.}
+
+\item{version}{A string giving the version of the \strong{anndata} Python library
+to use. Allowed values are available in \code{.AnnDataVersions}. By default the
+latest version is used.}
 
 \item{verbose}{Logical scalar indicating whether to print progress messages.
 If \code{NULL} uses \code{getOption("zellkonverter.verbose")}.}
@@ -84,15 +89,13 @@ Setting \code{use_hdf5 = TRUE} allows for very large datasets to be efficiently
 represented on machines with little memory. However, this comes at the cost
 of access speed as data needs to be fetched from the HDF5 file upon request.
 
-When first run, this function will instantiate a conda environment
-containing all of the necessary dependencies. This will not be performed on
-any subsequent run or if any other \strong{zellkonverter} function has been run
-prior to this one.
-
 Setting \code{reader = "R"} will use an experimental native R reader instead of
 reading the file into Python and converting the result. This avoids the need
 for a Python environment and some of the issues with conversion but is still
 under development and is likely to return slightly different output.
+
+See \link{AnnData-Environment} for more details on \strong{zellkonverter} Python
+environments.
 }
 \examples{
 library(SummarizedExperiment)
