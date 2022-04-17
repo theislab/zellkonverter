@@ -21,7 +21,7 @@
     are new functions rather than variables
   * Added a new `.AnnDataVersions` variable which stores the available
     **anndata** versions
-  * Updates to the vignette and function documentation explainging this option
+  * Updates to the vignette and function documentation explaining this option
 
 ## zellkonverter 1.5.1 (2022-03-21)
 
