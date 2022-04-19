@@ -2,6 +2,12 @@
 
 * Bioconductor 3.15, April 2022
 
+## zellkonverter 1.5.3 (2022-04-19)
+
+* Reduce **scipy** version to 1.7.3
+  * **scipy** >= 1.8.0 is incompatible with **{reticulate}** <= 1.24 (see
+    https://github.com/rstudio/reticulate/pull/1173)
+
 ## zellkonverter 1.5.2 (2022-04-17)
 
 * Update the default Python environment to use **anndata** v0.8.0
