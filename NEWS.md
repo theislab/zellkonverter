@@ -7,6 +7,7 @@
 * Reduce **scipy** version to 1.7.3
   * **scipy** >= 1.8.0 is incompatible with **{reticulate}** <= 1.24 (see
     https://github.com/rstudio/reticulate/pull/1173)
+* Add GTEX 8 tissues dataset to long tests (see #58)
 
 ## zellkonverter 1.5.2 (2022-04-17)
 
