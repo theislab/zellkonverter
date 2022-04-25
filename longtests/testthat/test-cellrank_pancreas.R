@@ -41,7 +41,10 @@ names <- list(
 missing <- list()
 
 test_that("Reading H5AD works", {
-    sce <- readH5AD(file)
+    expect_warning(
+        {sce <- readH5AD(file)},
+        "The names of these selected var columns have been modified"
+    )
     expect_s4_class(sce, "SingleCellExperiment")
 })
 

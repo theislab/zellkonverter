@@ -30,11 +30,11 @@ names <- list(
         "Previous.symbols", "Alias.symbols", "gene_include", "n_cells"
     ),
     metadata = c(
-        "Broad cell type (numbers)_colors", "Broad cell type numbers_colors",
-        "Broad cell type_colors", "Broad cell type_logregcv_vae_colors",
-        "Broad cell type_sizes", "Granular cell type_colors",
-        "Participant ID_colors", "Sex_colors", "Tissue composition_colors",
-        "Tissue_colors", "dendrogram_['Broad cell type']", "leiden",
+        "Broad.cell.type..numbers._colors", "Broad.cell.type.numbers_colors",
+        "Broad.cell.type_colors", "Broad.cell.type_logregcv_vae_colors",
+        "Broad.cell.type_sizes", "Granular.cell.type_colors",
+        "Participant.ID_colors", "Sex_colors", "Tissue.composition_colors",
+        "Tissue_colors", "dendrogram_..Broad.cell.type..", "leiden",
         "leiden_colors", "leiden_sub_colors", "neighbors", "paga",
         "prep_colors", "tissue_colors", "umap"
     ),
@@ -46,16 +46,17 @@ names <- list(
     colPairs = c("connectivities", "distances")
 )
 
-missing <- list(
-
-)
+missing <- list()
 
 test_that("Reading H5AD works", {
-    sce <- readH5AD(file)
+    expect_warning(
+        {sce <- readH5AD(file)},
+        "The names of these selected uns items have been modified"
+    )
     expect_s4_class(sce, "SingleCellExperiment")
 })
 
-sce <- readH5AD(file)
+sce <- suppressWarnings(readH5AD(file))
 
 test_that("SCE is valid", {
     validateH5ADSCE(sce, names, missing)

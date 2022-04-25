@@ -12,7 +12,7 @@ names <- list(
                 "leiden_totalVI"),
     rowData = c("highly_variable", "highly_variable_rank", "means", "variances",
                 "variances_norm", "highly_variable_nbatches"),
-    metadata = c("_scvi", "hvg", "leiden", "neighbors", "umap"),
+    metadata = c("X_scvi", "hvg", "leiden", "neighbors", "umap"),
     redDim = c("X_totalVI", "X_umap", "denoised_protein",
                "protein_expression", "protein_foreground_prob"),
     colPairs = c("connectivities", "distances")

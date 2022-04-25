@@ -27,7 +27,10 @@ names <- list(
 missing <- list(varm = c("de_res"))
 
 test_that("Reading H5AD works", {
-    sce <- readH5AD(file)
+    expect_warning(
+        {sce <- readH5AD(file)}
+        "conversion failed for the item 'de_res'"
+    )
     expect_s4_class(sce, "SingleCellExperiment")
 })
 
