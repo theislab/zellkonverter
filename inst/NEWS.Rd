@@ -1,6 +1,46 @@
 \name{NEWS}
 \title{News for Package \pkg{zellkonverter}}
 
+\section{Version 1.6.0, Bioconductor 3.15 Release (April 2022)}{
+  \subsection{Major changes}{
+  \itemize{
+    \item{
+      Added support for multiple \bold{basilisk} environments with different
+      \bold{anndata} versions. Users can now specify the environment to use with
+      options in \code{readH5AD()} and \code{writeH5AD()}. To faciliate this
+      some exported objects where converted to functions but this should only
+      effect developers.
+    }
+    \item{
+      Updated the default environment to use \bold{anndata} v0.8.0. This is a
+      major update and files written with v0.8.0 cannot be read by previous
+      \bold{anndata} versions. This was the motivation for supporting multiple
+      environments and users can select the previous environment with
+      \bold{anndata} v0.7.6 if compatibility is required.
+    }
+    \item{
+      Standardise naming in \code{AnnData2SCE()}. Column names of data frames
+      and names of list items will now be modified to match R conventions
+      (according to \code{make.names()}). When this happens a warning will be
+      issued listing the modifications. This makes sure than everything in the
+      created \code{SingleCellExperiment} is accessible.
+    }
+  }}
+  \subsection{Minor changes}{
+  \itemize{
+    \item{
+      Allow \code{data.frame}'s stored in \code{varm} to be converted in
+      \code{SCE2AnnData()}
+    }
+    \item{
+      Minor updates to the vignette and other documentation.
+    }
+    \item{
+      Updates to tests to match the changes above.
+    }
+  }}
+}
+
 \section{Version 1.4.0, Bioconductor 3.14 Release (October 2021)}{
   \itemize{
     \item{
