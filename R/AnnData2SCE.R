@@ -468,6 +468,27 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         cli::cli_progress_done(result = status)
     }
 
+    orig_names <- names(converted_list)
+    names(converted_list) <- make.names(names(converted_list))
+    is_modified <- names(converted_list) != orig_names
+    if (any(is_modified)) {
+        modifications <- paste0(
+            "'", orig_names[is_modified], "'",
+            " -> ",
+            "'", names(converted_list)[is_modified], "'"
+        )
+        .ui_warn(paste(
+            "The names of these selected {.field {parent}} items have",
+            "been modified to match R conventions: {.field {modifications}}"
+        ))
+        warning(
+            "The names of these selected ", parent, " items have been ",
+            "modified to match R conventions: ",
+            paste(modifications, collapse = ", "),
+            call. = FALSE
+        )
+    }
+
     return(converted_list)
 }
 
