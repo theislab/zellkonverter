@@ -3,6 +3,7 @@
 * Bioconductor 3.15, April 2022
 
 * Fix progress messages in `.convert_anndata_df()`
+* Allow `data.frames` in `varm` in `SCE2AnnData()`
 
 ## zellkonverter 1.5.3 (2022-04-19)
 

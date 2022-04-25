@@ -122,6 +122,11 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
                 varm_list <- varm_list[varm]
             }
 
+            # Make sure var names are set in case varm contains a data.frame
+            if (!is.null(rownames(sce))) {
+                adata$var_names <- rownames(sce)
+            }
+
             adata$varm <- varm_list
             cli::cli_progress_done()
         }
