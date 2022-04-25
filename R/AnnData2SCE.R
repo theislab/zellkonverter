@@ -473,6 +473,8 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
 
 .convert_anndata_df <- function(adata_df, slot_name, to_name, select = TRUE) {
 
+    verbose <- parent.frame()$verbose
+
     if (isFALSE(select)) {
         .ui_info("Skipping conversion of {.field {slot_name}}")
         return(make_zero_col_DFrame(nrow(adata_df)))
@@ -504,17 +506,17 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
 
     is_modified <- colnames(df) != select
     if (any(is_modified)) {
-        modifications <- paste(
-            select[is_modified],
-            "->",
-            colnames(df)[is_modified]
+        modifications <- paste0(
+            "'", select[is_modified], "'",
+            " -> ",
+            "'", colnames(df)[is_modified], "'"
         )
         .ui_warn(paste(
             "The names of these selected {.field {slot_name}} columns have",
             "been modified to match R conventions: {.field {modifications}}"
         ))
         warning(
-            "The names of these selected ", slot_name, " colnames have been ",
+            "The names of these selected ", slot_name, " columns have been ",
             "modified to match R conventions: ",
             paste(modifications, collapse = ", "),
             call. = FALSE

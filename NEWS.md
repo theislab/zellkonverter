@@ -2,6 +2,8 @@
 
 * Bioconductor 3.15, April 2022
 
+* Fix progress messages in `.convert_anndata_df()`
+
 ## zellkonverter 1.5.3 (2022-04-19)
 
 * Reduce **scipy** version to 1.7.3
