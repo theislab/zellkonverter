@@ -2,6 +2,10 @@
 
 * Bioconductor 3.15, April 2022
 
+## zellkonverter 1.6.1 (2022-05-17)
+
+* Fix bug in long tests
+
 ## zellkonverter 1.5.4 (2022-04-25)
 
 * Fix progress messages in `.convert_anndata_df()`
