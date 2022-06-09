@@ -2,6 +2,10 @@
 
 * Bioconductor 3.15, April 2022
 
+## zellkonverter 1.6.2 (2022-06-09)
+
+* Instantiate environments for `basilisk::configureBasiliskEnv()` (Fixes #66)
+
 ## zellkonverter 1.6.1 (2022-05-17)
 
 * Fix bug in long tests
