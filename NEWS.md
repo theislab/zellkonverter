@@ -2,6 +2,11 @@
 
 * Bioconductor 3.16, October 2022
 
+## zellkonverter 1.7.2 (2022-06-09)
+
+* Instantiate environments for `basilisk::configureBasiliskEnv()` (Fixes #66)
+* Allow missing obs/var names when `use_hdf5 = TRUE` (Fixes #65)
+
 ## zellkonverter 1.7.1 (2022-05-17)
 
 * Fix bug in long tests
@@ -13,6 +18,11 @@
 # zellkonverter 1.6.0 (2022-04-27)
 
 * Bioconductor 3.15, April 2022
+
+## zellkonverter 1.6.2 (2022-06-09)
+
+* Instantiate environments for `basilisk::configureBasiliskEnv()` (Fixes #66)
+* Allow missing obs/var names when `use_hdf5 = TRUE` (Fixes #65)
 
 ## zellkonverter 1.6.1 (2022-05-17)
 

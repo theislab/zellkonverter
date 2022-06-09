@@ -38,29 +38,7 @@ If \code{NULL} uses \code{getOption("zellkonverter.verbose")}.}
 \item{...}{
   Arguments passed on to \code{\link[=SCE2AnnData]{SCE2AnnData}}
   \describe{
-    \item{\code{varm}}{Arguments specifying how
-these slots are converted. If \code{TRUE} everything in that slot is converted, if
-\code{FALSE} nothing is converted and if a character vector only those items or
-columns are converted.}
-    \item{\code{assays}}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
-that slot is converted, if \code{FALSE} nothing is converted and if a character
-vector only those items or columns are converted.}
-    \item{\code{colData}}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
-that slot is converted, if \code{FALSE} nothing is converted and if a character
-vector only those items or columns are converted.}
-    \item{\code{rowData}}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
-that slot is converted, if \code{FALSE} nothing is converted and if a character
-vector only those items or columns are converted.}
-    \item{\code{reducedDims}}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
-that slot is converted, if \code{FALSE} nothing is converted and if a character
-vector only those items or columns are converted.}
-    \item{\code{metadata}}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
-that slot is converted, if \code{FALSE} nothing is converted and if a character
-vector only those items or columns are converted.}
-    \item{\code{colPairs}}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
-that slot is converted, if \code{FALSE} nothing is converted and if a character
-vector only those items or columns are converted.}
-    \item{\code{rowPairs}}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
+    \item{\code{assays,colData,rowData,reducedDims,metadata,colPairs,rowPairs}}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
 that slot is converted, if \code{FALSE} nothing is converted and if a character
 vector only those items or columns are converted.}
   }}

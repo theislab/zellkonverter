@@ -112,6 +112,7 @@ AnnDataDependencies <- function(version = .AnnDataVersions) {
 #' For `zellkonverterAnnDataEnv` a [basilisk::BasiliskEnvironment()] containing
 #'  **zellkonverter**'s AnnData Python environment.
 #'
+#' @include ui.R
 #' @export
 zellkonverterAnnDataEnv <- function(version = .AnnDataVersions) {
 
@@ -126,3 +127,9 @@ zellkonverterAnnDataEnv <- function(version = .AnnDataVersions) {
         packages = AnnDataDependencies(version)
     )
 }
+
+# Instantiate environments so they can be found by
+# `basilisk::configureBasiliskEnv()` when `BASILISK_USE_SYSTEM_DIR=1`.
+# See https://github.com/theislab/zellkonverter/issues/66.
+anndata_env_0_7_6 <- zellkonverterAnnDataEnv(version = "0.7.6")
+anndata_env_0_8_0 <- zellkonverterAnnDataEnv(version = "0.8.0")
