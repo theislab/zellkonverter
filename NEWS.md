@@ -5,6 +5,7 @@
 ## zellkonverter 1.6.2 (2022-06-09)
 
 * Instantiate environments for `basilisk::configureBasiliskEnv()` (Fixes #66)
+* Allow missing obs/var names when `use_hdf5 = TRUE` (Fixes #65)
 
 ## zellkonverter 1.6.1 (2022-05-17)
 

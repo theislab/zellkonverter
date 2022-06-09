@@ -136,8 +136,17 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     )
 
     x_mat <- x_out$mat
-    colnames(x_mat) <- adata$obs_names$to_list()
-    rownames(x_mat) <- adata$var_names$to_list()
+    obs_names <- adata$obs_names$to_list()
+    var_names <- adata$var_names$to_list()
+    # DelayedArray won't accept an empty vector for dimnames so set to NULL
+    if (length(obs_names) == 0) {
+        obs_names <- NULL
+    }
+    if (length(var_names) == 0) {
+        var_names <- NULL
+    }
+    colnames(x_mat) <- obs_names
+    rownames(x_mat) <- var_names
     skipped_x <- x_out$skipped
 
     if (is.null(X_name)) {
