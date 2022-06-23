@@ -118,9 +118,6 @@ zellkonverterAnnDataEnv <- function(version = .AnnDataVersions) {
 
     version <- match.arg(version)
 
-    verbose <- .get_verbose(parent.frame())
-    .ui_info("Using {.field anndata} version {.field {version}}")
-
     basilisk::BasiliskEnvironment(
         envname = paste0("zellkonverterAnnDataEnv-", version),
         pkgname = "zellkonverter",
@@ -131,5 +128,5 @@ zellkonverterAnnDataEnv <- function(version = .AnnDataVersions) {
 # Instantiate environments so they can be found by
 # `basilisk::configureBasiliskEnv()` when `BASILISK_USE_SYSTEM_DIR=1`.
 # See https://github.com/theislab/zellkonverter/issues/66.
-anndata_env_0_7_6 <- zellkonverterAnnDataEnv(version = "0.7.6")
-anndata_env_0_8_0 <- zellkonverterAnnDataEnv(version = "0.8.0")
+anndata_env_0.7.6 <- zellkonverterAnnDataEnv(version = "0.7.6")
+anndata_env_0.8.0 <- zellkonverterAnnDataEnv(version = "0.8.0")

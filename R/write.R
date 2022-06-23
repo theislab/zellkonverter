@@ -95,6 +95,8 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
     }
 
     env <- zellkonverterAnnDataEnv(version)
+    version <- gsub("zellkonverterAnnDataEnv-", "", slot(env, "envname"))
+    .ui_info("Using {.field anndata} version {.field {version}}")
 
     file <- path.expand(file)
     basiliskRun(

@@ -62,7 +62,10 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
     reader <- match.arg(reader)
 
     if (reader == "python") {
+        .ui_info("Using the {.field Python} reader")
         env <- zellkonverterAnnDataEnv(version)
+        version <- gsub("zellkonverterAnnDataEnv-", "", slot(env, "envname"))
+        .ui_info("Using {.field anndata} version {.field {version}}")
 
         sce <- basiliskRun(
             env = env,
@@ -83,7 +86,6 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
 
 #' @importFrom reticulate import
 .H5ADreader <- function(file, X_name = NULL, backed = FALSE, verbose = NULL, ...) {
-    .ui_info("Using the {.field Python} reader")
     anndata <- import("anndata")
     .ui_step(
         "Reading {.file {.trim_path(file)}}",
