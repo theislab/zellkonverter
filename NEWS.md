@@ -2,6 +2,10 @@
 
 * Bioconductor 3.16, October 2022
 
+## zellkonverter 1.7.3 (2022-06-23)
+
+* Move verbose from `zellkonverterAnnDataEnv()` (Fixes #66)
+
 ## zellkonverter 1.7.2 (2022-06-09)
 
 * Instantiate environments for `basilisk::configureBasiliskEnv()` (Fixes #66)
@@ -18,6 +22,10 @@
 # zellkonverter 1.6.0 (2022-04-27)
 
 * Bioconductor 3.15, April 2022
+
+## zellkonverter 1.6.3 (2022-06-23)
+
+* Move verbose from `zellkonverterAnnDataEnv()` (Fixes #66)
 
 ## zellkonverter 1.6.2 (2022-06-09)
 
