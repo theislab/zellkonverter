@@ -2,6 +2,10 @@
 
 * Bioconductor 3.16, October 2022
 
+## zellkonverter 1.7.4 (2022-08-17)
+
+* Minor changes for compatibility with the upcoming **{Matrix}** 1.4-2 release
+
 ## zellkonverter 1.7.3 (2022-06-23)
 
 * Move verbose from `zellkonverterAnnDataEnv()` (Fixes #66)
@@ -22,6 +26,10 @@
 # zellkonverter 1.6.0 (2022-04-27)
 
 * Bioconductor 3.15, April 2022
+
+## zellkonverter 1.6.4 (2022-08-17)
+
+* Minor changes for compatibility with the upcoming **{Matrix}** 1.4-2 release
 
 ## zellkonverter 1.6.3 (2022-06-23)
 

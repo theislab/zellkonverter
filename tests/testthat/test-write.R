@@ -69,7 +69,7 @@ test_that("writeH5AD works as expected with version 0.7.6", {
 test_that("writeH5AD works as expected with sparse matrices", {
     sparse_sce <- sce
     mat <- assay(sparse_sce)
-    counts(sparse_sce) <- as(mat, "dgCMatrix")
+    counts(sparse_sce) <- as(mat, "CsparseMatrix")
     logcounts(sparse_sce) <- counts(sparse_sce) * 10
     assay(sparse_sce, "random") <- mat # throwing in a dense matrix in a mixture.
 
@@ -135,7 +135,7 @@ test_that("writeH5AD DelayedArray X works", {
 
 test_that("writeH5AD sparse DelayedArray X works", {
     delayed_sce <- sce
-    sparse_counts <- as(counts(delayed_sce), "dgCMatrix")
+    sparse_counts <- as(counts(delayed_sce), "CsparseMatrix")
     counts(delayed_sce) <- DelayedArray::DelayedArray(sparse_counts)
 
     temp <- tempfile(fileext = ".h5ad")
