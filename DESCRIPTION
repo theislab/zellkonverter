@@ -1,7 +1,7 @@
 Package: zellkonverter
 Title: Conversion Between scRNA-seq Objects
-Version: 1.6.3
-Date: 2022-06-23
+Version: 1.6.4
+Date: 2022-08-17
 Authors@R: 
     c(person(given = "Luke",
              family = "Zappia",
@@ -58,7 +58,7 @@ BugReports: https://github.com/theislab/zellkonverter/issues
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Language: en-GB
 StagedInstall: no
 VignetteBuilder: knitr

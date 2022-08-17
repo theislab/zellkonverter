@@ -35,14 +35,14 @@ test_that("Reading H5AD works with HDF5Arrays", {
 
 test_that("Reading H5AD works with a mixture of sparse and HDF5Arrays", {
     sce <- readH5AD(file)
-    assay(sce, "more") <- as(assay(sce, "X"), "dgCMatrix")
+    assay(sce, "more") <- as(assay(sce, "X"), "CsparseMatrix")
 
     temp <- tempfile(fileext = ".h5ad")
     writeH5AD(sce, temp)
 
     backed <- readH5AD(temp, use_hdf5 = TRUE)
     expect_s4_class(DelayedArray::seed(assay(backed)), "HDF5ArraySeed")
-    expect_s4_class(assay(backed, "more"), "dgCMatrix")
+    expect_s4_class(assay(backed, "more"), "CsparseMatrix")
 })
 
 test_that("readH5AD works in a separate process", {
