@@ -18,6 +18,14 @@ test_that("Reading H5AD works with version 0.7.6", {
     expect_identical(colnames(colData(sce)), "cell_type")
 })
 
+test_that("Reading H5AD works with verbose=TRUE", {
+    sce <- readH5AD(file, verbose = TRUE)
+    expect_s4_class(sce, "SingleCellExperiment")
+
+    expect_identical(assayNames(sce), "X")
+    expect_identical(colnames(colData(sce)), "cell_type")
+})
+
 test_that("Reading H5AD works with HDF5Arrays", {
     sce <- readH5AD(file, use_hdf5 = TRUE)
     expect_s4_class(sce, "SingleCellExperiment")

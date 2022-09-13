@@ -2,6 +2,11 @@
 
 * Bioconductor 3.15, April 2022
 
+## zellkonverter 1.6.5 (2022-09-13)
+
+* Minor changes for compatibility with **{cli}** v3.4.0
+  * Added tests for `verbose=TRUE` 
+
 ## zellkonverter 1.6.4 (2022-08-17)
 
 * Minor changes for compatibility with the upcoming **{Matrix}** 1.4-2 release
