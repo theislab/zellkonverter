@@ -139,8 +139,8 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
     adata <- SCE2AnnData(sce, X_name = X_name, skip_assays = skip_assays,
                          verbose = verbose, ...)
     .ui_step(
-        "Writing {.file {.trim_path(file)}}",
-        msg_done = "Wrote {.file {.trim_path(file)}}",
+        "Writing {.file { .trim_path(file)} }",
+        msg_done = "Wrote {.file { .trim_path(file)} }",
         spinner = TRUE
     )
     if (!is.null(compression)) {

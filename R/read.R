@@ -89,8 +89,8 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
 .H5ADreader <- function(file, X_name = NULL, backed = FALSE, verbose = NULL, ...) {
     anndata <- import("anndata")
     .ui_step(
-        "Reading {.file {.trim_path(file)}}",
-        msg_done = "Read {.file {.trim_path(file)}}",
+        "Reading {.file { .trim_path(file)} }",
+        msg_done = "Read {.file { .trim_path(file) }}",
         spinner = TRUE
     )
     adata <- anndata$read_h5ad(file, backed = if (backed) "r" else FALSE)
