@@ -2,6 +2,11 @@
 
 * Bioconductor 3.16, October 2022
 
+## zellkonverter 1.7.6 (2022-09-29)
+
+* Pin **python** version to 3.7.12 in **anndata** v0.7.6 environment to match
+  **{basilisk}** changes
+
 ## zellkonverter 1.7.5 (2022-09-13)
 
 * Minor changes for compatibility with **{cli}** v3.4.0

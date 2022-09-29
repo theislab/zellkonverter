@@ -88,6 +88,7 @@ AnnDataDependencies <- function(version = .AnnDataVersions) {
             "numpy==1.20.2",
             "packaging==20.9",
             "pandas==1.2.4",
+            "python==3.7.12",
             "scipy==1.6.3",
             "sqlite==3.35.5"
         ),
