@@ -113,8 +113,10 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     dims <- unlist(adata$shape)
     dims <- rev(dims)
 
+    uns_val <- adata$uns
+    uns_keys <- if (is.list(uns_val)) names(uns_val) else py_builtins$list(uns_val$keys())
     meta_list <- .convert_anndata_slot(
-        adata, "uns", py_builtins$list(adata$uns$keys()), "metadata",
+        adata, "uns", uns_keys, "metadata",
         select = uns
     )
 
