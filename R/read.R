@@ -93,7 +93,7 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
         msg_done = "Read {.file { .trim_path(file) }}",
         spinner = TRUE
     )
-    adata <- anndata$read_h5ad(file, backed = if (backed) "r" else FALSE)
+    adata <- r_to_py_ifneedbe(anndata$read_h5ad(file, backed = if (backed) "r" else FALSE))
     cli::cli_progress_done()
     AnnData2SCE(adata, X_name = X_name, hdf5_backed = backed, verbose = verbose,
                 ...)
