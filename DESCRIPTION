@@ -33,7 +33,8 @@ Imports:
     S4Vectors,
     utils,
     cli
-Suggests: 
+Suggests:
+    anndata,
     covr,
     spelling,
     testthat,

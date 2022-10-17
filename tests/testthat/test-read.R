@@ -1,5 +1,6 @@
 # This tests the readH5AD function (and by implication, SCE2AnnData).
 library(SummarizedExperiment)
+library(anndata) # import to see whether anndata breaks zellkonverter or not
 file <- system.file("extdata", "krumsiek11.h5ad", package = "zellkonverter")
 
 test_that("Reading H5AD works", {
