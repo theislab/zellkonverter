@@ -265,7 +265,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
 
     if (isFALSE(raw)) {
         .ui_info("Skipping conversion of {.field raw}")
-    } else if (is.null(adata$raw)) {
+    } else if (is.null(py_to_r(adata$raw))) {
         .ui_info("{.field raw} is empty and was skipped")
     } else {
         .ui_process("Converting {.field raw} to {.field altExp}")
@@ -279,7 +279,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         )
         colnames(raw_x$mat) <- colnames(output)
 
-        raw_rowData <- .convert_anndata_df(adata$raw$var, "raw var",
+        raw_rowData <- .convert_anndata_df(py_to_r(adata$raw$var), "raw var",
                                            "raw rowData", select = TRUE)
 
         raw_varm_list <- .convert_anndata_slot(
