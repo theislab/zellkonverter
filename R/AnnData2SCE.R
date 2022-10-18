@@ -114,7 +114,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     dims <- rev(dims)
 
     uns_val <- adata$uns
-    uns_keys <- if (is.list(uns_val)) names(uns_val) else py_builtins$list(uns_val$keys())
+    uns_keys <- if (is(uns_val, "python.builtin.object")) py_builtins$list(uns_val$keys()) else names(uns_val)
     meta_list <- .convert_anndata_slot(
         adata, "uns", uns_keys, "metadata",
         select = uns
@@ -138,8 +138,14 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     )
 
     x_mat <- x_out$mat
-    obs_names <- adata$obs_names$to_list()
-    var_names <- adata$var_names$to_list()
+    obs_names <- adata$obs_names
+    if (is(obs_names, "python.builtin.object")) {
+      obs_names <- obs_names$to_list()
+    }
+    var_names <- adata$var_names
+    if (is(var_names, "python.builtin.object")) {
+      var_names <- var_names$to_list()
+    }
     # DelayedArray won't accept an empty vector for dimnames so set to NULL
     if (length(obs_names) == 0) {
         obs_names <- NULL
@@ -230,13 +236,17 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     )
     reddim_list <- lapply(reddim_list, as.matrix)
 
+    varp_val <- adata$varp
+    varp_keys <- if (is(varp_val, "python.builtin.object")) py_builtins$list(varp_val$keys()) else names(varp_val)
     varp_list <- .convert_anndata_slot(
-        adata, "varp", py_builtins$list(adata$varp$keys()), "rowPairs",
+        adata, "varp", varp_keys, "rowPairs",
         select = varp
     )
 
+    obsp_val <- adata$obsp
+    obsp_keys <- if (is(obsp_val, "python.builtin.object")) py_builtins$list(obsp_val$keys()) else names(obsp_val)
     obsp_list <- .convert_anndata_slot(
-        adata, "obsp", py_builtins$list(adata$obsp$keys()), "colPairs",
+        adata, "obsp", obsp_keys, "colPairs",
         select = obsp
     )
 
