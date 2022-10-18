@@ -15,12 +15,12 @@
 #' @export
 #' @importFrom utils capture.output
 #' @importFrom S4Vectors metadata
-#' @importFrom reticulate import r_to_py
+#' @importFrom reticulate import r_to_py py_to_r
 SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
                         rowData = TRUE, varm = TRUE, reducedDims = TRUE,
                         metadata = TRUE, colPairs = TRUE, rowPairs = TRUE,
                         skip_assays = FALSE, verbose = NULL) {
-    anndata <- import("anndata")
+    anndata <- import("anndata", convert = FALSE)
 
     .ui_process(
         "Converting {.field AnnData} to {.field SingleCellExperiment}"
@@ -56,7 +56,7 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         X <- fake_mat <- .make_fake_mat(rev(dim(sce)))
     }
     X <- reticulate::r_to_py(X)
-    adata <- r_to_py_ifneedbe(anndata$AnnData(X = X, dtype = X$dtype))
+    adata <- anndata$AnnData(X = X, dtype = X$dtype)
     cli::cli_progress_done()
 
     assay_names <- assayNames(sce)

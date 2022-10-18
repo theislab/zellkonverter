@@ -110,13 +110,11 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
 
     py_builtins <- import_builtins()
 
-    dims <- unlist(adata$shape)
+    dims <- unlist(py_to_r(adata$shape))
     dims <- rev(dims)
 
-    uns_val <- adata$uns
-    uns_keys <- if (is(uns_val, "python.builtin.object")) py_builtins$list(uns_val$keys()) else names(uns_val)
     meta_list <- .convert_anndata_slot(
-        adata, "uns", uns_keys, "metadata",
+        adata, "uns", py_builtins$list(adata$uns$keys()), "metadata",
         select = uns
     )
 
@@ -133,19 +131,13 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         skip_assays = skip_assays,
         hdf5_backed = hdf5_backed,
         dims = dims,
-        mat = adata$X,
+        mat = py_to_r(adata$X),
         name = "'X' matrix"
     )
 
     x_mat <- x_out$mat
-    obs_names <- adata$obs_names
-    if (is(obs_names, "python.builtin.object")) {
-      obs_names <- obs_names$to_list()
-    }
-    var_names <- adata$var_names
-    if (is(var_names, "python.builtin.object")) {
-      var_names <- var_names$to_list()
-    }
+    obs_names <- py_to_r(adata$obs_names$to_list())
+    var_names <- py_to_r(adata$var_names$to_list())
     # DelayedArray won't accept an empty vector for dimnames so set to NULL
     if (length(obs_names) == 0) {
         obs_names <- NULL
@@ -202,7 +194,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                 skip_assays = skip_assays,
                 hdf5_backed = hdf5_backed,
                 dims = dims,
-                mat = adata$layers$get(layer_name),
+                mat = py_to_r(adata$layers$get(layer_name)),
                 name = sprintf("'%s' layer matrix", layer_name)
             )
             if (layer_out$skipped) {
@@ -214,17 +206,17 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         .ui_process_done()
     }
 
-    row_data <- .convert_anndata_df(adata$var, "var", "rowData", select = var)
+    row_data <- .convert_anndata_df(py_to_r(adata$var), "var", "rowData", select = var)
 
-    col_data <- .convert_anndata_df(adata$obs, "obs", "colData", select = obs)
+    col_data <- .convert_anndata_df(py_to_r(adata$obs), "obs", "colData", select = obs)
 
     varm_list <- .convert_anndata_slot(
-        adata, "varm", adata$varm_keys(), "rowData$varm", select = varm
+        adata, "varm", py_to_r(adata$varm_keys()), "rowData$varm", select = varm
     )
 
     if (length(varm_list) > 0) {
         # Create an empty DataFrame with the correct number of rows
-        varm_df <- make_zero_col_DFrame(adata$n_vars)
+        varm_df <- make_zero_col_DFrame(py_to_r(adata$n_vars))
         for (varm_name in names(varm_list)) {
             varm_df[[varm_name]] <- varm_list[[varm_name]]
         }
@@ -232,21 +224,17 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     }
 
     reddim_list <- .convert_anndata_slot(
-        adata, "obsm", adata$obsm_keys(), "reducedDims", select = obsm
+        adata, "obsm", py_to_r(adata$obsm_keys()), "reducedDims", select = obsm
     )
     reddim_list <- lapply(reddim_list, as.matrix)
 
-    varp_val <- adata$varp
-    varp_keys <- if (is(varp_val, "python.builtin.object")) py_builtins$list(varp_val$keys()) else names(varp_val)
     varp_list <- .convert_anndata_slot(
-        adata, "varp", varp_keys, "rowPairs",
+        adata, "varp", py_builtins$list(adata$varp$keys()), "rowPairs",
         select = varp
     )
 
-    obsp_val <- adata$obsp
-    obsp_keys <- if (is(obsp_val, "python.builtin.object")) py_builtins$list(obsp_val$keys()) else names(obsp_val)
     obsp_list <- .convert_anndata_slot(
-        adata, "obsp", obsp_keys, "colPairs",
+        adata, "obsp", py_builtins$list(adata$obsp$keys()), "colPairs",
         select = obsp
     )
 
@@ -286,7 +274,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
             skip_assays = skip_assays,
             hdf5_backed = hdf5_backed,
             dims = dims,
-            mat = adata$raw$X,
+            mat = py_to_r(adata$raw$X),
             name = "raw 'X' matrix"
         )
         colnames(raw_x$mat) <- colnames(output)

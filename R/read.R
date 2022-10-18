@@ -87,13 +87,13 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
 
 #' @importFrom reticulate import
 .H5ADreader <- function(file, X_name = NULL, backed = FALSE, verbose = NULL, ...) {
-    anndata <- import("anndata")
+    anndata <- import("anndata", convert = FALSE)
     .ui_step(
         "Reading {.file { .trim_path(file)} }",
         msg_done = "Read {.file { .trim_path(file) }}",
         spinner = TRUE
     )
-    adata <- r_to_py_ifneedbe(anndata$read_h5ad(file, backed = if (backed) "r" else FALSE))
+    adata <- anndata$read_h5ad(file, backed = if (backed) "r" else FALSE)
     cli::cli_progress_done()
     AnnData2SCE(adata, X_name = X_name, hdf5_backed = backed, verbose = verbose,
                 ...)
