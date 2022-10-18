@@ -20,7 +20,9 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
                         rowData = TRUE, varm = TRUE, reducedDims = TRUE,
                         metadata = TRUE, colPairs = TRUE, rowPairs = TRUE,
                         skip_assays = FALSE, verbose = NULL) {
-    anndata <- import("anndata", convert = FALSE)
+    # do convert here because it will be used by end users
+    # See https://github.com/theislab/zellkonverter/issues/75#issuecomment-1282380735
+    anndata <- import("anndata", convert = TRUE)
 
     .ui_process(
         "Converting {.field AnnData} to {.field SingleCellExperiment}"
