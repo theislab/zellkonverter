@@ -50,7 +50,6 @@ Collate:
     'SCE2AnnData.R'
     'ui.R'
     'basilisk.R'
-    'converter.R'
     'read.R'
     'validation.R'
     'write.R'
