@@ -35,7 +35,8 @@ SCE2AnnData(
   colPairs = TRUE,
   rowPairs = TRUE,
   skip_assays = FALSE,
-  verbose = NULL
+  verbose = NULL,
+  convert = TRUE
 )
 }
 \arguments{
@@ -67,6 +68,10 @@ If \code{NULL} uses \code{getOption("zellkonverter.verbose")}.}
 \item{assays, colData, rowData, reducedDims, metadata, colPairs, rowPairs}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
 that slot is converted, if \code{FALSE} nothing is converted and if a character
 vector only those items or columns are converted.}
+
+\item{convert}{Boolean; should Python objects be automatically converted to
+their R equivalent? If set to \code{FALSE}, you can still manually convert Python
+objects to R via the \code{reticulate::py_to_r()} function.}
 }
 \value{
 \code{AnnData2SCE()} will return a \linkS4class{SingleCellExperiment}

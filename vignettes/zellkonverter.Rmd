@@ -79,7 +79,7 @@ library(scRNAseq)
 seger <- SegerstolpePancreasData()
 roundtrip <- basiliskRun(fun = function(sce) {
      # Convert SCE to AnnData:
-     adata <- SCE2AnnData(sce)
+     adata <- SCE2AnnData(sce, convert = FALSE)
 
      # Maybe do some work in Python on 'adata':
      # BLAH BLAH BLAH
