@@ -1,8 +1,9 @@
 # This tests the writeH5AD function (and by implication, AnnData2SCE).
 library(scRNAseq)
-library(anndata) # import to see whether anndata breaks zellkonverter or not
 sce <- ZeiselBrainData()
 reducedDim(sce, "WHEE") <- matrix(runif(ncol(sce) * 10), ncol = 10)
+
+library(anndata) # import to see whether anndata breaks zellkonverter or not
 
 test_that("writeH5AD works as expected", {
     temp <- tempfile(fileext = ".h5ad")
