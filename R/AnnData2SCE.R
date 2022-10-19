@@ -121,7 +121,10 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     dims <- rev(dims)
 
     meta_list <- .convert_anndata_slot(
-        adata, "uns", py_builtins$list(adata$uns$keys()), "metadata",
+        adata,
+        slot_name = "uns",
+        slot_keys = py_builtins$list(adata$uns$keys()),
+        to_name = "metadata",
         select = uns
     )
 
@@ -138,7 +141,9 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         skip_assays = skip_assays,
         hdf5_backed = hdf5_backed,
         dims = dims,
-        mat = py_to_r(adata$X),
+        # do not apply py_to_r yet, because this is taken care of by
+        # .extract_or_skip_assay(...)!
+        mat = adata$X,
         name = "'X' matrix"
     )
 
@@ -201,7 +206,9 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                 skip_assays = skip_assays,
                 hdf5_backed = hdf5_backed,
                 dims = dims,
-                mat = py_to_r(adata$layers$get(layer_name)),
+                # do not apply py_to_r yet, because this is taken care of by
+                # .extract_or_skip_assay(...)!
+                mat = adata$layers$get(layer_name),
                 name = sprintf("'%s' layer matrix", layer_name)
             )
             if (layer_out$skipped) {
@@ -323,7 +330,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         # skip_assays=TRUE avoids any actual transfer of content from Python.
         mat <- .make_fake_mat(dims)
     } else {
-        if (hdf5_backed && is(mat, "python.builtin.object")) {
+        if (hdf5_backed && is(mat, "h5py._hl.dataset.Dataset")) {
             file <- as.character(mat$file$id$name)
             name <- as.character(mat$name)
             if (.h5isgroup(file, name)) {
@@ -332,7 +339,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                 mat <- HDF5Array::HDF5Array(file, name)
             }
         } else {
-            mat <- try(t(mat), silent = TRUE)
+            mat <- try(t(py_to_r(mat)), silent = TRUE)
             if (is(mat, "try-error")) {
                 if (isFALSE(skip_assays)) {
                     warning(
@@ -416,8 +423,13 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     if (raw) {
         adata <- adata$raw
     }
+
+    item <- adata[[slot_name]]
+    if (is(item, "python.builtin.object")) {
+        item <- py_to_r(item)
+    }
     converted <- .convert_anndata_list(
-        adata[slot_name],
+        item,
         parent = slot_name,
         keys = slot_keys
     )
@@ -449,7 +461,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                 }
 
                 if (is(item, "python.builtin.object")) {
-                    item <- reticulate::py_to_r(item)
+                    item <- py_to_r(item)
                 }
 
                 if (inherits(item, "list")) {
