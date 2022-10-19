@@ -331,8 +331,8 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         mat <- .make_fake_mat(dims)
     } else {
         if (hdf5_backed && is(mat, "h5py._hl.dataset.Dataset")) {
-            file <- as.character(mat$file$id$name)
-            name <- as.character(mat$name)
+            file <- as.character(py_to_r(mat$file$id$name))
+            name <- as.character(py_to_r(mat$name))
             if (.h5isgroup(file, name)) {
                 mat <- HDF5Array::H5SparseMatrix(file, name)
             } else {
