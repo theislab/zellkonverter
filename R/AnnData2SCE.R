@@ -103,6 +103,13 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                         varp = TRUE, obsp = TRUE, raw = FALSE,
                         skip_assays = FALSE, hdf5_backed = TRUE,
                         verbose = NULL) {
+    # in case the user accidentally passes an AnnDataR6 object
+    if (is(adata, "AnnDataR6")) {
+      adata <- r_to_py(adata)
+    }
+
+    # disable conversion for this object
+    disable_conversion_scope(adata)
 
     .ui_process(
         "Converting {.field AnnData} to {.field SingleCellExperiment}"

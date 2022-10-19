@@ -51,6 +51,7 @@ Collate:
     'ui.R'
     'basilisk.R'
     'read.R'
+    'utils.R'
     'validation.R'
     'write.R'
     'zellkonverter-package.R'

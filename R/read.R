@@ -87,7 +87,7 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
 
 #' @importFrom reticulate import
 .H5ADreader <- function(file, X_name = NULL, backed = FALSE, verbose = NULL, ...) {
-    anndata <- import("anndata", convert = FALSE)
+    anndata <- import("anndata")
     .ui_step(
         "Reading {.file { .trim_path(file)} }",
         msg_done = "Read {.file { .trim_path(file) }}",
