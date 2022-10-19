@@ -22,6 +22,9 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
                         skip_assays = FALSE, verbose = NULL) {
     anndata <- import("anndata")
 
+    # create output data structure
+    adata <- list()
+
     .ui_process(
         "Converting {.field AnnData} to {.field SingleCellExperiment}"
     )
@@ -56,7 +59,8 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         X <- fake_mat <- .make_fake_mat(rev(dim(sce)))
     }
     X <- reticulate::r_to_py(X)
-    adata <- list(X = X, dtype = X$dtype)
+    adata$X <- X
+    adata$dtype <- X$dtype
     cli::cli_progress_done()
 
     assay_names <- assayNames(sce)
@@ -99,10 +103,7 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         .ui_info("Skipping conversion of {.field colData}")
     } else {
         sce <- .store_non_atomic(sce, "colData")
-        obs <- .convert_sce_df(colData(sce), "colData", "obs", select = colData)
-        if (!is.null(obs)) {
-            adata$obs <- obs
-        }
+        adata$obs <- .convert_sce_df(colData(sce), "colData", "obs", select = colData)
     }
 
     if (!is.null(int_metadata(sce)$has_varm)) {
@@ -139,10 +140,7 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         .ui_info("Skipping conversion of {.field rowData}")
     } else {
         sce <- .store_non_atomic(sce, "rowData")
-        var <- .convert_sce_df(rowData(sce), "rowData", "var", select = rowData)
-        if (!is.null(var)) {
-            adata$var <- var
-        }
+        adata$var <- .convert_sce_df(rowData(sce), "rowData", "var", select = rowData)
     }
 
     if (isFALSE(reducedDims)) {
@@ -208,7 +206,7 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         }
         cli::cli_progress_done()
     }
-    adata$uns <- reticulate::dict(uns_list)
+    adata$uns <- r_to_py(uns_list)
 
     if (length(rowPairs(sce)) > 0) {
         .ui_step(
@@ -394,7 +392,7 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
 
     if (isFALSE(select)) {
         .ui_info("Skipping conversion of {.field {slot_name}}")
-        return(list())
+        return(NULL)
     }
 
     pairs <- switch (slot_name,
@@ -404,7 +402,7 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
 
     if (length(pairs) == 0) {
         .ui_info("{.field {slot_name}} is empty and was skipped")
-        return(list())
+        return(NULL)
     }
 
     .ui_step(
