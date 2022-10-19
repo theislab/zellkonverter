@@ -61,7 +61,7 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         X <- fake_mat <- .make_fake_mat(rev(dim(sce)))
     }
     X <- reticulate::r_to_py(X)
-    adata <- anndata$AnnData(X = X, dtype = X$dtype)
+    adata <- list(X = X, dtype = X$dtype)
     cli::cli_progress_done()
 
     assay_names <- assayNames(sce)
@@ -231,14 +231,22 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
     adata$varp <- .convert_sce_pairs(sce, "rowPairs", "varp", rowPairs)
 
     if (!is.null(colnames(sce))) {
-        adata$obs_names <- colnames(sce)
+        if (is.null(adata$obs)) {
+            adata$obs <- data.frame(row.names = colnames(sce))
+        } else {
+            rownames(adata$obs) <- colnames(sce)
+        }
     }
 
     if (!is.null(rownames(sce))) {
-        adata$var_names <- rownames(sce)
+        if (is.null(adata$var)) {
+            adata$var <- data.frame(row.names = rownames(sce))
+        } else {
+            rownames(adata$var) <- rownames(sce)
+        }
     }
 
-    adata
+    do.call(anndata$AnnData, adata)
 }
 
 #' @importFrom methods as is
