@@ -225,18 +225,24 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
 
     if (!is.null(colnames(sce))) {
         if (is.null(adata$obs)) {
-            adata$obs <- data.frame(row.names = colnames(sce))
-        } else {
-            rownames(adata$obs) <- colnames(sce)
+            # hack to get an empty data frame with the right dimensions
+            adata$obs <- data.frame(i = rep(NA, ncol(sce)))[,-1]
         }
+        # already convert to python because python DFs can have duplicates in
+        # their index
+        adata$obs <- r_to_py(adata$obs)
+        adata$obs$index <- colnames(sce)
     }
 
     if (!is.null(rownames(sce))) {
         if (is.null(adata$var)) {
-            adata$var <- data.frame(row.names = rownames(sce))
-        } else {
-            rownames(adata$var) <- rownames(sce)
+            # hack to get an empty data frame with the right dimensions
+            adata$var <- data.frame(i = rep(NA, nrow(sce)))[,-1]
         }
+        # already convert to python because python DFs can have duplicates in
+        # their index
+        adata$var <- r_to_py(adata$var)
+        adata$var$index <- rownames(sce)
     }
 
     do.call(anndata$AnnData, adata)
