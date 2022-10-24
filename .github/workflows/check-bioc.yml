@@ -42,8 +42,8 @@ jobs:
           echo "Bioc release: ${biocrelease}"
           echo "Bioc docker image: {$biocimage}"
           ## Store the information
-          echo "::set-output name=biocimage::${biocimage}"
-          echo "::set-output name=biocrelease::${biocrelease}"
+          echo "biocimage=${biocimage}" >> $GITHUB_OUTPUT
+          echo "biocrelease=${biocrelease}" >> $GITHUB_OUTPUT
 
   get-bioc-version:
     # Identify the Bioconductor version number and R version to use. This is
@@ -87,8 +87,8 @@ jobs:
           echo "Bioc version: ${biocversion}"
           echo "R version: ${rversion}"
           ## Store the information
-          echo "::set-output name=biocversion::${biocversion}"
-          echo "::set-output name=rversion::${rversion}"
+          echo "biocversion=${biocversion}" >> $GITHUB_OUTPUT
+          echo "rversion=${rversion}" >> $GITHUB_OUTPUT
 
   R-CMD-check-docker:
     ## Run checks in the Bioconductor Docker container. This job also runs covr
