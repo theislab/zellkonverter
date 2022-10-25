@@ -192,6 +192,37 @@ jobs:
           upload-snapshots: true
           upload-results: true
 
+  test-coverage:
+    ## Calculate package test coverage. Only runs if R-CMD-check-docker has
+    ## completed successfully. Uses the Bioconductor Docker image.
+    if: github.ref == 'refs/heads/master'
+    needs: [get-bioc-release, get-bioc-version, R-CMD-check-docker]
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ needs.get-bioc-release.outputs.biocimage }}
+      volumes:
+        - /home/runner/work/_temp/Library:/usr/local/lib/R/host-site-library
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install libcurl
+        run: sudo apt-get update -y && sudo apt-get install -y libcurl4-openssl-dev
+
+      - name: Setup R dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          cache-version: 3
+          extra-packages: any::covr
+          needs: coverage
+
+      - name: Test coverage
+        run: covr::codecov(quiet = FALSE)
+        shell: Rscript {0}
+
   pkgdown:
     ## Build pkgdown site and push to gh-pages branch. Only runs if on the
     ## master branch and R-CMD-check-docker has completed successfully. Uses
