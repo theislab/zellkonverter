@@ -91,7 +91,7 @@ jobs:
           echo "rversion=${rversion}" >> $GITHUB_OUTPUT
 
   R-CMD-check-docker:
-    ## Run checks in the Bioconductor Docker container. This job also runs covr
+    ## Run checks in the Bioconductor Docker container
     name: ubuntu-latest (r-biocdocker bioc-${{ needs.get-bioc-version.outputs.biocversion }})
     needs: [get-bioc-release, get-bioc-version]
     runs-on: ubuntu-latest
@@ -106,6 +106,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Install libcurl
+        run: sudo apt-get update -y && sudo apt-get install -y libcurl4-openssl-dev
 
       - name: Setup R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
@@ -213,6 +216,9 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Install libcurl
+        run: sudo apt-get update -y && sudo apt-get install -y libcurl4-openssl-dev
 
       - name: Setup R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
