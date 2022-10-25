@@ -288,7 +288,9 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
             skip_assays = skip_assays,
             hdf5_backed = hdf5_backed,
             dims = dims,
-            mat = py_to_r(adata$raw$X),
+            # do not apply py_to_r yet, because this is taken care of by
+            # .extract_or_skip_assay(...)!
+            mat = adata$raw$X,
             name = "raw 'X' matrix"
         )
         colnames(raw_x$mat) <- colnames(output)
