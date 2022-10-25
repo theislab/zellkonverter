@@ -22,8 +22,8 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
                         skip_assays = FALSE, verbose = NULL) {
     anndata <- import("anndata")
 
-    # create output data structure
-    adata <- list()
+    # Create a list to store parts of the AnnData
+    adata_list <- list()
 
     .ui_process(
         "Converting {.field AnnData} to {.field SingleCellExperiment}"
@@ -59,8 +59,8 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         X <- fake_mat <- .make_fake_mat(rev(dim(sce)))
     }
     X <- reticulate::r_to_py(X)
-    adata$X <- X
-    adata$dtype <- X$dtype
+    adata_list$X <- X
+    adata_list$dtype <- X$dtype
     cli::cli_progress_done()
 
     assay_names <- assayNames(sce)
@@ -95,7 +95,7 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
             assays_list <- rep(list(fake_mat), length(assay_names))
             names(assays_list) <- assay_names
         }
-        adata$layers <- assays_list
+        adata_list$layers <- assays_list
         cli::cli_progress_done()
     }
 
@@ -103,7 +103,7 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         .ui_info("Skipping conversion of {.field colData}")
     } else {
         sce <- .store_non_atomic(sce, "colData")
-        adata$obs <- .convert_sce_df(colData(sce), "colData", "obs", select = colData)
+        adata_list$obs <- .convert_sce_df(colData(sce), "colData", "obs", select = colData)
     }
 
     if (!is.null(int_metadata(sce)$has_varm)) {
@@ -125,10 +125,10 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
 
             # Make sure var names are set in case varm contains a data.frame
             if (!is.null(rownames(sce))) {
-                adata$var_names <- rownames(sce)
+                adata_list$var_names <- rownames(sce)
             }
 
-            adata$varm <- varm_list
+            adata_list$varm <- varm_list
             cli::cli_progress_done()
         }
 
@@ -140,7 +140,7 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         .ui_info("Skipping conversion of {.field rowData}")
     } else {
         sce <- .store_non_atomic(sce, "rowData")
-        adata$var <- .convert_sce_df(rowData(sce), "rowData", "var", select = rowData)
+        adata_list$var <- .convert_sce_df(rowData(sce), "rowData", "var", select = rowData)
     }
 
     if (isFALSE(reducedDims)) {
@@ -162,12 +162,12 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         red_dims <- lapply(red_dims, function(rd) {
             if (!is.null(colnames(rd))) {
                 rd <- r_to_py(as.data.frame(rd))
-                rd <- rd$set_index(adata$obs_names)
+                rd <- rd$set_index(adata_list$obs_names)
             }
 
             rd
         })
-        adata$obsm <- red_dims
+        adata_list$obsm <- red_dims
         cli::cli_progress_done()
     }
 
@@ -206,46 +206,46 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         }
         cli::cli_progress_done()
     }
-    adata$uns <- r_to_py(uns_list)
+    adata_list$uns <- r_to_py(uns_list)
 
     if (length(rowPairs(sce)) > 0) {
         .ui_step(
             "Converting {.field rowPairs} to {.field varp}",
             msg_done = "{.field rowPairs} converted to {.field varp}"
         )
-        adata$varp <- as.list(rowPairs(sce, asSparse = TRUE))
+        adata_list$varp <- as.list(rowPairs(sce, asSparse = TRUE))
         cli::cli_progress_done()
     } else {
         .ui_info("{.field rowPairs} is empty and was skipped")
     }
 
-    adata$obsp <- .convert_sce_pairs(sce, "colPairs", "obsp", colPairs)
+    adata_list$obsp <- .convert_sce_pairs(sce, "colPairs", "obsp", colPairs)
 
-    adata$varp <- .convert_sce_pairs(sce, "rowPairs", "varp", rowPairs)
+    adata_list$varp <- .convert_sce_pairs(sce, "rowPairs", "varp", rowPairs)
 
     if (!is.null(colnames(sce))) {
-        if (is.null(adata$obs)) {
+        if (is.null(adata_list$obs)) {
             # hack to get an empty data frame with the right dimensions
-            adata$obs <- data.frame(i = rep(NA, ncol(sce)))[,-1]
+            adata_list$obs <- data.frame(i = rep(NA, ncol(sce)))[,-1]
         }
         # already convert to python because python DFs can have duplicates in
         # their index
-        adata$obs <- r_to_py(adata$obs)
-        adata$obs$index <- colnames(sce)
+        adata_list$obs <- r_to_py(adata_list$obs)
+        adata_list$obs$index <- colnames(sce)
     }
 
     if (!is.null(rownames(sce))) {
-        if (is.null(adata$var)) {
+        if (is.null(adata_list$var)) {
             # hack to get an empty data frame with the right dimensions
-            adata$var <- data.frame(i = rep(NA, nrow(sce)))[,-1]
+            adata_list$var <- data.frame(i = rep(NA, nrow(sce)))[,-1]
         }
         # already convert to python because python DFs can have duplicates in
         # their index
-        adata$var <- r_to_py(adata$var)
-        adata$var$index <- rownames(sce)
+        adata_list$var <- r_to_py(adata_list$var)
+        adata_list$var$index <- rownames(sce)
     }
 
-    do.call(anndata$AnnData, adata)
+    do.call(anndata$AnnData, adata_list)
 }
 
 #' @importFrom methods as is
