@@ -113,6 +113,7 @@ jobs:
       - name: Setup R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
+          cache-version: 3
           extra-packages: any::rcmdcheck
           needs: check
 
@@ -174,6 +175,7 @@ jobs:
       - name: Setup R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
+          cache-version: 3
           extra-packages: any::rcmdcheck
           needs: check
 
@@ -223,6 +225,7 @@ jobs:
       - name: Setup R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
+          cache-version: 3
           extra-packages: any::pkgdown, local::.
           needs: website
 
