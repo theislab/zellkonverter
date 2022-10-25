@@ -35,16 +35,17 @@ Imports:
     cli
 Suggests:
     anndata,
+    BiocFileCache,
+    BiocStyle,
     covr,
-    spelling,
-    testthat,
+    HDF5Array,
     knitr,
     rmarkdown,
-    BiocStyle,
-    scRNAseq,
-    HDF5Array,
     rhdf5,
-    BiocFileCache
+    scRNAseq,
+    spelling,
+    testthat,
+    withr
 Collate: 
     'AnnData2SCE.R'
     'SCE2AnnData.R'
