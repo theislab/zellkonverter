@@ -107,8 +107,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install libcurl
-        run: sudo apt-get update -y && sudo apt-get install -y libcurl4-openssl-dev
+      - name: Install extra linux dependencies
+        run: >
+          sudo apt-get update -y &&
+          sudo apt-get install -y
+            libcurl4-openssl-dev
+            devscripts
+            qpdf
 
       - name: Setup R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
@@ -209,8 +214,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install libcurl
-        run: sudo apt-get update -y && sudo apt-get install -y libcurl4-openssl-dev
+      - name: Install extra linux dependencies
+        run: >
+          sudo apt-get update -y &&
+          sudo apt-get install -y
+            libcurl4-openssl-dev
+            devscripts
+            qpdf
 
       - name: Setup R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
@@ -250,8 +260,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install libcurl
-        run: sudo apt-get update -y && sudo apt-get install -y libcurl4-openssl-dev
+      - name: Install extra linux dependencies
+        run: >
+          sudo apt-get update -y &&
+          sudo apt-get install -y
+            libcurl4-openssl-dev
+            devscripts
+            qpdf
 
       - name: Setup R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
