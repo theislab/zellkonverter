@@ -14,7 +14,7 @@
 #'
 #' @export
 #' @importFrom utils capture.output
-#' @importFrom S4Vectors metadata
+#' @importFrom S4Vectors metadata make_zero_col_DFrame
 #' @importFrom reticulate import r_to_py py_to_r
 SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
                         rowData = TRUE, varm = TRUE, reducedDims = TRUE,
@@ -106,6 +106,18 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         adata_list$obs <- .convert_sce_df(colData(sce), "colData", "obs", select = colData)
     }
 
+    if (is.null(adata_list$obs)) {
+        # Add a dummy data.frame if obs is currently empty
+        adata_list$obs <- as.data.frame(make_zero_col_DFrame(ncol(sce)))
+    }
+
+    if (!is.null(colnames(sce))) {
+        # Convert to python now because python DFs can have duplicates in
+        # their index
+        adata_list$obs <- r_to_py(adata_list$obs)
+        adata_list$obs$index <- colnames(sce)
+    }
+
     if (!is.null(int_metadata(sce)$has_varm)) {
         varm_list <- as.list(rowData(sce)[["varm"]])
         rowData(sce)[["varm"]] <- NULL
@@ -141,6 +153,18 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
     } else {
         sce <- .store_non_atomic(sce, "rowData")
         adata_list$var <- .convert_sce_df(rowData(sce), "rowData", "var", select = rowData)
+    }
+
+    if (is.null(adata_list$var)) {
+        # Add a dummy data.frame if var is currently empty
+        adata_list$var <- as.data.frame(make_zero_col_DFrame(nrow(sce)))
+    }
+
+    if (!is.null(rownames(sce))) {
+        # Convert to python now because python DFs can have duplicates in
+        # their index
+        adata_list$var <- r_to_py(adata_list$var)
+        adata_list$var$index <- rownames(sce)
     }
 
     if (isFALSE(reducedDims)) {
@@ -220,30 +244,7 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
     }
 
     adata_list$obsp <- .convert_sce_pairs(sce, "colPairs", "obsp", colPairs)
-
     adata_list$varp <- .convert_sce_pairs(sce, "rowPairs", "varp", rowPairs)
-
-    if (!is.null(colnames(sce))) {
-        if (is.null(adata_list$obs)) {
-            # hack to get an empty data frame with the right dimensions
-            adata_list$obs <- data.frame(i = rep(NA, ncol(sce)))[,-1]
-        }
-        # already convert to python because python DFs can have duplicates in
-        # their index
-        adata_list$obs <- r_to_py(adata_list$obs)
-        adata_list$obs$index <- colnames(sce)
-    }
-
-    if (!is.null(rownames(sce))) {
-        if (is.null(adata_list$var)) {
-            # hack to get an empty data frame with the right dimensions
-            adata_list$var <- data.frame(i = rep(NA, nrow(sce)))[,-1]
-        }
-        # already convert to python because python DFs can have duplicates in
-        # their index
-        adata_list$var <- r_to_py(adata_list$var)
-        adata_list$var$index <- rownames(sce)
-    }
 
     do.call(anndata$AnnData, adata_list)
 }
