@@ -308,4 +308,6 @@ test_that("Writing is compatible with R anndata", {
         names(col_data) <- names(colData(sce))
         expect_identical(col_data, colData(sce))
     })
+
+    pkgload::unload("anndata")
 })

@@ -177,4 +177,6 @@ test_that("Reading is compatible with R anndata", {
 
         validateH5ADSCE(sce, names, missing)
     })
+
+    pkgload::unload("anndata")
 })
