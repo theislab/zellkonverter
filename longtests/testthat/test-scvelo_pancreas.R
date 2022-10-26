@@ -24,6 +24,7 @@ names <- list(
                 "fit_variance", "fit_alignment_scaling", "fit_r2"),
     metadata = c("clusters_coarse_colors", "clusters_colors", "clusters_sizes",
                  "day_colors", "neighbors", "paga", "pca",
+                 "rank_dynamical_genes", "rank_velocity_genes",
                  "recover_dynamics", "velocity_graph", "velocity_graph_neg",
                  "velocity_params"),
     redDim = c("X_pca", "X_umap", "velocity_umap"),
@@ -31,15 +32,10 @@ names <- list(
     colPairs = c("connectivities", "distances")
 )
 
-missing <- list(
-    metadata = c("rank_dynamical_genes", "rank_velocity_genes")
-)
+missing <- list()
 
 test_that("Reading H5AD works", {
-    expect_warning(
-        {sce <- readH5AD(file)},
-        "conversion failed for the item 'rank_dynamical_genes'"
-    )
+    sce <- readH5AD(file)
     expect_s4_class(sce, "SingleCellExperiment")
 })
 

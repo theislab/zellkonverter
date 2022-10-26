@@ -12,21 +12,17 @@ names <- list(
     rowData = c("gene_ids", "n_cells", "mt", "n_cells_by_counts", "mean_counts",
                 "pct_dropout_by_counts", "total_counts", "highly_variable",
                 "means", "dispersions", "dispersions_norm", "mean", "std"),
-    metadata = c("hvg", "leiden", "neighbors", "pca", "umap"),
+    metadata = c("hvg", "leiden", "neighbors", "pca", "rank_genes_groups",
+                 "umap"),
     redDim = c("X_pca", "X_umap"),
     varm = c("PCs"),
     colPairs = c("connectivities", "distances")
 )
 
-missing <- list(
-    metadata = c("rank_genes_groups")
-)
+missing <- list()
 
 test_that("Reading H5AD works", {
-    expect_warning(
-        {sce <- readH5AD(file)},
-        "conversion failed for the item 'rank_genes_groups'"
-    )
+    sce <- readH5AD(file)
     expect_s4_class(sce, "SingleCellExperiment")
 })
 

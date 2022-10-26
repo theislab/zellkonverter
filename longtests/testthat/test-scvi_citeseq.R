@@ -21,7 +21,7 @@ names <- list(
 missing <- list()
 
 test_that("Reading H5AD works", {
-    sce <- readH5AD(file)
+    sce <- expect_warning(readH5AD(file))
     expect_s4_class(sce, "SingleCellExperiment")
 })
 
@@ -37,7 +37,7 @@ test_that("Writing H5AD works", {
 })
 
 test_that("Round trip is as expected", {
-    out <- readH5AD(outfile)
+    out <- suppressWarnings(readH5AD(outfile))
 
     # For some reason "_scvi" gets changed to "X_scvi", not sure why...
     names(S4Vectors::metadata(sce))[1] <- "X_scvi"
