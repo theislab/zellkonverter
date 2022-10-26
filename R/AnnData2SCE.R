@@ -472,25 +472,31 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     # Attempt whole list conversion is accessing individual items fails
     adata_list <- tryCatch(
         {
+            # Check if an item can be accessed, if yes return the list
             adata_list[[keys[1]]]
             adata_list
         },
         error = function(err) {
+            # If not issue a warning and try to convert the whole list
             warning(
                 "Unable to access items in '", parent, "', attempting to ",
-                "convert the whole list. Access error message: ", err,
+                "convert the whole list.\n",
+                "Access error message: ", err$message,
                 call. = FALSE
             )
             adata_list <- tryCatch(
                 {
+                    # If conversion is successful return the whole list
                     adata_list <- py_to_r(adata_list)
                     adata_list
                 },
                 error = function(err) {
+                    # If whole list conversion fails issue a warning and return
+                    # NULL
                     warning(
                         "Whole list conversion failed for '", parent, "', ",
-                        "this slot will not be converted. ",
-                        "Conversion error message: ", err,
+                        "this slot will not be converted.\n",
+                        "Conversion error message: ", err$message,
                         call. = FALSE
                     )
                     NULL
@@ -545,7 +551,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                     "Conversion failed for the item '",
                     key, "' in '", parent, "' with ",
                     "the following error and has been skipped\n",
-                    "Conversion error message: ", err,
+                    "Conversion error message: ", err$message,
                     call. = FALSE
                 )
 
