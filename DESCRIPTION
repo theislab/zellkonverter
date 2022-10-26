@@ -53,6 +53,7 @@ Collate:
     'ui.R'
     'basilisk.R'
     'read.R'
+    'reticulate.R'
     'utils.R'
     'validation.R'
     'write.R'
