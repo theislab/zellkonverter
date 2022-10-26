@@ -10,6 +10,8 @@
 #'
 #' - `numpy.ndarray` - Handle conversion of **numpy** recarrays
 #'
+#' @author Luke Zappia
+#'
 #' @seealso
 #' [reticulate::py_to_r()] for the base `reticulate` functions
 #'

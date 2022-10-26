@@ -110,11 +110,6 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
             "The passed object is a 'AnnDataR6' object, conversion is likely ",
             "to be less reliable"
         ))
-        warning(
-            "The passed object is a 'AnnDataR6' object, conversion is likely ",
-            "to be less reliable",
-            call. = FALSE
-        )
         adata <- r_to_py(adata)
     }
 
@@ -198,11 +193,6 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                 missing <- layers[!c(layers %in% layer_names)]
                 .ui_warn(
                     "These selected layers are not in the object: {.field {missing}}"
-                )
-                warning(
-                    "These selected layers are not in the object: ",
-                    paste(missing, collapse = ", "),
-                    call. = FALSE
                 )
             }
             layer_names <- layer_names[layer_names %in% layers]
@@ -368,10 +358,10 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
             mat <- try(t(py_to_r(mat)), silent = TRUE)
             if (is(mat, "try-error")) {
                 if (isFALSE(skip_assays)) {
-                    warning(
-                        name,
-                        " does not support transposition and has been skipped"
-                    )
+                    .ui_warn(paste(
+                        "{.field {name}} does not support transposition and",
+                        "has been skipped"
+                    ))
                 }
                 mat <- .make_fake_mat(dims)
                 skipped <- TRUE
@@ -437,11 +427,6 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                 "These selected {.field {slot_name}} items are not in the ",
                 "object: {.field {missing}}"
             ))
-            warning(
-                "These selected ", slot_name, " items are not in the object: ",
-                paste(missing, collapse = ", "),
-                call. = FALSE
-            )
         }
         slot_keys <- slot_keys[slot_keys %in% select]
     }
@@ -478,12 +463,11 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         },
         error = function(err) {
             # If not issue a warning and try to convert the whole list
-            warning(
-                "Unable to access items in '", parent, "', attempting to ",
+            .ui_warn(paste(
+                "Unable to access items in {.field {parent}}, attempting to ",
                 "convert the whole list.\n",
-                "Access error message: ", err$message,
-                call. = FALSE
-            )
+                "Access error message: {.val {err$message}}"
+            ))
             adata_list <- tryCatch(
                 {
                     # If conversion is successful return the whole list
@@ -493,12 +477,11 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                 error = function(err) {
                     # If whole list conversion fails issue a warning and return
                     # NULL
-                    warning(
-                        "Whole list conversion failed for '", parent, "', ",
+                    .ui_warn(paste(
+                        "Whole list conversion failed for {.field {parent}}, ",
                         "this slot will not be converted.\n",
-                        "Conversion error message: ", err$message,
-                        call. = FALSE
-                    )
+                        "Conversion error message: {.val {err$message}}"
+                    ))
                     NULL
                 }
             )
@@ -553,13 +536,12 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                 "done"
             },
             error = function(err) {
-                warning(
-                    "Conversion failed for the item '",
-                    key, "' in '", parent, "' with ",
-                    "the following error and has been skipped\n",
-                    "Conversion error message: ", err$message,
-                    call. = FALSE
-                )
+                .ui_warn(paste(
+                    "Conversion failed for the item {.field {key}}",
+                    "in {.field {parent}} with the following error and has",
+                    "been skipped\n",
+                    "Conversion error message: {.val {err$message}}"
+                ))
 
                 "failed"
             }
@@ -580,12 +562,6 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
             "The names of these selected {.field {parent}} items have",
             "been modified to match R conventions: {.field {modifications}}"
         ))
-        warning(
-            "The names of these selected ", parent, " items have been ",
-            "modified to match R conventions: ",
-            paste(modifications, collapse = ", "),
-            call. = FALSE
-        )
     }
 
     return(converted_list)
@@ -611,11 +587,6 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                 "These selected {.field {slot_name}} columns are not in the",
                 "object: {.field {missing}}"
             ))
-            warning(
-                "These selected ", slot_name, " colnames are not in the ",
-                "object: ", paste(missing, collapse = ", "),
-                call. = FALSE
-            )
             select <- setdiff(select, missing)
         }
     } else {
@@ -635,12 +606,6 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
             "The names of these selected {.field {slot_name}} columns have",
             "been modified to match R conventions: {.field {modifications}}"
         ))
-        warning(
-            "The names of these selected ", slot_name, " columns have been ",
-            "modified to match R conventions: ",
-            paste(modifications, collapse = ", "),
-            call. = FALSE
-        )
     }
 
     cli::cli_progress_done()

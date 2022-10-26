@@ -1,5 +1,6 @@
 # This tests the writeH5AD function (and by implication, AnnData2SCE).
 library(scRNAseq)
+
 sce <- ZeiselBrainData()
 reducedDim(sce, "WHEE") <- matrix(runif(ncol(sce) * 10), ncol = 10)
 
@@ -205,7 +206,7 @@ test_that("writeH5AD works with colData list columns", {
 
     temp <- tempfile(fileext = ".h5ad")
 
-    expect_warning(writeH5AD(list_sce, temp), "colData columns are not atomic")
+    expect_warning(writeH5AD(list_sce, temp), "columns are not atomic")
     expect_true(file.exists(temp))
 
     # Knowing what comes back is hard so just check there is something
@@ -221,7 +222,7 @@ test_that("writeH5AD works with rowData list columns", {
 
     temp <- tempfile(fileext = ".h5ad")
 
-    expect_warning(writeH5AD(list_sce, temp), "rowData columns are not atomic")
+    expect_warning(writeH5AD(list_sce, temp), "columns are not atomic")
     expect_true(file.exists(temp))
 
     # Knowing what comes back is hard so just check there is something

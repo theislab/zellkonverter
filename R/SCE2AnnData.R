@@ -80,11 +80,6 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
                 .ui_warn(
                     "These selected assays are not in the object: {.field {missing}}"
                 )
-                warning(
-                    "These selected assays are not in the object: ",
-                    paste(missing, collapse = ", "),
-                    call. = FALSE
-                )
             }
             assay_names <- assay_names[assay_names %in% assays]
         }
@@ -217,10 +212,11 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
                     uns_list[[item_name]] <- item
                 },
                 error = function(err) {
-                    warning(
-                        "the '", item_name, "' item in 'metadata' cannot be ",
-                        "converted to a Python type and has been skipped"
-                    )
+                    .ui_warn(paste(
+                        "The {.field {item_name}} item in {.field metadata}",
+                        "cannot be converted to a Python type and has been",
+                        "skipped"
+                    ))
                 }
             )
         }
@@ -298,11 +294,11 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
     }
 
     non_atomic_cols <- colnames(df)[!is_atomic]
-    warning(
-        "The following ", slot, " columns are not atomic and will be ",
-        "stored in metadata(sce)$.colData before conversion: ",
-        paste(non_atomic_cols, collapse = ", ")
-    )
+    .ui_warn(paste(
+        "The following {.field {slot}} columns are not atomic and will be",
+        "stored in {.field metadata(sce)$.colData} before conversion:",
+        "{.val {non_atomic_cols}}"
+    ))
 
     meta_slot <- paste0(".", slot)
     if (meta_slot %in% names(metadata(sce))) {
@@ -338,11 +334,6 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
             "These selected {.field {slot_name}} items are not in the",
             "object: {.field {missing}}"
         ))
-        warning(
-            "These selected ", slot_name, " items are not in the ",
-            "object: ", paste(missing, collapse = ", "),
-            call. = FALSE
-        )
     }
 
     select <- select[select %in% options]

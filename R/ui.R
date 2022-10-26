@@ -55,12 +55,18 @@ setZellkonverterVerbose <- function(verbose = TRUE) {
     }
 }
 
-.ui_warn <- function(msg, ...) {
+.ui_warn <- function(msg, warn = TRUE, ...) {
 
     envir <- parent.frame()
 
+    msg <- cli::format_message(msg, .envir = envir)
+
     if (.get_verbose(envir)) {
         cli::cli_alert_warning(msg, ..., .envir = envir)
+    }
+
+    if (warn) {
+        warning(msg, call. = FALSE)
     }
 }
 
