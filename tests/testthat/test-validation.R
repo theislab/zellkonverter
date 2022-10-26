@@ -1,8 +1,6 @@
-library(SingleCellExperiment)
-
 file <- system.file("extdata", "example_anndata.h5ad",
                     package = "zellkonverter")
-outfile <- tempfile(fileext = ".h5ad")
+sce <- readH5AD(file)
 
 names <- list(
     assays = c("X", "counts"),
@@ -17,23 +15,14 @@ names <- list(
 
 missing <- list()
 
-test_that("Reading H5AD works", {
-    sce <- readH5AD(file)
-    expect_s4_class(sce, "SingleCellExperiment")
-})
-
-sce <- suppressWarnings(readH5AD(file))
-
-test_that("SCE is valid", {
+test_that("validateH5ADSCE works", {
     validateH5ADSCE(sce, names, missing)
+    expect_error(
+        validateH5ADSCE(sce, names, list(varm = "PCs")),
+        "varm names missing is not TRUE"
+    )
 })
 
-test_that("Writing H5AD works", {
-    writeH5AD(sce, outfile)
-    expect_true(file.exists(outfile))
-})
-
-test_that("Round trip is as expected", {
-    out <- readH5AD(outfile)
-    expectSCE(out, sce)
+test_that("expectSCE works", {
+    expectSCE(sce, sce)
 })
