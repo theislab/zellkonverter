@@ -1,6 +1,48 @@
 \name{NEWS}
 \title{News for Package \pkg{zellkonverter}}
 
+\section{Version 1.8.0, Bioconductor 3.16 Release (October 2022)}{
+  \subsection{Major changes}{
+  \itemize{
+    \item{
+      Improve compatibility with the R \bold{anndata} package. This required
+      modifying conversion functions so that Python objects are explicitly
+      converted rather than relying on automatic conversion.
+    }
+    \item{
+      Added support for \bold{numpy} recarrays. This solves a long-standing
+      issue and allows results from \bold{scanpy}'s \code{rank_genes_groups()}
+      function to be read.
+    }
+  }}
+  \subsection{Minor changes}{
+  \itemize{
+    \item{
+      The Python version is now pinned in the \bold{anndata} v0.7.6 environment
+      for compatibility with changes in \bold{basilisk}
+    }
+    \item{
+      Instatiate Python environments so they can be properly picked up by
+      \code{basilisk::configureBasiliskEnv()}
+    }
+    \item{
+      Allow missing obs/var names when \code{use_hdf5 = TRUE}
+    }
+    \item{
+      Minor changes to the UI functions for compatibility with \bold{cli} v3.4.0
+    }
+    \item{
+      Minor changes for compatibility with \bold{Matrix} v1.4-2
+    }
+    \item{
+      Improvements to the UI for warnings
+    }
+    \item{
+      Updates and improvments to tests
+    }
+  }}
+}
+
 \section{Version 1.6.0, Bioconductor 3.15 Release (April 2022)}{
   \subsection{Major changes}{
   \itemize{
