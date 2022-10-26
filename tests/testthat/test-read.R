@@ -140,6 +140,12 @@ test_that("Reading is compatible with R anndata", {
     skip_if_not_installed("anndata")
 
     withr::with_package("anndata", {
+        sce <- readH5AD(file)
+        expect_s4_class(sce, "SingleCellExperiment")
+
+        expect_identical(assayNames(sce), "X")
+        expect_identical(colnames(colData(sce)), "cell_type")
+
         cache <- BiocFileCache::BiocFileCache(ask = FALSE)
         example_file <- BiocFileCache::bfcrpath(
             cache, "https://ndownloader.figshare.com/files/30462915"
@@ -155,10 +161,6 @@ test_that("Reading is compatible with R anndata", {
                         "mean_counts", "pct_dropout_by_counts", "total_counts",
                         "highly_variable", "means", "dispersions",
                         "dispersions_norm", "mean", "std"),
-            metadata = c("hvg", "leiden", "neighbors", "pca", "umap"),
-            redDim = c("X_pca", "X_umap"),
-            varm = c("PCs"),
-            colPairs = c("connectivities", "distances"),
             raw_rowData = c("gene_ids", "n_cells", "mt", "n_cells_by_counts",
                             "mean_counts", "pct_dropout_by_counts",
                             "total_counts", "highly_variable", "means",
@@ -166,7 +168,11 @@ test_that("Reading is compatible with R anndata", {
         )
 
         missing <- list(
-            metadata = c("rank_genes_groups")
+            metadata = c("hvg", "leiden", "neighbors", "pca", "umap",
+                         "rank_genes_groups"),
+            redDim = c("X_pca", "X_umap"),
+            varm = c("PCs"),
+            colPairs = c("connectivities", "distances")
         )
 
         validateH5ADSCE(sce, names, missing)

@@ -103,12 +103,22 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                         varp = TRUE, obsp = TRUE, raw = FALSE,
                         skip_assays = FALSE, hdf5_backed = TRUE,
                         verbose = NULL) {
-    # in case the user accidentally passes an AnnDataR6 object
+
+    # In case the user accidentally passes an AnnDataR6 object
     if (is(adata, "AnnDataR6")) {
-      adata <- r_to_py(adata)
+        .ui_warn(paste(
+            "The passed object is a 'AnnDataR6' object, conversion is likely ",
+            "to be less reliable"
+        ))
+        warning(
+            "The passed object is a 'AnnDataR6' object, conversion is likely ",
+            "to be less reliable",
+            call. = FALSE
+        )
+        adata <- r_to_py(adata)
     }
 
-    # disable conversion for this object
+    # Disable automatic {reticulate} conversion for this object
     disable_conversion_scope(adata)
 
     .ui_process(
@@ -220,12 +230,26 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         .ui_process_done()
     }
 
-    row_data <- .convert_anndata_df(py_to_r(adata$var), "var", "rowData", select = var)
+    row_data <- .convert_anndata_df(
+        py_to_r(adata$var),
+        slot_name = "var",
+        to_name   = "rowData",
+        select    = var
+    )
 
-    col_data <- .convert_anndata_df(py_to_r(adata$obs), "obs", "colData", select = obs)
+    col_data <- .convert_anndata_df(
+        py_to_r(adata$obs),
+        slot_name = "obs",
+        to_name   = "colData",
+        select    = obs
+    )
 
     varm_list <- .convert_anndata_slot(
-        adata, "varm", py_to_r(adata$varm_keys()), "rowData$varm", select = varm
+        adata,
+        slot_name = "varm",
+        slot_keys = py_to_r(adata$varm_keys()),
+        to_name   = "rowData$varm",
+        select    = varm
     )
 
     if (length(varm_list) > 0) {
@@ -426,12 +450,8 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         adata <- adata$raw
     }
 
-    item <- adata[[slot_name]]
-    if (is(item, "python.builtin.object")) {
-        item <- py_to_r(item)
-    }
     converted <- .convert_anndata_list(
-        item,
+        adata[[slot_name]],
         parent = slot_name,
         keys = slot_keys
     )
