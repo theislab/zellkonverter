@@ -102,6 +102,7 @@ jobs:
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_BIOC_VERSION: ${{ needs.get-bioc-version.outputs.biocversion }}
 
     steps:
       - name: Checkout
@@ -156,7 +157,7 @@ jobs:
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       RSPM: ${{ matrix.config.rspm }}
-      BIOCVERSION: ${{ needs.get-bioc-version.outputs.biocversion }}
+      R_BIOC_VERSION: ${{ needs.get-bioc-version.outputs.biocversion }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
@@ -204,6 +205,7 @@ jobs:
         - /home/runner/work/_temp/Library:/usr/local/lib/R/host-site-library
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_BIOC_VERSION: ${{ needs.get-bioc-version.outputs.biocversion }}
 
     steps:
       - name: Checkout
@@ -236,6 +238,7 @@ jobs:
         - /home/runner/work/_temp/Library:/usr/local/lib/R/host-site-library
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_BIOC_VERSION: ${{ needs.get-bioc-version.outputs.biocversion }}
 
     steps:
 
