@@ -468,6 +468,43 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
 
     verbose <- parent.frame()$verbose
 
+    # Check if list items can be accessed (can fail when {anndata} is loaded)
+    # Attempt whole list conversion is accessing individual items fails
+    adata_list <- tryCatch(
+        {
+            adata_list[[keys[1]]]
+            adata_list
+        },
+        error = function(err) {
+            warning(
+                "Unable to access items in '", parent, "', attempting to ",
+                "convert the whole list. Access error message: ", err,
+                call. = FALSE
+            )
+            adata_list <- tryCatch(
+                {
+                    adata_list <- py_to_r(adata_list)
+                    adata_list
+                },
+                error = function(err) {
+                    warning(
+                        "Whole list conversion failed for '", parent, "', ",
+                        "this slot will not be converted. ",
+                        "Conversion error message: ", err,
+                        call. = FALSE
+                    )
+                    NULL
+                }
+            )
+            adata_list
+        }
+    )
+
+    # If items cannot be accessed return empty list
+    if (is.null(adata_list)) {
+        return(list())
+    }
+
     for (key in keys) {
         .ui_step(
             "Converting {.field {parent}${key}}",
@@ -505,7 +542,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
             },
             error = function(err) {
                 warning(
-                    "conversion failed for the item '",
+                    "Conversion failed for the item '",
                     key, "' in '", parent, "' with ",
                     "the following error and has been skipped\n",
                     "Conversion error message: ", err,

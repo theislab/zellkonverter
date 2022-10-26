@@ -164,15 +164,15 @@ test_that("Reading is compatible with R anndata", {
             raw_rowData = c("gene_ids", "n_cells", "mt", "n_cells_by_counts",
                             "mean_counts", "pct_dropout_by_counts",
                             "total_counts", "highly_variable", "means",
-                            "dispersions", "dispersions_norm")
+                            "dispersions", "dispersions_norm"),
+            redDim = c("X_pca", "X_umap"),
+            varm = c("PCs"),
+            colPairs = c("connectivities", "distances")
         )
 
         missing <- list(
             metadata = c("hvg", "leiden", "neighbors", "pca", "umap",
-                         "rank_genes_groups"),
-            redDim = c("X_pca", "X_umap"),
-            varm = c("PCs"),
-            colPairs = c("connectivities", "distances")
+                         "rank_genes_groups")
         )
 
         validateH5ADSCE(sce, names, missing)
