@@ -2,6 +2,20 @@
 
 * Bioconductor 3.16, October 2022
 
+## zellkonverter 1.7.8 (2022-10-04)
+
+* Improve compatibility with the R **{anndata}** package (PR #76 @rcannood,
+  fixes #75)
+  * Python objects are now explicitly converted rather than relying on automatic
+    conversion
+  * Other minor modifications for compatibility
+* Added support for **numpy** recarrays (dtype number 20) (PR #81, fixes #45,
+  #28)
+  * Added a new `py_to_r.numpy.ndarray()` function which extends the default
+    **{reticulate}** function
+* Improvements to warnings
+* Improvements and updates to tests
+
 ## zellkonverter 1.7.7 (2022-10-04)
 
 * Pin **python** version to 3.7.10 in **anndata** v0.7.6 environment (3.7.12
