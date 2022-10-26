@@ -133,3 +133,50 @@ test_that("Conversion of raw works", {
 
     validateH5ADSCE(sce, names, missing)
 })
+
+test_that("Reading is compatible with R anndata", {
+    skip_if_offline()
+    skip_if_not_installed("withr")
+    skip_if_not_installed("anndata")
+
+    withr::with_package("anndata", {
+        sce <- readH5AD(file)
+        expect_s4_class(sce, "SingleCellExperiment")
+
+        expect_identical(assayNames(sce), "X")
+        expect_identical(colnames(colData(sce)), "cell_type")
+
+        cache <- BiocFileCache::BiocFileCache(ask = FALSE)
+        example_file <- BiocFileCache::bfcrpath(
+            cache, "https://ndownloader.figshare.com/files/30462915"
+        )
+
+        sce <- readH5AD(example_file, raw = TRUE)
+
+        names <- list(
+            assays = c("X"),
+            colData = c("n_genes", "n_genes_by_counts", "total_counts",
+                        "total_counts_mt", "pct_counts_mt", "leiden"),
+            rowData = c("gene_ids", "n_cells", "mt", "n_cells_by_counts",
+                        "mean_counts", "pct_dropout_by_counts", "total_counts",
+                        "highly_variable", "means", "dispersions",
+                        "dispersions_norm", "mean", "std"),
+            raw_rowData = c("gene_ids", "n_cells", "mt", "n_cells_by_counts",
+                            "mean_counts", "pct_dropout_by_counts",
+                            "total_counts", "highly_variable", "means",
+                            "dispersions", "dispersions_norm"),
+            redDim = c("X_pca", "X_umap"),
+            varm = c("PCs"),
+            colPairs = c("connectivities", "distances")
+        )
+
+        missing <- list(
+            metadata = c("hvg", "leiden", "neighbors", "pca", "umap",
+                         "rank_genes_groups")
+        )
+
+        validateH5ADSCE(sce, names, missing)
+    })
+
+    pkgload::unload("anndata")
+})

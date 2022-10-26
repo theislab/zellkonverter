@@ -104,17 +104,37 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                         skip_assays = FALSE, hdf5_backed = TRUE,
                         verbose = NULL) {
 
+    # In case the user accidentally passes an AnnDataR6 object
+    if (is(adata, "AnnDataR6")) {
+        .ui_warn(paste(
+            "The passed object is a 'AnnDataR6' object, conversion is likely ",
+            "to be less reliable"
+        ))
+        warning(
+            "The passed object is a 'AnnDataR6' object, conversion is likely ",
+            "to be less reliable",
+            call. = FALSE
+        )
+        adata <- r_to_py(adata)
+    }
+
+    # Disable automatic {reticulate} conversion for this object
+    disable_conversion_scope(adata)
+
     .ui_process(
         "Converting {.field AnnData} to {.field SingleCellExperiment}"
     )
 
     py_builtins <- import_builtins()
 
-    dims <- unlist(adata$shape)
+    dims <- unlist(py_to_r(adata$shape))
     dims <- rev(dims)
 
     meta_list <- .convert_anndata_slot(
-        adata, "uns", py_builtins$list(adata$uns$keys()), "metadata",
+        adata,
+        slot_name = "uns",
+        slot_keys = py_builtins$list(adata$uns$keys()),
+        to_name = "metadata",
         select = uns
     )
 
@@ -131,13 +151,15 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         skip_assays = skip_assays,
         hdf5_backed = hdf5_backed,
         dims = dims,
+        # do not apply py_to_r yet, because this is taken care of by
+        # .extract_or_skip_assay(...)!
         mat = adata$X,
         name = "'X' matrix"
     )
 
     x_mat <- x_out$mat
-    obs_names <- adata$obs_names$to_list()
-    var_names <- adata$var_names$to_list()
+    obs_names <- py_to_r(adata$obs_names$to_list())
+    var_names <- py_to_r(adata$var_names$to_list())
     # DelayedArray won't accept an empty vector for dimnames so set to NULL
     if (length(obs_names) == 0) {
         obs_names <- NULL
@@ -194,6 +216,8 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                 skip_assays = skip_assays,
                 hdf5_backed = hdf5_backed,
                 dims = dims,
+                # do not apply py_to_r yet, because this is taken care of by
+                # .extract_or_skip_assay(...)!
                 mat = adata$layers$get(layer_name),
                 name = sprintf("'%s' layer matrix", layer_name)
             )
@@ -206,17 +230,31 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         .ui_process_done()
     }
 
-    row_data <- .convert_anndata_df(adata$var, "var", "rowData", select = var)
+    row_data <- .convert_anndata_df(
+        py_to_r(adata$var),
+        slot_name = "var",
+        to_name   = "rowData",
+        select    = var
+    )
 
-    col_data <- .convert_anndata_df(adata$obs, "obs", "colData", select = obs)
+    col_data <- .convert_anndata_df(
+        py_to_r(adata$obs),
+        slot_name = "obs",
+        to_name   = "colData",
+        select    = obs
+    )
 
     varm_list <- .convert_anndata_slot(
-        adata, "varm", adata$varm_keys(), "rowData$varm", select = varm
+        adata,
+        slot_name = "varm",
+        slot_keys = py_to_r(adata$varm_keys()),
+        to_name   = "rowData$varm",
+        select    = varm
     )
 
     if (length(varm_list) > 0) {
         # Create an empty DataFrame with the correct number of rows
-        varm_df <- make_zero_col_DFrame(adata$n_vars)
+        varm_df <- make_zero_col_DFrame(py_to_r(adata$n_vars))
         for (varm_name in names(varm_list)) {
             varm_df[[varm_name]] <- varm_list[[varm_name]]
         }
@@ -224,7 +262,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     }
 
     reddim_list <- .convert_anndata_slot(
-        adata, "obsm", adata$obsm_keys(), "reducedDims", select = obsm
+        adata, "obsm", py_to_r(adata$obsm_keys()), "reducedDims", select = obsm
     )
     reddim_list <- lapply(reddim_list, as.matrix)
 
@@ -265,7 +303,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
 
     if (isFALSE(raw)) {
         .ui_info("Skipping conversion of {.field raw}")
-    } else if (is.null(adata$raw)) {
+    } else if (is.null(py_to_r(adata$raw))) {
         .ui_info("{.field raw} is empty and was skipped")
     } else {
         .ui_process("Converting {.field raw} to {.field altExp}")
@@ -274,12 +312,14 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
             skip_assays = skip_assays,
             hdf5_backed = hdf5_backed,
             dims = dims,
+            # do not apply py_to_r yet, because this is taken care of by
+            # .extract_or_skip_assay(...)!
             mat = adata$raw$X,
             name = "raw 'X' matrix"
         )
         colnames(raw_x$mat) <- colnames(output)
 
-        raw_rowData <- .convert_anndata_df(adata$raw$var, "raw var",
+        raw_rowData <- .convert_anndata_df(py_to_r(adata$raw$var), "raw var",
                                            "raw rowData", select = TRUE)
 
         raw_varm_list <- .convert_anndata_slot(
@@ -316,16 +356,16 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         # skip_assays=TRUE avoids any actual transfer of content from Python.
         mat <- .make_fake_mat(dims)
     } else {
-        if (hdf5_backed && is(mat, "python.builtin.object")) {
-            file <- as.character(mat$file$id$name)
-            name <- as.character(mat$name)
+        if (hdf5_backed && is(mat, "h5py._hl.dataset.Dataset")) {
+            file <- as.character(py_to_r(mat$file$id$name))
+            name <- as.character(py_to_r(mat$name))
             if (.h5isgroup(file, name)) {
                 mat <- HDF5Array::H5SparseMatrix(file, name)
             } else {
                 mat <- HDF5Array::HDF5Array(file, name)
             }
         } else {
-            mat <- try(t(mat), silent = TRUE)
+            mat <- try(t(py_to_r(mat)), silent = TRUE)
             if (is(mat, "try-error")) {
                 if (isFALSE(skip_assays)) {
                     warning(
@@ -409,8 +449,9 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     if (raw) {
         adata <- adata$raw
     }
+
     converted <- .convert_anndata_list(
-        adata[slot_name],
+        adata[[slot_name]],
         parent = slot_name,
         keys = slot_keys
     )
@@ -427,6 +468,49 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
 
     verbose <- parent.frame()$verbose
 
+    # Check if list items can be accessed (can fail when {anndata} is loaded)
+    # Attempt whole list conversion is accessing individual items fails
+    adata_list <- tryCatch(
+        {
+            # Check if an item can be accessed, if yes return the list
+            adata_list[[keys[1]]]
+            adata_list
+        },
+        error = function(err) {
+            # If not issue a warning and try to convert the whole list
+            warning(
+                "Unable to access items in '", parent, "', attempting to ",
+                "convert the whole list.\n",
+                "Access error message: ", err$message,
+                call. = FALSE
+            )
+            adata_list <- tryCatch(
+                {
+                    # If conversion is successful return the whole list
+                    adata_list <- py_to_r(adata_list)
+                    adata_list
+                },
+                error = function(err) {
+                    # If whole list conversion fails issue a warning and return
+                    # NULL
+                    warning(
+                        "Whole list conversion failed for '", parent, "', ",
+                        "this slot will not be converted.\n",
+                        "Conversion error message: ", err$message,
+                        call. = FALSE
+                    )
+                    NULL
+                }
+            )
+            adata_list
+        }
+    )
+
+    # If items cannot be accessed return empty list
+    if (is.null(adata_list)) {
+        return(list())
+    }
+
     for (key in keys) {
         .ui_step(
             "Converting {.field {parent}${key}}",
@@ -442,7 +526,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                 }
 
                 if (is(item, "python.builtin.object")) {
-                    item <- reticulate::py_to_r(item)
+                    item <- py_to_r(item)
                 }
 
                 if (inherits(item, "list")) {
@@ -464,10 +548,10 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
             },
             error = function(err) {
                 warning(
-                    "conversion failed for the item '",
+                    "Conversion failed for the item '",
                     key, "' in '", parent, "' with ",
                     "the following error and has been skipped\n",
-                    "Conversion error message: ", err,
+                    "Conversion error message: ", err$message,
                     call. = FALSE
                 )
 

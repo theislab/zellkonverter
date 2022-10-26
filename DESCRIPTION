@@ -33,23 +33,27 @@ Imports:
     S4Vectors,
     utils,
     cli
-Suggests: 
+Suggests:
+    anndata,
+    BiocFileCache,
+    BiocStyle,
     covr,
+    HDF5Array,
+    knitr,
+    pkgload,
+    rmarkdown,
+    rhdf5,
+    scRNAseq,
     spelling,
     testthat,
-    knitr,
-    rmarkdown,
-    BiocStyle,
-    scRNAseq,
-    HDF5Array,
-    rhdf5,
-    BiocFileCache
+    withr
 Collate: 
     'AnnData2SCE.R'
     'SCE2AnnData.R'
     'ui.R'
     'basilisk.R'
     'read.R'
+    'utils.R'
     'validation.R'
     'write.R'
     'zellkonverter-package.R'

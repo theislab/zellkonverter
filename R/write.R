@@ -74,7 +74,7 @@
 #' @importFrom DelayedArray is_sparse
 writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
                       compression = c("none", "gzip", "lzf"), version = NULL,
-                      verbose = NULL,...) {
+                      verbose = NULL, ...) {
 
     compression <- match.arg(compression)
 
