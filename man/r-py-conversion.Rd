@@ -5,7 +5,7 @@
 \alias{py_to_r.numpy.ndarray}
 \title{Convert between Python and R objects}
 \usage{
-py_to_r.numpy.ndarray(x)
+\method{py_to_r}{numpy.ndarray}(x)
 }
 \arguments{
 \item{x}{A Python object.}
@@ -25,4 +25,7 @@ These functions are extensions of the default conversion functions in the
 }
 \seealso{
 \code{\link[reticulate:r-py-conversion]{reticulate::py_to_r()}} for the base \code{reticulate} functions
+}
+\author{
+Luke Zappia
 }
