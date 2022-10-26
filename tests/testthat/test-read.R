@@ -117,7 +117,8 @@ test_that("Conversion of raw works", {
                     "mean_counts", "pct_dropout_by_counts", "total_counts",
                     "highly_variable", "means", "dispersions",
                     "dispersions_norm", "mean", "std"),
-        metadata = c("hvg", "leiden", "neighbors", "pca", "umap"),
+        metadata = c("hvg", "leiden", "neighbors", "pca", "rank_genes_groups",
+                     "umap"),
         redDim = c("X_pca", "X_umap"),
         varm = c("PCs"),
         colPairs = c("connectivities", "distances"),
@@ -127,9 +128,7 @@ test_that("Conversion of raw works", {
                         "dispersions_norm")
     )
 
-    missing <- list(
-        metadata = c("rank_genes_groups")
-    )
+    missing <- list()
 
     validateH5ADSCE(sce, names, missing)
 })

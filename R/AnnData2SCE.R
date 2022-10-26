@@ -525,14 +525,20 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                     item <- py_builtins$dict(item)
                 }
 
-                if (is(item, "python.builtin.object")) {
-                    item <- py_to_r(item)
-                }
-
-                if (inherits(item, "list")) {
+                if (is(item, "python.builtin.dict")) {
                     item <- .convert_anndata_list(
                         item, paste(parent, key, sep = "$")
                     )
+                }
+
+                if (is(item, "python.builtin.object")) {
+                    item <- py_to_r(item)
+
+                    if (inherits(item, "list")) {
+                        item <- .convert_anndata_list(
+                            item, paste(parent, key, sep = "$")
+                        )
+                    }
                 }
 
                 if (is.data.frame(item)) {
