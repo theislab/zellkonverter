@@ -135,11 +135,6 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
                 varm_list <- varm_list[varm]
             }
 
-            # Make sure var names are set in case varm contains a data.frame
-            if (!is.null(rownames(sce))) {
-                adata_list$var_names <- rownames(sce)
-            }
-
             adata_list$varm <- varm_list
             cli::cli_progress_done()
         }
@@ -152,7 +147,8 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         .ui_info("Skipping conversion of {.field rowData}")
     } else {
         sce <- .store_non_atomic(sce, "rowData")
-        adata_list$var <- .convert_sce_df(rowData(sce), "rowData", "var", select = rowData)
+        adata_list$var <- .convert_sce_df(rowData(sce), "rowData", "var",
+                                          select = rowData)
     }
 
     if (is.null(adata_list$var)) {
@@ -186,7 +182,7 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         red_dims <- lapply(red_dims, function(rd) {
             if (!is.null(colnames(rd))) {
                 rd <- r_to_py(as.data.frame(rd))
-                rd <- rd$set_index(adata_list$obs_names)
+                rd <- rd$set_axis(colnames(sce))
             }
 
             rd

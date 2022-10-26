@@ -9,21 +9,16 @@ names <- list(
     colData = "louvain",
     rowData = c("n_counts", "highly_variable", "means", "dispersions",
                 "dispersions_norm"),
-    metadata = c("louvain", "neighbors", "pca", "umap"),
+    metadata = c("louvain", "neighbors", "pca", "rank_genes_groups", "umap"),
     redDimk = c("X_pca", "X_umap"),
     varm = "PCs",
     colPairs = c("connectivities", "distances")
 )
 
-missing <- list(
-    metadata = c("rank_genes_groups")
-)
+missing <- list()
 
 test_that("Reading H5AD works", {
-    expect_warning(
-        {sce <- readH5AD(file)},
-        "conversion failed for the item 'rank_genes_groups'"
-    )
+    sce <- readH5AD(file)
     expect_s4_class(sce, "SingleCellExperiment")
 })
 

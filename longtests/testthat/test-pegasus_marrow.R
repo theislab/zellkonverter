@@ -21,16 +21,13 @@ names <- list(
                  "stdzn_std"),
     redDim = c("X_diffmap", "X_fle", "X_pca", "X_pca_harmony", "X_phi",
                "X_tsne", "X_umap"),
-    varm = c("gmeans", "gstds", "means", "partial_sum")
+    varm = c("de_res", "gmeans", "gstds", "means", "partial_sum")
 )
 
-missing <- list(varm = c("de_res"))
+missing <- list()
 
 test_that("Reading H5AD works", {
-    expect_warning(
-        {sce <- readH5AD(file)},
-        "conversion failed for the item 'de_res'"
-    )
+    sce <- readH5AD(file)
     expect_s4_class(sce, "SingleCellExperiment")
 })
 
