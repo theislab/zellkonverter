@@ -24,4 +24,9 @@ Authors:
   \item Aaron Lun \email{infinite.monkeys.with.keyboards@gmail.com} (\href{https://orcid.org/0000-0002-3564-4813}{ORCID})
 }
 
+Other contributors:
+\itemize{
+  \item Jack Kamm \email{jackkamm@gmail.com} (\href{https://orcid.org/0000-0003-2412-756X}{ORCID}) [contributor]
+}
+
 }

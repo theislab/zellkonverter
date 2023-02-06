@@ -1,6 +1,7 @@
 # This tests the readH5AD function (and by implication, SCE2AnnData).
 library(SummarizedExperiment)
 file <- system.file("extdata", "krumsiek11.h5ad", package = "zellkonverter")
+file_v08 <- system.file("extdata", "krumsiek11_augmented_v0-8.h5ad", package = "zellkonverter")
 
 test_that("Reading H5AD works", {
     sce <- readH5AD(file)
@@ -67,11 +68,64 @@ test_that("readH5AD works in a separate process", {
 })
 
 test_that("Reading H5AD works with native reader", {
-    sce <- readH5AD(file, reader = "R")
+    sce <- readH5AD(file, reader = "R", version="0.7")
     expect_s4_class(sce, "SingleCellExperiment")
 
     expect_identical(assayNames(sce), "X")
     expect_identical(colnames(colData(sce)), "cell_type")
+})
+
+test_that("Reading v0.8 H5AD works with native reader", {
+    sce_py <- readH5AD(file_v08)
+    sce_r <- readH5AD(file_v08, reader="R")
+
+    expect_identical(rownames(sce_py), rownames(sce_r))
+    expect_identical(colnames(sce_py), colnames(sce_r))
+
+    expect_identical(rowData(sce_py), rowData(sce_r))
+
+    expect_identical(colnames(colData(sce_py)), colnames(colData(sce_r)))
+
+    # check colData columns that Python reader is able to handle
+    good_coldat_columns <- c("cell_type", "dummy_bool", "dummy_int",
+                             "dummy_num", "dummy_num2")
+
+    expect_equal(colData(sce_py)[,good_coldat_columns],
+                 colData(sce_r)[,good_coldat_columns])
+
+    # Manually check colData columns that Python reader doesn't handle
+    # right (it reads them as environment objects)
+    expect_equal(colData(sce_r)$dummy_bool2,
+                 c(FALSE, NA, rep(TRUE, 638)))
+
+    expect_equal(colData(sce_r)$dummy_int2,
+                 c(NA, rep(42, 639)))
+
+    # check the X assay
+    expect_identical(assays(sce_py), assays(sce_r))
+
+    # check the easy metadata columns
+    for (key in c("highlights", "iroot", "dummy_int")) {
+        expect_equal(metadata(sce_py)[[key]], metadata(sce_r)[[key]])
+    }
+
+    # python reads uns[dummy_bool] as an array, so convert it (is that
+    # a bug in the python reader?)
+    expect_equal(
+        as.vector(metadata(sce_py)[["dummy_bool"]]),
+        metadata(sce_r)[["dummy_bool"]]
+    )
+
+    # python reader doesn't parse these metadata, so check manually
+    # (the factor is skipped outright; the bool/int are returned as environments).
+    expect_identical(metadata(sce_r)[["dummy_bool2"]],
+                     c(TRUE, FALSE, NA))
+
+    expect_equal(metadata(sce_r)[["dummy_int2"]],
+                 as.array(c(1, 2, NA)))
+
+    expect_equal(metadata(sce_r)[["dummy_category"]],
+                 factor(c("a", "b", NA)))
 })
 
 test_that("Skipping slot conversion works", {
