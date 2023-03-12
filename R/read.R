@@ -79,7 +79,7 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
         )
 
     } else if (reader == "R") {
-        sce <- .native_reader(file, backed = use_hdf5, verbose = verbose, version=version)
+        sce <- .native_reader(file, backed = use_hdf5, verbose = verbose)
     }
 
     return(sce)
@@ -99,17 +99,12 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
                 ...)
 }
 
-#' @importFrom utils compareVersion
 #' @importFrom S4Vectors I DataFrame wmsg
 #' @importFrom SummarizedExperiment assays assays<- rowData colData rowData<- colData<-
 #' @importFrom SingleCellExperiment SingleCellExperiment reducedDims<- colPairs<- rowPairs<-
-.native_reader <- function(file, backed = FALSE, verbose = FALSE, version = NULL) {
+.native_reader <- function(file, backed = FALSE, verbose = FALSE) {
     .ui_info("Using the {.field R} reader")
     .ui_step("Reading {.file {file}}", spinner = TRUE)
-
-    if (is.null(version)) {
-        version <- .AnnDataVersions[1]
-    }
 
     contents <- .list_contents(file)
 
@@ -144,7 +139,7 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
     # Adding the various pieces of data.
     tryCatch(
         {
-            col_data <- .read_dim_data(file, "obs", contents[["obs"]], version)
+            col_data <- .read_dim_data(file, "obs", contents[["obs"]])
             if (!is.null(col_data)) {
                 colData(sce) <- col_data
             }
@@ -159,7 +154,7 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
 
     tryCatch(
         {
-            row_data <- .read_dim_data(file, "var", contents[["var"]], version)
+            row_data <- .read_dim_data(file, "var", contents[["var"]])
             if (!is.null(row_data)) {
                 rowData(sce) <- row_data
                 # Manually set SCE rownames, because setting rowData
@@ -234,13 +229,9 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
         tryCatch(
             {
                 uns <- rhdf5::h5read(file, "uns")
-
-                if (compareVersion(version, "0.8") >= 0) {
-                    uns <- .convert_element(
-                        uns, "uns", file, recursive=TRUE
-                    )
-                }
-
+                uns <- .convert_element(
+                    uns, "uns", file, recursive=TRUE
+                )
                 metadata(sce) <- uns
             },
             error = function(e) {
@@ -314,8 +305,9 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
 .convert_element <- function(obj, path, file, recursive=FALSE) {
     element_attrs <- rhdf5::h5readAttributes(file, path)
 
-    # Convert categorical element
-    if (identical(element_attrs[["encoding-type"]], "categorical")) {
+    # Convert categorical element for AnnData v0.8+
+    if (identical(element_attrs[["encoding-type"]], "categorical") &&
+        all(c("codes", "categories") %in% names(obj))) {
         codes <- obj[["codes"]] + 1
         codes[codes == 0] <- NA
         levels <- obj[["categories"]]
@@ -329,9 +321,11 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
         return(obj)
     }
 
-    # Handle nullable booleans/integers
-    if (element_attrs[["encoding-type"]] %in% c("nullable-boolean",
-                                                "nullable-integer")) {
+    # Handle nullable booleans/integers for AnnData v0.8+
+    # Use identical() b/c encoding-type might be NULL in AnnData v0.7
+    if (identical(TRUE,
+                  element_attrs[["encoding-type"]] %in% c("nullable-boolean",
+                                                          "nullable-integer"))) {
         mask <- as.logical(obj[["mask"]]) # convert enum to bool
         obj <- obj[["values"]]
         obj[mask] <- NA
@@ -361,20 +355,17 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
     obj
 }
 
-#' @importFrom utils compareVersion
 #' @importFrom S4Vectors DataFrame
-.read_dim_data <- function(file, path, fields, version) {
+.read_dim_data <- function(file, path, fields) {
     col_names <- setdiff(names(fields), c("__categories", "_index"))
     out_cols <- list()
     for (col_name in col_names) {
         vec <- rhdf5::h5read(file, file.path(path, col_name))
 
-        if (compareVersion(version, "0.8") >= 0) {
-            vec <- .convert_element(
-                vec, file.path(path, col_name),
-                file, recursive=FALSE
-            )
-        }
+        vec <- .convert_element(
+            vec, file.path(path, col_name),
+            file, recursive=FALSE
+        )
 
         if (!is.factor(vec)) {
             vec <- as.vector(vec)
@@ -383,15 +374,14 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
         out_cols[[col_name]] <- vec
     }
 
-    if (compareVersion(version, "0.8") < 0) {
-        cat_names <- names(fields[["__categories"]])
-        for (cat_name in cat_names) {
-            levels <- as.vector(
-                rhdf5::h5read(file, file.path(path, "__categories", cat_name))
-            )
-            out_cols[[cat_name]] <- factor(out_cols[[cat_name]])
-            levels(out_cols[[cat_name]]) <- levels
-        }
+    # for AnnData versions <= 0.7
+    cat_names <- names(fields[["__categories"]])
+    for (cat_name in cat_names) {
+        levels <- as.vector(
+            rhdf5::h5read(file, file.path(path, "__categories", cat_name))
+        )
+        out_cols[[cat_name]] <- factor(out_cols[[cat_name]])
+        levels(out_cols[[cat_name]]) <- levels
     }
 
     if (!is.null(fields[["_index"]])) {

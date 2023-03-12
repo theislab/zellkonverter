@@ -68,7 +68,7 @@ test_that("readH5AD works in a separate process", {
 })
 
 test_that("Reading H5AD works with native reader", {
-    sce <- readH5AD(file, reader = "R", version="0.7")
+    sce <- readH5AD(file, reader = "R")
     expect_s4_class(sce, "SingleCellExperiment")
 
     expect_identical(assayNames(sce), "X")
