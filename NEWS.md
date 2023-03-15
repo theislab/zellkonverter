@@ -2,6 +2,11 @@
 
 * Bioconductor 3.17, April 2023
 
+## zellkonverter 1.9.1 (2023-01-14)
+
+* Add compatibility with the **anndata** v0.8 H5AD format to the the native R
+  writer (PR #86 @jackkamm, fixes #78)
+
 # zellkonverter 1.8.0
 
 * Bioconductor 3.16, October 2022
