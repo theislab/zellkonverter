@@ -17,7 +17,12 @@ Authors@R:
              family = "Kamm",
              role = c("ctb"),
              email = "jackkamm@gmail.com",
-             comment = c(ORCID = "0000-0003-2412-756X"))
+             comment = c(ORCID = "0000-0003-2412-756X")),
+      person(given = "Robrecht",
+             family = "Cannoodt",
+             role = c("ctb"),
+             email = "rcannood@gmail.com",
+             comment = c(ORCID = "0000-0003-3641-729X", github = "rcannood"))
     )
 Description:
     Provides methods to convert between Python AnnData objects and
