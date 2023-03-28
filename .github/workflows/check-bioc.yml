@@ -11,12 +11,12 @@ name: R-CMD-check-bioc
 on:
   push:
     branches:
-      - master
+      - devel
       - 'RELEASE_*'
       - actions
   pull_request:
     branches:
-      - master
+      - devel
       - 'RELEASE_*'
       - actions
 
