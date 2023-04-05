@@ -357,7 +357,7 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
 
 #' @importFrom S4Vectors DataFrame
 .read_dim_data <- function(file, path, fields) {
-    col_names <- setdiff(names(fields), c("__categories", "_index"))
+    col_names <- setdiff(names(fields), "__categories")
     out_cols <- list()
     for (col_name in col_names) {
         vec <- rhdf5::h5read(file, file.path(path, col_name))
@@ -384,13 +384,21 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
         levels(out_cols[[cat_name]]) <- levels
     }
 
-    if (!is.null(fields[["_index"]])) {
-        indices <- as.vector(rhdf5::h5read(file, file.path(path, "_index")))
+    ## rhdf5::h5readAttributes(file, "var") |> str()
+    ## List of 4
+    ##  $ _index          : chr "feature_id"
+    ##  $ column-order    : chr [1:4(1d)] "feature_is_filtered" "feature_name" "feature_reference" "feature_biotype"
+    ##  $ encoding-type   : chr "dataframe"
+    ##  $ encoding-version: chr "0.2.0"
+    attributes <- rhdf5::h5readAttributes(file, path)
+    index <- attributes[["_index"]]
+    if (!is.null(index)) {
+        indices <- out_cols[[index]]
     } else {
         indices <- NULL
     }
 
-    column_order <- rhdf5::h5readAttributes(file, path)[["column-order"]]
+    column_order <- attributes[["column-order"]]
     if (!is.null(column_order)) {
         out_cols <- out_cols[column_order]
     }
