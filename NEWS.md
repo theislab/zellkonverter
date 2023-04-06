@@ -5,6 +5,7 @@
 * Add functions for converting **pandas** arrays used by **anndata** to when
   arrays have missing values (Fixes #87)
 * Read the correct index names in the R reader (PR #93 mtmorgan)
+* Adjust tests to match reader changes
 
 ## zellkonverter 1.9.2 (2023-03-28)
 

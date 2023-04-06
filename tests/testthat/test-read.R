@@ -85,47 +85,21 @@ test_that("Reading v0.8 H5AD works with native reader", {
     expect_identical(rowData(sce_py), rowData(sce_r))
 
     expect_identical(colnames(colData(sce_py)), colnames(colData(sce_r)))
-
-    # check colData columns that Python reader is able to handle
-    good_coldat_columns <- c("cell_type", "dummy_bool", "dummy_int",
-                             "dummy_num", "dummy_num2")
-
-    expect_equal(colData(sce_py)[,good_coldat_columns],
-                 colData(sce_r)[,good_coldat_columns])
-
-    # Manually check colData columns that Python reader doesn't handle
-    # right (it reads them as environment objects)
-    expect_equal(colData(sce_r)$dummy_bool2,
-                 c(FALSE, NA, rep(TRUE, 638)))
-
-    expect_equal(colData(sce_r)$dummy_int2,
-                 c(NA, rep(42, 639)))
+    expect_equal(colData(sce_py), colData(sce_r))
 
     # check the X assay
     expect_identical(assays(sce_py), assays(sce_r))
 
     # check the easy metadata columns
-    for (key in c("highlights", "iroot", "dummy_int")) {
+    for (key in c("dummy_category", "dummy_int", "dummy_int2", "highlight",
+                  "iroot")) {
         expect_equal(metadata(sce_py)[[key]], metadata(sce_r)[[key]])
     }
 
-    # python reads uns[dummy_bool] as an array, so convert it (is that
-    # a bug in the python reader?)
-    expect_equal(
-        as.vector(metadata(sce_py)[["dummy_bool"]]),
-        metadata(sce_r)[["dummy_bool"]]
-    )
-
-    # python reader doesn't parse these metadata, so check manually
-    # (the factor is skipped outright; the bool/int are returned as environments).
-    expect_identical(metadata(sce_r)[["dummy_bool2"]],
-                     c(TRUE, FALSE, NA))
-
-    expect_equal(metadata(sce_r)[["dummy_int2"]],
-                 as.array(c(1, 2, NA)))
-
-    expect_equal(metadata(sce_r)[["dummy_category"]],
-                 factor(c("a", "b", NA)))
+    # For these columns the Python reader reads an array
+    for (key in c("dummy_bool", "dummy_bool2")) {
+        expect_equal(as.vector(metadata(sce_py)[[key]]), metadata(sce_r)[[key]])
+    }
 })
 
 test_that("Skipping slot conversion works", {
