@@ -12,6 +12,8 @@
 #' - `pandas.core.arrays.masked.BaseMaskedArray` - Handle conversion of
 #'   **pandas** arrays (used when by `AnnData` objects when there are missing
 #'   values)
+#' - `pandas.core.arrays.categorical.Categorical` - Handle conversion of
+#'   **pandas** categorical arrays
 #'
 #' @author Luke Zappia
 #'
@@ -81,6 +83,32 @@ py_to_r.pandas.core.arrays.masked.BaseMaskedArray <- function(x) {
 
     # Restore the NA values
     x[is_na] <- NA
+
+    return(x)
+}
+
+#' @export
+py_to_r.pandas.core.arrays.categorical.Categorical <- function(x) {
+    disable_conversion_scope(x)
+
+    # Get the category levels
+    cats <- reticulate::py_to_r(x$categories$to_list())
+
+    # Record which values should be NA
+    is_na <- reticulate::py_to_r(x$isna())
+
+    # Fill NA values with a dummy
+    x <- x$fillna(value = cats[1])
+
+    # Convert to list and then to R using default conversion
+    x <- x$tolist()
+    x <- reticulate::py_to_r(x)
+
+    # Restore the NA values
+    x[is_na] <- NA
+
+    # Convert to factor
+    x <- factor(x, levels = cats)
 
     return(x)
 }

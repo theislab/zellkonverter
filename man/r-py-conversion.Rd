@@ -24,6 +24,8 @@ These functions are extensions of the default conversion functions in the
 \item \code{pandas.core.arrays.masked.BaseMaskedArray} - Handle conversion of
 \strong{pandas} arrays (used when by \code{AnnData} objects when there are missing
 values)
+\item \code{pandas.core.arrays.categorical.Categorical} - Handle conversion of
+\strong{pandas} categorical arrays
 }
 }
 \seealso{
