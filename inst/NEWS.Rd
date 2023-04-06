@@ -1,6 +1,29 @@
 \name{NEWS}
 \title{News for Package \pkg{zellkonverter}}
 
+\section{Version 1.10.0, Bioconductor 3.17 Release (April 2023)}{
+  \subsection{Major changes}{
+  \itemize{
+    \item{
+      Add compatibility with the \bold{anndata} v0.8 H5AD format to the the
+      native R writer (By @jackkamm and @mtmorgan)
+    }
+    \item{
+      Add functions for converting \bold{pandas} arrays used by \bold{anndata}
+      when arrays have missing values
+    }
+  }}
+  \subsection{Minor changes}{
+  \itemize{
+    \item{
+      Add Robrecht Cannoodt and Jack Kamm as contributors!
+    }
+    \item{
+      Minor adjustments to tests to match reader changes
+    }
+  }}
+}
+
 \section{Version 1.8.0, Bioconductor 3.16 Release (October 2022)}{
   \subsection{Major changes}{
   \itemize{
