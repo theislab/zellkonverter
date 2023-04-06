@@ -2,6 +2,8 @@
 
 * Bioconductor 3.17, April 2023
 
+## zellkonverter 1.9.3 (2023-04-06)
+
 * Add functions for converting **pandas** arrays used by **anndata** to when
   arrays have missing values (Fixes #87)
 * Read the correct index names in the R reader (PR #93 mtmorgan)
