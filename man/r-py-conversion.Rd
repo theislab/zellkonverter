@@ -21,6 +21,9 @@ These functions are extensions of the default conversion functions in the
 \code{reticulate} package for the following reasons:
 \itemize{
 \item \code{numpy.ndarray} - Handle conversion of \strong{numpy} recarrays
+\item \code{pandas.core.arrays.masked.BaseMaskedArray} - Handle conversion of
+\strong{pandas} arrays (used when by \code{AnnData} objects when there are missing
+values)
 }
 }
 \seealso{

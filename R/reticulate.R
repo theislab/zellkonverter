@@ -9,6 +9,9 @@
 #' `reticulate` package for the following reasons:
 #'
 #' - `numpy.ndarray` - Handle conversion of **numpy** recarrays
+#' - `pandas.core.arrays.masked.BaseMaskedArray` - Handle conversion of
+#'   **pandas** arrays (used when by `AnnData` objects when there are missing
+#'   values)
 #'
 #' @author Luke Zappia
 #'
@@ -41,4 +44,43 @@ py_to_r.numpy.ndarray <- function(x) {
 
     # No special handler found, delegate to next method
     NextMethod()
+}
+
+#' @export
+py_to_r.pandas.core.arrays.masked.BaseMaskedArray <- function(x) {
+    disable_conversion_scope(x)
+
+    if (is(x, "pandas.core.arrays.boolean.BooleanArray")) {
+        dtype <- "bool"
+        fill <- FALSE
+    } else if (is(x, "pandas.core.arrays.integer.IntegerArray")) {
+        dtype <- "int"
+        fill <- 0L
+    } else if (is(x, "pandas.core.arrays.floating.FloatingArray")) {
+        dtype <- "float"
+        fill <- 0.0
+    } else if (is(x , "pandas.core.arrays.string_.StringArray")) {
+        dtype <- "str"
+        fill <- ""
+    } else {
+        stop(
+            "No conversion exists for this Pandas array type: ",
+            paste(class(x), collapse = ", ")
+        )
+    }
+
+    # Record which values should be NA
+    is_na <- reticulate::py_to_r(x$isna())
+
+    # Fill NA values with a dummy
+    x <- x$fillna(value = fill)
+
+    # Convert to numpy array and then to R using default conversion
+    x <- x$to_numpy()$astype(dtype)
+    x <- reticulate::py_to_r(x)
+
+    # Restore the NA values
+    x[is_na] <- NA
+
+    return(x)
 }

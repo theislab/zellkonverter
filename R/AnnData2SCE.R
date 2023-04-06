@@ -593,7 +593,28 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
        select <- colnames(adata_df)
     }
 
-    df <- DataFrame(adata_df[, select, drop = FALSE])
+    df <- adata_df[, select, drop = FALSE]
+
+    # Return early if there are no columns as the next steps can break nrow
+    if (ncol(df) == 0) {
+        cli::cli_progress_done()
+        return(DataFrame(df))
+    }
+
+    # Second conversion by column for types the {reticulate} misses
+    # (mostly Pandas arrays)
+    # Also convert 1D arrays to vectors
+    df <- lapply(df, function(col) {
+        if (is(col, "python.builtin.object")) {
+            col <- reticulate::py_to_r(col)
+        }
+        if (is(col, "array") && is.na(ncol(col))) {
+            col <- as.vector(col)
+        }
+        col
+    })
+
+    df <- DataFrame(df)
 
     is_modified <- colnames(df) != select
     if (any(is_modified)) {

@@ -2,6 +2,9 @@
 
 * Bioconductor 3.17, April 2023
 
+* Add functions for converting **pandas** arrays used by **anndata** to when
+  arrays have missing values (Fixes #87)
+
 ## zellkonverter 1.9.2 (2023-03-28)
 
 * Add @rcannood as a contributor (PR #90 @rcannood, fixes #88)
