@@ -2,6 +2,10 @@
 
 * Bioconductor 3.17, April 2023
 
+## zellkonverter 1.10.1 (2023-04-23)
+
+* Pass correct dimensions when converting `raw` (Fixes #96)
+
 ## zellkonverter 1.9.3 (2023-04-06)
 
 * Add functions for converting **pandas** arrays used by **anndata** when
