@@ -1,10 +1,11 @@
-# zellkonverter 1.10.0
+# zellkonverter 1.10.0 (2023-04-26)
 
 * Bioconductor 3.17, April 2023
 
-## zellkonverter 1.10.1 (2023-04-23)
+## zellkonverter 1.10.1 (2023-05-23)
 
 * Pass correct dimensions when converting `raw` (Fixes #96)
+* Convert **anndata** backed sparse matrices in `AnnData2SCE()` (Fixes #96)
 
 ## zellkonverter 1.9.3 (2023-04-06)
 
