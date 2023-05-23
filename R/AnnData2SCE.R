@@ -301,7 +301,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         raw_x <- .extract_or_skip_assay(
             skip_assays = skip_assays,
             hdf5_backed = hdf5_backed,
-            dims = dims,
+            dims = rev(unlist(py_to_r(adata$raw$shape))),
             # do not apply py_to_r yet, because this is taken care of by
             # .extract_or_skip_assay(...)!
             mat = adata$raw$X,
@@ -346,7 +346,9 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         # skip_assays=TRUE avoids any actual transfer of content from Python.
         mat <- .make_fake_mat(dims)
     } else {
-        if (hdf5_backed && is(mat, "h5py._hl.dataset.Dataset")) {
+        if (hdf5_backed &&
+            (is(mat, "h5py._hl.dataset.Dataset") ||
+             is(mat, "anndata._core.sparse_dataset.SparseDataset"))) {
             file <- as.character(py_to_r(mat$file$id$name))
             name <- as.character(py_to_r(mat$name))
             if (.h5isgroup(file, name)) {
