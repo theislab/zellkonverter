@@ -1,7 +1,7 @@
 Package: zellkonverter
 Title: Conversion Between scRNA-seq Objects
-Version: 1.11.1
-Date: 2023-05-23
+Version: 1.11.2
+Date: 2023-08-28
 Authors@R: 
     c(person(given = "Luke",
              family = "Zappia",
@@ -52,7 +52,7 @@ Suggests:
     knitr,
     pkgload,
     rmarkdown,
-    rhdf5,
+    rhdf5 (>= 2.45.1),
     scRNAseq,
     spelling,
     testthat,

@@ -312,23 +312,10 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
         codes[codes == 0] <- NA
         levels <- obj[["categories"]]
 
-        # HACK rhdf5 doesn't yet support enums in attrs
-        # (h5readAttributes() above may warn about this)
-        #ord <- as.logical(element_attrs[["ordered"]])
-        ord <- FALSE
+        ord <- as.logical(element_attrs[["ordered"]])
 
         obj <- factor(levels[codes], levels=levels, ordered=ord)
         return(obj)
-    }
-
-    # Handle nullable booleans/integers for AnnData v0.8+
-    # Use identical() b/c encoding-type might be NULL in AnnData v0.7
-    if (identical(TRUE,
-                  element_attrs[["encoding-type"]] %in% c("nullable-boolean",
-                                                          "nullable-integer"))) {
-        mask <- as.logical(obj[["mask"]]) # convert enum to bool
-        obj <- obj[["values"]]
-        obj[mask] <- NA
     }
 
     # Handle booleans. Non-nullable booleans have encoding-type
@@ -341,6 +328,7 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
     # Recursively convert element members
     if (recursive && is.list(obj) && !is.null(names(obj))) {
         for (k in names(obj)) {
+            obj[[k]] <- rhdf5::h5read(file, file.path(path, k))
             obj[[k]] <- .convert_element(
                 obj[[k]], file.path(path, k),
                 file, recursive=TRUE

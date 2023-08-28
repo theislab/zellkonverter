@@ -2,6 +2,12 @@
 
 * Bioconductor 3.18, October 2023
 
+## zellkonverter 1.11.2 (2023-08-28)
+
+* Changes for compatibility with **{rhdf5}** v2.45.1
+  * Support for enum types that simplifies reading of nullable types in the
+    native R reader
+
 ## zellkonverter 1.11.1 (2023-05-23)
 
 * Pass correct dimensions when converting `raw` (Fixes #96)
