@@ -2,6 +2,10 @@
 
 * Bioconductor 3.18, October 2023
 
+## zellkonverter 1.11.3 (2023-10-2)
+
+* Add environment for **anndata** v0.9.2
+
 ## zellkonverter 1.11.2 (2023-08-28)
 
 * Changes for compatibility with **{rhdf5}** v2.45.1

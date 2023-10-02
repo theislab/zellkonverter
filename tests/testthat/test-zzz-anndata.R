@@ -37,13 +37,12 @@ test_that("Reading is compatible with R anndata", {
                             "dispersions", "dispersions_norm"),
             redDim = c("X_pca", "X_umap"),
             varm = c("PCs"),
-            colPairs = c("connectivities", "distances")
+            colPairs = c("connectivities", "distances"),
+            metadata = c("hvg", "leiden", "neighbors", "pca",
+                         "rank_genes_groups", "umap")
         )
 
-        missing <- list(
-            metadata = c("hvg", "leiden", "neighbors", "pca", "umap",
-                         "rank_genes_groups")
-        )
+        missing <- list()
 
         validateH5ADSCE(sce, names, missing)
     })
