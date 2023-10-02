@@ -1,6 +1,29 @@
 \name{NEWS}
 \title{News for Package \pkg{zellkonverter}}
 
+\section{Version 1.12.0, Bioconductor 3.18 Release (October 2023)}{
+  \subsection{Major changes}{
+  \itemize{
+    \item{
+      Add an environment for \bold{anndata} v0.9.2. This is now the default
+      envrionment for the Python reader/writer.
+    }
+  }}
+  \subsection{Minor changes}{
+  \itemize{
+    \item{
+      Changes for compatibility with \bold{rhdf5} v2.45.1 including enum types
+      that simplifies reading of nullable types in the native R reader
+    }
+    \item{
+      Dimensions are now passed correctly when converting the \code{raw} slot
+    }
+    \item{
+      Backed sparse matrices are now converted in \code{AnnData2SCE()}
+    }
+  }}
+}
+
 \section{Version 1.10.0, Bioconductor 3.17 Release (April 2023)}{
   \subsection{Major changes}{
   \itemize{
