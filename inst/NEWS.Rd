@@ -5,8 +5,8 @@
   \subsection{Major changes}{
   \itemize{
     \item{
-      Add an environment for \bold{anndata} v0.9.2. This is now the default
-      envrionment for the Python reader/writer.
+      Add environments for \bold{anndata} v0.9.2 and v0.10.2. Version 0.10.20 is
+      now the default envrionment for the Python reader/writer.
     }
   }}
   \subsection{Minor changes}{

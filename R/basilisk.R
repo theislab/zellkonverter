@@ -61,7 +61,7 @@ NULL
 #' version strings.
 #'
 #' @export
-.AnnDataVersions <- c("0.9.2", "0.8.0", "0.7.6")
+.AnnDataVersions <- c("0.10.2", "0.9.2", "0.8.0", "0.7.6")
 
 #' @rdname AnnData-Environment
 #'
@@ -114,6 +114,17 @@ AnnDataDependencies <- function(version = .AnnDataVersions) {
             "pandas==2.1.1",
             "python==3.11.5",
             "scipy==1.11.3"
+        ),
+        "0.10.2" = c(
+            "anndata==0.10.2",
+            "h5py==3.10.0",
+            "hdf5==1.14.2",
+            "natsort==8.4.0",
+            "numpy==1.26.0",
+            "packaging==23.2",
+            "pandas==2.1.1",
+            "python==3.11.5",
+            "scipy==1.11.3"
         )
     )
 }
@@ -143,3 +154,4 @@ zellkonverterAnnDataEnv <- function(version = .AnnDataVersions) {
 anndata_env_0.7.6 <- zellkonverterAnnDataEnv(version = "0.7.6")
 anndata_env_0.8.0 <- zellkonverterAnnDataEnv(version = "0.8.0")
 anndata_env_0.9.2 <- zellkonverterAnnDataEnv(version = "0.9.2")
+anndata_env_0.9.2 <- zellkonverterAnnDataEnv(version = "0.10.2")
