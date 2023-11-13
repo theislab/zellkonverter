@@ -154,4 +154,4 @@ zellkonverterAnnDataEnv <- function(version = .AnnDataVersions) {
 anndata_env_0.7.6 <- zellkonverterAnnDataEnv(version = "0.7.6")
 anndata_env_0.8.0 <- zellkonverterAnnDataEnv(version = "0.8.0")
 anndata_env_0.9.2 <- zellkonverterAnnDataEnv(version = "0.9.2")
-anndata_env_0.9.2 <- zellkonverterAnnDataEnv(version = "0.10.2")
+anndata_env_0.10.2 <- zellkonverterAnnDataEnv(version = "0.10.2")

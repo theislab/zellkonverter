@@ -1,4 +1,4 @@
-#' Convert AnnData between and SingleCellExperiment
+#' Convert between AnnData and SingleCellExperiment
 #'
 #' Conversion between Python AnnData objects and
 #' \linkS4class{SingleCellExperiment} objects.
