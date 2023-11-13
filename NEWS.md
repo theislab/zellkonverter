@@ -2,6 +2,11 @@
 
 * Bioconductor 3.18, October 2023
 
+## zellkonverter 1.12.1 (2023-11-13)
+
+* Fix the **anndata** v0.10.2 environment instatiation (Fixes #103)
+* Fix a type in the AnnData Conversion docs (Fixes #100)
+
 ## zellkonverter 1.11.4 (2023-10-16)
 
 * Add environment for **anndata** v0.10.2
