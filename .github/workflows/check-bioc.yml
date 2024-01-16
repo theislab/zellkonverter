@@ -71,6 +71,13 @@ jobs:
           biocmap <- BiocManager:::.version_map_get_online(biocconfig)
           biocversion <- subset(biocmap, BiocStatus == biocrelease)[, 'Bioc']
           rversion <- subset(biocmap, BiocStatus == biocrelease)[, 'R']
+          # Use R devel for BioC devel between November and May
+          if (biocrelease == "devel") {
+              current_month <- as.numeric(format(Sys.Date(), "%m"))
+              if (current_month >= 11 || current_month <= 5) {
+                  rversion = "devel"
+              }
+          }
           writeLines(as.character(c(biocversion, rversion)),
                      "versions.txt")
           cat("GET VERSIONS", "\n")
