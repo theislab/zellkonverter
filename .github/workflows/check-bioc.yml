@@ -176,10 +176,10 @@ jobs:
 
       - name: Install Linux system dependencies
           if: runner.os == "Linux"
-          run: |
-            sudo apt update
-            sudo apt-get update
-            sudo apt-get upgrade libstdc++6
+            run: |
+              sudo apt update
+              sudo apt-get update
+              sudo apt-get upgrade libstdc++6
 
       - name: Setup Pandoc
         uses: r-lib/actions/setup-pandoc@v2
