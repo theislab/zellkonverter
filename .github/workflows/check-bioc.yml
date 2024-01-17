@@ -68,10 +68,9 @@ jobs:
             grepl(biocrelease, "release"),
             "release", "devel"
           )
-          cat("Get Bioconductor version")
           biocmap <- BiocManager:::.version_map_get_online(biocconfig)
           biocversion <- subset(biocmap, BiocStatus == biocrelease)[, 'Bioc']
-          cat("Get R version")
+          biocversion_str <- as.character(biocversion)
           rversion <- subset(biocmap, BiocStatus == biocrelease)[, 'R']
           rversion_str <- as.character(rversion)
           # Use R devel for BioC devel between November and May
@@ -83,11 +82,10 @@ jobs:
                   rversion_str <- "devel"
               }
           }
-          writeLines(as.character(c(biocversion, rversion)),
-                     "versions.txt")
+          writeLines(c(biocversion_str, rversion_str)), "versions.txt")
           cat("GET VERSIONS", "\n")
           cat("Bioc release: ", biocrelease, "\n")
-          cat("Bioc version: ", as.character(biocversion), "\n")
+          cat("Bioc version: ", biocversion_str, "\n")
           cat("R version: ", rversion_str, "\n")
         shell: Rscript {0}
       - id: set-versions
