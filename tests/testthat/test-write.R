@@ -335,3 +335,20 @@ test_that("Selective DF conversion works", {
 
     expect_identical(names(colData(out)), "tissue")
 })
+
+test_that("TEST ARTIFACT works", {
+    delayed_sce <- sce
+    assay(delayed_sce, "layer") <- DelayedArray::DelayedArray(
+        counts(delayed_sce)
+    )
+
+    temp <- "failure.h5ad"
+
+    writeH5AD(delayed_sce, temp)
+    expect_true(file.exists(temp))
+
+    out <- readH5AD(temp, X_name = "X")
+
+    # Identical fails on Windows for some reason
+    expect_equal(counts(sce), assay(out, "layer"))
+})
