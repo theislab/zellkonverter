@@ -63,13 +63,15 @@ jobs:
         run: |
           biocconfig <- "https://bioconductor.org/config.yaml"
           biocrelease <- "${{ needs.get-bioc-release.outputs.biocrelease }}"
-          cat("Bioc release RAW: ", biocrelease, "\n")
+          cat("Bioc release RAW:", biocrelease, "\n")
           biocrelease <- ifelse(
             grepl(biocrelease, "release"),
             "release", "devel"
           )
+          cat("Get Bioconductor version")
           biocmap <- BiocManager:::.version_map_get_online(biocconfig)
           biocversion <- subset(biocmap, BiocStatus == biocrelease)[, 'Bioc']
+          cat("Get R version")
           rversion <- subset(biocmap, BiocStatus == biocrelease)[, 'R']
           rversion_str <- as.character(rversion)
           # Use R devel for BioC devel between November and May
