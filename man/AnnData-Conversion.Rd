@@ -4,7 +4,7 @@
 \alias{AnnData-Conversion}
 \alias{AnnData2SCE}
 \alias{SCE2AnnData}
-\title{Convert AnnData between and SingleCellExperiment}
+\title{Convert between AnnData and SingleCellExperiment}
 \usage{
 AnnData2SCE(
   adata,
