@@ -2,6 +2,11 @@
 
 * Bioconductor 3.19, May 2023
 
+## zellkonverter 1.13.2 (2024-01-17)
+
+* Minor change to writing `DelayedArray`s for compatibility with **{HDF5Array}**
+  v1.31.1
+
 ## zellkonverter 1.13.1 (2023-11-13)
 
 * Fix the **anndata** v0.10.2 environment instantiation (Fixes #103)
