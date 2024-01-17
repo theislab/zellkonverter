@@ -82,7 +82,7 @@ jobs:
                   rversion_str <- "devel"
               }
           }
-          writeLines(c(biocversion_str, rversion_str)), "versions.txt")
+          writeLines(c(biocversion_str, rversion_str), "versions.txt")
           cat("GET VERSIONS", "\n")
           cat("Bioc release: ", biocrelease, "\n")
           cat("Bioc version: ", biocversion_str, "\n")
