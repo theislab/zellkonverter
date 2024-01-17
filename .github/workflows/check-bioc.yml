@@ -76,15 +76,17 @@ jobs:
           if (biocrelease == "devel") {
               current_month <- as.numeric(format(Sys.Date(), "%m"))
               if (current_month >= 11 || current_month <= 5) {
+                  cat("Setting R version to devel")
                   rversion <- "devel"
-                  rversion_str <- "devel"              }
+                  rversion_str <- "devel"
+              }
           }
           writeLines(as.character(c(biocversion, rversion)),
                      "versions.txt")
           cat("GET VERSIONS", "\n")
           cat("Bioc release: ", biocrelease, "\n")
           cat("Bioc version: ", as.character(biocversion), "\n")
-          cat("R version: ", as.character(rversion), "\n")
+          cat("R version: ", rversion_str, "\n")
         shell: Rscript {0}
       - id: set-versions
         name: Set Bioconductor/R versions
