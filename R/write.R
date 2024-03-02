@@ -151,6 +151,139 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
     adata$write_h5ad(file, compression = compression)
 }
 
+.native_writer <- function(sce, file) {
+    # Save to an adjacent file and then move on success. This avoids
+    # overwriting an existing file unless the entire write was okay.
+    temp <- tempfile(dirname(file), fileext=".h5")
+    on.exit(unlink(temp))
+    rhdf5::h5createFile(temp)
+
+    # Saving the assays. 
+    # TODO: sparse array support, waiting on HDF5.
+    HDF5Array::writeHDF5Array(assay(sce, withDimnames=FALSE), temp, "X", with.dimnames = FALSE)
+
+    all.ass <- assayNames(sce)[-1]
+    if (length(all.ass)) {
+        if (any(all.ass=="") || anyDuplicated(all.ass)) {
+            stop("assay names must be non-NULL and unique")
+        }
+        rhdf5::h5createGroup("layers")
+        for (i in all.ass) {
+            HDF5Array::writeHDF5Array(assay(sce, i, withDimnames=FALSE), temp, file.path("layers", i), with.dimnames = FALSE)
+        }
+    }
+
+    # Saving the rowData with a shift of matrices.
+    row.mats <- .save_dim_data(rowData(sce), temp, "var", "rowData", ignore.mat=FALSE)
+    .save_mat_list(as.list(row.mats), temp, "varm", "rowData")
+
+    # Saving the colData.
+    col.mats <- .save_dim_data(colData(sce), temp, "obs", "colData", ignore.mat=TRUE)
+
+    # Saving the reducedDims.
+    .save_mat_list(reducedDims(sce), temp, "obsm", "reducedDims")
+
+    # Saving the metadata.
+    .save_uns_list(metadata(sce), temp, "uns", "metadata")
+
+    # TODO: skipping the pairs until we can save sparse attributes properly.
+
+    file.rename(temp, file)
+}
+
+.save_dim_data <- function(df, file, name, msg, ignore.mat) {
+    if (is.null(rownames(df)) || anyDuplicated(rownames(df))) {
+        stop("'", msg, "' should have non-NULL and unique row names")
+    }
+    if (is.null(colnames(df)) || anyDuplicated(colnames(df))) {
+        stop("'", msg, "' should have non-NULL and unique column names")
+    }
+
+    rhdf5::h5createGroup(file, name)
+    rhdf5::h5write(rownames(df), file, file.path(name, "_index"))    
+    
+    is.mat <- logical(ncol(df))
+    made.factor <- FALSE
+    for (i in seq_len(ncol(df))) {
+        x <- colnames(df)[i]
+        current <- df[[x]]
+
+        if (is.matrix(current)) {
+            if (ignore.mat) {
+                warning("ignoring matrix-like column '", x, "' in the '", msg, 
+                        "':\n  ", conditionMessage(e))
+            }
+            is.mat[i] <- TRUE
+        } else if (is.factor(current)) {
+            if (!made.factor) {
+                rhdf5::h5write(current, file, file.path(name, "__categories"))
+                made.factor <- TRUE
+            }
+            rhdf5::h5write(levels(current), file, file.path(name, "__categories", x))
+            current <- as.character(current)
+        } else {
+            # Who knows what weird crap we have here.
+            tryCatch({
+                rhdf5::h5write(current, file, file.path(name, x))
+            }, error=function(e) {
+                warning("failed to save column '", x, "' from the '", msg,
+                        "':\n  ", conditionMessage(e))
+            })
+        }
+    }
+
+    df[,is.mat,drop=FALSE]
+}
+
+.save_mat_list <- function(matlist, file, name, msg) {
+    if (!length(matlist)) {
+        return(NULL)
+    }
+    if (is.null(names(matlist)) || anyDuplicated(names(matlist))) {
+        stop("'", msg, "' should have non-NULL and unique names")
+    }
+
+    rhdf5::h5createGroup(file, name)
+    for (i in seq_along(matlist)) {
+        x <- names(matlist)[i]
+        tryCatch({
+            rhdf5::h5write(matlist[[i]], file, file.path(name, x))
+        }, error=function(e) {
+            warning("failed to save matrix '", x, "' from the '", msg, 
+                    "':\n  ", conditionMessage(e))
+        })
+    }
+}
+
+.save_uns_list <- function(contents, file, name, msg) {
+    if (!length(contents)) {
+        return(NULL)
+    }
+    if (is.null(names(contents)) || anyDuplicated(names(contents))) {
+        warning(wmsg("'", msg, "' should have non-NULL and unique names"))
+        return(NULL)
+    }
+    rhdf5::h5createGroup(file, name)
+
+    for (i in names(contents)) {
+        current <- contents[[i]]
+        path <- file.path(name, i)
+        msg2 <- paste0(msg, "->", i)
+        
+        if (is.data.frame(current) || is.atomic(current)) {
+            if (is.factor(current)) {
+                # TODO: save this as an HDF5 enumeration type.
+                current <- as.character(current)
+            }
+            rhdf5::h5write(current, file=file, name=path)
+        } else if (is.list(current)) {
+            .save_uns_list(current, file, path, msg2)
+        } else {
+            warning(msg("ignoring '", msg2, "' of unknown type ", class(current)[1]))
+        }
+    }
+}
+
 # nocov start
 
 # Skipping code coverage on these function because they aren't used until the
