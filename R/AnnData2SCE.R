@@ -149,6 +149,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         # do not apply py_to_r yet, because this is taken care of by
         # .extract_or_skip_assay(...)!
         mat = adata$X,
+        filepath = as.character(py_to_r(adata$file$filename)),
         name = "'X' matrix"
     )
 
@@ -338,7 +339,8 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
 }
 
 #' @importFrom Matrix t
-.extract_or_skip_assay <- function(skip_assays, hdf5_backed, dims, mat, name) {
+.extract_or_skip_assay <- function(skip_assays, hdf5_backed, dims, mat,
+                                   filepath, name) {
     skipped <- FALSE
 
     if (isTRUE(skip_assays)) {
@@ -346,15 +348,13 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         # skip_assays=TRUE avoids any actual transfer of content from Python.
         mat <- .make_fake_mat(dims)
     } else {
-        if (hdf5_backed &&
-            (is(mat, "h5py._hl.dataset.Dataset") ||
-             is(mat, "anndata._core.sparse_dataset.SparseDataset"))) {
-            file <- as.character(py_to_r(mat$file$id$name))
-            name <- as.character(py_to_r(mat$name))
-            if (.h5isgroup(file, name)) {
-                mat <- HDF5Array::H5SparseMatrix(file, name)
+        if (hdf5_backed && .is_anndata_matrix(mat)) {
+            # filepath <- as.character(py_to_r(mat$file$id$name))
+            group_name <- as.character(py_to_r(mat$name))
+            if (.h5isgroup(filepath, group_name)) {
+                mat <- HDF5Array::H5SparseMatrix(filepath, group_name)
             } else {
-                mat <- HDF5Array::HDF5Array(file, name)
+                mat <- HDF5Array::HDF5Array(filepath, group_name)
             }
         } else {
             mat <- try(t(py_to_r(mat)), silent = TRUE)
@@ -634,4 +634,10 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     cli::cli_progress_done()
 
     return(df)
+}
+
+.is_anndata_matrix <- function(mat) {
+    is(mat, "h5py._hl.dataset.Dataset") ||
+        is(mat, "anndata._core.sparse_dataset.SparseDataset") ||
+        is(mat, "anndata._core.sparse_dataset.BaseCompressedSparseDataset")
 }

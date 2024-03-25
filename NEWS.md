@@ -2,6 +2,10 @@
 
 * Bioconductor 3.19, May 2023
 
+## zellkonverter 1.13.3 (2024-03-25)
+
+* Correctly handle `use_backed = TRUE` with newer **anndata** versions (Fixes #114)
+
 ## zellkonverter 1.13.2 (2024-01-17)
 
 * Minor change to writing `DelayedArray`s for compatibility with **{HDF5Array}**
