@@ -5,6 +5,7 @@
 ## zellkonverter 1.13.3 (2024-03-25)
 
 * Correctly handle `use_backed = TRUE` with newer **anndata** versions (Fixes #114)
+* Improve warnings when converting matrices fails
 
 ## zellkonverter 1.13.2 (2024-01-17)
 

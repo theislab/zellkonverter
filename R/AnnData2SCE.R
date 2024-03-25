@@ -349,7 +349,6 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         mat <- .make_fake_mat(dims)
     } else {
         if (hdf5_backed && .is_anndata_matrix(mat)) {
-            # filepath <- as.character(py_to_r(mat$file$id$name))
             group_name <- as.character(py_to_r(mat$name))
             if (.h5isgroup(filepath, group_name)) {
                 mat <- HDF5Array::H5SparseMatrix(filepath, group_name)
@@ -357,14 +356,21 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                 mat <- HDF5Array::HDF5Array(filepath, group_name)
             }
         } else {
-            mat <- try(t(py_to_r(mat)), silent = TRUE)
+            mat <- try(py_to_r(mat), silent = TRUE)
             if (is(mat, "try-error")) {
-                if (isFALSE(skip_assays)) {
-                    .ui_warn(paste(
-                        "{.field {name}} does not support transposition and",
-                        "has been skipped"
-                    ))
-                }
+                .ui_warn(paste(
+                    "{.field {name}} could not be converted to R and",
+                    "has been skipped"
+                ))
+                mat <- .make_fake_mat(dims)
+                skipped <- TRUE
+            }
+            mat <- try(t(mat), silent = TRUE)
+            if (is(mat, "try-error")) {
+                .ui_warn(paste(
+                    "{.field {name}} does not support transposition and",
+                    "has been skipped"
+                ))
                 mat <- .make_fake_mat(dims)
                 skipped <- TRUE
             }
