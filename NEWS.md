@@ -6,6 +6,7 @@
 
 * Correctly handle `use_backed = TRUE` with newer **anndata** versions (Fixes #114)
 * Improve warnings when converting matrices fails
+* Add environment for **anndata** v0.10.6
 
 ## zellkonverter 1.13.2 (2024-01-17)
 
@@ -15,7 +16,7 @@
 ## zellkonverter 1.13.1 (2023-11-13)
 
 * Fix the **anndata** v0.10.2 environment instantiation (Fixes #103)
-* Fix a type in the AnnData Conversion docs (Fixes #100)
+* Fix a typo in the AnnData Conversion docs (Fixes #100)
 
 ## zellkonverter 1.13.0 (2023-10-25)
 
@@ -28,7 +29,7 @@
 ## zellkonverter 1.12.1 (2023-11-13)
 
 * Fix the **anndata** v0.10.2 environment instantiation (Fixes #103)
-* Fix a type in the AnnData Conversion docs (Fixes #100)
+* Fix a typo in the AnnData Conversion docs (Fixes #100)
 
 ## zellkonverter 1.11.4 (2023-10-16)
 
