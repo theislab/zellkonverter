@@ -259,16 +259,15 @@ jobs:
 
     steps:
 
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Set git credentials
         ## Assign commits to the GitHub Action user. This should happen
         ## automatically but doesn't (maybe because of Docker).
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-        shell: bash {0}
-
-      - name: Checkout
-        uses: actions/checkout@v3
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
 
       - name: Install extra linux dependencies
         run: sudo apt-get update -y && sudo apt-get install -y libcurl4-openssl-dev devscripts qpdf
