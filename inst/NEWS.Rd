@@ -1,6 +1,39 @@
 \name{NEWS}
 \title{News for Package \pkg{zellkonverter}}
 
+\section{Version 1.14.0, Bioconductor 3.19 Release (May 2023)}{
+  \subsection{Major changes}{
+  \itemize{
+    \item{
+      Add environment for \bold{anndata} v0.10.6. This is now the default
+      envrionment for the Python reader/writer.
+    }
+  }}
+  \subsection{Minor changes}{
+  \itemize{
+    \item{
+      Improve warnings when converting matrices fails
+    }
+    \item{
+      Minor change to writing \code{DelayedArray} matrices for compatibility
+      with \bold{{HDF5Array}} >= v1.31.1
+    }
+  }}
+  \subsection{Bug fixes}{
+  \itemize{
+    \item{
+      Correctly handle \code{use_backed = TRUE} with newer \bold{anndata}
+      versions
+    }
+    \item{
+      Correctly instantiate the \bold{anndata} v0.10.2 environment
+    }
+    \item{
+      Minor fixes for typos etc.
+    }
+  }}
+}
+
 \section{Version 1.12.0, Bioconductor 3.18 Release (October 2023)}{
   \subsection{Major changes}{
   \itemize{

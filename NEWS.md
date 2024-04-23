@@ -2,6 +2,10 @@
 
 * Bioconductor 3.19, May 2023
 
+## zellkonverter 1.13.4 (2024-04-26)
+
+* Prepare `NEWS` for release
+
 ## zellkonverter 1.13.3 (2024-03-25)
 
 * Correctly handle `use_backed = TRUE` with newer **anndata** versions (Fixes #114)
