@@ -6,7 +6,7 @@
   \itemize{
     \item{
       Add environment for \bold{anndata} v0.10.6. This is now the default
-      envrionment for the Python reader/writer.
+      environment for the Python reader/writer.
     }
   }}
   \subsection{Minor changes}{
