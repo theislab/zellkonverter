@@ -1,6 +1,10 @@
-# zellkonverter 1.14.0
+# zellkonverter 1.14.0 (2024-05-01)
 
 * Bioconductor 3.19, May 2023
+
+## zellkonverter 1.14.1 (2024-06-21)
+
+* Skip **anndata** v0.7.6 tests on Apple Silicon as Python 3.7 is not available
 
 ## zellkonverter 1.13.4 (2024-04-26)
 

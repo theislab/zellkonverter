@@ -36,6 +36,9 @@ test_that("Reading H5AD works with version 0.8.0", {
 })
 
 test_that("Reading H5AD works with version 0.7.6", {
+    # Python 3.7 is not available for Apple Silicon
+    skip_on_os("mac", arch = "aarch64")
+
     sce <- readH5AD(file, version = "0.7.6")
     expect_s4_class(sce, "SingleCellExperiment")
 
