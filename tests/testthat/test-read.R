@@ -1,6 +1,7 @@
 # This tests the readH5AD function (and by implication, SCE2AnnData).
 library(SummarizedExperiment)
 file <- system.file("extdata", "krumsiek11.h5ad", package = "zellkonverter")
+file_example <- system.file("extdata", "example_anndata.h5ad", package = "zellkonverter")
 file_v08 <- system.file("extdata", "krumsiek11_augmented_v0-8.h5ad", package = "zellkonverter")
 
 test_that("Reading H5AD works", {
@@ -9,6 +10,25 @@ test_that("Reading H5AD works", {
 
     expect_identical(assayNames(sce), "X")
     expect_identical(colnames(colData(sce)), "cell_type")
+})
+
+test_that("Reading example H5AD works", {
+    names <- list(
+        assays = c("X", "counts"),
+        colData = "louvain",
+        rowData = c("n_counts", "highly_variable", "means", "dispersions",
+                    "dispersions_norm"),
+        metadata = c("louvain", "neighbors", "pca", "rank_genes_groups", "umap"),
+        redDim = c("X_pca", "X_umap"),
+        varm = "PCs",
+        colPairs = c("connectivities", "distances")
+    )
+    missing <- list()
+
+    sce <- expect_silent(readH5AD(file_example))
+    expect_s4_class(sce, "SingleCellExperiment")
+
+    validateH5ADSCE(sce, names, missing)
 })
 
 test_that("Reading H5AD works with version 0.10.2", {
