@@ -2,8 +2,8 @@ library(SingleCellExperiment)
 library(BiocFileCache)
 
 cache <- BiocFileCache(ask = FALSE)
-# Available from https://www.gtexportal.org/home/datasets
-file <- bfcrpath(cache, "https://storage.googleapis.com/gtex_analysis_v9/snrna_seq_data/GTEx_8_tissues_snRNAseq_atlas_071421.public_obs.h5ad")
+# Available from https://www.gtexportal.org/home/downloads/adult-gtex/single_cell
+file <- bfcrpath(cache, "https://storage.googleapis.com/adult-gtex/single-cell/v9/snrna-seq-data/GTEx_8_tissues_snRNAseq_atlas_071421.public_obs.h5ad")
 outfile <- tempfile(fileext = ".h5ad")
 
 names <- list(

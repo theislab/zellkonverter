@@ -129,6 +129,9 @@ test_that("writeH5AD works as expected with version 0.8.0", {
 })
 
 test_that("writeH5AD works as expected with version 0.7.6", {
+    # Python 3.7 is not available for Apple Silicon
+    skip_on_os("mac", arch = "aarch64")
+
     temp <- tempfile(fileext = ".h5ad")
     writeH5AD(sce, temp, version = "0.7.6")
     expect_true(file.exists(temp))
