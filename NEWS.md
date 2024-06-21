@@ -6,6 +6,7 @@
 
 * Skip **anndata** v0.7.6 tests on Apple Silicon as Python 3.7 is not available
 * Fix URL for GTEx 8 tissues dataset in long tests
+* Add test using the more complete example H5AD file
 
 ## zellkonverter 1.13.4 (2024-04-26)
 
