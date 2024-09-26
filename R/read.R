@@ -368,8 +368,7 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
         levels <- as.vector(
             rhdf5::h5read(file, file.path(path, "__categories", cat_name))
         )
-        out_cols[[cat_name]] <- factor(out_cols[[cat_name]])
-        levels(out_cols[[cat_name]]) <- levels
+        out_cols[[cat_name]] <- factor(out_cols[[cat_name]], levels = levels)
     }
 
     ## rhdf5::h5readAttributes(file, "var") |> str()
