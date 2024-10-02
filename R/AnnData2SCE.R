@@ -210,6 +210,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                 # do not apply py_to_r yet, because this is taken care of by
                 # .extract_or_skip_assay(...)!
                 mat = adata$layers$get(layer_name),
+                filepath = as.character(py_to_r(adata$file$filename)),
                 name = sprintf("'%s' layer matrix", layer_name)
             )
             if (layer_out$skipped) {
@@ -306,6 +307,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
             # do not apply py_to_r yet, because this is taken care of by
             # .extract_or_skip_assay(...)!
             mat = adata$raw$X,
+            filepath = as.character(py_to_r(adata$file$filename)),
             name = "raw 'X' matrix"
         )
         colnames(raw_x$mat) <- colnames(output)

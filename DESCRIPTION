@@ -1,48 +1,38 @@
 Package: zellkonverter
 Title: Conversion Between scRNA-seq Objects
-Version: 1.15.1
-Date: 2024-06-21
-Authors@R: 
-    c(person(given = "Luke",
-             family = "Zappia",
-             role = c("aut", "cre"),
-             email = "luke@lazappi.id.au",
-             comment = c(ORCID = "0000-0001-7744-8565")),
-      person(given = "Aaron",
-             family = "Lun",
-             role = c("aut"),
-             email = "infinite.monkeys.with.keyboards@gmail.com",
-             comment = c(ORCID = "0000-0002-3564-4813")),
-      person(given = "Jack",
-             family = "Kamm",
-             role = c("ctb"),
-             email = "jackkamm@gmail.com",
-             comment = c(ORCID = "0000-0003-2412-756X")),
-      person(given = "Robrecht",
-             family = "Cannoodt",
-             role = c("ctb"),
-             email = "rcannood@gmail.com",
-             comment = c(ORCID = "0000-0003-3641-729X", github = "rcannood"))
-    )
-Description:
-    Provides methods to convert between Python AnnData objects and
-    SingleCellExperiment objects. These are primarily intended for use by
-    downstream Bioconductor packages that wrap Python methods for single-cell
-    data analysis. It also includes functions to read and write H5AD files used
-    for saving AnnData objects to disk. 
-biocViews: SingleCell, DataImport, DataRepresentation
+Version: 1.15.2
+Date: 2024-10-02
+Authors@R: c(
+    person("Luke", "Zappia", , "luke@lazappi.id.au", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-7744-8565")),
+    person("Aaron", "Lun", , "infinite.monkeys.with.keyboards@gmail.com", role = "aut",
+           comment = c(ORCID = "0000-0002-3564-4813")),
+    person("Jack", "Kamm", , "jackkamm@gmail.com", role = "ctb",
+           comment = c(ORCID = "0000-0003-2412-756X")),
+    person("Robrecht", "Cannoodt", , "rcannood@gmail.com", role = "ctb",
+           comment = c(ORCID = "0000-0003-3641-729X", github = "rcannood")),
+    person("Gabriel", "Hoffman", , "gabriel.hoffman@mssm.edu", role = "ctb",
+           comment = c(ORCID = "0000-0002-0957-0224", github = "GabrielHoffman"))
+  )
+Description: Provides methods to convert between Python AnnData objects
+    and SingleCellExperiment objects. These are primarily intended for use
+    by downstream Bioconductor packages that wrap Python methods for
+    single-cell data analysis. It also includes functions to read and
+    write H5AD files used for saving AnnData objects to disk.
 License: MIT + file LICENSE
+URL: https://github.com/theislab/zellkonverter
+BugReports: https://github.com/theislab/zellkonverter/issues
 Imports: 
-    Matrix,
     basilisk,
+    cli,
+    DelayedArray,
+    Matrix,
+    methods,
     reticulate,
+    S4Vectors,
     SingleCellExperiment (>= 1.11.6),
     SummarizedExperiment,
-    DelayedArray,
-    methods,
-    S4Vectors,
-    utils,
-    cli
+    utils
 Suggests:
     anndata,
     BiocFileCache,
@@ -51,12 +41,21 @@ Suggests:
     HDF5Array,
     knitr,
     pkgload,
-    rmarkdown,
     rhdf5 (>= 2.45.1),
+    rmarkdown,
     scRNAseq,
     spelling,
     testthat,
     withr
+VignetteBuilder: 
+    knitr
+biocViews: SingleCell, DataImport, DataRepresentation
+Encoding: UTF-8
+Language: en-GB
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+StagedInstall: no
 Collate: 
     'AnnData2SCE.R'
     'SCE2AnnData.R'
@@ -68,12 +67,3 @@ Collate:
     'validation.R'
     'write.R'
     'zellkonverter-package.R'
-URL: https://github.com/theislab/zellkonverter
-BugReports: https://github.com/theislab/zellkonverter/issues
-Encoding: UTF-8
-LazyData: true
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
-Language: en-GB
-StagedInstall: no
-VignetteBuilder: knitr

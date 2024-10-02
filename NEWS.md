@@ -2,6 +2,10 @@
 
 * Bioconductor 3.20, October 2024
 
+## zellkonverter 1.15.2 (2024-10-02)
+
+* Correctly set `filepath` in the R reader with reading `adata.raw` with `use_hdf5 = TRUE` (PR #124 @GabrielHoffman, Fixes #123)
+
 ## zellkonverter 1.15.1 (2024-06-21)
 
 * Skip **anndata** v0.7.6 tests on Apple Silicon as Python 3.7 is not available
