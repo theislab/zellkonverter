@@ -3,6 +3,7 @@
 * Bioconductor 3.20, October 2024
 
 * Fix correctly assign levels to factors in R reader with **anndata** v0.7 files (Fixes #122)
+* Add environment for **anndata** v0.10.9
 
 ## zellkonverter 1.15.3 (2024-10-04)
 

@@ -35,6 +35,37 @@ test_that("writeH5AD works as expected", {
     expect_identical(col_data, colData(sce))
 })
 
+test_that("writeH5AD works as expected with version 0.10.6", {
+    temp <- tempfile(fileext = ".h5ad")
+    writeH5AD(sce, temp, version = "0.10.6")
+    expect_true(file.exists(temp))
+
+    # Reading it back out again. Hopefully we didn't lose anything important.
+    out <- readH5AD(temp, version = "0.10.6")
+
+    expect_identical(dimnames(out), dimnames(sce))
+    expect_equal(assay(out), assay(sce))
+    expect_identical(reducedDims(out), reducedDims(sce))
+
+    # Need to coerce the factors back to strings.
+    row_data <- rowData(out)
+    for (i in seq_len(ncol(row_data))) {
+        if (is.factor(row_data[[i]])) {
+            row_data[[i]] <- as.character(row_data[[i]])
+        }
+    }
+    expect_identical(row_data, rowData(sce))
+
+    col_data <- colData(out)
+    for (i in seq_len(ncol(col_data))) {
+        if (is.factor(col_data[[i]])) {
+            col_data[[i]] <- as.character(col_data[[i]])
+        }
+    }
+    names(col_data) <- names(colData(sce))
+    expect_identical(col_data, colData(sce))
+})
+
 test_that("writeH5AD works as expected with version 0.10.2", {
     temp <- tempfile(fileext = ".h5ad")
     writeH5AD(sce, temp, version = "0.10.2")
