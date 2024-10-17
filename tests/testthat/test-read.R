@@ -16,8 +16,10 @@ test_that("Reading example H5AD works", {
     names <- list(
         assays = c("X", "counts"),
         colData = "louvain",
-        rowData = c("n_counts", "highly_variable", "means", "dispersions",
-                    "dispersions_norm"),
+        rowData = c(
+            "n_counts", "highly_variable", "means", "dispersions",
+            "dispersions_norm"
+        ),
         metadata = c("louvain", "neighbors", "pca", "rank_genes_groups", "umap"),
         redDim = c("X_pca", "X_umap"),
         varm = "PCs",
@@ -132,7 +134,7 @@ test_that("Reading H5AD works with native reader", {
 
 test_that("Reading v0.8 H5AD works with native reader", {
     sce_py <- readH5AD(file_v08)
-    sce_r <- readH5AD(file_v08, reader="R")
+    sce_r <- readH5AD(file_v08, reader = "R")
 
     expect_identical(rownames(sce_py), rownames(sce_r))
     expect_identical(colnames(sce_py), colnames(sce_r))
@@ -146,8 +148,10 @@ test_that("Reading v0.8 H5AD works with native reader", {
     expect_identical(assays(sce_py), assays(sce_r))
 
     # check the easy metadata columns
-    for (key in c("dummy_category", "dummy_int", "dummy_int2", "highlight",
-                  "iroot")) {
+    for (key in c(
+        "dummy_category", "dummy_int", "dummy_int2", "highlight",
+        "iroot"
+    )) {
         expect_equal(metadata(sce_py)[[key]], metadata(sce_r)[[key]])
     }
 
@@ -158,8 +162,10 @@ test_that("Reading v0.8 H5AD works with native reader", {
 })
 
 test_that("Skipping slot conversion works", {
-    sce <- readH5AD(file, layers = FALSE, uns = FALSE, var = FALSE, obs = FALSE,
-                    varm = FALSE, obsm = FALSE, varp = FALSE, obsp = FALSE)
+    sce <- readH5AD(file,
+        layers = FALSE, uns = FALSE, var = FALSE, obs = FALSE,
+        varm = FALSE, obsm = FALSE, varp = FALSE, obsp = FALSE
+    )
 
     expect_identical(assayNames(sce), "X")
     expect_identical(metadata(sce), list())
@@ -194,21 +200,29 @@ test_that("Conversion of raw works", {
 
     names <- list(
         assays = c("X"),
-        colData = c("n_genes", "n_genes_by_counts", "total_counts",
-                    "total_counts_mt", "pct_counts_mt", "leiden"),
-        rowData = c("gene_ids", "n_cells", "mt", "n_cells_by_counts",
-                    "mean_counts", "pct_dropout_by_counts", "total_counts",
-                    "highly_variable", "means", "dispersions",
-                    "dispersions_norm", "mean", "std"),
-        metadata = c("hvg", "leiden", "neighbors", "pca", "rank_genes_groups",
-                     "umap"),
+        colData = c(
+            "n_genes", "n_genes_by_counts", "total_counts",
+            "total_counts_mt", "pct_counts_mt", "leiden"
+        ),
+        rowData = c(
+            "gene_ids", "n_cells", "mt", "n_cells_by_counts",
+            "mean_counts", "pct_dropout_by_counts", "total_counts",
+            "highly_variable", "means", "dispersions",
+            "dispersions_norm", "mean", "std"
+        ),
+        metadata = c(
+            "hvg", "leiden", "neighbors", "pca", "rank_genes_groups",
+            "umap"
+        ),
         redDim = c("X_pca", "X_umap"),
         varm = c("PCs"),
         colPairs = c("connectivities", "distances"),
-        raw_rowData = c("gene_ids", "n_cells", "mt", "n_cells_by_counts",
-                        "mean_counts", "pct_dropout_by_counts", "total_counts",
-                        "highly_variable", "means", "dispersions",
-                        "dispersions_norm")
+        raw_rowData = c(
+            "gene_ids", "n_cells", "mt", "n_cells_by_counts",
+            "mean_counts", "pct_dropout_by_counts", "total_counts",
+            "highly_variable", "means", "dispersions",
+            "dispersions_norm"
+        )
     )
 
     missing <- list()
@@ -228,25 +242,32 @@ test_that("Conversion of raw works with use_hdf5 = TRUE", {
 
     names <- list(
         assays = c("X"),
-        colData = c("n_genes", "n_genes_by_counts", "total_counts",
-                    "total_counts_mt", "pct_counts_mt", "leiden"),
-        rowData = c("gene_ids", "n_cells", "mt", "n_cells_by_counts",
-                    "mean_counts", "pct_dropout_by_counts", "total_counts",
-                    "highly_variable", "means", "dispersions",
-                    "dispersions_norm", "mean", "std"),
-        metadata = c("hvg", "leiden", "neighbors", "pca", "rank_genes_groups",
-                     "umap"),
+        colData = c(
+            "n_genes", "n_genes_by_counts", "total_counts",
+            "total_counts_mt", "pct_counts_mt", "leiden"
+        ),
+        rowData = c(
+            "gene_ids", "n_cells", "mt", "n_cells_by_counts",
+            "mean_counts", "pct_dropout_by_counts", "total_counts",
+            "highly_variable", "means", "dispersions",
+            "dispersions_norm", "mean", "std"
+        ),
+        metadata = c(
+            "hvg", "leiden", "neighbors", "pca", "rank_genes_groups",
+            "umap"
+        ),
         redDim = c("X_pca", "X_umap"),
         varm = c("PCs"),
         colPairs = c("connectivities", "distances"),
-        raw_rowData = c("gene_ids", "n_cells", "mt", "n_cells_by_counts",
-                        "mean_counts", "pct_dropout_by_counts", "total_counts",
-                        "highly_variable", "means", "dispersions",
-                        "dispersions_norm")
+        raw_rowData = c(
+            "gene_ids", "n_cells", "mt", "n_cells_by_counts",
+            "mean_counts", "pct_dropout_by_counts", "total_counts",
+            "highly_variable", "means", "dispersions",
+            "dispersions_norm"
+        )
     )
 
     missing <- list()
 
     validateH5ADSCE(sce, names, missing)
 })
-

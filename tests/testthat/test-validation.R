@@ -1,12 +1,15 @@
 file <- system.file("extdata", "example_anndata.h5ad",
-                    package = "zellkonverter")
+    package = "zellkonverter"
+)
 sce <- readH5AD(file)
 
 names <- list(
     assays = c("X", "counts"),
     colData = "louvain",
-    rowData = c("n_counts", "highly_variable", "means", "dispersions",
-                "dispersions_norm"),
+    rowData = c(
+        "n_counts", "highly_variable", "means", "dispersions",
+        "dispersions_norm"
+    ),
     metadata = c("louvain", "neighbors", "pca", "rank_genes_groups", "umap"),
     redDim = c("X_pca", "X_umap"),
     varm = "PCs",

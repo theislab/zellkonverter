@@ -377,9 +377,11 @@ test_that("writeH5AD works with lzf compression", {
 
 test_that("Skipping slot conversion works", {
     temp <- tempfile(fileext = ".h5ad")
-    writeH5AD(sce, temp, assays = FALSE, colData = FALSE, rowData = FALSE,
-              varm = FALSE, reducedDims = FALSE, metadata = FALSE,
-              colPairs = FALSE, rowPairs = FALSE)
+    writeH5AD(sce, temp,
+        assays = FALSE, colData = FALSE, rowData = FALSE,
+        varm = FALSE, reducedDims = FALSE, metadata = FALSE,
+        colPairs = FALSE, rowPairs = FALSE
+    )
 
     out <- readH5AD(temp, X_name = "X")
 

@@ -9,7 +9,8 @@ test_that("Reading is compatible with R anndata", {
 
     withr::with_package("anndata", {
         file <- system.file("extdata", "krumsiek11.h5ad",
-                            package = "zellkonverter")
+            package = "zellkonverter"
+        )
         sce <- readH5AD(file)
         expect_s4_class(sce, "SingleCellExperiment")
 
@@ -25,21 +26,29 @@ test_that("Reading is compatible with R anndata", {
 
         names <- list(
             assays = c("X"),
-            colData = c("n_genes", "n_genes_by_counts", "total_counts",
-                        "total_counts_mt", "pct_counts_mt", "leiden"),
-            rowData = c("gene_ids", "n_cells", "mt", "n_cells_by_counts",
-                        "mean_counts", "pct_dropout_by_counts", "total_counts",
-                        "highly_variable", "means", "dispersions",
-                        "dispersions_norm", "mean", "std"),
-            raw_rowData = c("gene_ids", "n_cells", "mt", "n_cells_by_counts",
-                            "mean_counts", "pct_dropout_by_counts",
-                            "total_counts", "highly_variable", "means",
-                            "dispersions", "dispersions_norm"),
+            colData = c(
+                "n_genes", "n_genes_by_counts", "total_counts",
+                "total_counts_mt", "pct_counts_mt", "leiden"
+            ),
+            rowData = c(
+                "gene_ids", "n_cells", "mt", "n_cells_by_counts",
+                "mean_counts", "pct_dropout_by_counts", "total_counts",
+                "highly_variable", "means", "dispersions",
+                "dispersions_norm", "mean", "std"
+            ),
+            raw_rowData = c(
+                "gene_ids", "n_cells", "mt", "n_cells_by_counts",
+                "mean_counts", "pct_dropout_by_counts",
+                "total_counts", "highly_variable", "means",
+                "dispersions", "dispersions_norm"
+            ),
             redDim = c("X_pca", "X_umap"),
             varm = c("PCs"),
             colPairs = c("connectivities", "distances"),
-            metadata = c("hvg", "leiden", "neighbors", "pca",
-                         "rank_genes_groups", "umap")
+            metadata = c(
+                "hvg", "leiden", "neighbors", "pca",
+                "rank_genes_groups", "umap"
+            )
         )
 
         missing <- list()

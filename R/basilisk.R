@@ -75,11 +75,9 @@ NULL
 #'
 #' @export
 AnnDataDependencies <- function(version = .AnnDataVersions) {
-
     version <- match.arg(version)
 
-    switch (
-        version,
+    switch(version,
         "0.7.6" = c(
             "anndata==0.7.6",
             "h5py==3.2.1",
@@ -160,7 +158,6 @@ AnnDataDependencies <- function(version = .AnnDataVersions) {
 #' @include ui.R
 #' @export
 zellkonverterAnnDataEnv <- function(version = .AnnDataVersions) {
-
     version <- match.arg(version)
 
     basilisk::BasiliskEnvironment(

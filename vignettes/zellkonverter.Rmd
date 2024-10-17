@@ -42,8 +42,10 @@ H5AD file. This can be manipulated in the usual way as described in the
 library(zellkonverter)
 
 # Obtaining an example H5AD file.
-example_h5ad <- system.file("extdata", "krumsiek11.h5ad",
-                            package = "zellkonverter")
+example_h5ad <- system.file(
+    "extdata", "krumsiek11.h5ad",
+    package = "zellkonverter"
+)
 readH5AD(example_h5ad)
 ```
 
@@ -78,14 +80,14 @@ library(scRNAseq)
 
 seger <- SegerstolpePancreasData()
 roundtrip <- basiliskRun(fun = function(sce) {
-     # Convert SCE to AnnData:
-     adata <- SCE2AnnData(sce)
+    # Convert SCE to AnnData:
+    adata <- SCE2AnnData(sce)
 
-     # Maybe do some work in Python on 'adata':
-     # BLAH BLAH BLAH
+    # Maybe do some work in Python on 'adata':
+    # BLAH BLAH BLAH
 
-     # Convert back to an SCE:
-     AnnData2SCE(adata)
+    # Convert back to an SCE:
+    AnnData2SCE(adata)
 }, env = zellkonverterAnnDataEnv(), sce = seger)
 ```
 
@@ -119,7 +121,7 @@ If you would like to see progress messages for all functions by default you can
 turn this on using the `setZellkonverterVerbose()` function.
 
 ```{r verbose-set, eval = FALSE}
-# This is not run here 
+# This is not run here
 setZellkonverterVerbose(TRUE)
 ```
 
