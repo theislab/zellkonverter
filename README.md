@@ -3,10 +3,17 @@
 # zellkonverter
 
 <!-- badges: start -->
-[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-[![Bioconductor since](https://bioconductor.org/shields/years-in-bioc/zellkonverter.svg)](https://bioconductor.org/packages/devel/bioc/html/zellkonverter.html)
-[![Bioconductor rank](https://bioconductor.org/shields/downloads/devel/zellkonverter.svg)](https://bioconductor.org/packages/devel/bioc/html/zellkonverter.html)
-[![Codecov test coverage](https://codecov.io/gh/theislab/zellkonverter/branch/master/graph/badge.svg)](https://codecov.io/gh/theislab/zellkonverter?branch=master)
+[![Project Status](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+[![Lifecycle](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![Codecov test coverage](https://codecov.io/gh/theislab/zellonverter/graph/badge.svg)](https://app.codecov.io/gh/theislab/zellonverter)
+[![R-CMD-check-bioc](https://github.com/theislab/zellkonverter/actions/workflows/check.yml/badge.svg)](https://github.com/theislab/zellkonverter/actions/workflows/check.yml)
+[![Bioc release status](http://www.bioconductor.org/shields/build/release/bioc/zellkonverter.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/zellkonverter)
+[![Bioc devel status](http://www.bioconductor.org/shields/build/devel/bioc/zellkonverter.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/zellkonverter)
+[![Bioc downloads rank](https://bioconductor.org/shields/downloads/release/zellkonverter.svg)](http://bioconductor.org/packages/stats/bioc/zellkonverter/)
+[![Bioc support](https://bioconductor.org/shields/posts/zellkonverter.svg)](https://support.bioconductor.org/tag/zellkonverter)
+[![Bioc history](https://bioconductor.org/shields/years-in-bioc/zellkonverter.svg)](https://bioconductor.org/packages/release/bioc/html/zellkonverter.html#since)
+[![Bioc last commit](https://bioconductor.org/shields/lastcommit/devel/bioc/zellkonverter.svg)](http://bioconductor.org/checkResults/devel/bioc-LATEST/zellkonverter/)
+[![Bioc dependencies](https://bioconductor.org/shields/dependencies/release/zellkonverter.svg)](https://bioconductor.org/packages/release/bioc/html/zellkonverter.html#since)
 <!-- badges: end -->
 
 **zellkonverter** is a small package for converting between SingleCellExperiment
@@ -33,8 +40,8 @@ BiocManager::install("zellkonverter")
 
 |      Source      |       Checks     |    Updated   |
 |:----------------:|:----------------:|:------------:|
-| [Bioc release](http://bioconductor.org/packages/release/bioc/html/zellkonverter.html) | [![Bioconductor-release Build Status](http://bioconductor.org/shields/build/release/bioc/zellkonverter.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/zellkonverter) | ![](http://bioconductor.org/shields/lastcommit/release/bioc/zellkonverter.svg) |
-| [Bioc devel](http://bioconductor.org/packages/devel/bioc/html/zellkonverter.html) | [![Bioconductor-devel Build Status](http://bioconductor.org/shields/build/devel/bioc/zellkonverter.svg)](http://bioconductor.org/checkResults/devel/bioc-LATEST/zellkonverter) | ![](http://bioconductor.org/shields/lastcommit/devel/bioc/zellkonverter.svg) |
+| [Bioc release](http://bioconductor.org/packages/release/bioc/html/zellkonverter.html) | [![Bioc release status](http://www.bioconductor.org/shields/build/release/bioc/zellkonverter.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/zellkonverter) | ![](http://bioconductor.org/shields/lastcommit/release/bioc/zellkonverter.svg) |
+| [Bioc devel](http://bioconductor.org/packages/devel/bioc/html/zellkonverter.html) | [![Bioc devel status](http://www.bioconductor.org/shields/build/devel/bioc/zellkonverter.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/zellkonverter) | ![](http://bioconductor.org/shields/lastcommit/devel/bioc/zellkonverter.svg) |
 | [GitHub actions](https://github.com/theislab/zellkonverter/actions) | [![R build status](https://github.com/theislab/zellkonverter/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/theislab/zellkonverter/actions) | ![GitHub last commit](https://img.shields.io/github/last-commit/theislab/zellkonverter) |
 
 ## Code of Conduct
