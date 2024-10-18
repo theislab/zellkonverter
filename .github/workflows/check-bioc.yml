@@ -116,7 +116,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install extra linux dependencies
         run: sudo apt-get update -y && sudo apt-get install -y libcurl4-openssl-dev devscripts qpdf
@@ -172,7 +172,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Linux system dependencies
         if: runner.os == 'Linux'
@@ -226,7 +226,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install extra linux dependencies
         run: sudo apt-get update -y && sudo apt-get install -y libcurl4-openssl-dev devscripts qpdf
@@ -260,7 +260,7 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set git credentials
         ## Assign commits to the GitHub Action user. This should happen
