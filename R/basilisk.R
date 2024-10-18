@@ -61,7 +61,7 @@ NULL
 #' version strings.
 #'
 #' @export
-.AnnDataVersions <- c("0.10.6", "0.10.2", "0.9.2", "0.8.0", "0.7.6")
+.AnnDataVersions <- c("0.10.9", "0.10.6", "0.10.2", "0.9.2", "0.8.0", "0.7.6")
 
 #' @rdname AnnData-Environment
 #'
@@ -75,11 +75,9 @@ NULL
 #'
 #' @export
 AnnDataDependencies <- function(version = .AnnDataVersions) {
-
     version <- match.arg(version)
 
-    switch (
-        version,
+    switch(version,
         "0.7.6" = c(
             "anndata==0.7.6",
             "h5py==3.2.1",
@@ -136,6 +134,17 @@ AnnDataDependencies <- function(version = .AnnDataVersions) {
             "pandas==2.2.1",
             "python==3.12.2",
             "scipy==1.12.0"
+        ),
+        "0.10.9" = c(
+            "anndata==0.10.9",
+            "h5py==3.12.1",
+            "hdf5==1.14.3",
+            "natsort==8.4.0",
+            "numpy==2.1.2",
+            "packaging==24.1",
+            "pandas==2.2.3",
+            "python==3.12.7",
+            "scipy==1.14.1"
         )
     )
 }
@@ -149,7 +158,6 @@ AnnDataDependencies <- function(version = .AnnDataVersions) {
 #' @include ui.R
 #' @export
 zellkonverterAnnDataEnv <- function(version = .AnnDataVersions) {
-
     version <- match.arg(version)
 
     basilisk::BasiliskEnvironment(
@@ -167,3 +175,4 @@ anndata_env_0.8.0 <- zellkonverterAnnDataEnv(version = "0.8.0")
 anndata_env_0.9.2 <- zellkonverterAnnDataEnv(version = "0.9.2")
 anndata_env_0.10.2 <- zellkonverterAnnDataEnv(version = "0.10.2")
 anndata_env_0.10.6 <- zellkonverterAnnDataEnv(version = "0.10.6")
+anndata_env_0.10.9 <- zellkonverterAnnDataEnv(version = "0.10.9")

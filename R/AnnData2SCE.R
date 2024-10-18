@@ -30,8 +30,7 @@
 #'
 #' If `skip_assays = TRUE`, empty sparse matrices are created for all assays,
 #' regardless of whether they might be convertible to an R format or not.
-#' In both cases, the user is expected to fill in the assays on the R side,
-#' see [`readH5AD()`] for an example.
+#' In both cases, the user is expected to fill in the assays on the R side.
 #'
 #' We attempt to convert between items in the \linkS4class{SingleCellExperiment}
 #' [`metadata()`] slot and the `AnnData` `uns` slot. If an item cannot be
@@ -98,12 +97,10 @@ NULL
 #' @importFrom methods selectMethod is
 #' @importFrom S4Vectors DataFrame make_zero_col_DFrame
 #' @importFrom reticulate import_builtins
-AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
-                        var = TRUE, obs = TRUE, varm = TRUE, obsm = TRUE,
-                        varp = TRUE, obsp = TRUE, raw = FALSE,
-                        skip_assays = FALSE, hdf5_backed = TRUE,
-                        verbose = NULL) {
-
+AnnData2SCE <- function(
+        adata, X_name = NULL, layers = TRUE, uns = TRUE,
+        var = TRUE, obs = TRUE, varm = TRUE, obsm = TRUE, varp = TRUE, obsp = TRUE,
+        raw = FALSE, skip_assays = FALSE, hdf5_backed = TRUE, verbose = NULL) {
     # In case the user accidentally passes an AnnDataR6 object
     if (is(adata, "AnnDataR6")) {
         .ui_warn(paste(
@@ -254,17 +251,24 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     }
 
     reddim_list <- .convert_anndata_slot(
-        adata, "obsm", py_to_r(adata$obsm_keys()), "reducedDims", select = obsm
+        adata, "obsm",
+        py_to_r(adata$obsm_keys()),
+        "reducedDims",
+        select = obsm
     )
     reddim_list <- lapply(reddim_list, as.matrix)
 
     varp_list <- .convert_anndata_slot(
-        adata, "varp", py_builtins$list(adata$varp$keys()), "rowPairs",
+        adata, "varp",
+        py_builtins$list(adata$varp$keys()),
+        "rowPairs",
         select = varp
     )
 
     obsp_list <- .convert_anndata_slot(
-        adata, "obsp", py_builtins$list(adata$obsp$keys()), "colPairs",
+        adata, "obsp",
+        py_builtins$list(adata$obsp$keys()),
+        "colPairs",
         select = obsp
     )
 
@@ -312,12 +316,19 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         )
         colnames(raw_x$mat) <- colnames(output)
 
-        raw_rowData <- .convert_anndata_df(py_to_r(adata$raw$var), "raw var",
-                                           "raw rowData", select = TRUE)
+        raw_rowData <- .convert_anndata_df(
+            py_to_r(adata$raw$var),
+            "raw var",
+            "raw rowData",
+            select = TRUE
+        )
 
         raw_varm_list <- .convert_anndata_slot(
-            adata, "varm", py_builtins$list(adata$raw$varm$keys()),
-            "raw rowData$varm", select = TRUE, raw = TRUE
+            adata,
+            "varm",
+            py_builtins$list(adata$raw$varm$keys()),
+            "raw rowData$varm",
+            select = TRUE, raw = TRUE
         )
 
         if (length(raw_varm_list) > 0) {
@@ -342,7 +353,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
 
 #' @importFrom Matrix t
 .extract_or_skip_assay <- function(skip_assays, hdf5_backed, dims, mat,
-                                   filepath, name) {
+    filepath, name) {
     skipped <- FALSE
 
     if (isTRUE(skip_assays)) {
@@ -411,8 +422,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
 }
 
 .convert_anndata_slot <- function(adata, slot_name, slot_keys, to_name,
-                                  select = TRUE, raw = FALSE) {
-
+    select = TRUE, raw = FALSE) {
     verbose <- parent.frame()$verbose
 
     if (isFALSE(select)) {
@@ -456,7 +466,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
 }
 
 .convert_anndata_list <- function(adata_list, parent,
-                                  keys = names(adata_list)) {
+    keys = names(adata_list)) {
     py_builtins <- import_builtins()
 
     converted_list <- list()
@@ -578,7 +588,6 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
 }
 
 .convert_anndata_df <- function(adata_df, slot_name, to_name, select = TRUE) {
-
     verbose <- parent.frame()$verbose
 
     if (isFALSE(select)) {
@@ -600,7 +609,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
             select <- setdiff(select, missing)
         }
     } else {
-       select <- colnames(adata_df)
+        select <- colnames(adata_df)
     }
 
     df <- adata_df[, select, drop = FALSE]

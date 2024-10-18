@@ -36,9 +36,11 @@ py_to_r.numpy.ndarray <- function(x) {
             {
                 x <- pandas$DataFrame(x)$to_numpy()
                 py_to_r(x)
-            }, error = function(err) {
+            },
+            error = function(err) {
                 stop("Failed to convert recarray with error: ", err$message,
-                     call. = FALSE)
+                    call. = FALSE
+                )
             }
         )
         return(out)
@@ -61,7 +63,7 @@ py_to_r.pandas.core.arrays.masked.BaseMaskedArray <- function(x) {
     } else if (is(x, "pandas.core.arrays.floating.FloatingArray")) {
         dtype <- "float"
         fill <- 0.0
-    } else if (is(x , "pandas.core.arrays.string_.StringArray")) {
+    } else if (is(x, "pandas.core.arrays.string_.StringArray")) {
         dtype <- "str"
         fill <- ""
     } else {

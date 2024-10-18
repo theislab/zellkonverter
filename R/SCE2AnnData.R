@@ -16,10 +16,11 @@
 #' @importFrom utils capture.output
 #' @importFrom S4Vectors metadata make_zero_col_DFrame
 #' @importFrom reticulate import r_to_py py_to_r
-SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
-                        rowData = TRUE, varm = TRUE, reducedDims = TRUE,
-                        metadata = TRUE, colPairs = TRUE, rowPairs = TRUE,
-                        skip_assays = FALSE, verbose = NULL) {
+SCE2AnnData <- function(
+        sce, X_name = NULL, assays = TRUE, colData = TRUE,
+        rowData = TRUE, varm = TRUE, reducedDims = TRUE,
+        metadata = TRUE, colPairs = TRUE, rowPairs = TRUE,
+        skip_assays = FALSE, verbose = NULL) {
     anndata <- import("anndata")
 
     # Create a list to store parts of the AnnData
@@ -58,9 +59,8 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         ))
         X <- fake_mat <- .make_fake_mat(rev(dim(sce)))
     }
-    X <- reticulate::r_to_py(X)
-    adata_list$X <- X
-    adata_list$dtype <- X$dtype
+    # NOTE: Previously dtype was set here but was removed due to deprecation
+    adata_list$X <- reticulate::r_to_py(X)
     cli::cli_progress_done()
 
     assay_names <- assayNames(sce)
@@ -133,7 +133,6 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
             adata_list$varm <- varm_list
             cli::cli_progress_done()
         }
-
     } else {
         .ui_info("{.field rowData$varm} is empty and was skipped")
     }
@@ -143,7 +142,8 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
     } else {
         sce <- .store_non_atomic(sce, "rowData")
         adata_list$var <- .convert_sce_df(rowData(sce), "rowData", "var",
-                                          select = rowData)
+            select = rowData
+        )
     }
 
     if (is.null(adata_list$var)) {
@@ -169,8 +169,9 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         )
         red_dims <- as.list(reducedDims(sce))
         if (is.character(reducedDims)) {
-            reducedDims <- .check_select(reducedDims, "reducedDims",
-                                         names(red_dims))
+            reducedDims <- .check_select(
+                reducedDims, "reducedDims", names(red_dims)
+            )
             red_dims <- red_dims[reducedDims]
         }
         red_dims <- lapply(red_dims, .makeNumpyFriendly, transpose = FALSE)
@@ -279,10 +280,9 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
 }
 
 .store_non_atomic <- function(sce, slot = c("rowData", "colData")) {
-
     slot <- match.arg(slot)
 
-    df <- switch (slot,
+    df <- switch(slot,
         rowData = rowData(sce),
         colData = colData(sce)
     )
@@ -317,15 +317,14 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
 
     if (slot == "rowData") {
         rowData(sce) <- df
-    } else (
+    } else {
         colData(sce) <- df
-    )
+    }
 
     return(sce)
 }
 
 .check_select <- function(select, slot_name, options) {
-
     verbose <- parent.frame()$verbose
 
     if (!all(select %in% options)) {
@@ -342,7 +341,6 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
 }
 
 .convert_sce_df <- function(sce_df, slot_name, to_name, select = TRUE) {
-
     if (ncol(sce_df) == 0) {
         .ui_info("{.field {slot_name}} is empty and was skipped")
         return(NULL)
@@ -353,7 +351,6 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         msg_done = "{.field {slot_name}} converted to {.field {to_name}}"
     )
     if (is.character(select)) {
-
         select <- .check_select(select, slot_name, colnames(sce_df))
 
         if (length(select) == 0) {
@@ -379,8 +376,7 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
 }
 
 .convert_sce_pairs <- function(sce, slot_name = c("rowPairs", "colPairs"),
-                               to_name, select) {
-
+    to_name, select) {
     slot_name <- match.arg(slot_name)
 
 
@@ -389,7 +385,7 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
         return(NULL)
     }
 
-    pairs <- switch (slot_name,
+    pairs <- switch(slot_name,
         rowPairs = as.list(rowPairs(sce, asSparse = TRUE)),
         colPairs = as.list(colPairs(sce, asSparse = TRUE))
     )

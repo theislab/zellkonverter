@@ -57,8 +57,8 @@
 #' @importFrom basilisk basiliskRun
 #' @importFrom methods slot
 readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
-                     reader = c("python", "R"), version = NULL, verbose = NULL,
-                     ...) {
+    reader = c("python", "R"), version = NULL, verbose = NULL,
+    ...) {
     file <- path.expand(file)
     reader <- match.arg(reader)
 
@@ -77,7 +77,6 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
             verbose = verbose,
             ...
         )
-
     } else if (reader == "R") {
         sce <- .native_reader(file, backed = use_hdf5, verbose = verbose)
     }
@@ -95,8 +94,11 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
     )
     adata <- anndata$read_h5ad(file, backed = if (backed) "r" else FALSE)
     cli::cli_progress_done()
-    AnnData2SCE(adata, X_name = X_name, hdf5_backed = backed, verbose = verbose,
-                ...)
+
+    AnnData2SCE(
+        adata,
+        X_name = X_name, hdf5_backed = backed, verbose = verbose, ...
+    )
 }
 
 #' @importFrom S4Vectors I DataFrame wmsg
@@ -230,7 +232,8 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
             {
                 uns <- rhdf5::h5read(file, "uns")
                 uns <- .convert_element(
-                    uns, "uns", file, recursive=TRUE
+                    uns, "uns", file,
+                    recursive = TRUE
                 )
                 metadata(sce) <- uns
             },
@@ -244,7 +247,7 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
     }
 
     if (("X_name" %in% names(metadata(sce))) && ("X" %in% names(contents))) {
-        stopifnot(names(assays(sce))[1] == "X") #should be true b/c X is read 1st
+        stopifnot(names(assays(sce))[1] == "X") # should be true b/c X is read 1st
         names(assays(sce))[1] <- metadata(sce)[["X_name"]]
         metadata(sce)[["X_name"]] <- NULL
     }
@@ -263,14 +266,14 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
             x <- list()
         }
         x[[series[1]]] <- value
+
         x
     }
 
     contents <- list()
     for (i in seq_len(nrow(manifest))) {
         components <- c(
-            strsplit(manifest[i, "group"], "/")[[1]],
-            manifest[i, "name"]
+            strsplit(manifest[i, "group"], "/")[[1]], manifest[i, "name"]
         )
         if (components[1] == "") {
             components <- components[-1]
@@ -292,6 +295,7 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
     } else {
         mat <- HDF5Array::H5SparseMatrix(file, path)
     }
+
     if (!backed) {
         if (DelayedArray::is_sparse(mat)) {
             mat <- as(mat, "sparseMatrix")
@@ -299,10 +303,11 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
             mat <- as.matrix(mat)
         }
     }
+
     mat
 }
 
-.convert_element <- function(obj, path, file, recursive=FALSE) {
+.convert_element <- function(obj, path, file, recursive = FALSE) {
     element_attrs <- rhdf5::h5readAttributes(file, path)
 
     # Convert categorical element for AnnData v0.8+
@@ -314,7 +319,7 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
 
         ord <- as.logical(element_attrs[["ordered"]])
 
-        obj <- factor(levels[codes], levels=levels, ordered=ord)
+        obj <- factor(levels[codes], levels = levels, ordered = ord)
         return(obj)
     }
 
@@ -331,7 +336,8 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
             obj[[k]] <- rhdf5::h5read(file, file.path(path, k))
             obj[[k]] <- .convert_element(
                 obj[[k]], file.path(path, k),
-                file, recursive=TRUE
+                file,
+                recursive = TRUE
             )
         }
     }
@@ -352,7 +358,8 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
 
         vec <- .convert_element(
             vec, file.path(path, col_name),
-            file, recursive=FALSE
+            file,
+            recursive = FALSE
         )
 
         if (!is.factor(vec)) {
@@ -406,7 +413,7 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
 .read_dim_mats <- function(file, path, fields) {
     all.contents <- list()
     for (field in names(fields)) {
-        # because everything's transposed.
+        # Because everything's transposed.
         all.contents[[field]] <- t(rhdf5::h5read(file, file.path(path, field)))
     }
     all.contents

@@ -73,9 +73,8 @@
 #' @importFrom Matrix sparseMatrix
 #' @importFrom DelayedArray is_sparse
 writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
-                      compression = c("none", "gzip", "lzf"), version = NULL,
-                      verbose = NULL, ...) {
-
+    compression = c("none", "gzip", "lzf"), version = NULL,
+    verbose = NULL, ...) {
     compression <- match.arg(compression)
 
     if (compression == "none") {
@@ -124,7 +123,8 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
 
             if (!is_sparse(mat)) {
                 HDF5Array::writeHDF5Array(
-                    mat, filepath = file, name = curp, with.dimnames = FALSE
+                    mat,
+                    filepath = file, name = curp, with.dimnames = FALSE
                 )
             } else {
                 .write_CSR_matrix(file, name = curp, mat = mat)
@@ -136,10 +136,13 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
 }
 
 #' @importFrom reticulate import
-.H5ADwriter <- function(sce, file, X_name, skip_assays, compression,
-                        verbose = NULL, ...) {
-    adata <- SCE2AnnData(sce, X_name = X_name, skip_assays = skip_assays,
-                         verbose = verbose, ...)
+.H5ADwriter <- function(
+        sce, file, X_name, skip_assays, compression,
+        verbose = NULL, ...) {
+    adata <- SCE2AnnData(
+        sce,
+        X_name = X_name, skip_assays = skip_assays, verbose = verbose, ...
+    )
     .ui_step(
         "Writing {.file { .trim_path(file)} }",
         msg_done = "Wrote {.file { .trim_path(file)} }",

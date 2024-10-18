@@ -27,7 +27,6 @@ setZellkonverterVerbose <- function(verbose = TRUE) {
 }
 
 .get_verbose <- function(envir) {
-
     verbose <- envir$verbose
 
     if (is.null(verbose)) {
@@ -38,7 +37,6 @@ setZellkonverterVerbose <- function(verbose = TRUE) {
 }
 
 .ui_rule <- function(msg, ...) {
-
     envir <- parent.frame()
 
     if (.get_verbose(envir)) {
@@ -47,7 +45,6 @@ setZellkonverterVerbose <- function(verbose = TRUE) {
 }
 
 .ui_info <- function(msg, ...) {
-
     envir <- parent.frame()
 
     if (.get_verbose(envir)) {
@@ -56,7 +53,6 @@ setZellkonverterVerbose <- function(verbose = TRUE) {
 }
 
 .ui_warn <- function(msg, warn = TRUE, ...) {
-
     envir <- parent.frame()
 
     msg <- cli::format_message(msg, .envir = envir)
@@ -71,7 +67,6 @@ setZellkonverterVerbose <- function(verbose = TRUE) {
 }
 
 .ui_step <- function(msg, ...) {
-
     envir <- parent.frame()
 
     if (.get_verbose(envir)) {
@@ -80,7 +75,6 @@ setZellkonverterVerbose <- function(verbose = TRUE) {
 }
 
 .ui_process <- function(msg, ...) {
-
     envir <- parent.frame()
 
     if (.get_verbose(envir)) {
@@ -89,7 +83,6 @@ setZellkonverterVerbose <- function(verbose = TRUE) {
 }
 
 .ui_process_done <- function(...) {
-
     envir <- parent.frame()
 
     if (.get_verbose(envir)) {
@@ -98,7 +91,6 @@ setZellkonverterVerbose <- function(verbose = TRUE) {
 }
 
 .trim_path <- function(path, n = 40) {
-
     path_split <- .split_path(path)
 
     for (level in seq_along(path_split)) {

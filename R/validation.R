@@ -38,7 +38,6 @@
 #'
 #' @author Luke Zappia
 validateH5ADSCE <- function(sce, names, missing) {
-
     if ("varm" %in% colnames(SummarizedExperiment::rowData(sce))) {
         varm <- SummarizedExperiment::rowData(sce)$varm
         SummarizedExperiment::rowData(sce)$varm <- NULL
@@ -131,8 +130,7 @@ validateH5ADSCE <- function(sce, names, missing) {
 }
 
 .names_validator <- function(label, actual_names, correct_names,
-                             missing_names) {
-
+    missing_names) {
     if (!is.null(correct_names)) {
         testthat::expect_identical(
             actual_names,
