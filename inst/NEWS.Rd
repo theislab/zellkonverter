@@ -1,7 +1,41 @@
 \name{NEWS}
 \title{News for Package \pkg{zellkonverter}}
 
-\section{Version 1.14.0, Bioconductor 3.19 Release (May 2023)}{
+\section{Version 1.146.0, Bioconductor 3.30 Release (October 2024)}{
+  \subsection{Major changes}{
+  \itemize{
+    \item{
+      Add environment for \bold{anndata} v0.10.9. This is now the default
+      environment for the Python reader/writer.
+    }
+  }}
+  \subsection{Minor changes}{
+  \itemize{
+    \item{
+      Avoid deprecation warning due to setting \code{dtype} when creating Python
+      \code{AnnData} objects
+    }
+    \item{
+      Standardise code styling using \bold{{styler}}
+    }
+    \item{
+      Add test using the more complete example H5AD file
+    }
+  }}
+  \subsection{Bug fixes}{
+  \itemize{
+    \item{
+      Correctly assign levels to factors in R reader with \bold{anndata} v0.7
+      files
+    }
+    \item{
+      Correctly set \code{filepath} in the R reader with reading
+      \code{adata.raw}` with \code{use_hdf5 = TRUE} (PR from @GabrielHoffman)
+    }
+  }}
+}
+
+\section{Version 1.14.0, Bioconductor 3.19 Release (May 2024)}{
   \subsection{Major changes}{
   \itemize{
     \item{
