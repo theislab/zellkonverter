@@ -402,3 +402,45 @@ test_that("Selective DF conversion works", {
 
     expect_identical(names(colData(out)), "tissue")
 })
+
+test_that("writeH5AD works with SpatialExperiment objects", {
+    example(read10xVisium, echo = FALSE)
+
+    # Make the column names unique.
+    colnames(spe) <- paste(gsub("-", "_", colnames(spe)),
+                           colData(spe)$sample_id, sep = "_")
+    rownames(spatialCoords(spe)) <- colnames(spe)
+
+    temp <- tempfile(fileext = ".h5ad")
+
+    writeH5AD(spe, temp)
+    expect_true(file.exists(temp))
+
+    out <- readH5AD(temp, X_name = "X")
+
+    expect_identical(assay(out, "X"), assay(spe, "counts"))
+    expect_identical(dimnames(out), dimnames(spe))
+    
+    # Check the spatial coordinates.
+    spcoords <- SpatialExperiment::spatialCoords(spe) |> as.matrix(ncol = 2)
+    colnames(spcoords) <- NULL
+    expect_identical(reducedDims(out)$spatial, spcoords)
+
+    # Need to coerce the factors back to strings.
+    row_data <- rowData(out)
+    for (i in seq_len(ncol(row_data))) {
+        if (is.factor(row_data[[i]])) {
+            row_data[[i]] <- as.character(row_data[[i]])
+        }
+    }
+    expect_identical(row_data, rowData(spe))
+
+    col_data <- colData(out)
+    for (i in seq_len(ncol(col_data))) {
+        if (is.factor(col_data[[i]])) {
+            col_data[[i]] <- as.character(col_data[[i]])
+        }
+    }
+    names(col_data) <- names(colData(spe))
+    expect_identical(col_data, colData(spe))
+})

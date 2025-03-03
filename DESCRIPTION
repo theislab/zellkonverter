@@ -47,7 +47,8 @@ Suggests:
     scRNAseq,
     spelling,
     testthat,
-    withr
+    withr,
+    DropletUtils
 VignetteBuilder: 
     knitr
 biocViews: SingleCell, DataImport, DataRepresentation
