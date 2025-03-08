@@ -32,7 +32,6 @@ Imports:
     S4Vectors,
     SingleCellExperiment (>= 1.11.6),
     SummarizedExperiment,
-    SpatialExperiment,
     utils
 Suggests:
     anndata,
@@ -45,10 +44,10 @@ Suggests:
     rhdf5 (>= 2.45.1),
     rmarkdown,
     scRNAseq,
+    SpatialExperiment,
     spelling,
     testthat,
-    withr,
-    DropletUtils
+    withr
 VignetteBuilder: 
     knitr
 biocViews: SingleCell, DataImport, DataRepresentation
