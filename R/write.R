@@ -46,6 +46,11 @@
 #' See [AnnData-Environment] for more details on **zellkonverter** Python
 #' environments.
 #'
+#' ## `SpatialExperiment` objects
+#'
+#' If `sce` is a \linkS4class{SpatialExperiment} object, the spatial coordinates
+#' are added to the `reducedDims` slot before conversion to an `AnnData` object.
+#'
 #' @return A `NULL` is invisibly returned.
 #'
 #' @author Luke Zappia
@@ -72,7 +77,6 @@
 #' @importFrom basilisk basiliskRun
 #' @importFrom Matrix sparseMatrix
 #' @importFrom DelayedArray is_sparse
-#' @importFrom SingleCellExperiment reducedDims
 writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
     compression = c("none", "gzip", "lzf"), version = NULL,
     verbose = NULL, ...) {
@@ -99,9 +103,11 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
     .ui_info("Using {.field anndata} version {.field {version}}")
 
     # If converting SpatialExperiment object, add spatial coords to reducedDims
-    if (class(sce) == "SpatialExperiment") {
-        coords <- SpatialExperiment::spatialCoords(sce) |> matrix(ncol = 2)
-        reducedDims(sce) <- c(reducedDims(sce), list(spatial = coords))
+    if (inherits(sce, "SpatialExperiment")) {
+        coords <- SpatialExperiment::spatialCoords(sce)
+        if (ncol(coords) > 1) {
+            SingleCellExperiment::reducedDim(sce, "spatial") <- coords
+        }
     }
 
     file <- path.expand(file)
