@@ -101,6 +101,7 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
     basiliskRun(
         env = env,
         fun = .H5ADwriter,
+        testload = "anndata",
         sce = sce,
         file = file,
         X_name = X_name,

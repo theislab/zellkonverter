@@ -106,8 +106,7 @@ specify which assays were skipped.
 
 If \code{skip_assays = TRUE}, empty sparse matrices are created for all assays,
 regardless of whether they might be convertible to an R format or not.
-In both cases, the user is expected to fill in the assays on the R side,
-see \code{\link[=readH5AD]{readH5AD()}} for an example.
+In both cases, the user is expected to fill in the assays on the R side.
 
 We attempt to convert between items in the \linkS4class{SingleCellExperiment}
 \code{\link[=metadata]{metadata()}} slot and the \code{AnnData} \code{uns} slot. If an item cannot be

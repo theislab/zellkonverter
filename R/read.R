@@ -71,6 +71,7 @@ readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
         sce <- basiliskRun(
             env = env,
             fun = .H5ADreader,
+            testload = "anndata",
             file = file,
             X_name = X_name,
             backed = use_hdf5,
