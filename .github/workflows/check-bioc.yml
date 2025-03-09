@@ -256,16 +256,6 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_BIOC_VERSION: ${{ needs.get-bioc-version.outputs.biocversion }}
-    if: github.ref == 'refs/heads/devel'
-    needs: [get-bioc-release, get-bioc-version, R-CMD-check-docker]
-    runs-on: ubuntu-latest
-    container:
-      image: ${{ needs.get-bioc-release.outputs.biocimage }}
-      volumes:
-        - /home/runner/work/_temp/Library:/usr/local/lib/R/host-site-library
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      R_BIOC_VERSION: ${{ needs.get-bioc-version.outputs.biocversion }}
 
     steps:
       - name: Checkout
