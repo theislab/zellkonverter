@@ -7,7 +7,8 @@
 validateH5ADSCE(sce, names, missing)
 }
 \arguments{
-\item{sce}{A \linkS4class{SingleCellExperiment} object.}
+\item{sce}{A \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+object.}
 
 \item{names}{Named list of expected names. Names are slots and values are
 vectors of names that are expected to exist in that slot.}

@@ -1,6 +1,8 @@
 #' Read H5AD
 #'
-#' Reads a H5AD file and returns a \linkS4class{SingleCellExperiment} object.
+#' Reads a H5AD file and returns a
+#' \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+#' object.
 #'
 #' @param file String containing a path to a `.h5ad` file.
 #' @param X_name Name used when saving `X` as an assay. If `NULL` looks for an
@@ -30,7 +32,8 @@
 #' See [AnnData-Environment] for more details on **zellkonverter** Python
 #' environments.
 #'
-#' @return A \linkS4class{SingleCellExperiment} object is returned.
+#' @return A \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+#' object is returned.
 #'
 #' @examples
 #' library(SummarizedExperiment)
@@ -47,11 +50,12 @@
 #' @author Aaron Lun
 #'
 #' @seealso
-#' [`writeH5AD()`], to write a \linkS4class{SingleCellExperiment} object to a
-#' H5AD file.
+#' [`writeH5AD()`], to write a
+#' \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+#' object to a H5AD file.
 #'
 #' [`AnnData2SCE()`], for developers to convert existing AnnData instances to a
-#' \linkS4class{SingleCellExperiment}.
+#' \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}.
 #'
 #' @export
 #' @importFrom basilisk basiliskRun

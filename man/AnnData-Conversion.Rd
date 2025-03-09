@@ -62,14 +62,16 @@ in \code{adata} should be represented as HDF5Array objects. This assumes that
 \item{verbose}{Logical scalar indicating whether to print progress messages.
 If \code{NULL} uses \code{getOption("zellkonverter.verbose")}.}
 
-\item{sce}{A \linkS4class{SingleCellExperiment} object.}
+\item{sce}{A \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+object.}
 
 \item{assays, colData, rowData, reducedDims, metadata, colPairs, rowPairs}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
 that slot is converted, if \code{FALSE} nothing is converted and if a character
 vector only those items or columns are converted.}
 }
 \value{
-\code{AnnData2SCE()} will return a \linkS4class{SingleCellExperiment}
+\code{AnnData2SCE()} will return a
+\link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
 containing the equivalent data from \code{adata}.
 
 \code{SCE2AnnData()} will return a \strong{reticulate} reference to an AnnData object
@@ -77,7 +79,8 @@ containing the content of \code{sce}.
 }
 \description{
 Conversion between Python AnnData objects and
-\linkS4class{SingleCellExperiment} objects.
+\link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+objects.
 }
 \details{
 These functions assume that an appropriate Python environment has already
@@ -93,7 +96,8 @@ The conversion is not entirely lossless. The current mapping is shown below
 \if{latex}{\figure{AnnData2SCE.png}{options: width=5in}}
 
 In \code{SCE2AnnData()}, matrices are converted to a \strong{numpy}-friendly format.
-Sparse matrices are converted to \linkS4class{dgCMatrix} objects while all
+Sparse matrices are converted to
+\link[Matrix:dgCMatrix-class]{Matrix::dgCMatrix} objects while all
 other matrices are converted into ordinary matrices. If \code{skip_assays = TRUE},
 empty sparse matrices are created instead and the user is expected to fill in
 the assays on the Python side.
@@ -101,22 +105,27 @@ the assays on the Python side.
 For \code{AnnData2SCE()}, a warning is raised if there is no corresponding R
 format for a matrix in the AnnData object, and an empty sparse matrix is
 created instead as a placeholder. If \code{skip_assays = NA}, no warning is
-emitted but variables are created in the \code{\link[=int_metadata]{int_metadata()}} of the output to
+emitted but variables are created in the
+\code{\link[SingleCellExperiment:internals]{int_metadata()}} of the output to
 specify which assays were skipped.
 
 If \code{skip_assays = TRUE}, empty sparse matrices are created for all assays,
 regardless of whether they might be convertible to an R format or not.
 In both cases, the user is expected to fill in the assays on the R side.
 
-We attempt to convert between items in the \linkS4class{SingleCellExperiment}
-\code{\link[=metadata]{metadata()}} slot and the \code{AnnData} \code{uns} slot. If an item cannot be
-converted a warning will be raised.
+We attempt to convert between items in the
+\link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+\code{\link[S4Vectors:Annotated-class]{metadata()}} slot and the \code{AnnData} \code{uns} slot. If
+an item cannot be converted a warning will be raised.
 
 Values stored in the \code{varm} slot of an \code{AnnData} object are stored in a
-column of \code{\link[=rowData]{rowData()}} in a \linkS4class{SingleCellExperiment}
-as a \linkS4class{DataFrame} of matrices. If this column is present an
-attempt is made to transfer this information when converting from
-\linkS4class{SingleCellExperiment} to \code{AnnData}.
+column of \code{\link[SummarizedExperiment:SummarizedExperiment-class]{rowData()}} in a
+\link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+as a \link[S4Vectors:DataFrame-class]{S4Vectors::DataFrame-class} of matrices.
+If this column is present an attempt is made to transfer this information
+when converting from
+\link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+to \code{AnnData}.
 }
 \examples{
 if (requireNamespace("scRNAseq", quietly = TRUE)) {

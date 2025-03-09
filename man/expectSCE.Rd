@@ -7,10 +7,11 @@
 expectSCE(sce, expected)
 }
 \arguments{
-\item{sce}{A \linkS4class{SingleCellExperiment} object.}
+\item{sce}{A \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+object.}
 
-\item{expected}{A template \linkS4class{SingleCellExperiment} object to
-compare to.}
+\item{expected}{A template \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+object to compare to.}
 }
 \value{
 \code{TRUE} invisibly if checks pass
