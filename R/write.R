@@ -106,6 +106,7 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
     if (inherits(sce, "SpatialExperiment")) {
         coords <- SpatialExperiment::spatialCoords(sce)
         if (ncol(coords) > 1) {
+            colnames(coords) <- NULL
             SingleCellExperiment::reducedDim(sce, "spatial") <- coords
         }
     }
