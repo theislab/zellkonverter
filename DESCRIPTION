@@ -12,7 +12,9 @@ Authors@R: c(
     person("Robrecht", "Cannoodt", , "rcannood@gmail.com", role = "ctb",
            comment = c(ORCID = "0000-0003-3641-729X", github = "rcannood")),
     person("Gabriel", "Hoffman", , "gabriel.hoffman@mssm.edu", role = "ctb",
-           comment = c(ORCID = "0000-0002-0957-0224", github = "GabrielHoffman"))
+           comment = c(ORCID = "0000-0002-0957-0224", github = "GabrielHoffman")),
+    person("Marek", "Cmero", , "cmero.ma@wehi.edu.au", role = "ctb",
+           comment = c(ORCID = "0000-0001-7783-5530", github = "mcmero"))
   )
 Description: Provides methods to convert between Python AnnData objects
     and SingleCellExperiment objects. These are primarily intended for use
