@@ -13,12 +13,10 @@ on:
     branches:
       - devel
       - 'RELEASE_*'
-      - actions
   pull_request:
     branches:
       - devel
       - 'RELEASE_*'
-      - actions
 
 jobs:
   get-bioc-release:
@@ -213,7 +211,7 @@ jobs:
   test-coverage:
     ## Calculate package test coverage. Only runs if R-CMD-check-docker has
     ## completed successfully. Uses the Bioconductor Docker image.
-    if: github.ref == 'refs/heads/devel'
+    if: ${{ github.ref == 'refs/heads/devel' }}
     needs: [get-bioc-release, get-bioc-version, R-CMD-check-docker]
     runs-on: ubuntu-latest
     container:
@@ -246,8 +244,7 @@ jobs:
     ## Build pkgdown site and push to gh-pages branch. Only runs if on the
     ## devel branch and R-CMD-check-docker has completed successfully. Uses
     ## the Bioconductor Docker image.
-    if: github.ref == 'refs/heads/devel'
-    needs: [get-bioc-release, get-bioc-version, R-CMD-check-docker]
+    needs: [get-bioc-release, get-bioc-version]
     runs-on: ubuntu-latest
     container:
       image: ${{ needs.get-bioc-release.outputs.biocimage }}
@@ -281,7 +278,7 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Deploy to GitHub pages 🚀
-        if: github.event_name != 'pull_request'
+        if: ${{ (github.ref == 'refs/heads/devel') && (github.event_name != 'pull_request') }}
         uses: JamesIves/github-pages-deploy-action@v4.7.3
         with:
           clean: false
