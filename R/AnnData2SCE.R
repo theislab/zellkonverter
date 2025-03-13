@@ -1,7 +1,8 @@
 #' Convert between AnnData and SingleCellExperiment
 #'
 #' Conversion between Python AnnData objects and
-#' \linkS4class{SingleCellExperiment} objects.
+#' \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+#' objects.
 #'
 #' @details
 #' These functions assume that an appropriate Python environment has already
@@ -17,7 +18,8 @@
 #' \if{latex}{\figure{AnnData2SCE.png}{options: width=5in}}
 #'
 #' In `SCE2AnnData()`, matrices are converted to a **numpy**-friendly format.
-#' Sparse matrices are converted to \linkS4class{dgCMatrix} objects while all
+#' Sparse matrices are converted to
+#' \link[Matrix:dgCMatrix-class]{Matrix::dgCMatrix} objects while all
 #' other matrices are converted into ordinary matrices. If `skip_assays = TRUE`,
 #' empty sparse matrices are created instead and the user is expected to fill in
 #' the assays on the Python side.
@@ -25,27 +27,33 @@
 #' For `AnnData2SCE()`, a warning is raised if there is no corresponding R
 #' format for a matrix in the AnnData object, and an empty sparse matrix is
 #' created instead as a placeholder. If `skip_assays = NA`, no warning is
-#' emitted but variables are created in the [`int_metadata()`] of the output to
+#' emitted but variables are created in the
+#' [`int_metadata()`][SingleCellExperiment::int_metadata()] of the output to
 #' specify which assays were skipped.
 #'
 #' If `skip_assays = TRUE`, empty sparse matrices are created for all assays,
 #' regardless of whether they might be convertible to an R format or not.
 #' In both cases, the user is expected to fill in the assays on the R side.
 #'
-#' We attempt to convert between items in the \linkS4class{SingleCellExperiment}
-#' [`metadata()`] slot and the `AnnData` `uns` slot. If an item cannot be
-#' converted a warning will be raised.
+#' We attempt to convert between items in the
+#' \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+#' [`metadata()`][S4Vectors::metadata()] slot and the `AnnData` `uns` slot. If
+#' an item cannot be converted a warning will be raised.
 #'
 #' Values stored in the `varm` slot of an `AnnData` object are stored in a
-#' column of [`rowData()`] in a \linkS4class{SingleCellExperiment}
-#' as a \linkS4class{DataFrame} of matrices. If this column is present an
-#' attempt is made to transfer this information when converting from
-#' \linkS4class{SingleCellExperiment} to `AnnData`.
+#' column of [`rowData()`][SummarizedExperiment::rowData()] in a
+#' \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+#' as a \link[S4Vectors:DataFrame-class]{S4Vectors::DataFrame-class} of matrices.
+#' If this column is present an attempt is made to transfer this information
+#' when converting from
+#' \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+#' to `AnnData`.
 #'
 #' @author Luke Zappia
 #' @author Aaron Lun
 #'
-#' @return `AnnData2SCE()` will return a \linkS4class{SingleCellExperiment}
+#' @return `AnnData2SCE()` will return a
+#' \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
 #' containing the equivalent data from `adata`.
 #'
 #' `SCE2AnnData()` will return a **reticulate** reference to an AnnData object

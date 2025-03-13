@@ -2,6 +2,12 @@
 
 * Bioconductor 3.21, May 2025
 
+## zellkonverter 1.17.1 (2025-03-09)
+
+* Add `testload` argument to `basiliskRun()` calls (Partial fix for #139)
+* Handle missing `rowData`/`colData` with no names in `SCE2AnnData()` (Fixes #105)
+* Update links in function documentation
+
 ## zellkonverter 1.17.0 (2024-10-30)
 
 * Bioconductor 3.21 devel

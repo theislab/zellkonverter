@@ -16,7 +16,8 @@ writeH5AD(
 )
 }
 \arguments{
-\item{sce}{A \linkS4class{SingleCellExperiment} object.}
+\item{sce}{A \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+object.}
 
 \item{file}{String containing a path to write the new \code{.h5ad} file.}
 
@@ -47,7 +48,9 @@ vector only those items or columns are converted.}
 A \code{NULL} is invisibly returned.
 }
 \description{
-Write a H5AD file from a \linkS4class{SingleCellExperiment} object.
+Write a H5AD file from a
+\link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+object.
 }
 \details{
 \subsection{Skipping assays}{
@@ -101,11 +104,12 @@ if (requireNamespace("scRNAseq", quietly = TRUE)) {
 }
 }
 \seealso{
-\code{\link[=readH5AD]{readH5AD()}}, to read a \linkS4class{SingleCellExperiment} file from a H5AD
-file.
+\code{\link[=readH5AD]{readH5AD()}}, to read a
+\link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+object from a H5AD file.
 
 \code{\link[=SCE2AnnData]{SCE2AnnData()}}, for developers to create an AnnData object from a
-\linkS4class{SingleCellExperiment}.
+\link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}.
 }
 \author{
 Luke Zappia

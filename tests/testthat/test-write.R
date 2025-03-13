@@ -403,6 +403,18 @@ test_that("Selective DF conversion works", {
     expect_identical(names(colData(out)), "tissue")
 })
 
+test_that("Writing works with empty rowData/colData", {
+    mini_sce <- SingleCellExperiment::SingleCellExperiment(
+        assays = list(counts = matrix(rpois(100 * 50, 4), nrow = 100, ncol = 50))
+    )
+
+    temp <- tempfile(fileext = ".h5ad")
+    writeH5AD(mini_sce, temp)
+
+    out <- readH5AD(temp, X_name = "X")
+    expect_true(all(counts(mini_sce) == assay(out, "X")))
+})
+
 test_that("writeH5AD works with SpatialExperiment objects", {
     skip_if_not_installed("SpatialExperiment")
 
@@ -427,4 +439,4 @@ test_that("writeH5AD works with SpatialExperiment objects", {
 
     # Check the spatial coordinates.
     expect_identical(reducedDims(out)$spatial, spcoords)
-})
+ })

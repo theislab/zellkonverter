@@ -1,6 +1,7 @@
 #' @rdname AnnData-Conversion
 #'
-#' @param sce A \linkS4class{SingleCellExperiment} object.
+#' @param sce A \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+#'   object.
 #' @param X_name For `SCE2AnnData()` name of the assay to use as the primary
 #' matrix (`X`) of the AnnData object. If `NULL`, the first assay of `sce` will
 #' be used by default. For `AnnData2SCE()` name used when saving `X` as an
@@ -113,6 +114,11 @@ SCE2AnnData <- function(
         adata_list$obs$index <- colnames(sce)
     }
 
+    if (length(adata_list$obs) == 0) {
+        # If obs still has no rows, delete it
+        adata_list$obs <- NULL
+    }
+
     if (!is.null(int_metadata(sce)$has_varm)) {
         varm_list <- as.list(rowData(sce)[["varm"]])
         rowData(sce)[["varm"]] <- NULL
@@ -156,6 +162,11 @@ SCE2AnnData <- function(
         # their index
         adata_list$var <- r_to_py(adata_list$var)
         adata_list$var$index <- rownames(sce)
+    }
+
+    if (length(adata_list$var) == 0) {
+        # If var still has no rows, delete it
+        adata_list$var <- NULL
     }
 
     if (isFALSE(reducedDims)) {

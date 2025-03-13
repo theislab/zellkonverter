@@ -163,7 +163,7 @@ jobs:
         config:
           - {os: windows-latest}
           - {os: macOS-latest}
-          - {os: ubuntu-20.04, rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
+          - {os: ubuntu-24.04, rspm: "https://packagemanager.posit.co/cran/__linux__/noble/latest"}
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       RSPM: ${{ matrix.config.rspm }}
@@ -258,14 +258,13 @@ jobs:
       R_BIOC_VERSION: ${{ needs.get-bioc-version.outputs.biocversion }}
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set git credentials
         ## Assign commits to the GitHub Action user. This should happen
         ## automatically but doesn't (maybe because of Docker).
-      - run: |
+        run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
 
