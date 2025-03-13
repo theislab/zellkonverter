@@ -13,12 +13,10 @@ on:
     branches:
       - devel
       - 'RELEASE_*'
-      - actions
   pull_request:
     branches:
       - devel
       - 'RELEASE_*'
-      - actions
 
 jobs:
   get-bioc-release:
@@ -213,7 +211,7 @@ jobs:
   test-coverage:
     ## Calculate package test coverage. Only runs if R-CMD-check-docker has
     ## completed successfully. Uses the Bioconductor Docker image.
-    if: github.ref == 'refs/heads/devel'
+    if: ${{ github.ref == 'refs/heads/devel' }}
     needs: [get-bioc-release, get-bioc-version, R-CMD-check-docker]
     runs-on: ubuntu-latest
     container:
@@ -246,8 +244,7 @@ jobs:
     ## Build pkgdown site and push to gh-pages branch. Only runs if on the
     ## devel branch and R-CMD-check-docker has completed successfully. Uses
     ## the Bioconductor Docker image.
-    if: github.ref == 'refs/heads/devel'
-    needs: [get-bioc-release, get-bioc-version, R-CMD-check-docker]
+    needs: [get-bioc-release, get-bioc-version]
     runs-on: ubuntu-latest
     container:
       image: ${{ needs.get-bioc-release.outputs.biocimage }}
@@ -260,13 +257,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Set git credentials
-        ## Assign commits to the GitHub Action user. This should happen
-        ## automatically but doesn't (maybe because of Docker).
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
 
       - name: Install extra linux dependencies
         run: sudo apt-get update -y && sudo apt-get install -y libcurl4-openssl-dev devscripts qpdf
@@ -282,8 +272,13 @@ jobs:
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
 
+      - name: Set git credentials
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - name: Deploy to GitHub pages 🚀
-        if: github.event_name != 'pull_request'
+        if: ${{ (github.ref == 'refs/heads/devel') && (github.event_name != 'pull_request') }}
         uses: JamesIves/github-pages-deploy-action@v4.7.3
         with:
           clean: false
