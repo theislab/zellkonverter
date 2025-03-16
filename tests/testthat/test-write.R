@@ -425,6 +425,7 @@ test_that("writeH5AD works with SpatialExperiment objects", {
         runif(ncol(sce) * 2), ncol = 2
     )
     rownames(spcoords) <- colnames(sce)
+    colnames(spcoords) <- paste0("Spatial", 1:2)
     SpatialExperiment::spatialCoords(spe) <- spcoords
 
     temp <- tempfile(fileext = ".h5ad")
