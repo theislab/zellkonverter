@@ -259,7 +259,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install extra linux dependencies
-        run: sudo apt-get update -y && sudo apt-get install -y libcurl4-openssl-dev devscripts qpdf
+        run: sudo apt-get update -y && sudo apt-get install -y libcurl4-openssl-dev devscripts qpdf rsync
 
       - name: Setup R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
@@ -272,11 +272,6 @@ jobs:
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
 
-      - name: Set git credentials
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
       - name: Deploy to GitHub pages 🚀
         if: ${{ (github.ref == 'refs/heads/devel') && (github.event_name != 'pull_request') }}
         uses: JamesIves/github-pages-deploy-action@v4.7.3
@@ -284,3 +279,5 @@ jobs:
           clean: false
           branch: gh-pages
           folder: docs
+          git-config-name: "github-actions[bot]"
+          git-config-email: "41898282+github-actions[bot]@users.noreply.github.com"
