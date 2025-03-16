@@ -112,10 +112,8 @@ SCE2AnnData <- function(
         # their index
         adata_list$obs <- r_to_py(adata_list$obs)
         adata_list$obs$index <- colnames(sce)
-    }
-
-    if (length(adata_list$obs) == 0) {
-        # If obs still has no rows, delete it
+    } else if (ncol(adata_list$obs) == 0) {
+        # If there are no colnames and obs has no columns delete it
         adata_list$obs <- NULL
     }
 
@@ -162,10 +160,8 @@ SCE2AnnData <- function(
         # their index
         adata_list$var <- r_to_py(adata_list$var)
         adata_list$var$index <- rownames(sce)
-    }
-
-    if (length(adata_list$var) == 0) {
-        # If var still has no rows, delete it
+    } else if (ncol(adata_list$var) == 0) {
+        # If there are no rownames and var has no columns delete it
         adata_list$var <- NULL
     }
 
