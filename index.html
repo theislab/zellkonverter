@@ -6,25 +6,20 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Conversion Between scRNA-seq Objects • zellkonverter</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Conversion Between scRNA-seq Objects">
-<meta property="og:description" content="
-    Provides methods to convert between Python AnnData objects and
-    SingleCellExperiment objects. These are primarily intended for use by
-    downstream Bioconductor packages that wrap Python methods for single-cell
-    data analysis. It also includes functions to read and write H5AD files used
-    for saving AnnData objects to disk. ">
+<meta property="og:description" content="Provides methods to convert between Python AnnData objects and SingleCellExperiment objects. These are primarily intended for use by downstream Bioconductor packages that wrap Python methods for single-cell data analysis. It also includes functions to read and write H5AD files used for saving AnnData objects to disk.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -38,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.17.1</span>
       </span>
     </div>
 
@@ -58,7 +53,7 @@
 <li>
   <a href="https://github.com/theislab/zellkonverter/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -69,7 +64,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="contents col-md-9">
@@ -87,32 +82,37 @@
 </h2>
 <p><strong>zellkonverter</strong> can be installed from Bioconductor using the <strong>BiocManager</strong> package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"zellkonverter"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"zellkonverter"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="build-status">Build status<a class="anchor" aria-label="anchor" href="#build-status"></a>
 </h2>
 <table class="table">
-<thead><tr class="header">
+<colgroup>
+<col width="36%">
+<col width="36%">
+<col width="28%">
+</colgroup>
+<thead><tr>
 <th align="center">Source</th>
 <th align="center">Checks</th>
 <th align="center">Updated</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td align="center"><a href="http://bioconductor.org/packages/release/bioc/html/zellkonverter.html" class="external-link">Bioc release</a></td>
-<td align="center"><a href="http://bioconductor.org/checkResults/release/bioc-LATEST/zellkonverter" class="external-link"><img src="http://bioconductor.org/shields/build/release/bioc/zellkonverter.svg" alt="Bioconductor-release Build Status"></a></td>
+<td align="center"><a href="https://bioconductor.org/checkResults/release/bioc-LATEST/zellkonverter" class="external-link"><img src="http://www.bioconductor.org/shields/build/release/bioc/zellkonverter.svg" alt="Bioc release status"></a></td>
 <td align="center"><img src="http://bioconductor.org/shields/lastcommit/release/bioc/zellkonverter.svg"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="center"><a href="http://bioconductor.org/packages/devel/bioc/html/zellkonverter.html" class="external-link">Bioc devel</a></td>
-<td align="center"><a href="http://bioconductor.org/checkResults/devel/bioc-LATEST/zellkonverter" class="external-link"><img src="http://bioconductor.org/shields/build/devel/bioc/zellkonverter.svg" alt="Bioconductor-devel Build Status"></a></td>
+<td align="center"><a href="https://bioconductor.org/checkResults/devel/bioc-LATEST/zellkonverter" class="external-link"><img src="http://www.bioconductor.org/shields/build/devel/bioc/zellkonverter.svg" alt="Bioc devel status"></a></td>
 <td align="center"><img src="http://bioconductor.org/shields/lastcommit/devel/bioc/zellkonverter.svg"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="center"><a href="https://github.com/theislab/zellkonverter/actions" class="external-link">GitHub actions</a></td>
 <td align="center"><a href="https://github.com/theislab/zellkonverter/actions" class="external-link"><img src="https://github.com/theislab/zellkonverter/workflows/R-CMD-check-bioc/badge.svg" alt="R build status"></a></td>
 <td align="center"><img src="https://img.shields.io/github/last-commit/theislab/zellkonverter" alt="GitHub last commit"></td>
@@ -160,21 +160,36 @@
 </ul>
 </div>
 
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing zellkonverter</a></li>
+</ul>
+</div>
+
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Luke Zappia <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-7744-8565" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Aaron Lun <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-3564-4813" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.tidyverse.org/lifecycle/#maturing" class="external-link"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
-<li><a href="https://bioconductor.org/packages/devel/bioc/html/zellkonverter.html" class="external-link"><img src="https://bioconductor.org/shields/years-in-bioc/zellkonverter.svg" alt="Bioconductor since"></a></li>
-<li><a href="https://bioconductor.org/packages/devel/bioc/html/zellkonverter.html" class="external-link"><img src="https://bioconductor.org/shields/downloads/devel/zellkonverter.svg" alt="Bioconductor rank"></a></li>
-<li><a href="https://codecov.io/gh/theislab/zellkonverter?branch=master" class="external-link"><img src="https://codecov.io/gh/theislab/zellkonverter/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="http://www.repostatus.org/#active" class="external-link"><img src="http://www.repostatus.org/badges/latest/active.svg" alt="Project Status"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg" alt="Lifecycle"></a></li>
+<li><a href="https://app.codecov.io/gh/theislab/zellonverter" class="external-link"><img src="https://codecov.io/gh/theislab/zellonverter/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/theislab/zellkonverter/actions/workflows/check.yml" class="external-link"><img src="https://github.com/theislab/zellkonverter/actions/workflows/check.yml/badge.svg" alt="R-CMD-check-bioc"></a></li>
+<li><a href="https://bioconductor.org/checkResults/release/bioc-LATEST/zellkonverter" class="external-link"><img src="http://www.bioconductor.org/shields/build/release/bioc/zellkonverter.svg" alt="Bioc release status"></a></li>
+<li><a href="https://bioconductor.org/checkResults/devel/bioc-LATEST/zellkonverter" class="external-link"><img src="http://www.bioconductor.org/shields/build/devel/bioc/zellkonverter.svg" alt="Bioc devel status"></a></li>
+<li><a href="http://bioconductor.org/packages/stats/bioc/zellkonverter/" class="external-link"><img src="https://bioconductor.org/shields/downloads/release/zellkonverter.svg" alt="Bioc downloads rank"></a></li>
+<li><a href="https://support.bioconductor.org/tag/zellkonverter" class="external-link"><img src="https://bioconductor.org/shields/posts/zellkonverter.svg" alt="Bioc support"></a></li>
+<li><a href="https://bioconductor.org/packages/release/bioc/html/zellkonverter.html#since" class="external-link"><img src="https://bioconductor.org/shields/years-in-bioc/zellkonverter.svg" alt="Bioc history"></a></li>
+<li><a href="http://bioconductor.org/checkResults/devel/bioc-LATEST/zellkonverter/" class="external-link"><img src="https://bioconductor.org/shields/lastcommit/devel/bioc/zellkonverter.svg" alt="Bioc last commit"></a></li>
+<li><a href="https://bioconductor.org/packages/release/bioc/html/zellkonverter.html#since" class="external-link"><img src="https://bioconductor.org/shields/dependencies/release/zellkonverter.svg" alt="Bioc dependencies"></a></li>
 </ul>
 </div>
 
@@ -189,16 +204,16 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>
 </div>
 
-  
 
 
-  
+
+
 
   </body>
 </html>
