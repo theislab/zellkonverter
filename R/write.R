@@ -49,11 +49,6 @@
 #' See [AnnData-Environment] for more details on **zellkonverter** Python
 #' environments.
 #'
-#' ## `SpatialExperiment` objects
-#'
-#' If `sce` is a \linkS4class{SpatialExperiment} object, the spatial coordinates
-#' are added to the `reducedDims` slot before conversion to an `AnnData` object.
-#'
 #' @return A `NULL` is invisibly returned.
 #'
 #' @author Luke Zappia

@@ -49,6 +49,9 @@
 #' \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
 #' to `AnnData`.
 #'
+#' If `sce` is a \linkS4class{SpatialExperiment} object, the spatial coordinates
+#' are added to the `reducedDims` slot before conversion to an `AnnData` object.
+#'
 #' @author Luke Zappia
 #' @author Aaron Lun
 #'

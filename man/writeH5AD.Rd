@@ -85,12 +85,6 @@ into R.
 See \link{AnnData-Environment} for more details on \strong{zellkonverter} Python
 environments.
 }
-
-\subsection{\code{SpatialExperiment} objects}{
-
-If \code{sce} is a \linkS4class{SpatialExperiment} object, the spatial coordinates
-are added to the \code{reducedDims} slot before conversion to an \code{AnnData} object.
-}
 }
 \examples{
 # Using the Zeisel brain dataset

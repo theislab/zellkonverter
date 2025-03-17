@@ -126,6 +126,9 @@ If this column is present an attempt is made to transfer this information
 when converting from
 \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
 to \code{AnnData}.
+
+If \code{sce} is a \linkS4class{SpatialExperiment} object, the spatial coordinates
+are added to the \code{reducedDims} slot before conversion to an \code{AnnData} object.
 }
 \examples{
 if (requireNamespace("scRNAseq", quietly = TRUE)) {
