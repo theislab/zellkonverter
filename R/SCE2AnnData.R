@@ -165,6 +165,14 @@ SCE2AnnData <- function(
         adata_list$var <- NULL
     }
 
+    if (inherits(sce, "SpatialExperiment")) {
+        .ui_info("Adding {.field spatialCoords} to {.field reducedDim}")
+        coords <- SpatialExperiment::spatialCoords(sce)
+        if (ncol(coords) > 1) {
+            SingleCellExperiment::reducedDim(sce, "spatial") <- coords
+        }
+    }
+
     if (isFALSE(reducedDims)) {
         .ui_info("Skipping conversion of {.field reducedDims}")
     } else if (length(reducedDims(sce)) == 0) {

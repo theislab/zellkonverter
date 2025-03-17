@@ -106,15 +106,6 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
     version <- gsub("zellkonverterAnnDataEnv-", "", slot(env, "envname"))
     .ui_info("Using {.field anndata} version {.field {version}}")
 
-    # If converting SpatialExperiment object, add spatial coords to reducedDims
-    if (inherits(sce, "SpatialExperiment")) {
-        coords <- SpatialExperiment::spatialCoords(sce)
-        if (ncol(coords) > 1) {
-            colnames(coords) <- NULL
-            SingleCellExperiment::reducedDim(sce, "spatial") <- coords
-        }
-    }
-
     file <- path.expand(file)
     basiliskRun(
         env = env,
