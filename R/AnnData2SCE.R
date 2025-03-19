@@ -5,9 +5,14 @@
 #' objects.
 #'
 #' @details
+#'
+#' ## Python environment
+#'
 #' These functions assume that an appropriate Python environment has already
 #' been loaded. As such, they are largely intended for developer use, most
 #' typically inside a **basilisk** context.
+#'
+#' ## Conversion mapping
 #'
 #' The conversion is not entirely lossless. The current mapping is shown below
 #' (also at <https://tinyurl.com/AnnData2SCE>):
@@ -17,6 +22,8 @@
 #' }
 #' \if{latex}{\figure{AnnData2SCE.png}{options: width=5in}}
 #'
+#' ## Matrix conversion
+#'
 #' In `SCE2AnnData()`, matrices are converted to a **numpy**-friendly format.
 #' Sparse matrices are converted to
 #' \link[Matrix:dgCMatrix-class]{Matrix::dgCMatrix} objects while all
@@ -25,7 +32,7 @@
 #' the assays on the Python side.
 #'
 #' For `AnnData2SCE()`, a warning is raised if there is no corresponding R
-#' format for a matrix in the AnnData object, and an empty sparse matrix is
+#' format for a matrix in the `AnnData` object, and an empty sparse matrix is
 #' created instead as a placeholder. If `skip_assays = NA`, no warning is
 #' emitted but variables are created in the
 #' [`int_metadata()`][SingleCellExperiment::int_metadata()] of the output to
@@ -35,10 +42,14 @@
 #' regardless of whether they might be convertible to an R format or not.
 #' In both cases, the user is expected to fill in the assays on the R side.
 #'
+#' ## `metadata`/`uns` conversion
+#'
 #' We attempt to convert between items in the
 #' \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
 #' [`metadata()`][S4Vectors::metadata()] slot and the `AnnData` `uns` slot. If
 #' an item cannot be converted a warning will be raised.
+#'
+#' ## `uns` conversion
 #'
 #' Values stored in the `varm` slot of an `AnnData` object are stored in a
 #' column of [`rowData()`][SummarizedExperiment::rowData()] in a
@@ -49,8 +60,11 @@
 #' \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
 #' to `AnnData`.
 #'
-#' If `sce` is a \linkS4class{SpatialExperiment} object, the spatial coordinates
-#' are added to the `reducedDims` slot before conversion to an `AnnData` object.
+#' ## `SpatialExperiment` conversion
+#'
+#' In `SCE2AnnData()`, if `sce` is a \link[SpatialExperiment:SpatialExperiment-class]{SpatialExperiment::SpatialExperiment}
+#' object, the spatial coordinates are added to the `reducedDims` slot before
+#' conversion to an `AnnData` object.
 #'
 #' @author Luke Zappia
 #' @author Aaron Lun
