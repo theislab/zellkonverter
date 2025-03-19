@@ -441,3 +441,28 @@ test_that("writeH5AD works with SpatialExperiment objects", {
     # Check the spatial coordinates.
     expect_identical(reducedDims(out)$spatial, spcoords)
  })
+
+test_that("writeH5AD works with SpatialExperiment objects without names", {
+    skip_if_not_installed("SpatialExperiment")
+
+    spe <- SpatialExperiment::SpatialExperiment(
+        assays = list(counts = SingleCellExperiment::counts(sce))
+    )
+    spcoords <- matrix(
+        runif(ncol(sce) * 2), ncol = 2
+    )
+    SpatialExperiment::spatialCoords(spe) <- spcoords
+
+    temp <- tempfile(fileext = ".h5ad")
+
+    writeH5AD(spe, temp)
+    expect_true(file.exists(temp))
+
+    out <- readH5AD(temp, X_name = "X")
+
+    expect_identical(assay(out, "X"), assay(spe, "counts"))
+    expect_identical(dimnames(out), dimnames(spe))
+
+    # Check the spatial coordinates.
+    expect_identical(reducedDim(out, "spatial", withDimnames = FALSE), spcoords)
+})
