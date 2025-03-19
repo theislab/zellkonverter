@@ -193,7 +193,14 @@ SCE2AnnData <- function(
         red_dims <- lapply(red_dims, function(rd) {
             if (!is.null(colnames(rd))) {
                 rd <- r_to_py(as.data.frame(rd))
-                rd <- rd$set_axis(colnames(sce))
+                if (!is.null(colnames(sce))) {
+                    rd <- rd$set_axis(colnames(sce))
+                } else {
+                    stop(paste(
+                        "Cannot set axis names for reducedDims item because",
+                        "the SCE object does not have column names"
+                        ))
+                }
             }
 
             rd

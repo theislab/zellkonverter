@@ -466,3 +466,17 @@ test_that("writeH5AD works with SpatialExperiment objects without names", {
     # Check the spatial coordinates.
     expect_identical(reducedDim(out, "spatial", withDimnames = FALSE), spcoords)
 })
+
+test_that("writeH5AD throws an error with NULL sce colnames", {
+    colnames(sce) <- NULL
+
+    red_dim <- matrix(runif(ncol(sce) * 10), ncol = 10)
+    colnames(red_dim) <- paste0("col", seq(1, 10))
+    reducedDim(sce, "WHEE") <- red_dim
+
+    error_message <- paste(
+        "Cannot set axis names for reducedDims item because",
+        "the SCE object does not have column names"
+    )
+    expect_error(writeH5AD(sce, temp), error_message)
+ })
