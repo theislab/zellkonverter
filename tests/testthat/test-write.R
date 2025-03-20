@@ -488,3 +488,25 @@ test_that("writeH5AD works without names", {
         reducedDim(nameless_sce, "redDim")
     )
 })
+
+test_that("writeH5AD keeps dimnames", {
+    cells <- letters[1:8]
+    genes <- LETTERS[1:5]
+    ncells <- length(cells)
+    ngenes <- length(genes)
+    counts <- matrix(
+        rpois(ngenes * ncells, 5),
+        ncol = ncells,
+        dimnames = list(genes, cells)
+    )
+    dimname_sce <- SingleCellExperiment::SingleCellExperiment(
+        list(counts = counts)
+    )
+
+    temp <- tempfile(fileext = ".h5ad")
+    writeH5AD(dimname_sce, temp)
+
+    out <- readH5AD(temp, X_name = "X")
+
+    expect_identical(dimnames(out), dimnames(dimname_sce))
+})
