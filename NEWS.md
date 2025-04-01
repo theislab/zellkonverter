@@ -2,6 +2,11 @@
 
 * Bioconductor 3.21, May 2025
 
+## zellkonverter 1.17.2 (2025-04-01)
+
+* Add support for `SpatialExperiment` objects to `SCE2AnnData()` (PR #138 @mcmero, Fixes #61)
+* Improve handling of missing `rownames`/`colnames` (PR #138, Fixes #140) 
+
 ## zellkonverter 1.17.1 (2025-03-09)
 
 * Add `testload` argument to `basiliskRun()` calls (Partial fix for #139)
