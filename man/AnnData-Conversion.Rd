@@ -83,9 +83,14 @@ Conversion between Python AnnData objects and
 objects.
 }
 \details{
+\subsection{Python environment}{
+
 These functions assume that an appropriate Python environment has already
 been loaded. As such, they are largely intended for developer use, most
 typically inside a \strong{basilisk} context.
+}
+
+\subsection{Conversion mapping}{
 
 The conversion is not entirely lossless. The current mapping is shown below
 (also at \url{https://tinyurl.com/AnnData2SCE}):
@@ -94,6 +99,9 @@ The conversion is not entirely lossless. The current mapping is shown below
     \figure{AnnData2SCE.png}{options: width=800, alt="SCE-AnnData map"}
 }
 \if{latex}{\figure{AnnData2SCE.png}{options: width=5in}}
+}
+
+\subsection{Matrix conversion}{
 
 In \code{SCE2AnnData()}, matrices are converted to a \strong{numpy}-friendly format.
 Sparse matrices are converted to
@@ -103,7 +111,7 @@ empty sparse matrices are created instead and the user is expected to fill in
 the assays on the Python side.
 
 For \code{AnnData2SCE()}, a warning is raised if there is no corresponding R
-format for a matrix in the AnnData object, and an empty sparse matrix is
+format for a matrix in the \code{AnnData} object, and an empty sparse matrix is
 created instead as a placeholder. If \code{skip_assays = NA}, no warning is
 emitted but variables are created in the
 \code{\link[SingleCellExperiment:internals]{int_metadata()}} of the output to
@@ -112,11 +120,17 @@ specify which assays were skipped.
 If \code{skip_assays = TRUE}, empty sparse matrices are created for all assays,
 regardless of whether they might be convertible to an R format or not.
 In both cases, the user is expected to fill in the assays on the R side.
+}
+
+\subsection{\code{metadata}/\code{uns} conversion}{
 
 We attempt to convert between items in the
 \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
 \code{\link[S4Vectors:Annotated-class]{metadata()}} slot and the \code{AnnData} \code{uns} slot. If
 an item cannot be converted a warning will be raised.
+}
+
+\subsection{\code{uns} conversion}{
 
 Values stored in the \code{varm} slot of an \code{AnnData} object are stored in a
 column of \code{\link[SummarizedExperiment:SummarizedExperiment-class]{rowData()}} in a
@@ -126,6 +140,14 @@ If this column is present an attempt is made to transfer this information
 when converting from
 \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
 to \code{AnnData}.
+}
+
+\subsection{\code{SpatialExperiment} conversion}{
+
+In \code{SCE2AnnData()}, if \code{sce} is a \link[SpatialExperiment:SpatialExperiment-class]{SpatialExperiment::SpatialExperiment}
+object, the spatial coordinates are added to the \code{reducedDims} slot before
+conversion to an \code{AnnData} object.
+}
 }
 \examples{
 if (requireNamespace("scRNAseq", quietly = TRUE)) {

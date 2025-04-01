@@ -414,3 +414,99 @@ test_that("Writing works with empty rowData/colData", {
     out <- readH5AD(temp, X_name = "X")
     expect_true(all(counts(mini_sce) == assay(out, "X")))
 })
+
+test_that("writeH5AD works with SpatialExperiment objects", {
+    skip_if_not_installed("SpatialExperiment")
+
+    spe <- SpatialExperiment::SpatialExperiment(
+        assays = list(counts = SingleCellExperiment::counts(sce))
+    )
+    spcoords <- matrix(
+        runif(ncol(sce) * 2), ncol = 2
+    )
+    rownames(spcoords) <- colnames(sce)
+    colnames(spcoords) <- paste0("Spatial", 1:2)
+    SpatialExperiment::spatialCoords(spe) <- spcoords
+
+    temp <- tempfile(fileext = ".h5ad")
+
+    writeH5AD(spe, temp)
+    expect_true(file.exists(temp))
+
+    out <- readH5AD(temp, X_name = "X")
+
+    expect_identical(assay(out, "X"), assay(spe, "counts"))
+    expect_identical(dimnames(out), dimnames(spe))
+
+    # Check the spatial coordinates.
+    expect_identical(reducedDims(out)$spatial, spcoords)
+ })
+
+test_that("writeH5AD works with SpatialExperiment objects without names", {
+    skip_if_not_installed("SpatialExperiment")
+
+    spe <- SpatialExperiment::SpatialExperiment(
+        assays = list(counts = SingleCellExperiment::counts(sce))
+    )
+    spcoords <- matrix(
+        runif(ncol(sce) * 2), ncol = 2
+    )
+    SpatialExperiment::spatialCoords(spe) <- spcoords
+
+    temp <- tempfile(fileext = ".h5ad")
+
+    writeH5AD(spe, temp)
+    expect_true(file.exists(temp))
+
+    out <- readH5AD(temp, X_name = "X")
+
+    expect_identical(assay(out, "X"), assay(spe, "counts"))
+    expect_identical(dimnames(out), dimnames(spe))
+
+    # Check the spatial coordinates.
+    expect_identical(reducedDim(out, "spatial", withDimnames = FALSE), spcoords)
+})
+
+test_that("writeH5AD works without names", {
+    nameless_sce <- SingleCellExperiment::SingleCellExperiment(
+        assays = list(
+            counts = matrix(rpois(100 * 50, 4), nrow = 100, ncol = 50)
+        ),
+        reducedDims = list(
+            redDim = matrix(runif(50 * 10), ncol = 10)
+        )
+    )
+
+    temp <- tempfile(fileext = ".h5ad")
+    writeH5AD(nameless_sce, temp)
+
+    out <- readH5AD(temp, X_name = "X")
+    expect_true(all(counts(nameless_sce) == assay(out, "X")))
+
+    expect_identical(
+        reducedDim(out, "redDim", withDimnames = FALSE),
+        reducedDim(nameless_sce, "redDim")
+    )
+})
+
+test_that("writeH5AD keeps dimnames", {
+    cells <- letters[1:8]
+    genes <- LETTERS[1:5]
+    ncells <- length(cells)
+    ngenes <- length(genes)
+    counts <- matrix(
+        rpois(ngenes * ncells, 5),
+        ncol = ncells,
+        dimnames = list(genes, cells)
+    )
+    dimname_sce <- SingleCellExperiment::SingleCellExperiment(
+        list(counts = counts)
+    )
+
+    temp <- tempfile(fileext = ".h5ad")
+    writeH5AD(dimname_sce, temp)
+
+    out <- readH5AD(temp, X_name = "X")
+
+    expect_identical(dimnames(out), dimnames(dimname_sce))
+})

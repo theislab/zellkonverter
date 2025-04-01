@@ -1,7 +1,7 @@
 Package: zellkonverter
 Title: Conversion Between scRNA-seq Objects
-Version: 1.17.1
-Date: 2025-03-09
+Version: 1.17.2
+Date: 2025-04-01
 Authors@R: c(
     person("Luke", "Zappia", , "luke@lazappi.id.au", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7744-8565")),
@@ -12,7 +12,9 @@ Authors@R: c(
     person("Robrecht", "Cannoodt", , "rcannood@gmail.com", role = "ctb",
            comment = c(ORCID = "0000-0003-3641-729X", github = "rcannood")),
     person("Gabriel", "Hoffman", , "gabriel.hoffman@mssm.edu", role = "ctb",
-           comment = c(ORCID = "0000-0002-0957-0224", github = "GabrielHoffman"))
+           comment = c(ORCID = "0000-0002-0957-0224", github = "GabrielHoffman")),
+    person("Marek", "Cmero", , "cmero.ma@wehi.edu.au", role = "ctb",
+           comment = c(ORCID = "0000-0001-7783-5530", github = "mcmero"))
   )
 Description: Provides methods to convert between Python AnnData objects
     and SingleCellExperiment objects. These are primarily intended for use
@@ -44,6 +46,7 @@ Suggests:
     rhdf5 (>= 2.45.1),
     rmarkdown,
     scRNAseq,
+    SpatialExperiment,
     spelling,
     testthat,
     withr

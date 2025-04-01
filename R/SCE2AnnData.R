@@ -107,14 +107,17 @@ SCE2AnnData <- function(
         adata_list$obs <- as.data.frame(make_zero_col_DFrame(ncol(sce)))
     }
 
+    # Convert to python now because python DFs can have duplicates in
+    # their index
+    adata_list$obs <- r_to_py(adata_list$obs)
     if (!is.null(colnames(sce))) {
-        # Convert to python now because python DFs can have duplicates in
-        # their index
-        adata_list$obs <- r_to_py(adata_list$obs)
         adata_list$obs$index <- colnames(sce)
     } else if (ncol(adata_list$obs) == 0) {
         # If there are no colnames and obs has no columns delete it
         adata_list$obs <- NULL
+    } else {
+        # Otherwise convert the index to string
+        adata_list$obs$index <- adata_list$obs$index$astype("str")
     }
 
     if (!is.null(int_metadata(sce)$has_varm)) {
@@ -155,14 +158,25 @@ SCE2AnnData <- function(
         adata_list$var <- as.data.frame(make_zero_col_DFrame(nrow(sce)))
     }
 
+    # Convert to python now because python DFs can have duplicates in
+    # their index
+    adata_list$var <- r_to_py(adata_list$var)
     if (!is.null(rownames(sce))) {
-        # Convert to python now because python DFs can have duplicates in
-        # their index
-        adata_list$var <- r_to_py(adata_list$var)
         adata_list$var$index <- rownames(sce)
     } else if (ncol(adata_list$var) == 0) {
         # If there are no rownames and var has no columns delete it
         adata_list$var <- NULL
+    } else {
+        # Otherwise convert the index to string
+        adata_list$var$index <- adata_list$var$index$astype("str")
+    }
+
+    if (inherits(sce, "SpatialExperiment")) {
+        .ui_info("Adding {.field spatialCoords} to {.field reducedDim}")
+        coords <- SpatialExperiment::spatialCoords(sce)
+        if (ncol(coords) > 1) {
+            SingleCellExperiment::reducedDim(sce, "spatial") <- coords
+        }
     }
 
     if (isFALSE(reducedDims)) {
@@ -185,7 +199,9 @@ SCE2AnnData <- function(
         red_dims <- lapply(red_dims, function(rd) {
             if (!is.null(colnames(rd))) {
                 rd <- r_to_py(as.data.frame(rd))
-                rd <- rd$set_axis(colnames(sce))
+                if (!is.null(adata_list$obs)) {
+                    rd <- rd$set_axis(adata_list$obs$index)
+                }
             }
 
             rd
