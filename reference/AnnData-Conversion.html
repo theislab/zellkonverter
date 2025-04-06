@@ -19,7 +19,7 @@ objects."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/ma
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.17.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.17.2</span>
       </span>
     </div>
 
@@ -153,12 +153,29 @@ containing the content of <code>sce</code>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>These functions assume that an appropriate Python environment has already
+
+<div class="section">
+<h3 id="python-environment">Python environment<a class="anchor" aria-label="anchor" href="#python-environment"></a></h3>
+
+
+<p>These functions assume that an appropriate Python environment has already
 been loaded. As such, they are largely intended for developer use, most
 typically inside a <strong>basilisk</strong> context.</p>
+</div>
+
+<div class="section">
+<h3 id="conversion-mapping">Conversion mapping<a class="anchor" aria-label="anchor" href="#conversion-mapping"></a></h3>
+
+
 <p>The conversion is not entirely lossless. The current mapping is shown below
 (also at <a href="https://tinyurl.com/AnnData2SCE" class="external-link">https://tinyurl.com/AnnData2SCE</a>):</p>
 <p><img src="figures/AnnData2SCE.png" width="800," alt="SCE-AnnData map"></p>
+</div>
+
+<div class="section">
+<h3 id="matrix-conversion">Matrix conversion<a class="anchor" aria-label="anchor" href="#matrix-conversion"></a></h3>
+
+
 <p>In <code>SCE2AnnData()</code>, matrices are converted to a <strong>numpy</strong>-friendly format.
 Sparse matrices are converted to
 <a href="https://rdrr.io/pkg/Matrix/man/dgCMatrix-class.html" class="external-link">Matrix::dgCMatrix</a> objects while all
@@ -166,7 +183,7 @@ other matrices are converted into ordinary matrices. If <code>skip_assays = TRUE
 empty sparse matrices are created instead and the user is expected to fill in
 the assays on the Python side.</p>
 <p>For <code>AnnData2SCE()</code>, a warning is raised if there is no corresponding R
-format for a matrix in the AnnData object, and an empty sparse matrix is
+format for a matrix in the <code>AnnData</code> object, and an empty sparse matrix is
 created instead as a placeholder. If <code>skip_assays = NA</code>, no warning is
 emitted but variables are created in the
 <code><a href="https://rdrr.io/pkg/SingleCellExperiment/man/internals.html" class="external-link">int_metadata()</a></code> of the output to
@@ -174,10 +191,22 @@ specify which assays were skipped.</p>
 <p>If <code>skip_assays = TRUE</code>, empty sparse matrices are created for all assays,
 regardless of whether they might be convertible to an R format or not.
 In both cases, the user is expected to fill in the assays on the R side.</p>
+</div>
+
+<div class="section">
+<h3 id="metadata-uns-conversion"><code>metadata</code>/<code>uns</code> conversion<a class="anchor" aria-label="anchor" href="#metadata-uns-conversion"></a></h3>
+
+
 <p>We attempt to convert between items in the
 <a href="https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html" class="external-link">SingleCellExperiment::SingleCellExperiment</a>
 <code><a href="https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html" class="external-link">metadata()</a></code> slot and the <code>AnnData</code> <code>uns</code> slot. If
 an item cannot be converted a warning will be raised.</p>
+</div>
+
+<div class="section">
+<h3 id="uns-conversion"><code>uns</code> conversion<a class="anchor" aria-label="anchor" href="#uns-conversion"></a></h3>
+
+
 <p>Values stored in the <code>varm</code> slot of an <code>AnnData</code> object are stored in a
 column of <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData()</a></code> in a
 <a href="https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html" class="external-link">SingleCellExperiment::SingleCellExperiment</a>
@@ -186,6 +215,17 @@ If this column is present an attempt is made to transfer this information
 when converting from
 <a href="https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html" class="external-link">SingleCellExperiment::SingleCellExperiment</a>
 to <code>AnnData</code>.</p>
+</div>
+
+<div class="section">
+<h3 id="spatialexperiment-conversion"><code>SpatialExperiment</code> conversion<a class="anchor" aria-label="anchor" href="#spatialexperiment-conversion"></a></h3>
+
+
+<p>In <code>SCE2AnnData()</code>, if <code>sce</code> is a <a href="https://rdrr.io/pkg/SpatialExperiment/man/SpatialExperiment.html" class="external-link">SpatialExperiment::SpatialExperiment</a>
+object, the spatial coordinates are added to the <code>reducedDims</code> slot before
+conversion to an <code>AnnData</code> object.</p>
+</div>
+
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -289,9 +329,9 @@ to <code>AnnData</code>.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from 'package:matrixStats':</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     anyMissing, rowMedians</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> + /github/home/.cache/R/basilisk/1.19.1/0/bin/conda create --yes --prefix /github/home/.cache/R/basilisk/1.19.1/zellkonverter/1.17.1/zellkonverterAnnDataEnv-0.10.9 'python=3.12.7' --quiet -c conda-forge --override-channels</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> + /github/home/.cache/R/basilisk/1.19.1/0/bin/conda install --yes --prefix /github/home/.cache/R/basilisk/1.19.1/zellkonverter/1.17.1/zellkonverterAnnDataEnv-0.10.9 'python=3.12.7' -c conda-forge --override-channels</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> + /github/home/.cache/R/basilisk/1.19.1/0/bin/conda install --yes --prefix /github/home/.cache/R/basilisk/1.19.1/zellkonverter/1.17.1/zellkonverterAnnDataEnv-0.10.9 -c conda-forge 'python=3.12.7' 'anndata=0.10.9' 'h5py=3.12.1' 'hdf5=1.14.3' 'natsort=8.4.0' 'numpy=2.1.2' 'packaging=24.1' 'pandas=2.2.3' 'python=3.12.7' 'scipy=1.14.1' --override-channels</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> + /github/home/.cache/R/basilisk/1.19.3/0/bin/conda create --yes --prefix /github/home/.cache/R/basilisk/1.19.3/zellkonverter/1.17.2/zellkonverterAnnDataEnv-0.10.9 'python=3.12.7' --quiet -c conda-forge --override-channels</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> + /github/home/.cache/R/basilisk/1.19.3/0/bin/conda install --yes --prefix /github/home/.cache/R/basilisk/1.19.3/zellkonverter/1.17.2/zellkonverterAnnDataEnv-0.10.9 'python=3.12.7' -c conda-forge --override-channels</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> + /github/home/.cache/R/basilisk/1.19.3/0/bin/conda install --yes --prefix /github/home/.cache/R/basilisk/1.19.3/zellkonverter/1.17.2/zellkonverterAnnDataEnv-0.10.9 -c conda-forge 'python=3.12.7' 'anndata=0.10.9' 'h5py=3.12.1' 'hdf5=1.14.3' 'natsort=8.4.0' 'numpy=2.1.2' 'packaging=24.1' 'pandas=2.2.3' 'python=3.12.7' 'scipy=1.14.1' --override-channels</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using the <span style="color: #00BB00;">'counts'</span> assay as the <span style="color: #00BB00;">X matrix</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using stored X_name value <span style="color: #00BB00;">'counts'</span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>index contains duplicated values: row names not set</span>
