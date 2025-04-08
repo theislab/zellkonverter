@@ -2,6 +2,10 @@
 
 * Bioconductor 3.21, May 2025
 
+## zellkonverter 1.17.3
+
+* Disable **anndata** v0.7.6 tests on aarch64 Linux as Python 3.7 is not available
+
 ## zellkonverter 1.17.2 (2025-04-01)
 
 * Add support for `SpatialExperiment` objects to `SCE2AnnData()` (PR #138 @mcmero, Fixes #61)
