@@ -122,10 +122,9 @@ NULL
 #' @importFrom methods selectMethod is
 #' @importFrom S4Vectors DataFrame make_zero_col_DFrame
 #' @importFrom reticulate import_builtins
-AnnData2SCE <- function(
-        adata, X_name = NULL, layers = TRUE, uns = TRUE,
-        var = TRUE, obs = TRUE, varm = TRUE, obsm = TRUE, varp = TRUE, obsp = TRUE,
-        raw = FALSE, skip_assays = FALSE, hdf5_backed = TRUE, verbose = NULL) {
+AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
+                        var = TRUE, obs = TRUE, varm = TRUE, obsm = TRUE, varp = TRUE, obsp = TRUE,
+                        raw = FALSE, skip_assays = FALSE, hdf5_backed = TRUE, verbose = NULL) {
     # In case the user accidentally passes an AnnDataR6 object
     if (is(adata, "AnnDataR6")) {
         .ui_warn(paste(
@@ -378,7 +377,7 @@ AnnData2SCE <- function(
 
 #' @importFrom Matrix t
 .extract_or_skip_assay <- function(skip_assays, hdf5_backed, dims, mat,
-    filepath, name) {
+                                   filepath, name) {
     skipped <- FALSE
 
     if (isTRUE(skip_assays)) {
@@ -453,7 +452,8 @@ AnnData2SCE <- function(
     return(ans)
 }
 
-.convert_anndata_slot <- function(adata, slot_name, slot_keys, to_name,
+.convert_anndata_slot <- function(
+    adata, slot_name, slot_keys, to_name,
     select = TRUE, raw = FALSE) {
     verbose <- parent.frame()$verbose
 
@@ -497,7 +497,8 @@ AnnData2SCE <- function(
     return(converted)
 }
 
-.convert_anndata_list <- function(adata_list, parent,
+.convert_anndata_list <- function(
+    adata_list, parent,
     keys = names(adata_list)) {
     py_builtins <- import_builtins()
 

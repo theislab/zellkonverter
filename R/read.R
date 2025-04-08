@@ -61,8 +61,8 @@
 #' @importFrom basilisk basiliskRun
 #' @importFrom methods slot
 readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
-    reader = c("python", "R"), version = NULL, verbose = NULL,
-    ...) {
+                     reader = c("python", "R"), version = NULL,
+                     verbose = NULL, ...) {
     file <- path.expand(file)
     reader <- match.arg(reader)
 

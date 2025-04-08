@@ -130,8 +130,7 @@ validateH5ADSCE <- function(sce, names, missing) {
     invisible(TRUE)
 }
 
-.names_validator <- function(label, actual_names, correct_names,
-    missing_names) {
+.names_validator <- function(label, actual_names, correct_names, missing_names) {
     if (!is.null(correct_names)) {
         testthat::expect_identical(
             actual_names,

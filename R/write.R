@@ -76,7 +76,8 @@
 #' @importFrom basilisk basiliskRun
 #' @importFrom Matrix sparseMatrix
 #' @importFrom DelayedArray is_sparse
-writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
+writeH5AD <- function(
+    sce, file, X_name = NULL, skip_assays = FALSE,
     compression = c("none", "gzip", "lzf"), version = NULL,
     verbose = NULL, ...) {
     compression <- match.arg(compression)
@@ -141,9 +142,8 @@ writeH5AD <- function(sce, file, X_name = NULL, skip_assays = FALSE,
 }
 
 #' @importFrom reticulate import
-.H5ADwriter <- function(
-        sce, file, X_name, skip_assays, compression,
-        verbose = NULL, ...) {
+.H5ADwriter <- function(sce, file, X_name, skip_assays, compression,
+                        verbose = NULL, ...) {
     adata <- SCE2AnnData(
         sce,
         X_name = X_name, skip_assays = skip_assays, verbose = verbose, ...

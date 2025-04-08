@@ -17,11 +17,10 @@
 #' @importFrom utils capture.output
 #' @importFrom S4Vectors metadata make_zero_col_DFrame
 #' @importFrom reticulate import r_to_py py_to_r
-SCE2AnnData <- function(
-        sce, X_name = NULL, assays = TRUE, colData = TRUE,
-        rowData = TRUE, varm = TRUE, reducedDims = TRUE,
-        metadata = TRUE, colPairs = TRUE, rowPairs = TRUE,
-        skip_assays = FALSE, verbose = NULL) {
+SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
+                        rowData = TRUE, varm = TRUE, reducedDims = TRUE,
+                        metadata = TRUE, colPairs = TRUE, rowPairs = TRUE,
+                        skip_assays = FALSE, verbose = NULL) {
     anndata <- import("anndata")
 
     # Create a list to store parts of the AnnData
@@ -399,7 +398,7 @@ SCE2AnnData <- function(
 }
 
 .convert_sce_pairs <- function(sce, slot_name = c("rowPairs", "colPairs"),
-    to_name, select) {
+                               to_name, select) {
     slot_name <- match.arg(slot_name)
 
 
