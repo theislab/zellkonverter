@@ -4,6 +4,7 @@
 
 ## zellkonverter 1.17.3
 
+* Add an environment for **anndata** v0.11.4. This is now the default.
 * Disable **anndata** v0.7.6 tests on aarch64 Linux as Python 3.7 is not available
 
 ## zellkonverter 1.17.2 (2025-04-01)
@@ -27,7 +28,7 @@
 
 ## zellkonverter 1.15.4 (2024-10-18)
 
-* Fix correctly assign levels to factors in R reader with **anndata** v0.7 files (Fixes #122)
+* Fix correctly assigning levels to factors in the R reader with **anndata** v0.7 files (Fixes #122)
 * Add environment for **anndata** v0.10.9
 * Avoid deprecation warning due to setting `dtype` when creating Python `AnnData` objects
 * Standardise code styling using **{styler}**

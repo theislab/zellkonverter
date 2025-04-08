@@ -387,7 +387,14 @@ AnnData2SCE <- function(
         mat <- .make_fake_mat(dims)
     } else {
         if (hdf5_backed && .is_anndata_matrix(mat)) {
-            group_name <- as.character(py_to_r(mat$name))
+            message(class(mat))
+            group_name <- tryCatch(
+                as.character(py_to_r(mat$name)),
+                error = function(e) {
+                    # Objects like _CSRDatasetanndata stores the name differently
+                    as.character(py_to_r(mat[["_name"]]))
+                }
+            )
             if (.h5isgroup(filepath, group_name)) {
                 mat <- HDF5Array::H5SparseMatrix(filepath, group_name)
             } else {
