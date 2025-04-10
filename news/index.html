@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zellkonverter</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.17.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.17.4</span>
       </span>
     </div>
 
@@ -54,23 +54,28 @@
 <h2 class="page-header" data-toc-text="1.18.0" id="zellkonverter-1180">zellkonverter 1.18.0<a class="anchor" aria-label="anchor" href="#zellkonverter-1180"></a></h2>
 <ul><li>Bioconductor 3.21, May 2025</li>
 </ul><div class="section level3">
-<h3 id="zellkonverter-1-18-0">zellkonverter 1.17.3 (2025-04-08)<a class="anchor" aria-label="anchor" href="#zellkonverter-1-18-0"></a></h3>
+<h3 id="zellkonverter-1-18-0">zellkonverter 1.17.4 (2025-04-10)<a class="anchor" aria-label="anchor" href="#zellkonverter-1-18-0"></a></h3>
+<ul><li>Add tests for <strong>anndata</strong> v0.10.9</li>
+<li>Modify <code><a href="../reference/AnnData-Conversion.html">SCE2AnnData()</a></code> to covert sparse matrices to <code>dgRMatrix</code> when they are transposed (mostly assays) (Fixes <a href="https://github.com/theislab/zellkonverter/issues/132" class="external-link">#132</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="zellkonverter-1-18-0-1">zellkonverter 1.17.3 (2025-04-08)<a class="anchor" aria-label="anchor" href="#zellkonverter-1-18-0-1"></a></h3>
 <ul><li>Add an environment for <strong>anndata</strong> v0.11.4. This is now the default.</li>
 <li>Disable <strong>anndata</strong> v0.7.6 tests on aarch64 Linux as Python 3.7 is not available</li>
 </ul></div>
 <div class="section level3">
-<h3 id="zellkonverter-1-18-0-1">zellkonverter 1.17.2 (2025-04-01)<a class="anchor" aria-label="anchor" href="#zellkonverter-1-18-0-1"></a></h3>
+<h3 id="zellkonverter-1-18-0-2">zellkonverter 1.17.2 (2025-04-01)<a class="anchor" aria-label="anchor" href="#zellkonverter-1-18-0-2"></a></h3>
 <ul><li>Add support for <code>SpatialExperiment</code> objects to <code><a href="../reference/AnnData-Conversion.html">SCE2AnnData()</a></code> (PR <a href="https://github.com/theislab/zellkonverter/issues/138" class="external-link">#138</a> <a href="https://github.com/mcmero" class="external-link">@mcmero</a>, Fixes <a href="https://github.com/theislab/zellkonverter/issues/61" class="external-link">#61</a>)</li>
 <li>Improve handling of missing <code>rownames</code>/<code>colnames</code> (PR <a href="https://github.com/theislab/zellkonverter/issues/138" class="external-link">#138</a>, Fixes <a href="https://github.com/theislab/zellkonverter/issues/140" class="external-link">#140</a>)</li>
 </ul></div>
 <div class="section level3">
-<h3 id="zellkonverter-1-18-0-2">zellkonverter 1.17.1 (2025-03-09)<a class="anchor" aria-label="anchor" href="#zellkonverter-1-18-0-2"></a></h3>
+<h3 id="zellkonverter-1-18-0-3">zellkonverter 1.17.1 (2025-03-09)<a class="anchor" aria-label="anchor" href="#zellkonverter-1-18-0-3"></a></h3>
 <ul><li>Add <code>testload</code> argument to <code><a href="https://rdrr.io/pkg/basilisk/man/basiliskStart.html" class="external-link">basiliskRun()</a></code> calls (Partial fix for <a href="https://github.com/theislab/zellkonverter/issues/139" class="external-link">#139</a>)</li>
 <li>Handle missing <code>rowData</code>/<code>colData</code> with no names in <code><a href="../reference/AnnData-Conversion.html">SCE2AnnData()</a></code> (Fixes <a href="https://github.com/theislab/zellkonverter/issues/105" class="external-link">#105</a>)</li>
 <li>Update links in function documentation</li>
 </ul></div>
 <div class="section level3">
-<h3 id="zellkonverter-1-18-0-3">zellkonverter 1.17.0 (2024-10-30)<a class="anchor" aria-label="anchor" href="#zellkonverter-1-18-0-3"></a></h3>
+<h3 id="zellkonverter-1-18-0-4">zellkonverter 1.17.0 (2024-10-30)<a class="anchor" aria-label="anchor" href="#zellkonverter-1-18-0-4"></a></h3>
 <ul><li>Bioconductor 3.21 devel</li>
 </ul></div>
 </div>
