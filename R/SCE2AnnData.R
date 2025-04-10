@@ -268,14 +268,18 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
 #' @importClassesFrom Matrix CsparseMatrix
 #' @importFrom DelayedArray is_sparse
 #' @importFrom Matrix t
+# Original code from Charlotte Soneson in kevinrue/velociraptor
 .makeNumpyFriendly <- function(x, transpose = TRUE) {
     if (transpose) {
         x <- t(x)
     }
 
-    # Code from Charlotte Soneson in kevinrue/velociraptor.
     if (is_sparse(x)) {
-        as(x, "CsparseMatrix")
+        x <- as(x, "CsparseMatrix")
+        if (transpose) {
+            x <- as(x, "RsparseMatrix")
+        }
+        x
     } else {
         as.matrix(x)
     }

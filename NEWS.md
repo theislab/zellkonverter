@@ -2,9 +2,11 @@
 
 * Bioconductor 3.21, May 2025
 
-## zellkonverter 1.17.4
+## zellkonverter 1.17.4 (2025-04-10)
 
 * Add tests for **anndata** v0.10.9
+* Modify `SCE2AnnData()` to covert sparse matrices to `dgRMatrix` when they are
+  transposed (mostly assays) (Fixes #132)
 
 ## zellkonverter 1.17.3 (2025-04-08)
 
