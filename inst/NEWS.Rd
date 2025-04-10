@@ -1,7 +1,47 @@
 \name{NEWS}
 \title{News for Package \pkg{zellkonverter}}
 
-\section{Version 1.146.0, Bioconductor 3.30 Release (October 2024)}{
+\section{Version 1.18.0, Bioconductor 3.31 Release (April 2025)}{
+  \subsection{New features}{
+  \itemize{
+    \item{
+      Add minimal support for \code{SpatialExperiment} objects to
+      \code{writeH5AD()} and \code{SCE2AnnData()}. This stores the spatial
+      coordinates in a \code{obsm} item named "spatial" as expected by the
+      \bold{squidpy} Python package. (PR from @mcmero)
+    }
+  }}
+  \subsection{Major changes}{
+  \itemize{
+    \item{
+      Add environment for \bold{anndata} v0.11.4. This is now the default
+      environment for the Python reader/writer.
+    }
+    \item{
+      Modify \code{SCE2AnnData()} to covert sparse matrices to \code{dgRMatrix}
+      when they are. This mostly applies to assays and should be more compatible
+      with what is expected by Python packages.
+    }
+  }}
+  \subsection{Minor changes}{
+  \itemize{
+    \item{
+      Add a \code{testload} argument to \code{basiliskRun()} calls which may
+      help with problems creating Python environments
+    }
+    \item{
+      Updates to documentation and tests
+    }
+  }}
+  \subsection{Bug fixes}{
+  \itemize{
+    \item{
+      Improve handling of missing row or column names in \code{SCE2AnnData()}
+    }
+  }}
+}
+
+\section{Version 1.16.0, Bioconductor 3.30 Release (October 2024)}{
   \subsection{Major changes}{
   \itemize{
     \item{
@@ -30,7 +70,7 @@
     }
     \item{
       Correctly set \code{filepath} in the R reader with reading
-      \code{adata.raw}` with \code{use_hdf5 = TRUE} (PR from @GabrielHoffman)
+      \code{adata.raw} with \code{use_hdf5 = TRUE} (PR from @GabrielHoffman)
     }
   }}
 }
