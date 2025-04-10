@@ -2,6 +2,10 @@
 
 * Bioconductor 3.21, May 2025
 
+## zellkonverter 1.17.4
+
+* Add tests for **anndata** v0.10.9
+
 ## zellkonverter 1.17.3 (2025-04-08)
 
 * Add an environment for **anndata** v0.11.4. This is now the default.
