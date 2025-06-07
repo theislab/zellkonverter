@@ -81,7 +81,6 @@ AnnDataDependencies <- function(version = .AnnDataVersions) {
         "0.7.6" = c(
             "anndata==0.7.6",
             "h5py==3.2.1",
-            "hdf5==1.10.6",
             "natsort==7.1.1",
             "numpy==1.20.2",
             "packaging==20.9",
@@ -93,7 +92,6 @@ AnnDataDependencies <- function(version = .AnnDataVersions) {
         "0.8.0" = c(
             "anndata==0.8.0",
             "h5py==3.6.0",
-            "hdf5==1.12.1",
             "natsort==8.1.0",
             "numpy==1.22.3",
             "packaging==21.3",
@@ -105,7 +103,6 @@ AnnDataDependencies <- function(version = .AnnDataVersions) {
         "0.9.2" = c(
             "anndata==0.9.2",
             "h5py==3.9.0",
-            "hdf5==1.14.2",
             "natsort==8.4.0",
             "numpy==1.26.0",
             "packaging==23.2",
@@ -116,7 +113,6 @@ AnnDataDependencies <- function(version = .AnnDataVersions) {
         "0.10.2" = c(
             "anndata==0.10.2",
             "h5py==3.10.0",
-            "hdf5==1.14.2",
             "natsort==8.4.0",
             "numpy==1.26.0",
             "packaging==23.2",
@@ -127,7 +123,6 @@ AnnDataDependencies <- function(version = .AnnDataVersions) {
         "0.10.6" = c(
             "anndata==0.10.6",
             "h5py==3.10.0",
-            "hdf5==1.14.3",
             "natsort==8.4.0",
             "numpy==1.26.4",
             "packaging==24.0",
@@ -138,7 +133,6 @@ AnnDataDependencies <- function(version = .AnnDataVersions) {
         "0.10.9" = c(
             "anndata==0.10.9",
             "h5py==3.12.1",
-            "hdf5==1.14.3",
             "natsort==8.4.0",
             "numpy==2.1.2",
             "packaging==24.1",
@@ -149,7 +143,6 @@ AnnDataDependencies <- function(version = .AnnDataVersions) {
         "0.11.4" = c(
             "anndata==0.11.4",
             "h5py==3.13.0",
-            "hdf5==1.14.3",
             "natsort==8.4.0",
             "numpy==2.2.4",
             "packaging==24.2",
