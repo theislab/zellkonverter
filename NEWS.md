@@ -2,6 +2,10 @@
 
 * Bioconductor 3.22, October 2025
 
+## zellkonverter 1.19.1 (2025-04-16)
+
+* Update Python environments for compatibility with the new **{basilisk}** system (PR #146, Fixes #145)
+
 ## zellkonverter 1.19.0 (2025-04-16)
 
 * Bioconductor 3.22 devel
