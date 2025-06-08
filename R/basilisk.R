@@ -79,76 +79,67 @@ AnnDataDependencies <- function(version = .AnnDataVersions) {
 
     switch(version,
         "0.7.6" = c(
+            "python==3.9.23",
             "anndata==0.7.6",
-            "h5py==3.2.1",
-            "natsort==7.1.1",
-            "numpy==1.20.2",
-            "packaging==20.9",
-            "pandas==1.2.4",
-            "python==3.7.10",
-            "scipy==1.6.3",
-            "sqlite==3.35.5"
-        ),
-        "0.8.0" = c(
-            "anndata==0.8.0",
-            "h5py==3.6.0",
-            "natsort==8.1.0",
-            "numpy==1.22.3",
-            "packaging==21.3",
-            "pandas==1.4.2",
-            "python==3.8.13",
-            "scipy==1.7.3",
-            "sqlite==3.38.2"
-        ),
-        "0.9.2" = c(
-            "anndata==0.9.2",
-            "h5py==3.9.0",
-            "natsort==8.4.0",
-            "numpy==1.26.0",
-            "packaging==23.2",
-            "pandas==2.1.1",
-            "python==3.11.5",
-            "scipy==1.11.3"
-        ),
-        "0.10.2" = c(
-            "anndata==0.10.2",
-            "h5py==3.10.0",
-            "natsort==8.4.0",
-            "numpy==1.26.0",
-            "packaging==23.2",
-            "pandas==2.1.1",
-            "python==3.11.5",
-            "scipy==1.11.3"
-        ),
-        "0.10.6" = c(
-            "anndata==0.10.6",
-            "h5py==3.10.0",
+            "h5py==3.14.0",
             "natsort==8.4.0",
             "numpy==1.26.4",
-            "packaging==24.0",
-            "pandas==2.2.1",
-            "python==3.12.2",
-            "scipy==1.12.0"
+            "pandas==1.5.3",
+            "scipy==1.13.1"
+        ),
+        "0.8.0" = c(
+            "python==3.9.23",
+            "anndata==0.8.0",
+            "h5py==3.14.0",
+            "natsort==8.4.0",
+            "numpy==1.26.4",
+            "pandas==1.5.3",
+            "scipy==1.13.1"
+        ),
+        "0.9.2" = c(
+            "python==3.11.13",
+            "anndata==0.9.2",
+            "h5py==3.14.0",
+            "natsort==8.4.0",
+            "numpy==1.26.4",
+            "pandas==2.3.0",
+            "scipy==1.15.3"
+        ),
+        "0.10.2" = c(
+            "python=3.11.13",
+            "anndata==0.10.2",
+            "h5py==3.14.0",
+            "natsort==8.4.0",
+            "numpy==1.26.4",
+            "pandas==2.3.0",
+            "scipy==1.15.3"
+        ),
+        "0.10.6" = c(
+            "python==3.12.11",
+            "anndata==0.10.6",
+            "h5py==3.14.0",
+            "natsort==8.4.0",
+            "numpy==1.26.4",
+            "pandas==2.3.0",
+            "scipy==1.15.3"
         ),
         "0.10.9" = c(
+            "python=3.12.11",
             "anndata==0.10.9",
-            "h5py==3.12.1",
+            "h5py==3.14.0",
             "natsort==8.4.0",
-            "numpy==2.1.2",
-            "packaging==24.1",
-            "pandas==2.2.3",
-            "python==3.12.7",
-            "scipy==1.14.1"
+            "numpy==2.3.0",
+            "pandas==2.3.0",
+            "scipy==1.15.3"
         ),
         "0.11.4" = c(
+            "python=3.13.4",
             "anndata==0.11.4",
-            "h5py==3.13.0",
+            "h5py==3.14.0",
             "natsort==8.4.0",
-            "numpy==2.2.4",
-            "packaging==24.2",
-            "pandas==2.2.3",
-            "python==3.13.2",
-            "scipy==1.15.2"
+            "numpy==2.3.0",
+            "pandas==2.3.0",
+            "scipy==1.15.3"
         )
     )
 }
