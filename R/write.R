@@ -224,12 +224,12 @@ writeH5AD <- function(
     rhdf5::h5writeDataset(c(0, cumsum(out)), handle, iname)
 }
 
-#' @importFrom DelayedArray nzdata nzindex
+#' @importFrom SparseArray nzwhich nzvals
 .blockwise_sparse_writer <- function(block, env, file, name) {
-    nzdex <- nzindex(block)
+    nzdex <- nzwhich(block, arr.ind=TRUE)
     i <- nzdex[, 1]
     j <- nzdex[, 2]
-    v <- nzdata(block)
+    v <- nzvals(block)
 
     o <- order(i)
     i <- i[o]
