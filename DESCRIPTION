@@ -33,6 +33,7 @@ Imports:
     reticulate,
     S4Vectors,
     SingleCellExperiment (>= 1.11.6),
+    SparseArray,
     SummarizedExperiment,
     utils
 Suggests:
