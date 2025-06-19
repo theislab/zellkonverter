@@ -2,7 +2,12 @@
 
 * Bioconductor 3.22, October 2025
 
-## zellkonverter 1.19.1 (2025-04-16)
+## zellkonverter 1.19.2 (2025-06-19)
+
+* Adapt to changes in **{DelayedArray}** v0.35.2 (PR #147 @hpages)
+* Reduce Python dependency to 3.13.3 in **anndata** v0.11.4 environment
+
+## zellkonverter 1.19.1 (2025-06-08)
 
 * Update Python environments for compatibility with the new **{basilisk}** system (PR #146, Fixes #145)
 
