@@ -17,16 +17,16 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Luke Zappia \email{luke@lazappi.id.au} (\href{https://orcid.org/0000-0001-7744-8565}{ORCID})
+\strong{Maintainer}: Luke Zappia \email{luke@lazappi.id.au} (\href{https://orcid.org/0000-0001-7744-8565}{ORCID}) (lazappi)
 
 Authors:
 \itemize{
-  \item Aaron Lun \email{infinite.monkeys.with.keyboards@gmail.com} (\href{https://orcid.org/0000-0002-3564-4813}{ORCID})
+  \item Aaron Lun \email{infinite.monkeys.with.keyboards@gmail.com} (\href{https://orcid.org/0000-0002-3564-4813}{ORCID}) (LTLA)
 }
 
 Other contributors:
 \itemize{
-  \item Jack Kamm \email{jackkamm@gmail.com} (\href{https://orcid.org/0000-0003-2412-756X}{ORCID}) [contributor]
+  \item Jack Kamm \email{jackkamm@gmail.com} (\href{https://orcid.org/0000-0003-2412-756X}{ORCID}) (jackkamm) [contributor]
   \item Robrecht Cannoodt \email{rcannood@gmail.com} (\href{https://orcid.org/0000-0003-3641-729X}{ORCID}) (rcannood) [contributor]
   \item Gabriel Hoffman \email{gabriel.hoffman@mssm.edu} (\href{https://orcid.org/0000-0002-0957-0224}{ORCID}) (GabrielHoffman) [contributor]
   \item Marek Cmero \email{cmero.ma@wehi.edu.au} (\href{https://orcid.org/0000-0001-7783-5530}{ORCID}) (mcmero) [contributor]

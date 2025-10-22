@@ -58,7 +58,7 @@ Encoding: UTF-8
 Language: en-GB
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 StagedInstall: no
 Collate: 
     'AnnData2SCE.R'
