@@ -2,6 +2,11 @@
 
 * Bioconductor 3.22, October 2025
 
+## zellkonverter 1.19.3 (2025-10-22)
+
+* Add an environment for **anndata** v0.12.3. This is now the default.
+* Add a message recommending the **{anndataR}** package
+
 ## zellkonverter 1.19.2 (2025-06-19)
 
 * Adapt to changes in **{DelayedArray}** v0.35.2 (PR #147 @hpages)
