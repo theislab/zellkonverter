@@ -1,6 +1,32 @@
 \name{NEWS}
 \title{News for Package \pkg{zellkonverter}}
 
+\section{Version 1.20.0, Bioconductor 3.32 Release (October 2025)}{
+  \subsection{New features}{
+  \itemize{
+    \item{
+      Add an environment for \bold{anndata} v0.12.3. This is now the default.
+    }
+    \item{
+      Add a message recommending the \pkg{anndataR} package
+    }
+  }}
+  \subsection{Major changes}{
+  \itemize{
+    \item{
+      Update Python environments for compatibility with the new \pkg{basilisk}
+      system
+    }
+  }}
+  \subsection{Minor changes}{
+  \itemize{
+    \item{
+      Adapt to changes in \pkg{DelayedArray} v0.35.2
+    }
+
+  }}
+}
+
 \section{Version 1.18.0, Bioconductor 3.31 Release (April 2025)}{
   \subsection{New features}{
   \itemize{
