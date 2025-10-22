@@ -125,6 +125,8 @@ NULL
 AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
                         var = TRUE, obs = TRUE, varm = TRUE, obsm = TRUE, varp = TRUE, obsp = TRUE,
                         raw = FALSE, skip_assays = FALSE, hdf5_backed = TRUE, verbose = NULL) {
+    recommend_anndataR()
+
     # In case the user accidentally passes an AnnDataR6 object
     if (is(adata, "AnnDataR6")) {
         .ui_warn(paste(

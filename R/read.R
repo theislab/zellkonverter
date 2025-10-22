@@ -63,6 +63,8 @@
 readH5AD <- function(file, X_name = NULL, use_hdf5 = FALSE,
                      reader = c("python", "R"), version = NULL,
                      verbose = NULL, ...) {
+    recommend_anndataR()
+
     file <- path.expand(file)
     reader <- match.arg(reader)
 

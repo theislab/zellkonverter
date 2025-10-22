@@ -21,6 +21,8 @@ SCE2AnnData <- function(sce, X_name = NULL, assays = TRUE, colData = TRUE,
                         rowData = TRUE, varm = TRUE, reducedDims = TRUE,
                         metadata = TRUE, colPairs = TRUE, rowPairs = TRUE,
                         skip_assays = FALSE, verbose = NULL) {
+    recommend_anndataR()
+
     anndata <- import("anndata")
 
     # Create a list to store parts of the AnnData

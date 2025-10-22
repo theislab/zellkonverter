@@ -113,3 +113,26 @@ setZellkonverterVerbose <- function(verbose = TRUE) {
 
     return(path)
 }
+
+recommend_anndataR <- function() {
+    cli::cli_inform(
+        c(
+            paste(
+                "For native R  and reading and writing of {.field H5AD} files,",
+                "an R {.cls AnnData} object, and conversion to",
+                "{.cls SingleCellExperiment} or {.cls Seurat} objects,",
+                "check out the {.pkg anndataR} package:"
+            ),
+            "i" = paste(
+                "Install it from Bioconductor with",
+                "{.run BiocManager::install(\"anndataR\")}"
+            ),
+            "i" = paste(
+                "See more at",
+                "{.url https://bioconductor.org/packages/anndataR/}"
+            )
+        ),
+        .frequency = "once",
+        .frequency_id = "zellkonverter.recommend_anndataR"
+    )
+}

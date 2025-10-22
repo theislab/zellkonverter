@@ -80,6 +80,8 @@ writeH5AD <- function(
     sce, file, X_name = NULL, skip_assays = FALSE,
     compression = c("none", "gzip", "lzf"), version = NULL,
     verbose = NULL, ...) {
+    recommend_anndataR()
+
     compression <- match.arg(compression)
 
     if (compression == "none") {
