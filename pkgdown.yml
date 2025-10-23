@@ -1,6 +1,6 @@
-pandoc: 3.7.0.2
+pandoc: 3.8.1
 pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   zellkonverter: zellkonverter.html
-last_built: 2025-08-26T05:28Z
+last_built: 2025-10-22T23:42Z
