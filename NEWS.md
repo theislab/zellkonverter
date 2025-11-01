@@ -2,7 +2,7 @@
 
 * Bioconductor 3.23, April 2026
 
-## zellkonverter 1.19.0 (2025-10-30)
+## zellkonverter 1.21.0 (2025-10-30)
 
 * Bioconductor 3.23 devel
 
