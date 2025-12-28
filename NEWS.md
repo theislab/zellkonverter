@@ -10,6 +10,10 @@
 
 * Bioconductor 3.22, October 2025
 
+# zellkonverter 1.20.1 (2025-12-28)
+
+* Fix expectation in validation tests
+
 ## zellkonverter 1.19.3 (2025-10-22)
 
 * Add an environment for **anndata** v0.12.3. This is now the default.
