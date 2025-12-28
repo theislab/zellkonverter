@@ -22,7 +22,7 @@ test_that("validateH5ADSCE works", {
     validateH5ADSCE(sce, names, missing)
     expect_error(
         validateH5ADSCE(sce, names, list(varm = "PCs")),
-        "varm names missing is not TRUE"
+        "Expected varm names missing to be TRUE"
     )
 })
 
