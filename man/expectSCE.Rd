@@ -7,10 +7,9 @@
 expectSCE(sce, expected)
 }
 \arguments{
-\item{sce}{A \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
-object.}
+\item{sce}{A \link[SingleCellExperiment:SingleCellExperiment]{SingleCellExperiment::SingleCellExperiment} object.}
 
-\item{expected}{A template \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+\item{expected}{A template \link[SingleCellExperiment:SingleCellExperiment]{SingleCellExperiment::SingleCellExperiment}
 object to compare to.}
 }
 \value{

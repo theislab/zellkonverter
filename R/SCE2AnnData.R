@@ -1,7 +1,6 @@
 #' @rdname AnnData-Conversion
 #'
-#' @param sce A \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
-#'   object.
+#' @param sce A [SingleCellExperiment::SingleCellExperiment] object.
 #' @param X_name For `SCE2AnnData()` name of the assay to use as the primary
 #' matrix (`X`) of the AnnData object. If `NULL`, the first assay of `sce` will
 #' be used by default. For `AnnData2SCE()` name used when saving `X` as an

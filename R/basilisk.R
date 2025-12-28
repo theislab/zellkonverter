@@ -20,8 +20,9 @@
 #' Python environment if one does not already exist. When one does exist (for
 #' example when a **zellkonverter** function has already been run using a
 #' a different environment version) then a separate environment will be used.
-#' See [basilisk::setBasiliskShared()] for more information on this behaviour.
-#' Note the when the environment is not shared progress messages are lost.
+#' See [`basilisk::setBasiliskShared()`][basilisk::getBasiliskFork()] for more
+#' information on this behaviour. Note the when the environment is not shared
+#' progress messages are lost.
 #'
 #' ## Development
 #'
