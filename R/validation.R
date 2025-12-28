@@ -3,8 +3,7 @@
 #' Validate a SingleCellExperiment created by `readH5AD()`. Designed to be used
 #' inside `testhat::test_that()` during package testing.
 #'
-#' @param sce A \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
-#'   object.
+#' @param sce A [SingleCellExperiment::SingleCellExperiment] object.
 #' @param names Named list of expected names. Names are slots and values are
 #' vectors of names that are expected to exist in that slot.
 #' @param missing Named list of known missing names. Names are slots and values
@@ -154,9 +153,8 @@ validateH5ADSCE <- function(sce, names, missing) {
 #' Test that a SingleCellExperiment matches an expected object. Designed to be
 #' used inside `testhat::test_that()` during package testing.
 #'
-#' @param sce A \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
-#'   object.
-#' @param expected A template \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+#' @param sce A [SingleCellExperiment::SingleCellExperiment] object.
+#' @param expected A template [SingleCellExperiment::SingleCellExperiment]
 #'   object to compare to.
 #'
 #' @return `TRUE` invisibly if checks pass

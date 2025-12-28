@@ -5,6 +5,7 @@
 # zellkonverter 1.20.1 (2025-12-28)
 
 * Fix expectation in validation tests
+* Fix documentation links
 
 ## zellkonverter 1.19.3 (2025-10-22)
 

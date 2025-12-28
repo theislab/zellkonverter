@@ -1,11 +1,8 @@
 #' Write H5AD
 #'
-#' Write a H5AD file from a
-#' \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
-#' object.
+#' Write a H5AD file from a [SingleCellExperiment::SingleCellExperiment] sobject.
 #'
-#' @param sce A \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
-#'   object.
+#' @param sce A [SingleCellExperiment::SingleCellExperiment] object.
 #' @param file String containing a path to write the new `.h5ad` file.
 #' @param X_name Name of the assay to use as the primary matrix (`X`) of the
 #' AnnData object. If `NULL`, the first assay of `sce` will be used by default.
@@ -55,12 +52,11 @@
 #' @author Aaron Lun
 #'
 #' @seealso
-#' [`readH5AD()`], to read a
-#' \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+#' [`readH5AD()`], to read a [SingleCellExperiment::SingleCellExperiment]
 #' object from a H5AD file.
 #'
 #' [`SCE2AnnData()`], for developers to create an AnnData object from a
-#' \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}.
+#' [SingleCellExperiment::SingleCellExperiment].
 #'
 #' @examples
 #' # Using the Zeisel brain dataset

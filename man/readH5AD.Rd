@@ -47,12 +47,10 @@ instead.}
   }}
 }
 \value{
-A \link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
-object is returned.
+A \link[SingleCellExperiment:SingleCellExperiment]{SingleCellExperiment::SingleCellExperiment} object is returned.
 }
 \description{
-Reads a H5AD file and returns a
-\link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+Reads a H5AD file and returns a \link[SingleCellExperiment:SingleCellExperiment]{SingleCellExperiment::SingleCellExperiment}
 object.
 }
 \details{
@@ -81,12 +79,11 @@ class(assay(sce2))
 sce3 <- readH5AD(file, reader = "R")
 }
 \seealso{
-\code{\link[=writeH5AD]{writeH5AD()}}, to write a
-\link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}
+\code{\link[=writeH5AD]{writeH5AD()}}, to write a \link[SingleCellExperiment:SingleCellExperiment]{SingleCellExperiment::SingleCellExperiment}
 object to a H5AD file.
 
 \code{\link[=AnnData2SCE]{AnnData2SCE()}}, for developers to convert existing AnnData instances to a
-\link[SingleCellExperiment:SingleCellExperiment-class]{SingleCellExperiment::SingleCellExperiment}.
+\link[SingleCellExperiment:SingleCellExperiment]{SingleCellExperiment::SingleCellExperiment}.
 }
 \author{
 Luke Zappia
