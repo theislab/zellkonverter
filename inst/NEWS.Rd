@@ -1,6 +1,16 @@
 \name{NEWS}
 \title{News for Package \pkg{zellkonverter}}
 
+\section{Version 1.22.0, Bioconductor 3.33 Release (April 2026)}{
+  \subsection{Minor changes}{
+  \itemize{
+    \item{
+      Minor fixes to tests and documentation
+    }
+
+  }}
+}
+
 \section{Version 1.20.0, Bioconductor 3.32 Release (October 2025)}{
   \subsection{New features}{
   \itemize{

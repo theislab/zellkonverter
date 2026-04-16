@@ -2,6 +2,15 @@
 
 * Bioconductor 3.23, April 2026
 
+## zellkonverter 1.21.2 (2026-04-16)
+
+* Prepare NEWS for release
+
+## zellkonverter 1.21.1 (2025-12-28)
+
+* Fix expectation in validation tests
+* Fix documentation links
+
 ## zellkonverter 1.21.0 (2025-10-30)
 
 * Bioconductor 3.23 devel
@@ -10,7 +19,7 @@
 
 * Bioconductor 3.22, October 2025
 
-# zellkonverter 1.20.1 (2025-12-28)
+## zellkonverter 1.20.1 (2025-12-28)
 
 * Fix expectation in validation tests
 * Fix documentation links
