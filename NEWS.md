@@ -1,4 +1,4 @@
-# zellkonverter 1.22.0
+# zellkonverter 1.22.0 (2026-04-29)
 
 * Bioconductor 3.23, April 2026
 
