@@ -111,7 +111,7 @@ For \code{AnnData2SCE()}, a warning is raised if there is no corresponding R
 format for a matrix in the \code{AnnData} object, and an empty sparse matrix is
 created instead as a placeholder. If \code{skip_assays = NA}, no warning is
 emitted but variables are created in the
-\code{\link[SingleCellExperiment:internals]{int_metadata}} of the
+\code{\link[SingleCellExperiment:SCE-internals]{int_metadata}} of the
 output to specify which assays were skipped.
 
 If \code{skip_assays = TRUE}, empty sparse matrices are created for all assays,
@@ -123,14 +123,14 @@ In both cases, the user is expected to fill in the assays on the R side.
 
 We attempt to convert between items in the
 \link[SingleCellExperiment:SingleCellExperiment]{SingleCellExperiment::SingleCellExperiment}
-\code{\link[S4Vectors:Annotated-class]{metadata()}} slot and the \code{AnnData} \code{uns} slot. If
+\code{\link[S4Vectors:metadata]{metadata()}} slot and the \code{AnnData} \code{uns} slot. If
 an item cannot be converted a warning will be raised.
 }
 
 \subsection{\code{varm} conversion}{
 
 Values stored in the \code{varm} slot of an \code{AnnData} object are stored in a
-column of \code{\link[SummarizedExperiment:SummarizedExperiment-class]{rowData()}} in a
+column of \code{\link[SummarizedExperiment:rowData]{rowData()}} in a
 \link[SingleCellExperiment:SingleCellExperiment]{SingleCellExperiment::SingleCellExperiment} as a
 \code{\link[S4Vectors:DataFrame-class]{DataFrame}} of matrices. If this column is
 present an attempt is made to transfer this information when converting

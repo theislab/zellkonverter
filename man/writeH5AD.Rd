@@ -36,8 +36,16 @@ latest version is used.}
 If \code{NULL} uses \code{getOption("zellkonverter.verbose")}.}
 
 \item{...}{
-  Arguments passed on to \code{\link[=SCE2AnnData]{SCE2AnnData}}
+  Arguments passed on to \code{\link{SCE2AnnData}}
   \describe{
+    \item{\code{adata}}{A \strong{reticulate} reference to a Python AnnData object.}
+    \item{\code{layers,uns,var,obs,varm,obsm,varp,obsp,raw}}{Arguments specifying how
+these slots are converted. If \code{TRUE} everything in that slot is converted, if
+\code{FALSE} nothing is converted and if a character vector only those items or
+columns are converted.}
+    \item{\code{hdf5_backed}}{Logical scalar indicating whether HDF5-backed matrices
+in \code{adata} should be represented as HDF5Array objects. This assumes that
+\code{adata} is created with \code{backed="r"}.}
     \item{\code{assays,colData,rowData,reducedDims,metadata,colPairs,rowPairs}}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
 that slot is converted, if \code{FALSE} nothing is converted and if a character
 vector only those items or columns are converted.}

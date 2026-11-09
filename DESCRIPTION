@@ -58,7 +58,6 @@ Encoding: UTF-8
 Language: en-GB
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 StagedInstall: no
 Collate: 
     'AnnData2SCE.R'
@@ -71,3 +70,4 @@ Collate:
     'validation.R'
     'write.R'
     'zellkonverter-package.R'
+Config/roxygen2/version: 8.1.1

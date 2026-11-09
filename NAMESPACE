@@ -14,36 +14,52 @@ export(zellkonverterAnnDataEnv)
 import(SingleCellExperiment)
 import(SummarizedExperiment)
 importClassesFrom(Matrix,CsparseMatrix)
-importFrom(DelayedArray,blockApply)
-importFrom(DelayedArray,is_sparse)
-importFrom(DelayedArray,rowAutoGrid)
-importFrom(DelayedArray,type)
-importFrom(Matrix,sparseMatrix)
-importFrom(Matrix,t)
-importFrom(S4Vectors,DataFrame)
-importFrom(S4Vectors,I)
-importFrom(S4Vectors,make_zero_col_DFrame)
-importFrom(S4Vectors,metadata)
-importFrom(S4Vectors,wmsg)
-importFrom(SingleCellExperiment,"colPairs<-")
-importFrom(SingleCellExperiment,"reducedDims<-")
-importFrom(SingleCellExperiment,"rowPairs<-")
-importFrom(SingleCellExperiment,SingleCellExperiment)
-importFrom(SparseArray,nzvals)
-importFrom(SparseArray,nzwhich)
-importFrom(SummarizedExperiment,"assays<-")
-importFrom(SummarizedExperiment,"colData<-")
-importFrom(SummarizedExperiment,"rowData<-")
-importFrom(SummarizedExperiment,assays)
-importFrom(SummarizedExperiment,colData)
-importFrom(SummarizedExperiment,rowData)
+importFrom(DelayedArray,
+  blockApply,
+  is_sparse,
+  rowAutoGrid,
+  type
+)
+importFrom(Matrix,
+  sparseMatrix,
+  t
+)
+importFrom(S4Vectors,
+  DataFrame,
+  I,
+  make_zero_col_DFrame,
+  metadata,
+  wmsg
+)
+importFrom(SingleCellExperiment,
+  "colPairs<-",
+  "reducedDims<-",
+  "rowPairs<-",
+  SingleCellExperiment
+)
+importFrom(SparseArray,
+  nzvals,
+  nzwhich
+)
+importFrom(SummarizedExperiment,
+  "assays<-",
+  "colData<-",
+  "rowData<-",
+  assays,
+  colData,
+  rowData
+)
 importFrom(basilisk,basiliskRun)
-importFrom(methods,as)
-importFrom(methods,is)
-importFrom(methods,selectMethod)
-importFrom(methods,slot)
-importFrom(reticulate,import)
-importFrom(reticulate,import_builtins)
-importFrom(reticulate,py_to_r)
-importFrom(reticulate,r_to_py)
+importFrom(methods,
+  as,
+  is,
+  selectMethod,
+  slot
+)
+importFrom(reticulate,
+  import,
+  import_builtins,
+  py_to_r,
+  r_to_py
+)
 importFrom(utils,capture.output)

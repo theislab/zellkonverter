@@ -35,7 +35,7 @@ latest version is used.}
 If \code{NULL} uses \code{getOption("zellkonverter.verbose")}.}
 
 \item{...}{
-  Arguments passed on to \code{\link[=AnnData2SCE]{AnnData2SCE}}
+  Arguments passed on to \code{\link{AnnData2SCE}}
   \describe{
     \item{\code{layers,uns,var,obs,varm,obsm,varp,obsp,raw}}{Arguments specifying how
 these slots are converted. If \code{TRUE} everything in that slot is converted, if
@@ -44,6 +44,10 @@ columns are converted.}
     \item{\code{skip_assays}}{Logical scalar indicating whether to skip conversion of
 any assays in \code{sce} or \code{adata}, replacing them with empty sparse matrices
 instead.}
+    \item{\code{sce}}{A \link[SingleCellExperiment:SingleCellExperiment]{SingleCellExperiment::SingleCellExperiment} object.}
+    \item{\code{assays,colData,rowData,reducedDims,metadata,colPairs,rowPairs}}{Arguments specifying how these slots are converted. If \code{TRUE} everything in
+that slot is converted, if \code{FALSE} nothing is converted and if a character
+vector only those items or columns are converted.}
   }}
 }
 \value{

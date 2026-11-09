@@ -29,7 +29,7 @@ values)
 }
 }
 \seealso{
-\code{\link[reticulate:r-py-conversion]{reticulate::py_to_r()}} for the base \code{reticulate} functions
+\code{\link[reticulate:py_to_r]{reticulate::py_to_r()}} for the base \code{reticulate} functions
 }
 \author{
 Luke Zappia
