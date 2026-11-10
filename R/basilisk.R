@@ -162,7 +162,7 @@ AnnDataDependencies <- function(version = .AnnDataVersions) {
             "scipy==1.16.2"
         ),
         "0.13.4" = c(
-            "python=3.15.2",
+            "python=3.14.10",
             "anndata==0.13.4",
             "h5py==3.16.0",
             "natsort==8.4.0",
