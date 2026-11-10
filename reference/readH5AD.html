@@ -116,6 +116,14 @@ columns are converted.</p></dd>
 any assays in <code>sce</code> or <code>adata</code>, replacing them with empty sparse matrices
 instead.</p></dd>
 
+    <dt><code>sce</code></dt>
+<dd><p>A <a href="https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html" class="external-link">SingleCellExperiment::SingleCellExperiment</a> object.</p></dd>
+
+    <dt><code>assays,colData,rowData,reducedDims,metadata,colPairs,rowPairs</code></dt>
+<dd><p>Arguments specifying how these slots are converted. If <code>TRUE</code> everything in
+that slot is converted, if <code>FALSE</code> nothing is converted and if a character
+vector only those items or columns are converted.</p></dd>
+
 
 </dl></dd>
 
@@ -172,6 +180,17 @@ object to a H5AD file.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "DelayedArray"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">sce3</span> <span class="op">&lt;-</span> <span class="fu">readH5AD</span><span class="op">(</span><span class="va">file</span>, reader <span class="op">=</span> <span class="st">"R"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The 'callGeneric' argument is deprecated and will be removed in the next version. Please wrap h5read() in your own function, or provide your own downstream steps to handle class-specific post-processing. As far as we know, this feature has never been used. Please get in touch as soon as possible if you rely on this feature.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The 'callGeneric' argument is deprecated and will be removed in the next version. Please wrap h5read() in your own function, or provide your own downstream steps to handle class-specific post-processing. As far as we know, this feature has never been used. Please get in touch as soon as possible if you rely on this feature.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The 'callGeneric' argument is deprecated and will be removed in the next version. Please wrap h5read() in your own function, or provide your own downstream steps to handle class-specific post-processing. As far as we know, this feature has never been used. Please get in touch as soon as possible if you rely on this feature.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The 'callGeneric' argument is deprecated and will be removed in the next version. Please wrap h5read() in your own function, or provide your own downstream steps to handle class-specific post-processing. As far as we know, this feature has never been used. Please get in touch as soon as possible if you rely on this feature.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The 'callGeneric' argument is deprecated and will be removed in the next version. Please wrap h5read() in your own function, or provide your own downstream steps to handle class-specific post-processing. As far as we know, this feature has never been used. Please get in touch as soon as possible if you rely on this feature.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The 'callGeneric' argument is deprecated and will be removed in the next version. Please wrap h5read() in your own function, or provide your own downstream steps to handle class-specific post-processing. As far as we know, this feature has never been used. Please get in touch as soon as possible if you rely on this feature.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The 'callGeneric' argument is deprecated and will be removed in the next version. Please wrap h5read() in your own function, or provide your own downstream steps to handle class-specific post-processing. As far as we know, this feature has never been used. Please get in touch as soon as possible if you rely on this feature.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The 'callGeneric' argument is deprecated and will be removed in the next version. Please wrap h5read() in your own function, or provide your own downstream steps to handle class-specific post-processing. As far as we know, this feature has never been used. Please get in touch as soon as possible if you rely on this feature.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The 'callGeneric' argument is deprecated and will be removed in the next version. Please wrap h5read() in your own function, or provide your own downstream steps to handle class-specific post-processing. As far as we know, this feature has never been used. Please get in touch as soon as possible if you rely on this feature.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The 'callGeneric' argument is deprecated and will be removed in the next version. Please wrap h5read() in your own function, or provide your own downstream steps to handle class-specific post-processing. As far as we know, this feature has never been used. Please get in touch as soon as possible if you rely on this feature.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The 'callGeneric' argument is deprecated and will be removed in the next version. Please wrap h5read() in your own function, or provide your own downstream steps to handle class-specific post-processing. As far as we know, this feature has never been used. Please get in touch as soon as possible if you rely on this feature.</span>
 </code></pre></div>
     </div>
   </div>
@@ -186,7 +205,7 @@ object to a H5AD file.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

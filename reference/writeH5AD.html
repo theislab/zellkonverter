@@ -106,7 +106,21 @@ If <code>NULL</code> uses <code>getOption("zellkonverter.verbose")</code>.</p></
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Arguments passed on to <code><a href="AnnData-Conversion.html">SCE2AnnData</a></code></p><dl><dt><code>assays,colData,rowData,reducedDims,metadata,colPairs,rowPairs</code></dt>
+<dd><p>Arguments passed on to <code><a href="AnnData-Conversion.html">SCE2AnnData</a></code></p><dl><dt><code>adata</code></dt>
+<dd><p>A <strong>reticulate</strong> reference to a Python AnnData object.</p></dd>
+
+    <dt><code>layers,uns,var,obs,varm,obsm,varp,obsp,raw</code></dt>
+<dd><p>Arguments specifying how
+these slots are converted. If <code>TRUE</code> everything in that slot is converted, if
+<code>FALSE</code> nothing is converted and if a character vector only those items or
+columns are converted.</p></dd>
+
+    <dt><code>hdf5_backed</code></dt>
+<dd><p>Logical scalar indicating whether HDF5-backed matrices
+in <code>adata</code> should be represented as HDF5Array objects. This assumes that
+<code>adata</code> is created with <code>backed="r"</code>.</p></dd>
+
+    <dt><code>assays,colData,rowData,reducedDims,metadata,colPairs,rowPairs</code></dt>
 <dd><p>Arguments specifying how these slots are converted. If <code>TRUE</code> everything in
 that slot is converted, if <code>FALSE</code> nothing is converted and if a character
 vector only those items or columns are converted.</p></dd>
@@ -206,7 +220,7 @@ object from a H5AD file.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>
