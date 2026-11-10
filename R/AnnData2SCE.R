@@ -200,7 +200,9 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     assays_list <- list()
     assays_list[[X_name]] <- x_mat
 
-    layer_names <- names(py_builtins$dict(adata$layers))
+    # anndata >= 0.13 stores X in layers with a `None` key. This is converted
+    # to NULL and dropped by unlist().
+    layer_names <- as.character(unlist(py_builtins$list(adata$layers$keys())))
     skipped_layers <- character(0)
     if (isFALSE(layers)) {
         .ui_info("Skipping conversion of {.field layers}")
@@ -258,7 +260,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     varm_list <- .convert_anndata_slot(
         adata,
         slot_name = "varm",
-        slot_keys = py_to_r(adata$varm_keys()),
+        slot_keys = py_builtins$list(adata$varm$keys()),
         to_name   = "rowData$varm",
         select    = varm
     )
@@ -274,7 +276,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
 
     reddim_list <- .convert_anndata_slot(
         adata, "obsm",
-        py_to_r(adata$obsm_keys()),
+        py_builtins$list(adata$obsm$keys()),
         "reducedDims",
         select = obsm
     )
@@ -495,6 +497,16 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     return(converted)
 }
 
+# Get an item from an R list or Python mapping. Python items are accessed with
+# py_get_item() directly.
+.get_list_item <- function(x, key) {
+    if (inherits(x, "python.builtin.object")) {
+        reticulate::py_get_item(x, key)
+    } else {
+        x[[key]]
+    }
+}
+
 .convert_anndata_list <- function(
     adata_list, parent,
     keys = names(adata_list)) {
@@ -509,7 +521,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
     adata_list <- tryCatch(
         {
             # Check if an item can be accessed, if yes return the list
-            adata_list[[keys[1]]]
+            .get_list_item(adata_list, keys[[1]])
             adata_list
         },
         error = function(err) {
@@ -552,7 +564,7 @@ AnnData2SCE <- function(adata, X_name = NULL, layers = TRUE, uns = TRUE,
         )
         status <- tryCatch(
             {
-                item <- adata_list[[key]]
+                item <- .get_list_item(adata_list, key)
 
                 item_type <- py_builtins$str(py_builtins$type(item))
                 if (grepl("OverloadedDict", item_type)) {

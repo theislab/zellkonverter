@@ -54,16 +54,25 @@ py_to_r.numpy.ndarray <- function(x) {
 py_to_r.pandas.core.arrays.masked.BaseMaskedArray <- function(x) {
     disable_conversion_scope(x)
 
-    if (is(x, "pandas.core.arrays.boolean.BooleanArray")) {
+    if (inherits(x, c(
+        "pandas.core.arrays.boolean.BooleanArray", "pandas.arrays.BooleanArray"
+    ))) {
         dtype <- "bool"
         fill <- FALSE
-    } else if (is(x, "pandas.core.arrays.integer.IntegerArray")) {
+    } else if (inherits(x, c(
+        "pandas.core.arrays.integer.IntegerArray", "pandas.arrays.IntegerArray"
+    ))) {
         dtype <- "int"
         fill <- 0L
-    } else if (is(x, "pandas.core.arrays.floating.FloatingArray")) {
+    } else if (inherits(x, c(
+        "pandas.core.arrays.floating.FloatingArray",
+        "pandas.arrays.FloatingArray"
+    ))) {
         dtype <- "float"
         fill <- 0.0
-    } else if (is(x, "pandas.core.arrays.string_.StringArray")) {
+    } else if (inherits(x, c(
+        "pandas.core.arrays.string_.StringArray", "pandas.arrays.StringArray"
+    ))) {
         dtype <- "str"
         fill <- ""
     } else {
