@@ -2,6 +2,13 @@
 
 * Bioconductor 3.24, October 2026
 
+## zellkonverter 1.23.1 (2026-11-10)
+
+* Add an environment for **anndata** v0.13.4. This is now the default.
+* Increase Python dependency to 3.14.10 in **anndata** v0.12.3 environment
+* Bump **{roxygen2}** dependency to 8.1.1
+* Prepare NEWS for release
+
 ## zellkonverter 1.23.0 (2026-04-29)
 
 * Bioconductor 3.24 devel
@@ -68,7 +75,7 @@
 ## zellkonverter 1.17.2 (2025-04-01)
 
 * Add support for `SpatialExperiment` objects to `SCE2AnnData()` (PR #138 @mcmero, Fixes #61)
-* Improve handling of missing `rownames`/`colnames` (PR #138, Fixes #140) 
+* Improve handling of missing `rownames`/`colnames` (PR #138, Fixes #140)
 
 ## zellkonverter 1.17.1 (2025-03-09)
 
@@ -235,7 +242,7 @@
 ## zellkonverter 1.7.5 (2022-09-13)
 
 * Minor changes for compatibility with **{cli}** v3.4.0
-  * Added tests for `verbose=TRUE` 
+  * Added tests for `verbose=TRUE`
 
 ## zellkonverter 1.7.4 (2022-08-17)
 
@@ -265,7 +272,7 @@
 ## zellkonverter 1.6.5 (2022-09-13)
 
 * Minor changes for compatibility with **{cli}** v3.4.0
-  * Added tests for `verbose=TRUE` 
+  * Added tests for `verbose=TRUE`
 
 ## zellkonverter 1.6.4 (2022-08-17)
 
@@ -342,7 +349,7 @@
   `SCE2AnnData()` (Fixes #47)
   * Each slot can now be fully converted, skipped entirely or only selected
     items converted.
-* Add support for converting the `raw` slot to an `altExp` in `AnnData2SCE()` 
+* Add support for converting the `raw` slot to an `altExp` in `AnnData2SCE()`
   (Fixes #53, fixes #57)
 
 ## zellkonverter 1.3.2 (2021-09-09)
