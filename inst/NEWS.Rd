@@ -1,13 +1,21 @@
 \name{NEWS}
 \title{News for Package \pkg{zellkonverter}}
 
+\section{Version 1.24.0, Bioconductor 3.34 Release (November 2026)}{
+\subsection{New features}{
+  \itemize{
+    \item{
+      Add an environment for \bold{anndata} v0.13.4. This is now the default.
+    }
+  }}
+}
+
 \section{Version 1.22.0, Bioconductor 3.33 Release (April 2026)}{
   \subsection{Minor changes}{
   \itemize{
     \item{
       Minor fixes to tests and documentation
     }
-
   }}
 }
 
